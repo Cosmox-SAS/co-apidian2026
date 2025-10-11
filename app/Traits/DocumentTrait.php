@@ -1193,14 +1193,14 @@ trait DocumentTrait
 
         try {
             return DB::transaction(function() use ($company, $date, $typeDocumentID, $resolution, $prefix, $extension) {
-                
+
                 $send = $company->send()->lockForUpdate()->firstOrCreate([
                     'year' => $date->format('Y'),
                     'type_document_id' => $typeDocumentID ?? $resolution->type_document_id,
                 ]);
 
                 $current = $send->next_consecutive ?? 1;
-                
+
                 $send->next_consecutive = $current + 1;
                 $send->save();
 
@@ -1638,11 +1638,54 @@ trait DocumentTrait
     }
 
     function verify_certificate($user = FALSE){
-        $c = new ConfigurationController();
-        $certificate_end_date = new DateTime(Carbon::parse(str_replace("/", "-", $c->CertificateEndDate($user)))->format('Y-m-d'));
-        $actual_date = new DateTime(Carbon::now()->format('Y-m-d'));
-        $interval = $actual_date->diff($certificate_end_date);
-        $certificate_days_left = 0;
+        try {
+            $c = new ConfigurationController();
+            $certificateEndDate = $c->CertificateEndDate($user);
+
+            // Agregar debugging información
+            \Log::info('Certificate verification debug', [
+                'user_provided' => $user !== FALSE,
+                'certificate_end_date_result' => $certificateEndDate,
+                'is_string' => is_string($certificateEndDate),
+                'is_empty' => empty($certificateEndDate),
+            ]);
+
+            // Validar que la respuesta no sea datos binarios o vacía
+            if (empty($certificateEndDate) || !is_string($certificateEndDate)) {
+                return [
+                    'success' => false,
+                    'message' => 'No se pudo obtener la fecha de expiración del certificado',
+                    'certificate_days_left' => 0,
+                    'debug_info' => [
+                        'certificate_result' => $certificateEndDate,
+                        'is_string' => is_string($certificateEndDate),
+                        'is_empty' => empty($certificateEndDate),
+                    ]
+                ];
+            }
+
+            // Verificar que no contenga datos binarios
+            if (preg_match('/[\x00-\x08\x0E-\x1F\x7F-\xFF]/', $certificateEndDate)) {
+                return [
+                    'success' => false,
+                    'message' => 'Error al leer la fecha del certificado - datos corruptos',
+                    'certificate_days_left' => 0,
+                ];
+            }
+
+            $certificate_end_date = new DateTime(Carbon::parse(str_replace("/", "-", $certificateEndDate))->format('Y-m-d'));
+            $actual_date = new DateTime(Carbon::now()->format('Y-m-d'));
+            $interval = $actual_date->diff($certificate_end_date);
+            $certificate_days_left = 0;
+
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'message' => 'Error al verificar el certificado: ' . $e->getMessage(),
+                'certificate_days_left' => 0,
+            ];
+        }
+
         if($interval->days == 0 || $interval->invert == 1)
             return [
                 'success' => false,
