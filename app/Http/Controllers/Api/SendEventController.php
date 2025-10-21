@@ -232,7 +232,7 @@ class SendEventController extends Controller
         }
 
         // Verificar la disponibilidad de la DIAN antes de continuar
-        $dian_url = $company->software->url;
+        $dian_url = $company->software->url_event;
         if (!$this->verificarEstadoDIAN($dian_url)) {
             // Manejar la indisponibilidad del servicio, por ejemplo:
             return [
@@ -640,7 +640,7 @@ class SendEventController extends Controller
             $signEvent->GuardarEn = storage_path("app/public/{$company->identification_number}/EV-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}.xml");
 
         $sendEvent = new SendEvent($company->certificate->path, $company->certificate->password);
-        $sendEvent->To = $company->software->url;
+        $sendEvent->To = $company->software->url_event;
 
         if ($request->GuardarEn){
             $sendEvent->contentFile = $this->zipBase64SendEvent($company, $event->code, $sender->company->identification_number, $documentReference->getPrefixAttribute().$documentReference->getNumberAttribute(), $signEvent->sign($eventXML), $request->GuardarEn."\\EVS-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}");
@@ -932,7 +932,7 @@ class SendEventController extends Controller
         $company = $user->company;
 
         // Verificar la disponibilidad de la DIAN antes de continuar
-        $dian_url = $company->software->url;
+        $dian_url = $company->software->url_event;
         if (!$this->verificarEstadoDIAN($dian_url)) {
             // Manejar la indisponibilidad del servicio, por ejemplo:
             return [
@@ -1009,7 +1009,7 @@ class SendEventController extends Controller
 
         $xmlDIAN = new XmlDocumentController();
         $send = [
-            'is_payroll' => false,
+            'is_event' => true,
         ];
         $data_send = json_encode($send);
         $r = new XmlDocumentRequest($send);
@@ -1411,9 +1411,9 @@ class SendEventController extends Controller
         }
         else
             $notes = NULL;
-
+        $is_event = true;        
         // Create XML
-        $eventXML = $this->createXML(compact('user', 'company', 'typeDocument', 'event', 'sender', 'documentReference', 'typeDocumentReference', 'issuerparty', 'typerejection', 'notes', 'request'));
+        $eventXML = $this->createXML(compact('user', 'company', 'typeDocument', 'event', 'sender', 'documentReference', 'typeDocumentReference', 'issuerparty', 'typerejection', 'notes', 'request', 'is_event'));
 
         // Signature XML
         $signEvent = new SignEvent($company->certificate->path, $company->certificate->password);
@@ -1436,7 +1436,7 @@ class SendEventController extends Controller
             $signEvent->GuardarEn = storage_path("app/public/{$company->identification_number}/EV-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}.xml");
 
         $sendEvent = new SendEvent($company->certificate->path, $company->certificate->password);
-        $sendEvent->To = $company->software->url;
+        $sendEvent->To = $company->software->url_event;
 
         if ($request->GuardarEn){
             $sendEvent->contentFile = $this->zipBase64SendEvent($company, $event->code, $sender->company->identification_number, $documentReference->getPrefixAttribute().$documentReference->getNumberAttribute(), $signEvent->sign($eventXML), $request->GuardarEn."\\EVS-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}");

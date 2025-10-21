@@ -23,7 +23,10 @@ class Company extends Model
         'type_operation',
         'type_environment',
         'eqdocs_type_environment',
-        'payroll_type_environment','type_currency',
+        'payroll_type_environment',
+        'support_document_type_environment',
+        'event_type_environment',
+        'type_currency',
         'type_organization',
         'municipality',
         'type_liability',
@@ -49,6 +52,8 @@ class Company extends Model
         'type_environment_id',
         'payroll_type_environment_id',
         'eqdocs_type_environment_id',
+        'support_document_type_environment_id',
+        'event_type_environment_id',
         'type_operation_id',
         'type_document_identification_id',
         'country_id',
@@ -96,6 +101,8 @@ class Company extends Model
         'type_environment',
         'eqdocs_type_environment',
         'payroll_type_environment',
+        'support_document_type_environment',
+        'event_type_environment',
         'type_currency',
         'type_organization',
         'municipality',
@@ -223,6 +230,22 @@ class Company extends Model
      * Get the type environment identification that owns the company.
      */
     public function eqdocs_type_environment()
+    {
+        return $this->belongsTo(TypeEnvironment::class);
+    }
+
+    /**
+     * Get the support document type environment that owns the company.
+     */
+    public function support_document_type_environment()
+    {
+        return $this->belongsTo(TypeEnvironment::class);
+    }
+
+    /**
+     * Get the event type environment that owns the company.
+     */
+    public function event_type_environment()
     {
         return $this->belongsTo(TypeEnvironment::class);
     }

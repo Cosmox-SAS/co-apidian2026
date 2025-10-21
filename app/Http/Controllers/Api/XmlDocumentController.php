@@ -27,7 +27,13 @@ class XmlDocumentController extends Controller
         $company = $user->company;
 
         // Verificar la disponibilidad de la DIAN antes de continuar
-        $dian_url = $company->software->url;
+        if (isset($request->is_event) && $request->is_event) {
+            $dian_url = $company->software->url_event;
+        } elseif ($request->is_payroll) {
+            $dian_url = $company->software->url_payroll;
+        } else {
+            $dian_url = $company->software->url;
+        }        
         if (!$this->verificarEstadoDIAN($dian_url)) {
             // Manejar la indisponibilidad del servicio, por ejemplo:
             return [
@@ -44,10 +50,13 @@ class XmlDocumentController extends Controller
         else
             $certificate_days_left = $c['certificate_days_left'];
 
-        if($request->is_payroll)
-            $getXml = new GetXmlByDocumentKey($user->company->certificate->path, $user->company->certificate->password, $user->company->software->url_payroll);
-        else
-            $getXml = new GetXmlByDocumentKey($user->company->certificate->path, $user->company->certificate->password, $user->company->software->url);
+        if ($request->is_payroll) {
+            $getXml = new GetXmlByDocumentKey($user->company->certificate->path, $user->company->certificate->password, $company->software->url_payroll);
+        } elseif (isset($request->is_event) && $request->is_event) {
+            $getXml = new GetXmlByDocumentKey($user->company->certificate->path, $user->company->certificate->password, $company->software->url_event);
+        } else {
+            $getXml = new GetXmlByDocumentKey($user->company->certificate->path, $user->company->certificate->password, $company->software->url);
+        }
         $getXml->trackId = $trackId;
         $GuardarEn = str_replace("_", "\\", $GuardarEn);
 

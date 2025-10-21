@@ -26,6 +26,7 @@ class XmlDocumentRequest extends FormRequest
         return [
             // Consulta de nomina
             'is_payroll' => 'nullable|boolean',
+            'is_event' => 'nullable|boolean',
         ];
     }
 }

@@ -442,6 +442,10 @@ class ConfigurationController extends Controller
                         'url_eqdocs' => isset($request->urleqdocs) ? $request->urleqdocs : 'https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc',
                         'identifier_eqdocs' => isset($request->ideqdocs) ? $request->ideqdocs : '',
                         'pin_eqdocs' => isset($request->pineqdocs) ? $request->pineqdocs : '',
+                        'url_support_document' => isset($request->urlsupportdocument) ? $request->urlsupportdocument : 'https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc',
+                        'identifier_support_document' => isset($request->idsupportdocument) ? $request->idsupportdocument : (isset($request->identifier_support_document) ? $request->identifier_support_document : ''),
+                        'pin_support_document' => isset($request->pinsupportdocument) ? $request->pinsupportdocument : (isset($request->pin_support_document) ? $request->pin_support_document : ''),
+                        'url_event' => isset($request->urlevent) ? $request->urlevent : 'https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc',
                     ]
                 );
             else
@@ -459,6 +463,10 @@ class ConfigurationController extends Controller
                         'url_eqdocs' => isset($request->urleqdocs) ? $request->urleqdocs : $s->url_eqdocs,
                         'identifier_eqdocs' => isset($request->ideqdocs) ? $request->ideqdocs : $s->identifier_eqdocs,
                         'pin_eqdocs' => isset($request->pineqdocs) ? $request->pineqdocs :  $s->pin_eqdocs,
+                        'url_support_document' => isset($request->urlsupportdocument) ? $request->urlsupportdocument : $s->url_support_document,
+                        'identifier_support_document' => isset($request->idsupportdocument) ? $request->idsupportdocument : (isset($request->identifier_support_document) ? $request->identifier_support_document : $s->identifier_support_document),
+                        'pin_support_document' => isset($request->pinsupportdocument) ? $request->pinsupportdocument : (isset($request->pin_support_document) ? $request->pin_support_document : $s->pin_support_document),
+                        'url_event' => isset($request->urlevent) ? $request->urlevent : $s->url_event,
                     ]
                 );
 
@@ -828,52 +836,137 @@ class ConfigurationController extends Controller
      */
     public function storeEnvironment(ConfigurationEnvironmentRequest $request)
     {
-        if(!$request->type_environment_id)
-            $request->type_environment_id = auth()->user()->company->type_environment_id;
-        if(!$request->payroll_type_environment_id)
-            $request->payroll_type_environment_id = auth()->user()->company->payroll_type_environment_id;
-        if(!$request->eqdocs_type_environment_id)
-            $request->eqdocs_type_environment_id = auth()->user()->company->eqdocs_type_environment_id;
-        auth()->user()->company->update([
-            'type_environment_id' => $request->type_environment_id,
-            'payroll_type_environment_id' => $request->payroll_type_environment_id,
-            'eqdocs_type_environment_id' => $request->eqdocs_type_environment_id,
-        ]);
+        DB::beginTransaction();
+        
+        try {
+            $company = auth()->user()->company;
+            
+            // Verificar si existe software configurado
+            if (!$company->software) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No se ha configurado el software para esta empresa. Configure el software primero.'
+                ], 400);
+            }
 
-        if ($request->type_environment_id)
-            if ($request->type_environment_id == 1)
-              auth()->user()->company->software->update([
-                  'url' => 'https://vpfe.dian.gov.co/WcfDianCustomerServices.svc',
-                ]);
-            else
-               auth()->user()->company->software->update([
-                  'url' => 'https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc',
-              ]);
+            // Preparar datos de ambiente con mapeo correcto
+            $environmentData = [];
+            
+            // Factura de ventas (Invoice)
+            if ($request->has('type_environment_id') || $request->has('factura_ventas')) {
+                $environmentData['type_environment_id'] = $request->type_environment_id ?? $request->factura_ventas;
+            }
+            
+            // Nómina (Payroll)
+            if ($request->has('payroll_type_environment_id') || $request->has('nomina')) {
+                $environmentData['payroll_type_environment_id'] = $request->payroll_type_environment_id ?? $request->nomina;
+            }
+            
+            // POS (Equivalent Documents)
+            if ($request->has('eqdocs_type_environment_id') || $request->has('pos')) {
+                $environmentData['eqdocs_type_environment_id'] = $request->eqdocs_type_environment_id ?? $request->pos;
+            }
+            
+            // Documentos Soporte (Support Documents)
+            if ($request->has('support_document_type_environment_id') || $request->has('documentos_soporte')) {
+                $environmentData['support_document_type_environment_id'] = $request->support_document_type_environment_id ?? $request->documentos_soporte;
+            }
+            
+            // Eventos RADIAN (Events)
+            if ($request->has('event_type_environment_id') || $request->has('eventos_radian')) {
+                $environmentData['event_type_environment_id'] = $request->event_type_environment_id ?? $request->eventos_radian;
+            }
 
-        if ($request->payroll_type_environment_id)
-            if ($request->payroll_type_environment_id == 1)
-              auth()->user()->company->software->update([
-                  'url_payroll' => 'https://vpfe.dian.gov.co/WcfDianCustomerServices.svc',
-                ]);
-            else
-               auth()->user()->company->software->update([
-                  'url_payroll' => 'https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc',
-              ]);
+            // Actualizar empresa
+            $company->update($environmentData);
 
-        if ($request->eqdocs_type_environment_id)
-            if ($request->eqdocs_type_environment_id == 1)
-              auth()->user()->company->software->update([
-                  'url_eqdocs' => 'https://vpfe.dian.gov.co/WcfDianCustomerServices.svc',
-                ]);
-            else
-               auth()->user()->company->software->update([
-                  'url_eqdocs' => 'https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc',
-              ]);
+            // Actualizar URLs según el ambiente - Invoice
+            $invoiceEnvironment = $request->type_environment_id ?? $request->factura_ventas;
+            if ($invoiceEnvironment) {
+                if ($invoiceEnvironment == 1) {
+                    auth()->user()->company->software->update([
+                        'url' => 'https://vpfe.dian.gov.co/WcfDianCustomerServices.svc',
+                    ]);
+                } else {
+                    auth()->user()->company->software->update([
+                        'url' => 'https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc',
+                    ]);
+                }
+            }
 
-        return [
-            'message' => 'Ambiente actualizado con éxito',
-            'company' => auth()->user()->company,
-        ];
+            // Actualizar URLs según el ambiente - Payroll
+            $payrollEnvironment = $request->payroll_type_environment_id ?? $request->nomina;
+            if ($payrollEnvironment) {
+                if ($payrollEnvironment == 1) {
+                    auth()->user()->company->software->update([
+                        'url_payroll' => 'https://vpfe.dian.gov.co/WcfDianCustomerServices.svc',
+                    ]);
+                } else {
+                    auth()->user()->company->software->update([
+                        'url_payroll' => 'https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc',
+                    ]);
+                }
+            }
+
+            // Actualizar URLs según el ambiente - Equivalent Documents
+            $eqdocsEnvironment = $request->eqdocs_type_environment_id ?? $request->pos;
+            if ($eqdocsEnvironment) {
+                if ($eqdocsEnvironment == 1) {
+                    auth()->user()->company->software->update([
+                        'url_eqdocs' => 'https://vpfe.dian.gov.co/WcfDianCustomerServices.svc',
+                    ]);
+                } else {
+                    auth()->user()->company->software->update([
+                        'url_eqdocs' => 'https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc',
+                    ]);
+                }
+            }
+
+            // Actualizar URLs según el ambiente - Support Document
+            $supportDocEnvironment = $request->support_document_type_environment_id ?? $request->documentos_soporte;
+            if ($supportDocEnvironment) {
+                if ($supportDocEnvironment == 1) {
+                    auth()->user()->company->software->update([
+                        'url_support_document' => 'https://vpfe.dian.gov.co/WcfDianCustomerServices.svc',
+                    ]);
+                } else {
+                    auth()->user()->company->software->update([
+                        'url_support_document' => 'https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc',
+                    ]);
+                }
+            }
+
+            // Actualizar URLs según el ambiente - Event
+            $eventEnvironment = $request->event_type_environment_id ?? $request->eventos_radian;
+            if ($eventEnvironment) {
+                if ($eventEnvironment == 1) {
+                    auth()->user()->company->software->update([
+                        'url_event' => 'https://vpfe.dian.gov.co/WcfDianCustomerServices.svc',
+                    ]);
+                } else {
+                    auth()->user()->company->software->update([
+                        'url_event' => 'https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc',
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            return [
+                'success' => true,
+                'message' => 'Ambiente actualizado con éxito',
+                'company' => $company->fresh(),
+            ];
+            
+        } catch (Exception $e) {
+            DB::rollBack();
+            
+            return response([
+                'success' => false,
+                'message' => 'Error al actualizar el ambiente',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**

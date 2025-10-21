@@ -70,7 +70,7 @@ class SupportDocumentController extends Controller
         $company = $user->company;
 
         // Verificar la disponibilidad de la DIAN antes de continuar
-        $dian_url = $company->software->url;
+        $dian_url = $company->software->url_support_document;
         if (!$this->verificarEstadoDIAN($dian_url)) {
             // Manejar la indisponibilidad del servicio, por ejemplo:
             return [
@@ -313,8 +313,8 @@ class SupportDocumentController extends Controller
 
         // Signature XML
         $signInvoice = new SignInvoice($company->certificate->path, $company->certificate->password);
-        $signInvoice->softwareID = $company->software->identifier;
-        $signInvoice->pin = $company->software->pin;
+        $signInvoice->softwareID = $company->software->identifier_support_document;
+        $signInvoice->pin = $company->software->pin_support_document;
         $signInvoice->technicalKey = $resolution->technical_key;
 
         if ($request->GuardarEn){
@@ -334,7 +334,7 @@ class SupportDocumentController extends Controller
             $signInvoice->GuardarEn = storage_path("app/public/{$company->identification_number}/DS-{$resolution->next_consecutive}.xml");
 
         $sendBillSync = new SendBillSync($company->certificate->path, $company->certificate->password);
-        $sendBillSync->To = $company->software->url;
+        $sendBillSync->To = $company->software->url_support_document;
         $sendBillSync->fileName = "{$resolution->next_consecutive}.xml";
         if ($request->GuardarEn)
             $sendBillSync->contentFile = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), $request->GuardarEn."\\DSS-{$resolution->next_consecutive}");
@@ -361,7 +361,7 @@ class SupportDocumentController extends Controller
         $invoice_doc->subtotal = $legalMonetaryTotals->line_extension_amount;
         $invoice_doc->total = $legalMonetaryTotals->payable_amount;
         $invoice_doc->version_ubl_id = 2;
-        $invoice_doc->ambient_id = $company->type_environment_id;
+        $invoice_doc->ambient_id = $company->support_document_type_environment_id;
         $invoice_doc->identification_number = $company->identification_number;
         $invoice_doc->save();
 
@@ -585,7 +585,7 @@ class SupportDocumentController extends Controller
         $company = $user->company;
 
         // Verificar la disponibilidad de la DIAN antes de continuar
-        $dian_url = $company->software->url;
+        $dian_url = $company->software->url_support_document;
         if (!$this->verificarEstadoDIAN($dian_url)) {
             // Manejar la indisponibilidad del servicio, por ejemplo:
             return [
@@ -781,8 +781,8 @@ class SupportDocumentController extends Controller
 
         // Signature XML
         $signInvoice = new SignInvoice($company->certificate->path, $company->certificate->password);
-        $signInvoice->softwareID = $company->software->identifier;
-        $signInvoice->pin = $company->software->pin;
+        $signInvoice->softwareID = $company->software->identifier_support_document;
+        $signInvoice->pin = $company->software->pin_support_document;
         $signInvoice->technicalKey = $resolution->technical_key;
 
         if ($request->GuardarEn){
@@ -798,7 +798,7 @@ class SupportDocumentController extends Controller
             $signInvoice->GuardarEn = storage_path("app/public/{$company->identification_number}/DS-{$resolution->next_consecutive}.xml");
         }
         $sendTestSetAsync = new SendTestSetAsync($company->certificate->path, $company->certificate->password);
-        $sendTestSetAsync->To = $company->software->url;
+        $sendTestSetAsync->To = $company->software->url_support_document;
         $sendTestSetAsync->fileName = "{$resolution->next_consecutive}.xml";
         if ($request->GuardarEn)
           $sendTestSetAsync->contentFile = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), $request->GuardarEn."\\DSS-{$resolution->next_consecutive}");

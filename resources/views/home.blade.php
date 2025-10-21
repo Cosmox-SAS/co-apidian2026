@@ -51,7 +51,7 @@
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item text-secondary" href="{{ route('company', $row->identification_number)}}">Ver documentos</a>
                                     <a class="dropdown-item text-secondary" href="{{ route('company.resolutions.index', $row->identification_number)}}">Resoluciones</a>
-                                    <a class="dropdown-item text-secondary" href="{{ route('company.production.index', $row->identification_number)}}">Pasar a Producción</a>
+                                    <a class="dropdown-item text-secondary" href="{{ route('company.production.index', $row->identification_number)}}">Tipos de Documentos</a>
                                     <a class="dropdown-item text-secondary" href="{{ route('company.users.index', $row->id)}}">Usuarios</a>
                                     <a class="dropdown-item text-secondary" href="{{ route('company.email.index', $row->id)}}">Configurar Correo</a>
                                     <a class="dropdown-item text-secondary" href="#" data-toggle="modal" data-target="#accessModal">Acceso a la App</a>

@@ -90,10 +90,16 @@ Route::group(['middleware' => 'auth'], function() {
     // production
     Route::get('companies/{company}/production', 'ProductionController@index')->name('company.production.index');
     Route::post('companies/{company}/production', 'ProductionController@process')->name('company.production.process');
-    Route::post('/company/{company}/consultar-resoluciones', 'ProductionController@consultarResoluciones')->name('company.consultar.resoluciones');
+    Route::post('/company/{company}/production/consult-resolutions/{type}', 'ProductionController@consultarResoluciones')->name('company.production.consult-resolutions');
     Route::get('companies/{company}/configuration/resolutions/create', 'ResolutionController@create')->name('company.resolutions.create');
-
-    //configuration
+    Route::get('/companies/{company}/production/invoice', 'ProductionController@productionInvoice')->name('company.production.invoice.index');
+    Route::get('/companies/{company}/production/pos', 'ProductionController@productionPos')->name('company.production.pos.index');
+    Route::get('/companies/{company}/production/support', 'ProductionController@productionSupport')->name('company.production.support.index');
+    Route::get('/companies/{company}/production/payroll', 'ProductionController@productionPayroll')->name('company.production.payroll.index');
+    Route::get('/companies/{company}/production/event', 'ProductionController@productionEvent')->name('company.production.event.index');
+    Route::put('/companies/{company}/production/environment/{type}', 'ProductionController@updateEnvironment')->name('company.production.environment.update');
+    Route::put('/companies/{company}/production/software/{type?}', 'ProductionController@storeSoftware')->where('type', 'invoice|payroll|pos|support')->defaults('type', 'invoice')->name('company.production.software.store');    //configuration
+    
     Route::get('/configuration', 'ConfigurationController@index')->name('configuration_index');
     Route::get('/configuration_admin', 'ConfigurationController@configuration_admin')->name('configuration_admin');
     Route::post('/configuration', 'ConfigurationController@store')->name('configuration_store');
