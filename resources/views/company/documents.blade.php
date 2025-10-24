@@ -1,11 +1,14 @@
-@extends('layouts.app')
-@section('content')
 <header class="page-header d-flex justify-content-between align-items-center">
-    <h2>Documentos generados</h2>
+    <h2>{{ $company->user->name }} - {{ $company->identification_number }}</h2>
     <div>
-        <button class="btn btn-primary btn-lg shadow-sm" data-toggle="modal" data-target="#excelModal">
-            <i class="fas fa-upload mr-2"></i>Subida Masiva
-        </button>
+        @if(isset($type) && $type == 'invoice')
+            <button class="btn btn-primary btn-lg shadow-sm" data-toggle="modal" data-target="#excelModal">
+                <i class="fas fa-upload mr-2"></i>Subida Masiva
+            </button>
+        @endif
+        <a href="{{ route('company.production.index', $company->identification_number) }}" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left me-2"></i> Volver
+        </a>
     </div>
 </header>
 
@@ -13,7 +16,30 @@
     // dd($resolution_credit_notes);
 @endphp
 
-
+@if($documents->count() == 0)
+<div class="d-flex justify-content-center align-items-center" style="min-height: 200px;">
+    <div class="text-center">
+        <div class="alert alert-info d-inline-block px-4 py-3 mb-0" style="font-size: 1.1rem;">
+            @if(isset($type))
+                @if($type == 'invoice')
+                    No hay facturas electrónicas generadas para esta empresa.
+                    Configura y empieza a crear facturas.
+                @elseif($type == 'support')
+                    No hay documentos soporte generados para esta empresa.
+                    Configura y empieza a crear documentos soporte.
+                @elseif($type == 'pos')
+                    No hay documentos equivalentes generados para esta empresa.
+                    Configura y empieza a crear documentos equivalentes.
+                @else
+                    Usted no tiene documentos generados para este tipo.
+                @endif
+            @else
+                Usted no tiene documentos generados para este tipo.
+            @endif
+        </div>
+    </div>
+</div>
+@else
 <div class="card border">
     <div class="table-responsive card-body p-0">
         <table class="table table-sm table-striped table-hover">
@@ -122,7 +148,7 @@
         {{ $documents->links() }}
     </div>
 </div>
-
+@endif
 <!-- Modal -->
 <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -290,7 +316,6 @@
     </div>
 </div>
 
-@endsection
 
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>

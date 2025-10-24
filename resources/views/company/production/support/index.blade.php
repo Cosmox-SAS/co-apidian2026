@@ -1,6 +1,3 @@
-@extends('layouts.app')
-
-@section('content')
 <div class="bg-light border-bottom mb-4 p-4 rounded">
     <div class="d-flex justify-content-between align-items-center">
         <div>
@@ -194,7 +191,6 @@
         </div>
     </div>
 </div>
-@endsection
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {

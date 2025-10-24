@@ -2,15 +2,13 @@
     <div class="card">
         <div class="card-body">
             <el-steps :active="active" finish-status="success">
-                <el-step title="Empresa"></el-step>
-                <el-step title="Software"></el-step>
-                <el-step title="Certificado"></el-step>
-                <el-step title="Resolucion"></el-step>
+                <el-step title="Empresa" icon="fas fa-building fa-2x me-2"></el-step>
+                <el-step title="Certificado" icon="fas fa-file-alt fa-2x"></el-step>
             </el-steps>
             <br />
             <br />
 
-            <!--STEP 0  -->
+            <!-- Empresa -->
             <div class="row" v-show="active == 0">
                 <div class="col-md-12">
                     <form autocomplete="off">
@@ -157,43 +155,8 @@
                 </div>
             </div>
 
-            <!--STEP 1  -->
-
+            <!-- Certificado -->
             <div class="row" v-show="active == 1">
-                <div class="col-md-12">
-                    <form autocomplete="off">
-                        <h3>Información del software de facturación</h3>
-                        <div class="form-body">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group" :class="{'has-danger': errors.id}">
-                                        <label class="control-label">ID</label>
-                                        <el-input v-model="form.id"></el-input>
-                                        <small class="form-control-feedback" v-if="errors.id"
-                                            v-text="errors.id[0]"></small>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group" :class="{'has-danger': errors.pin}">
-                                        <label class="control-label">Pin</label>
-                                        <el-input v-model="form.pin"></el-input>
-                                        <small class="form-control-feedback" v-if="errors.pin"
-                                            v-text="errors.pin[0]"></small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-md-12 text-center mt-4">
-                    <el-button size="medium" type="primary" :loading="loading_submit" @click="saveSoftware">
-                        Siguiente</el-button>
-                </div>
-            </div>
-
-            <!--STEP 2  -->
-
-            <div class="row" v-show="active == 2">
                 <div class="col-md-8">
                     <form autocomplete="off">
                         <div class="form-body">
@@ -219,135 +182,16 @@
                                             </div>
                                             <div slot="tip" class="el-upload__tip">Solo archivos .pfx</div>
                                         </el-upload>
-                                        <!-- <el-input readonly v-model="form.base64"></el-input> -->
                                         <small class="form-control-feedback" v-if="errors.certificate"
                                             v-text="errors.certificate"></small>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </form>
                 </div>
-
                 <div class="col-md-12 text-center mt-4">
                     <el-button size="medium" type="primary" :loading="loading_submit" @click="saveCertificate">
-                        Siguiente</el-button>
-                </div>
-            </div>
-            <!--STEP 3  -->
-            <div class="row" v-show="active == 3">
-                <div class="col-md-12">
-                    <h3>Resolución de Facturación electrónica</h3>
-                    <form autocomplete="off">
-                        <div class="form-body">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group" :class="{'has-danger': errors.type_document_id}">
-                                        <label class="control-label">Tipo Documento</label>
-                                        <el-select class="extend" v-model="form.type_document_id" filterable>
-                                            <el-option v-for="option in type_document" :key="option.id"
-                                                :value="option.id" :label="option.name"></el-option>
-                                        </el-select>
-
-                                        <small class="form-control-feedback" v-if="errors.type_document_id"
-                                            v-text="errors.type_document_id[0]"></small>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group" :class="{'has-danger': errors.prefix}">
-                                        <label class="control-label">Prefix</label>
-                                        <el-input v-model="form.prefix"></el-input>
-                                        <small class="form-control-feedback" v-if="errors.prefix"
-                                            v-text="errors.prefix[0]"></small>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group" :class="{'has-danger': errors.resolution}">
-                                        <label class="control-label">Resolución</label>
-                                        <el-input v-model="form.resolution"></el-input>
-                                        <small class="form-control-feedback" v-if="errors.resolution"
-                                            v-text="errors.resolution[0]"></small>
-                                    </div>
-                                </div>
-
-
-
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group" :class="{'has-danger': errors.resolution_date}">
-                                        <label class="control-label">Fecha Resolución</label>
-                                        <el-date-picker style="width:100%" class="extend"
-                                            v-model="form.resolution_date" type="date" value-format="yyyy-MM-dd"
-                                            placeholder="Pick a day">
-                                        </el-date-picker>
-                                        <small class="form-control-feedback" v-if="errors.resolution_date"
-                                            v-text="errors.resolution_date[0]"></small>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group" :class="{'has-danger': errors.from}">
-                                        <label class="control-label">Inicio numeración</label>
-                                        <el-input v-model="form.from"></el-input>
-                                        <small class="form-control-feedback" v-if="errors.from"
-                                            v-text="errors.from[0]"></small>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group" :class="{'has-danger': errors.to}">
-                                        <label class="control-label">Fin numeración</label>
-                                        <el-input v-model="form.to"></el-input>
-                                        <small class="form-control-feedback" v-if="errors.to"
-                                            v-text="errors.to[0]"></small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group" :class="{'has-danger': errors.technical_key}">
-                                        <label class="control-label">Clave tecnica</label>
-                                        <el-input v-model="form.technical_key"></el-input>
-                                        <small class="form-control-feedback" v-if="errors.technical_key"
-                                            v-text="errors.technical_key[0]"></small>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group" :class="{'has-danger': errors.generated_to_date}">
-                                        <label class="control-label">Documentos generados hasta la fecha</label>
-                                        <el-input v-model="form.generated_to_date"></el-input>
-                                        <small class="form-control-feedback" v-if="errors.generated_to_date"
-                                            v-text="errors.generated_to_date[0]"></small>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group" :class="{'has-danger': errors.date_from}">
-                                        <label class="control-label">Fecha desde</label>
-                                        <el-date-picker value-format="yyyy-MM-dd" style="width:100%" class="extend"
-                                            v-model="form.date_from" type="date" placeholder="Pick a day">
-                                        </el-date-picker>
-                                        <small class="form-control-feedback" v-if="errors.date_from"
-                                            v-text="errors.date_from[0]"></small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group" :class="{'has-danger': errors.date_to}">
-                                        <label class="control-label">Fecha hasta</label>
-                                        <el-date-picker value-format="yyyy-MM-dd" style="width:100%" class="extend"
-                                            v-model="form.date_to" type="date" placeholder="Pick a day">
-                                        </el-date-picker>
-                                        <small class="form-control-feedback" v-if="errors.date_to"
-                                            v-text="errors.date_to[0]"></small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-md-12 text-center" style="padding:1%">
-                    <el-button size="medium" type="primary" :loading="loading_submit" @click="saveResolution" plain>
                         Finalizar</el-button>
                 </div>
             </div>
@@ -358,7 +202,6 @@
     .extend {
         width: 100%;
     }
-
 </style>
 <script>
     function handleFileSelect(file) {
@@ -381,6 +224,7 @@
         // Read in the image file as a data URL.
         reader.readAsBinaryString(f);
     }
+    import 'element-ui/lib/theme-chalk/index.css';
     export default {
         components: {},
         data() {
@@ -388,7 +232,6 @@
                 hostname: window.location.hostname,
                 loading_submit: false,
                 active: 0,
-
                 errors: [],
                 resource: "configuration",
                 resourceapi: "api/ubl2.1/config",
@@ -400,7 +243,6 @@
                 municipality_filter: [],
                 type_document: [],
                 type_liability: [],
-
                 form: {},
                 responseCompany: {},
                 responseSoftware: {},
@@ -431,11 +273,9 @@
                         Authorization: `Bearer ${token}`
                     }
                 };
-
                 return axiosConfig;
             },
             saveCompany() {
-
                 this.loading_submit = true;
                 return new Promise((resolve, reject) => {
                     this.$http
@@ -465,43 +305,10 @@
                         });
                 });
             },
-            saveSoftware() {
-                this.loading_submit = true;
-
-                return new Promise((resolve, reject) => {
-                    this.$http
-                        .put(
-                            `/${this.resourceapi}/software`,
-                            this.form,
-                            this.getHeaderConfig()
-                        )
-                        .then(response => {
-                            if (response.data.success) {
-                                this.responseSoftware = response.data;
-                                this.$message.success(response.data.message);
-                                this.next();
-                            } else {
-                                this.$message.error(response.data.message);
-                            }
-                        })
-                        .catch(error => {
-                            if (error.response.status === 422) {
-                                this.errors = error.response.data.errors;
-                            } else {
-                                this.$message.error(error.response.data.message);
-                            }
-                        })
-                        .then(() => {
-                            this.loading_submit = false;
-                        });
-                });
-            },
             saveCertificate() {
                 this.loading_submit = true;
-
                 return new Promise((resolve, reject) => {
                     this.form.certificate = document.getElementById("base64").value;
-
                     this.$http
                         .put(
                             `/${this.resourceapi}/certificate`,
@@ -512,43 +319,8 @@
                             if (response.data.success) {
                                 this.responseCertificate = response.data;
                                 this.$message.success(response.data.message);
-                                this.next();
-                            } else {
-                                this.$message.error(response.data.message);
-                            }
-                        })
-                        .catch(error => {
-                            if (error.response.status === 422) {
-                                this.errors = error.response.data.errors;
-                            } else {
-                                this.$message.error(error.response.data.message);
-                            }
-                        })
-                        .then(() => {
-                            this.loading_submit = false;
-                        });
-                });
-            },
-            saveResolution() {
-                this.loading_submit = true;
-
-                return new Promise((resolve, reject) => {
-                    // this.form.certificate = document.getElementById("base64").value;
-
-                    this.$http
-                        .put(
-                            `/${this.resourceapi}/resolution`,
-                            this.form,
-                            this.getHeaderConfig()
-                        )
-                        .then(response => {
-                            if (response.data.success) {
-                                this.responseResolution = response.data;
-                                this.$message.success(response.data.message);
                                 this.initForm()
-
                                 this.next();
-
                             } else {
                                 this.$message.error(response.data.message);
                             }
@@ -566,10 +338,8 @@
                 });
             },
             filterMunicipality() {
-                //
                 this.municipality_filter = [];
                 let id = this.form.department_id;
-
                 this.municipality_filter = this.municipality.filter(
                     x => x.department_id == id
                 );
@@ -581,7 +351,7 @@
                 //console.log(dato)
             },
             next() {
-                if (this.active++ > 2) this.active = 0;
+                if (this.active++ > 1) this.active = 0;
             },
             getTables() {
                 return new Promise((resolve, reject) => {
@@ -598,19 +368,14 @@
                             this.type_liability = response.data.type_liability;
                         })
                         .catch(error => {})
-                        .then(() => {
-                            //this.loading_submit = false;
-                        });
+                        .then(() => {});
                 });
             }
         }
     };
-
 </script>
-
 <style>
     .form-control-feedback {
         color: red;
     }
-
 </style>

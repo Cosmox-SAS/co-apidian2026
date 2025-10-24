@@ -99,7 +99,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/companies/{company}/production/event', 'ProductionController@productionEvent')->name('company.production.event.index');
     Route::put('/companies/{company}/production/environment/{type}', 'ProductionController@updateEnvironment')->name('company.production.environment.update');
     Route::put('/companies/{company}/production/software/{type?}', 'ProductionController@storeSoftware')->where('type', 'invoice|payroll|pos|support')->defaults('type', 'invoice')->name('company.production.software.store');    //configuration
-    
+    Route::get('/companies/{company}/production/tabs/{type?}', 'ProductionController@documentsTabs')->name('company.production.tabs');
+
     Route::get('/configuration', 'ConfigurationController@index')->name('configuration_index');
     Route::get('/configuration_admin', 'ConfigurationController@configuration_admin')->name('configuration_admin');
     Route::post('/configuration', 'ConfigurationController@store')->name('configuration_store');

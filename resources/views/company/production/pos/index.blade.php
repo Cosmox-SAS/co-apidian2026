@@ -1,23 +1,13 @@
-@extends('layouts.app')
-
-@section('content')
-<div class="bg-light border-bottom mb-4 p-4 rounded">
-    <div class="d-flex justify-content-between align-items-center">
-        <div>
-            <h2 class="text-dark mb-1 fw-bold">
-                Documentos Equivalentes
-            </h2>
-            <p class="text-muted mb-0">
-                <i class="fas fa-building me-2"></i>{{ $company->identification_number }}
-            </p>
-        </div>
-        <div>
-            <a href="{{ route('company.production.index', $company->identification_number) }}" class="btn btn-outline-primary">
-                <i class="fas fa-arrow-left me-2"></i> Volver
-            </a>
-        </div>
+<header class="page-header d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2>{{ $company->user->name }} - {{ $company->identification_number }}</h2>
     </div>
-</div>
+    <div>
+        <a href="{{ route('company.production.index', $company->identification_number) }}" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left me-2"></i> Volver
+        </a>
+    </div>
+</header>
 
 @if(session('success'))
 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -218,7 +208,6 @@
         </div>
     </div>
 </div>
-@endsection
 <script>
     $(function() {
         $('[data-toggle="tooltip"]').tooltip()

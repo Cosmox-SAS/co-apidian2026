@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Company;
+use App\Document;
+use App\DocumentPayroll;
+use App\ReceivedDocument;
+use App\Resolution;
 use App\Software;
 use App\User;
 use Illuminate\Http\Request;
@@ -15,6 +19,79 @@ class ProductionController extends Controller
         $company = Company::where('identification_number', $company)->firstOrFail();
 
         return view('company.production.index', compact('company'));
+    }
+
+    public function documentsTabs($company, $type = 'invoice')
+    {
+        $company = Company::where('identification_number', $company)->firstOrFail();
+        $company_idnumber = $company->identification_number;
+        $environmentStatus = $this->getEnvironmentStatus($company, $type);
+
+        $resolution_credit_notes = Resolution::where('type_document_id', 4)
+            ->where('company_id', $company->id)
+            ->get();
+
+        $token_company = $company->token_company ?? null;
+
+        switch ($type) {
+            case 'invoice':
+                $typeDocumentIds = [1,2,3,4,5];
+                $documents = Document::where('identification_number', $company->identification_number)
+                    ->whereIn('type_document_id', $typeDocumentIds)
+                    ->orderBy('id', 'DESC')
+                    ->paginate(20);
+                $listView = 'company.documents';
+                $indexView = 'company.production.invoice.index';
+                break;
+            case 'support':
+                $typeDocumentIds = [11,13];
+                $documents = Document::where('identification_number', $company->identification_number)
+                    ->whereIn('type_document_id', $typeDocumentIds)
+                    ->orderBy('id', 'DESC')
+                    ->paginate(20);
+                $listView = 'company.documents';
+                $indexView = 'company.production.support.index';
+                break;
+            case 'pos':
+                $typeDocumentIds = [15,16,19,20,22,25,26];
+                $documents = Document::where('identification_number', $company->identification_number)
+                    ->whereIn('type_document_id', $typeDocumentIds)
+                    ->orderBy('id', 'DESC')
+                    ->paginate(20);
+                $listView = 'company.documents';
+                $indexView = 'company.production.pos.index';
+                break;
+            case 'event':
+                $documents = ReceivedDocument::where('customer', $company->identification_number)
+                    ->where('state_document_id', 1)
+                    ->paginate(10);
+                $listView = 'company.events';
+                $indexView = 'company.production.event.index';
+                break;
+            case 'payroll':
+                $documents = DocumentPayroll::where('state_document_id', 1)
+                    ->where('identification_number', $company->identification_number)
+                    ->paginate(20);
+                $listView = 'company.payrolls';
+                $indexView = 'company.production.payroll.index';
+                break;
+            default:
+                $documents = collect();
+                $listView = 'company.documents';
+                $indexView = 'company.production.invoice.index';
+        }
+
+        return view('company.production.tabs', compact(
+            'documents',
+            'resolution_credit_notes',
+            'company',
+            'company_idnumber',
+            'environmentStatus',
+            'token_company',
+            'type',
+            'listView',
+            'indexView'
+        ));
     }
 
     public function productionInvoice($company)

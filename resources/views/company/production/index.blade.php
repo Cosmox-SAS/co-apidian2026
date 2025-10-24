@@ -7,7 +7,7 @@ button.hab-menu-button {
     background: #fff;
     border: none;
     border-radius: 20px;
-    width: 286px;
+    width: 200px;
     height: 286px;
     padding: 25px 30px 55px;
     font-size: 18px;
@@ -40,7 +40,7 @@ button.hab-menu-button img {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
+    gap: 10px;
     margin: 30px 0;
 }
 
@@ -95,7 +95,7 @@ hr {
 
 @section('content')
 <header class="page-header">
-    <h2>Tipos de Documentos - {{ $company->identification_number }}</h2>
+    <h2>{{ $company->user->name }} - {{ $company->identification_number }}</h2>
     <div class="right-wrapper text-end">
         <a href="{{ route('home') }}" class="btn btn-outline-primary mt-1 mr-2">
             <i class="fas fa-arrow-left me-2"></i> Volver
@@ -109,35 +109,35 @@ hr {
 
     <div class="hab-menu-container">
         <!-- Facturas Electrónicas de Venta (FV) -->
-        <button class="hab-menu-button" onclick="window.location.href='{{ route('company.production.invoice.index', $company->identification_number) }}'" 
+        <button class="hab-menu-button" onclick="window.location.href='{{ route('company.production.tabs', [$company->identification_number, 'invoice']) }}'" 
                 id="1" contributortype="1" operationmode="0">
             <img src="{{ asset('production/factura-electronica-icon.svg') }}" height="130">
             Factura electrónica
         </button>
 
         <!-- Nómina Electrónica (NE) -->
-        <button class="hab-menu-button" onclick="window.location.href='{{ route('company.production.payroll.index', $company->identification_number) }}'" 
+        <button class="hab-menu-button" onclick="window.location.href='{{ route('company.production.tabs', [$company->identification_number, 'payroll']) }}'"
                 contributortype="2" operationmode="1" id="2">
             <img src="{{ asset('production/nomina-electronica-icon.svg') }}" height="130">
             Nómina electrónica
         </button>
 
         <!-- Documentos Soporte (DS) -->
-        <button class="hab-menu-button" onclick="window.location.href='{{ route('company.production.support.index', $company->identification_number) }}'" 
+        <button class="hab-menu-button" onclick="window.location.href='{{ route('company.production.tabs', [$company->identification_number, 'support']) }}'" 
                 contributortype="3" operationmode="1" electronicdocumentid="3">
             <img src="{{ asset('production/documento-soporte-icon.svg') }}" height="130">
             Documento soporte
         </button>
 
         <!-- Eventos RADIAN -->
-        <button class="hab-menu-button" onclick="window.location.href='{{ route('company.production.event.index', $company->identification_number) }}'" 
+        <button class="hab-menu-button" onclick="window.location.href='{{ route('company.production.tabs', [$company->identification_number, 'event']) }}'"
                 contributortype="4" operationmode="1" id="4">
             <img src="{{ asset('production/eventos-radian-icon.svg') }}" height="130">
             Eventos RADIAN
         </button>
 
         <!-- Documento Equivalente Electrónico (DE) -->
-        <button class="hab-menu-button" onclick="window.location.href='{{ route('company.production.pos.index', $company->identification_number) }}'" 
+        <button class="hab-menu-button" onclick="window.location.href='{{ route('company.production.tabs', [$company->identification_number, 'pos']) }}'" 
                 contributortype="3" operationmode="1" id="3">
             <img src="{{ asset('production/documentos-equivalentes-icon.svg') }}" height="130">
             Documentos equivalentes
