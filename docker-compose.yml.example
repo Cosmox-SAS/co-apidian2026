@@ -14,7 +14,7 @@ services:
       - apinet
 
   php_api:
-    image: rash07/php-api
+    image: rash07/php-fpm:8.2
     container_name: php_api
     working_dir: /var/www/html
     volumes:
