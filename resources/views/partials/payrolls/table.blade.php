@@ -1,7 +1,7 @@
 @if ($documents->isEmpty())
     <div>No hay documentos para mostrar.</div>
 @else
-    @if(!Request::is('company*'))
+    @if(!(Request::is('company*') || Request::is('companies*')))
     <form method="GET" action="{{ url('/oksellerspayrollssearch/'.$company_idnumber) }}">
         <table class="table">
             <tr>

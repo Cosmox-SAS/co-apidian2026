@@ -24,14 +24,14 @@
 @endif
 
 @if ($errors->any())
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <ul class="mb-0">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <ul class="mb-0">
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
 @endif
 
 <div class="row">
@@ -40,138 +40,243 @@
             <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">
                     <i class="fas fa-cog me-2"></i>
-                    Configuración de Software - Facturas Electrónicas
+                    Proceso de Configuración y Consulta
                 </h5>
             </div>
             <div class="card-body">
-                <!-- Formulario para modificar ID y PIN del software -->
-                <form action="{{ route('company.production.software.store', [$company->identification_number, 'invoice']) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="software_id" class="form-label">
-                                    <strong>ID Software <span class="text-danger">*</span></strong>
-                                </label>
-                                <input type="text"
-                                       class="form-control"
-                                       id="software_id"
-                                       name="id"
-                                       value="{{ $environmentStatus['has_software'] ? $environmentStatus['software_info']['identifier'] : '' }}"
-                                       required
-                                       placeholder="Ej: 12345678-1234-1234-1234-123456789012">
-                                <small class="form-text text-muted">ID único del software proporcionado por la DIAN</small>
-                            </div>
+                <div id="wizard-steps" class="mb-4 d-flex justify-content-center align-items-center">
+                    <div class="wizard-stepper">
+                        <div class="stepper-item" id="stepper-1">
+                            <div class="stepper-circle">1</div>
+                            <div class="stepper-label">Configuración de Software</div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="software_pin" class="form-label">
-                                    <strong>PIN Software <span class="text-danger">*</span></strong>
-                                </label>
-                                <input type="text"
-                                       class="form-control"
-                                       id="software_pin"
-                                       name="pin"
-                                       value="{{ $environmentStatus['has_software'] ? $environmentStatus['software_info']['pin'] : '' }}"
-                                       required
-                                       placeholder="Ej: 12345">
-                                <small class="form-text text-muted">PIN del software proporcionado por la DIAN</small>
-                            </div>
+                        <div class="stepper-line"></div>
+                        <div class="stepper-item" id="stepper-2">
+                            <div class="stepper-circle">2</div>
+                            <div class="stepper-label">Resolución de Habilitación</div>
+                        </div>
+                        <div class="stepper-line"></div>
+                        <div class="stepper-item" id="stepper-3">
+                            <div class="stepper-circle">3</div>
+                            <div class="stepper-label">Paso a Producción</div>
+                        </div>
+                        <div class="stepper-line"></div>
+                        <div class="stepper-item" id="stepper-4">
+                            <div class="stepper-circle">4</div>
+                            <div class="stepper-label">Resoluciones de Producción</div>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save me-1"></i>
-                            {{ $environmentStatus['has_software'] ? 'Actualizar' : 'Crear' }} Software
-                        </button>
+                </div>
+                <div id="wizard-content">
+                    <!-- Paso 1 -->
+                    <div class="wizard-step" id="wizard-step-1">
+                        <form action="{{ route('company.production.software.store', [$company->identification_number, 'invoice']) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="software_id" class="form-label">
+                                            <strong>ID Software <span class="text-danger">*</span></strong>
+                                        </label>
+                                        <input type="text"
+                                            class="form-control"
+                                            id="software_id"
+                                            name="id"
+                                            value="{{ $environmentStatus['has_software'] ? $environmentStatus['software_info']['identifier'] : '' }}"
+                                            required
+                                            placeholder="Ej: 12345678-1234-1234-1234-123456789012">
+                                        <small class="form-text text-muted">ID único del software proporcionado por la DIAN</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="software_pin" class="form-label">
+                                            <strong>PIN Software <span class="text-danger">*</span></strong>
+                                        </label>
+                                        <input type="text"
+                                            class="form-control"
+                                            id="software_pin"
+                                            name="pin"
+                                            value="{{ $environmentStatus['has_software'] ? $environmentStatus['software_info']['pin'] : '' }}"
+                                            required
+                                            placeholder="Ej: 12345">
+                                        <small class="form-text text-muted">PIN del software proporcionado por la DIAN</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save me-1"></i>
+                {{ $environmentStatus['has_software'] ? 'Actualizar' : 'Crear' }} Software
+            </button>
+        </div>
+                        </form>
                     </div>
-                </form>
+                    <!-- Paso 2 -->
+                    <div class="wizard-step d-none" id="wizard-step-2">
+                        <form id="newResolutionForm">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="type_document_id">Tipo de Documento <span class="text-danger">*</span></label>
+                                        <select class="form-control" id="type_document_id" name="type_document_id">
+                                            <option value="">Seleccionar tipo de documento</option>
+                                            @foreach($typeDocuments as $typeDocument)
+                                            <option value="{{ $typeDocument->id }}" data-code="{{ $typeDocument->code }}">{{ $typeDocument->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="prefix">Prefijo <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="prefix" name="prefix" maxlength="10" value="{{ old('prefix', $prefill['prefix'] ?? '') }}">
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                </div>
+                            </div>
 
-                <hr>
+                            <!-- Mensaje informativo para tipos simples -->
+                            <div id="simpleTypeInfo" class="alert alert-info" style="display: none;">
+                                <i class="fas fa-info-circle"></i>
+                                <strong>Tipo de resolución simplificada:</strong> Solo se requieren Tipo de documento, Prefijo y Rangos. Los demás campos son opcionales.
+                            </div>
 
-                <!-- Formulario para cambiar el estado del ambiente -->
-                <form action="{{ route('company.production.environment.update', [$company->identification_number, 'invoice']) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <div class="mb-3">
-                        <label class="form-label"><strong>Estado del Ambiente:</strong></label>
-                        <select name="environment_id" class="form-select" onchange="this.form.submit()">
-                            <option value="2" {{ $environmentStatus['environment_id'] == 2 ? 'selected' : '' }}>Habilitación</option>
-                            <option value="1" {{ $environmentStatus['environment_id'] == 1 ? 'selected' : '' }}>Producción</option>
-                        </select>
+                            <!-- Campos adicionales que se ocultan para tipos simples -->
+                            <div id="additionalFields">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="resolution">Número de Resolución <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="resolution" name="resolution" value="{{ old('resolution', $prefill['resolution'] ?? '') }}">
+                                            <div class="invalid-feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="resolution_date">Fecha de Resolución <span class="text-danger">*</span></label>
+                                            <input type="date" class="form-control" id="resolution_date" name="resolution_date" value="{{ old('resolution_date', $prefill['resolution_date'] ?? '') }}">
+                                            <div class="invalid-feedback"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="technical_key">Clave Técnica <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="technical_key" name="technical_key" value="{{ old('technical_key', $prefill['technical_key'] ?? '') }}">
+                                            <div class="invalid-feedback"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="from">Rango Inicial <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" id="from" name="from" min="1" value="{{ old('from', $prefill['from'] ?? '') }}">
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="to">Rango Final <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" id="to" name="to" min="1" value="{{ old('to', $prefill['to'] ?? '') }}">
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Campos de fechas de vigencia y entorno (solo para tipos completos) -->
+                            <div id="datesAndEnvironment">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="date_from">Fecha Inicio Vigencia <span class="text-danger">*</span></label>
+                                            <input type="date" class="form-control" id="date_from" name="date_from" value="{{ old('date_from', $prefill['date_from'] ?? '') }}">
+                                            <div class="invalid-feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="date_to">Fecha Fin Vigencia <span class="text-danger">*</span></label>
+                                            <input type="date" class="form-control" id="date_to" name="date_to" value="{{ old('date_to', $prefill['date_to'] ?? '') }}">
+                                            <div class="invalid-feedback"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-3 text-end">
+                                <button type="submit" class="btn btn-primary" id="saveResolutionBtn">
+                                    <i class="fas fa-save"></i> Guardar
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="mt-2">
-                        @if($environmentStatus['environment_id'] == 1)
-                            <span class="badge bg-success fs-6">
-                                <i class="fas fa-check-circle me-1"></i>
-                                Producción
-                            </span>
-                        @else
-                            <span class="badge bg-warning fs-6">
-                                <i class="fas fa-exclamation-triangle me-1"></i>
-                                Habilitación
-                            </span>
-                        @endif
+                    <!-- Paso 3 -->
+                    <div class="wizard-step d-none" id="wizard-step-3">
+                        <form id="productionForm" method="POST" action="#" autocomplete="off">
+                            @csrf
+                            <div class="form-group">
+                                <label for="test_set_id">Set de Pruebas DIAN</label>
+                                <input type="text" class="form-control" id="test_set_id" name="test_set_id" required placeholder="Ingrese el TestSetId entregado por la DIAN">
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-2" id="btnIniciar">Iniciar Paso a Producción</button>
+                        </form>
+                        <div id="production-steps" style="display:none;">
+                            <div id="step1" class="mb-3">
+                                <strong>1. Enviar Factura de Prueba</strong>
+                                <div class="status"></div>
+                            </div>
+                            <div id="step2" class="mb-3">
+                                <strong>2. Consultar ZipKey</strong>
+                                <div class="status"></div>
+                            </div>
+                            <div id="step3" class="mb-3">
+                                <strong>3. Cambiar Ambiente a Producción</strong>
+                                <div class="status"></div>
+                            </div>
+                        </div>
+                        <div id="finalMessage" class="mt-4" style="display:none;"></div>
                     </div>
-                </form>
+                    <!-- Paso 4 -->
+                    <div class="wizard-step d-none" id="wizard-step-4">
+                        <h3 class="mb-2">
+                            Consultar Resoluciones Asociadas
+                            <span
+                                data-toggle="tooltip"
+                                data-placement="right"
+                                title="Aquí puedes consultar las resoluciones asociadas a tu empresa.">
+                                <i class="fas fa-info-circle text-info" style="cursor:pointer;"></i>
+                            </span>
+                            <a href="#" id="btnVistaPrevia" class="ml-2" data-toggle="modal" data-target="#modalVistaPrevia">
+                                <i class="fas fa-image"></i> Vista Previa
+                            </a>
+                        </h3>
+                        <button id="btnConsultarResoluciones" type="button" class="btn btn-primary">Consultar</button>
+                        <div id="resolucionesResult" class="mt-3"></div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between mt-4">
+                    {{-- Mostrar "Volver" solo si no es el paso 1 --}}
+                    <div id="btnPrevStepContainer" style="flex:1;">
+                        <button id="btnPrevStep" class="btn btn-outline-primary" style="display: none;">Volver</button>
+                    </div>
+                    <div style="flex:1; text-align: right;">
+                        <button id="btnNextStep" class="btn btn-primary">Siguiente</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-{{-- Paso a Producción --}}
-@if($environmentStatus['environment_id'] != 1)
-<div class="card border mb-4">
-    <div class="card-body">
-        <h3>Software de Facturación Electrónica</h3>
-        <form id="productionForm" method="POST" action="#" autocomplete="off">
-            @csrf
-            <div class="form-group">
-                <label for="test_set_id">Set de Pruebas DIAN</label>
-                <input type="text" class="form-control" id="test_set_id" name="test_set_id" required placeholder="Ingrese el TestSetId entregado por la DIAN">
-            </div>
-            <button type="submit" class="btn btn-primary mt-2" id="btnIniciar">Iniciar Paso a Producción</button>
-        </form>
-        <div id="production-steps" style="display:none;">
-            <div id="step1" class="mb-3">
-                <strong>1. Enviar Factura de Prueba</strong>
-                <div class="status"></div>
-            </div>
-            <div id="step2" class="mb-3">
-                <strong>2. Consultar ZipKey</strong>
-                <div class="status"></div>
-            </div>
-            <div id="step3" class="mb-3">
-                <strong>3. Cambiar Ambiente a Producción</strong>
-                <div class="status"></div>
-            </div>
-        </div>
-        <div id="finalMessage" class="mt-4" style="display:none;"></div>
-    </div>
-</div>
-@endif
-{{-- Consulta de Resoluciones y Vista Previa --}}
-@if($environmentStatus['environment_id'] == 1)
-<div class="card border mt-2">
-    <div class="card-body">
-        <h3 class="mb-2">
-            Consultar Resoluciones Asociadas
-            <span
-                data-toggle="tooltip"
-                data-placement="right"
-                title="Aquí puedes consultar las resoluciones asociadas a tu empresa.">
-                <i class="fas fa-info-circle text-info" style="cursor:pointer;"></i>
-            </span>
-            <a href="#" id="btnVistaPrevia" class="ml-2" data-toggle="modal" data-target="#modalVistaPrevia">
-                <i class="fas fa-image"></i> Vista Previa
-            </a>
-        </h3>
-        <button id="btnConsultarResoluciones" type="button" class="btn btn-primary">Consultar</button>
-        <div id="resolucionesResult" class="mt-3"></div>
-    </div>
-</div>
-@endif
 
+<!-- Modal Vista Previa (igual que antes) -->
 <div class="modal fade" id="modalVistaPrevia" tabindex="-1" role="dialog" aria-labelledby="modalVistaPreviaLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-custom-width" role="document">
         <div class="modal-content">
@@ -215,6 +320,170 @@
         </div>
     </div>
 </div>
+
+@push('styles')
+<style>
+    .wizard-step {
+        display: none;
+    }
+
+    .wizard-step.active {
+        display: block;
+    }
+
+    .step-label {
+        font-weight: bold;
+        color: #888;
+        font-size: 18px;
+    }
+
+    .step-label.active {
+        color: #4170d7ff;
+        text-decoration: underline;
+    }
+
+    .wizard-stepper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+    }
+
+    .stepper-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 120px;
+        position: relative;
+    }
+
+    .stepper-circle {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: #e0e7ef;
+        color: #4170d7ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 20px;
+        border: 2px solid #e0e7ef;
+        transition: all 0.3s;
+        margin-bottom: 6px;
+    }
+
+    .stepper-label {
+        font-size: 15px;
+        color: #888;
+        font-weight: 500;
+        text-align: center;
+        min-width: 90px;
+    }
+
+    .stepper-item.active .stepper-circle,
+    .stepper-item.active .stepper-label {
+        background: linear-gradient(90deg, #4170d7ff, #00B4DC);
+        color: #fff;
+        border-color: #4170d7ff;
+    }
+
+    .stepper-item.completed .stepper-circle {
+        background: #4170d7ff;
+        color: #fff;
+        border-color: #4170d7ff;
+    }
+
+    .stepper-item.completed .stepper-label {
+        color: #4170d7ff;
+    }
+
+    .stepper-line {
+        flex: 1 1 0;
+        height: 3px;
+        background: #e0e7ef;
+        margin: 0 8px;
+        border-radius: 2px;
+        min-width: 30px;
+        max-width: 60px;
+        position: relative;
+    }
+
+    @media (max-width: 700px) {
+        .wizard-stepper {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .stepper-line {
+            width: 3px;
+            height: 30px;
+            margin: 8px 0;
+            min-width: unset;
+            max-width: unset;
+        }
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script>
+    let currentStep = 1;
+    const totalSteps = 4;
+
+    function updateWizard() {
+        // Mostrar solo el paso actual
+        for (let i = 1; i <= totalSteps; i++) {
+            document.getElementById('wizard-step-' + i).classList.toggle('active', i === currentStep);
+            document.getElementById('wizard-step-' + i).classList.toggle('d-none', i !== currentStep);
+        }
+        // Botón "Volver" solo visible si no es el paso 1
+        document.getElementById('btnPrevStep').style.display = currentStep === 1 ? 'none' : '';
+        // Botón "Siguiente" cambia a "Finalizar" en el paso 4
+        if (currentStep === totalSteps) {
+            document.getElementById('btnNextStep').innerText = 'Finalizar';
+        } else {
+            document.getElementById('btnNextStep').innerText = 'Siguiente';
+        }
+    }
+
+    function updateStepper() {
+        for (let i = 1; i <= 4; i++) {
+            const item = document.getElementById('stepper-' + i);
+            item.classList.remove('active', 'completed');
+            if (i < currentStep) {
+                item.classList.add('completed');
+            } else if (i === currentStep) {
+                item.classList.add('active');
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateWizard();
+        updateStepper();
+
+        document.getElementById('btnPrevStep').addEventListener('click', function() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateWizard();
+                updateStepper();
+            }
+        });
+        document.getElementById('btnNextStep').addEventListener('click', function() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateWizard();
+                updateStepper();
+            } else if (currentStep === totalSteps) {
+                // Redirigir al listado de comprobantes al finalizar
+                window.location.href = "{{ route('company.production.tabs', [$company->identification_number, 'invoice']) }}";
+            }
+        });
+    });
+</script>
+@endpush
+
 @push('scripts')
 <script>
     function setStepStatus(step, status, message = '') {
@@ -256,7 +525,7 @@
                         },
                         body: JSON.stringify({
                             test_set_id: testSetId,
-                            step: 1
+                            step: 1,
                             type: 'invoice'
                         })
                     })
@@ -342,7 +611,9 @@
                             'X-CSRF-TOKEN': '{{ csrf_token() }}',
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ type: 'invoice' })
+                        body: JSON.stringify({
+                            type: 'invoice'
+                        })
                     })
                     .then(response => response.json())
                     .then(data => {
@@ -443,101 +714,268 @@
 @endpush
 @push('styles')
 <style>
-/* Fondo y contenedores */
-.bg-light.border-bottom {
-    background: #f8f9fa !important;
-    border-radius: 15px;
-    border: none;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-}
-
-.card {
-    border-radius: 15px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-    border: none;
-}
-
-.card-header.bg-primary {
-    background: linear-gradient(90deg, #4170d7ff, #00B4DC) !important;
-    border-radius: 15px 15px 0 0;
-    border: none;
-}
-
-.card-header h5 {
-    font-weight: 600;
-    letter-spacing: 0.5px;
-}
-
-.btn-outline-primary, .btn-primary {
-    border-radius: 20px;
-    font-weight: bold;
-    font-size: 16px;
-    padding: 8px 24px;
-    transition: all 0.3s;
-}
-
-.btn-outline-primary {
-    border-color: #4170d7ff;
-    color: #4170d7ff;
-    background: #fff;
-}
-
-.btn-outline-primary:hover {
-    background: linear-gradient(90deg, #4170d7ff, #00B4DC);
-    color: #fff;
-    border-color: #4170d7ff;
-}
-
-.btn-primary {
-    background: linear-gradient(90deg, #4170d7ff, #00B4DC);
-    border: none;
-}
-
-.btn-primary:hover {
-    background: linear-gradient(90deg, #00B4DC, #4170d7ff);
-}
-
-.form-label strong {
-    color: #4170d7ff;
-}
-
-.form-control:focus {
-    border-color: #4170d7ff;
-    box-shadow: 0 0 0 0.2rem rgba(65,112,215,0.15);
-}
-
-.badge.bg-success, .badge.bg-warning {
-    border-radius: 12px;
-    padding: 8px 18px;
-    font-size: 16px;
-    font-weight: 500;
-}
-
-.badge.bg-success {
-    background: linear-gradient(90deg, #4170d7ff, #00B4DC);
-    color: #fff;
-}
-
-.badge.bg-warning {
-    background: linear-gradient(90deg, #FFD600, #FFB400);
-    color: #262944;
-}
-
-hr {
-    border: none;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #ddd, transparent);
-    margin: 30px 0;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .bg-light.border-bottom, .card {
-        padding: 10px !important;
+    /* Fondo y contenedores */
+    .bg-light.border-bottom {
+        background: #f8f9fa !important;
+        border-radius: 15px;
+        border: none;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
     }
-    .card-header {
-        padding: 12px 16px !important;
+
+    .card {
+        border-radius: 15px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        border: none;
     }
-}
+
+    .card-header.bg-primary {
+        background: linear-gradient(90deg, #4170d7ff, #00B4DC) !important;
+        border-radius: 15px 15px 0 0;
+        border: none;
+    }
+
+    .card-header h5 {
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    .btn-outline-primary,
+    .btn-primary {
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 16px;
+        padding: 8px 24px;
+        transition: all 0.3s;
+    }
+
+    .btn-outline-primary {
+        border-color: #4170d7ff;
+        color: #4170d7ff;
+        background: #fff;
+    }
+
+    .btn-outline-primary:hover {
+        background: linear-gradient(90deg, #4170d7ff, #00B4DC);
+        color: #fff;
+        border-color: #4170d7ff;
+    }
+
+    .btn-primary {
+        background: linear-gradient(90deg, #4170d7ff, #00B4DC);
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(90deg, #00B4DC, #4170d7ff);
+    }
+
+    .form-label strong {
+        color: #4170d7ff;
+    }
+
+    .form-control:focus {
+        border-color: #4170d7ff;
+        box-shadow: 0 0 0 0.2rem rgba(65, 112, 215, 0.15);
+    }
+
+    .badge.bg-success,
+    .badge.bg-warning {
+        border-radius: 12px;
+        padding: 8px 18px;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .badge.bg-success {
+        background: linear-gradient(90deg, #4170d7ff, #00B4DC);
+        color: #fff;
+    }
+
+    .badge.bg-warning {
+        background: linear-gradient(90deg, #FFD600, #FFB400);
+        color: #262944;
+    }
+
+    hr {
+        border: none;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #ddd, transparent);
+        margin: 30px 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+
+        .bg-light.border-bottom,
+        .card {
+            padding: 10px !important;
+        }
+
+        .card-header {
+            padding: 12px 16px !important;
+        }
+    }
 </style>
+@endpush
+@push('styles')
+<style>
+    .modal-lg {
+        max-width: 800px;
+    }
+
+    .text-danger {
+        color: #dc3545 !important;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .invalid-feedback {
+        display: none;
+        width: 100%;
+        margin-top: 0.25rem;
+        font-size: 0.875em;
+        color: #dc3545;
+    }
+
+    .form-control.is-invalid {
+        border-color: #dc3545;
+    }
+
+    .form-control.is-invalid:focus {
+        border-color: #dc3545;
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+
+    .is-invalid .invalid-feedback {
+        display: block;
+    }
+
+    #saveResolutionBtn:disabled {
+        opacity: 0.6;
+    }
+</style>
+@endpush
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        // Limpiar formulario cuando se abre el modal
+        $('#newResolutionModal').on('show.bs.modal', function() {
+            clearFormErrors();
+            $('#newResolutionForm')[0].reset();
+            $('#simpleTypeInfo').hide();
+        });
+
+        // Manejar cambio en tipo de documento
+        $('#type_document_id').on('change', function() {
+            const selectedOption = $(this).find('option:selected');
+            const code = selectedOption.data('code');
+            const simpleCodes = ['91', '92', '93', '94'];
+
+            if (simpleCodes.includes(code)) {
+                $('#simpleTypeInfo').slideDown();
+            } else {
+                $('#simpleTypeInfo').slideUp();
+            }
+        });
+
+        // Manejar envío del formulario
+        $('#newResolutionForm').on('submit', function(e) {
+            e.preventDefault();
+
+            const submitBtn = $('#saveResolutionBtn');
+            const originalText = submitBtn.html();
+
+            // Deshabilitar botón y mostrar estado de carga
+            submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Guardando...');
+
+            // Limpiar errores previos
+            clearFormErrors();
+
+            // Preparar datos del formulario
+            const formData = $(this).serialize();
+            const company = '{{ $company->identification_number }}';
+
+            // Realizar petición AJAX
+            $.ajax({
+                url: '{{ route('company.resolutions.store', ['company' => $company->identification_number]) }}',
+                method: 'POST',
+                data: formData,
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        // Mostrar notificación de éxito
+                        new PNotify({
+                            text: response.message,
+                            type: 'success',
+                            addclass: 'notification-success',
+                            delay: 3000
+                        });
+
+                        // Cerrar modal
+                        $('#newResolutionModal').modal('hide');
+
+                        // Recargar página para mostrar la nueva resolución
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1000);
+                    } else {
+                        // Mostrar notificación de error
+                        new PNotify({
+                            text: response.message || 'Error al crear la resolución',
+                            type: 'error',
+                            addclass: 'notification-danger',
+                            delay: 5000
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    if (xhr.status === 422) {
+                        // Errores de validación
+                        const errors = xhr.responseJSON.errors;
+                        displayFormErrors(errors);
+
+                        new PNotify({
+                            text: 'Por favor corrige los errores en el formulario',
+                            type: 'error',
+                            addclass: 'notification-danger',
+                            delay: 5000
+                        });
+                    } else {
+                        // Otros errores
+                        const message = xhr.responseJSON?.message || 'Error interno del servidor';
+                        new PNotify({
+                            text: message,
+                            type: 'error',
+                            addclass: 'notification-danger',
+                            delay: 5000
+                        });
+                    }
+                },
+                complete: function() {
+                    // Restaurar botón
+                    submitBtn.prop('disabled', false).html(originalText);
+                }
+            });
+        });
+
+        // Función para limpiar errores del formulario
+        function clearFormErrors() {
+            $('.form-control').removeClass('is-invalid');
+            $('.invalid-feedback').text('').hide();
+        }
+
+        // Función para mostrar errores de validación
+        function displayFormErrors(errors) {
+            $.each(errors, function(field, messages) {
+                const input = $(`#${field}`);
+                const feedback = input.siblings('.invalid-feedback');
+
+                input.addClass('is-invalid');
+                feedback.text(messages[0]).show();
+            });
+        }
+    });
+</script>
 @endpush

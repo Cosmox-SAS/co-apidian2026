@@ -2,46 +2,46 @@
 
 @push('styles')
 <style>
-/* Estilos para los botones del menú */
-button.hab-menu-button {
+/* Barra de botones horizontal arriba */
+.hab-menu-bar {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+    margin-top: 0;
+    padding: 0;
+}
+
+/* Botón horizontal pequeño */
+button.hab-menu-bar-btn {
     background: #fff;
     border: none;
-    border-radius: 20px;
-    width: 200px;
-    height: 286px;
-    padding: 25px 30px 55px;
-    font-size: 18px;
-    font-weight: bold;
-    line-height: 26px;
-    text-align: center;
+    border-radius: 10px;
+    padding: 8px 18px 8px 8px;
+    font-size: 15px;
+    font-weight: 500;
     color: #2B323D;
-    box-shadow: 0px 7px 16px -7px rgba(0, 0, 0, 0.75);
-    -webkit-box-shadow: 0px 7px 16px -7px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 7px 16px -7px rgba(0,0,0,0.75);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin: 15px;
-}
-
-button.hab-menu-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0px 9px 20px -7px rgba(0, 0, 0, 0.85);
-    background: linear-gradient(90deg, #4170d7ff, #00B4DC);
-    color: white;
-}
-
-button.hab-menu-button img {
-    display: block;
-    margin: 0 auto 15px;
-}
-
-/* Container para los botones */
-.hab-menu-container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin: 30px 0;
+    align-items: center;
+    box-shadow: 0px 2px 8px -4px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 0;
+    margin: 0;
+}
+
+button.hab-menu-bar-btn:hover {
+    background: linear-gradient(90deg, #4170d7ff, #00B4DC);
+    color: #fff;
+}
+
+button.hab-menu-bar-btn img {
+    height: 32px;
+    width: 32px;
+    margin-right: 8px;
+    margin-bottom: 0;
+    display: inline-block;
 }
 
 /* Estilos para el header */
@@ -80,14 +80,17 @@ hr {
 
 /* Responsive */
 @media (max-width: 768px) {
-    button.hab-menu-button {
-        width: 250px;
-        height: 250px;
-        margin: 10px;
+    .hab-menu-bar {
+        flex-wrap: wrap;
+        gap: 8px;
     }
-    
-    .hab-menu-container {
-        gap: 10px;
+    button.hab-menu-bar-btn {
+        font-size: 14px;
+        padding: 8px 10px 8px 8px;
+    }
+    button.hab-menu-bar-btn img {
+        height: 28px;
+        width: 28px;
     }
 }
 </style>
@@ -106,40 +109,25 @@ hr {
 <div id="panel-form" class="container-fluid RadianContainerBegin">
     <p class="sub-title">Seleccione el tipo de documento:</p>
     <hr>
-
-    <div class="hab-menu-container">
-        <!-- Facturas Electrónicas de Venta (FV) -->
-        <button class="hab-menu-button" onclick="window.location.href='{{ route('company.production.tabs', [$company->identification_number, 'invoice']) }}'" 
-                id="1" contributortype="1" operationmode="0">
-            <img src="{{ asset('production/factura-electronica-icon.svg') }}" height="130">
+    <div class="hab-menu-bar">
+        <button class="hab-menu-bar-btn" onclick="window.location.href='{{ route('company.production.tabs', [$company->identification_number, 'invoice']) }}'">
+            <img src="{{ asset('production/factura-electronica-icon.svg') }}" alt="Factura electrónica">
             Factura electrónica
         </button>
-
-        <!-- Nómina Electrónica (NE) -->
-        <button class="hab-menu-button" onclick="window.location.href='{{ route('company.production.tabs', [$company->identification_number, 'payroll']) }}'"
-                contributortype="2" operationmode="1" id="2">
-            <img src="{{ asset('production/nomina-electronica-icon.svg') }}" height="130">
+        <button class="hab-menu-bar-btn" onclick="window.location.href='{{ route('company.production.tabs', [$company->identification_number, 'payroll']) }}'">
+            <img src="{{ asset('production/nomina-electronica-icon.svg') }}" alt="Nómina electrónica">
             Nómina electrónica
         </button>
-
-        <!-- Documentos Soporte (DS) -->
-        <button class="hab-menu-button" onclick="window.location.href='{{ route('company.production.tabs', [$company->identification_number, 'support']) }}'" 
-                contributortype="3" operationmode="1" electronicdocumentid="3">
-            <img src="{{ asset('production/documento-soporte-icon.svg') }}" height="130">
+        <button class="hab-menu-bar-btn" onclick="window.location.href='{{ route('company.production.tabs', [$company->identification_number, 'support']) }}'">
+            <img src="{{ asset('production/documento-soporte-icon.svg') }}" alt="Documento soporte">
             Documento soporte
         </button>
-
-        <!-- Eventos RADIAN -->
-        <button class="hab-menu-button" onclick="window.location.href='{{ route('company.production.tabs', [$company->identification_number, 'event']) }}'"
-                contributortype="4" operationmode="1" id="4">
-            <img src="{{ asset('production/eventos-radian-icon.svg') }}" height="130">
+        <button class="hab-menu-bar-btn" onclick="window.location.href='{{ route('company.production.tabs', [$company->identification_number, 'event']) }}'">
+            <img src="{{ asset('production/eventos-radian-icon.svg') }}" alt="Eventos RADIAN">
             Eventos RADIAN
         </button>
-
-        <!-- Documento Equivalente Electrónico (DE) -->
-        <button class="hab-menu-button" onclick="window.location.href='{{ route('company.production.tabs', [$company->identification_number, 'pos']) }}'" 
-                contributortype="3" operationmode="1" id="3">
-            <img src="{{ asset('production/documentos-equivalentes-icon.svg') }}" height="130">
+        <button class="hab-menu-bar-btn" onclick="window.location.href='{{ route('company.production.tabs', [$company->identification_number, 'pos']) }}'">
+            <img src="{{ asset('production/documentos-equivalentes-icon.svg') }}" alt="Documentos equivalentes">
             Documentos equivalentes
         </button>
     </div>

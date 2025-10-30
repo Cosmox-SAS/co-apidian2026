@@ -8,6 +8,7 @@ use App\DocumentPayroll;
 use App\ReceivedDocument;
 use App\Resolution;
 use App\Software;
+use App\TypeDocument;
 use App\User;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
@@ -32,6 +33,7 @@ class ProductionController extends Controller
             ->get();
 
         $token_company = $company->token_company ?? null;
+        $typeDocuments = TypeDocument::all();
 
         switch ($type) {
             case 'invoice':
@@ -90,7 +92,8 @@ class ProductionController extends Controller
             'token_company',
             'type',
             'listView',
-            'indexView'
+            'indexView',
+            'typeDocuments'
         ));
     }
 
@@ -98,8 +101,9 @@ class ProductionController extends Controller
     {
         $company = Company::where('identification_number', $company)->firstOrFail();
         $environmentStatus = $this->getEnvironmentStatus($company, 'invoice');
+        $typeDocuments = TypeDocument::all();
 
-        return view('company.production.invoice.index', compact('company', 'environmentStatus'));
+        return view('company.production.invoice.index', compact('company', 'environmentStatus', 'typeDocuments'));
     }
 
     public function productionPos($company)
