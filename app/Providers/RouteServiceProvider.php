@@ -8,9 +8,9 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 class RouteServiceProvider extends ServiceProvider
 {
     /**
-     * This namespace is applied to your controller routes.
+     * The path to the "home" route for your application.
      *
-     * In addition, it is set as the URL generator's root namespace.
+     * Typically, users are redirected here after authentication.
      *
      * @var string
      */
@@ -23,8 +23,6 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-
         parent::boot();
     }
 
@@ -36,10 +34,7 @@ class RouteServiceProvider extends ServiceProvider
     public function map()
     {
         $this->mapApiRoutes();
-
         $this->mapWebRoutes();
-
-        //
     }
 
     /**

@@ -121,6 +121,9 @@ Route::middleware('auth:api')->group(function () {
         // Certificate End Date
         Route::put('/certificate-end-date', 'Api\ConfigurationController@CertificateEndDate');
 
+        // Check OpenSSL Configuration
+        Route::get('/check-openssl-config', 'Api\ConfigurationController@checkOpenSSLConfig');
+
         // Configuration
         Route::prefix('/config')->group(function () {
             Route::put('/software', 'Api\ConfigurationController@storeSoftware');

@@ -9,23 +9,21 @@ class Kernel extends HttpKernel
     /**
      * The application's global HTTP middleware stack.
      *
-     * These middleware are run during every request to your application.
-     *
-     * @var array
+     * @var array<int, class-string|string>
      */
     protected $middleware = [
-        \App\Http\Middleware\CheckForMaintenanceMode::class,
+        \Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
-        \App\Http\Middleware\Cors::class,
+        \Illuminate\Http\Middleware\HandleCors::class,
     ];
 
     /**
      * The application's route middleware groups.
      *
-     * @var array
+     * @var array<string, array<int, class-string|string>>
      */
     protected $middlewareGroups = [
         'web' => [
@@ -40,24 +38,22 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-/**            'throttle:60,1',		*/
-            'bindings',
+            // throttle aumentado para mayor capacidad de requests
+            'throttle:60,1',
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\ApiLog::class,
-			\Mtownsend\RequestXml\Middleware\XmlRequest::class,
+            \Mtownsend\RequestXml\Middleware\XmlRequest::class,
         ],
     ];
 
     /**
      * The application's route middleware.
      *
-     * These middleware may be assigned to groups or used individually.
-     *
-     * @var array
+     * @var array<string, class-string|string>
      */
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
@@ -66,21 +62,5 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'api.token' => \App\Http\Middleware\ApiTokenConfig::class,
         'check.api.register' => \App\Http\Middleware\CheckRegisterFromApi::class,
-    ];
-
-    /**
-     * The priority-sorted list of middleware.
-     *
-     * This forces non-global middleware to always be in the given order.
-     *
-     * @var array
-     */
-    protected $middlewarePriority = [
-        \Illuminate\Session\Middleware\StartSession::class,
-        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-        \App\Http\Middleware\Authenticate::class,
-        \Illuminate\Session\Middleware\AuthenticateSession::class,
-        \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        \Illuminate\Auth\Middleware\Authorize::class,
     ];
 }

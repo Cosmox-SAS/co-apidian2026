@@ -578,8 +578,24 @@ class ConfigurationController extends Controller
             if (!base64_decode($request->certificate, true)) {
                 throw new Exception('The given data was invalid.');
             }
-            if (!openssl_pkcs12_read($certificateBinary = base64_decode($request->certificate), $certificate, $request->password)) {
-                throw new Exception('The certificate could not be read.');
+            $certificateBinary = base64_decode($request->certificate);
+            if (!openssl_pkcs12_read($certificateBinary, $certificate, $request->password)) {
+                // Intentar modernizar el certificado legacy
+                try {
+                    $modernizer = new \App\Services\CertificateModernizerService();
+                    $modernBase64 = $modernizer->convertLegacyToModern($request->certificate, $request->password);
+                    if (!$modernBase64) {
+                        throw new Exception('No se obtuvo certificado modernizado.');
+                    }
+                    $certificateBinary = base64_decode($modernBase64);
+                } catch (Exception $exModern) {
+                    return response([
+                        'message' => $exModern->getMessage(),
+                        'errors' => [
+                            'certificate' => 'No se pudo convertir el certificado legacy.',
+                        ],
+                    ], 422);
+                }
             }
         } catch (Exception $e) {
             if (false == ($error = openssl_error_string())) {

@@ -35,7 +35,7 @@ class SetEnv extends Command
 
         if (File::exists($path)) {
             $env = File::get($path);
-            
+
             $lines = explode(PHP_EOL, $env);
 
             $keyFound = false;

@@ -40,12 +40,12 @@ class ApiConfig extends Command
     public function handle()
     {
         $apiKey = env('API_KEY', Str::random(100));
-        
+
         Artisan::call('set:env api_key "'.$apiKey.'"');
         Artisan::call('set:env use_protection_api_key false');
         Artisan::call('config:cache');
         Artisan::call('cache:clear');
-        
+
         $this->info("API key: $apiKey");
     }
 }
