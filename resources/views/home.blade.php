@@ -1,15 +1,22 @@
 @extends('layouts.app')
 @section('content')
-<header class="page-header">
-    <h2>Listado de Empresas</h2>
+<header class="page-header d-flex justify-content-between align-items-center">    
+    <div>
+        <h2><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-building-factory-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M3 21h18"></path><path d="M5 21v-12l5 4v-4l5 4h4"></path><path d="M19 21v-8l-1.436 -9.574a.5 .5 0 0 0 -.495 -.426h-1.145a.5 .5 0 0 0 -.494 .418l-1.43 8.582"></path><path d="M9 17h1"></path><path d="M14 17h1"></path></svg></h2>
+        <ol class="breadcrumbs">
+            <li class="active">
+                <span>Listado de Empresas</span>
+            </li> 
+        </ol>
+    </div>
     <div class="right-wrapper text-end">
-        <a href="{{ route('configuration_admin') }}" class="btn btn-primary btn-sm text-white mt-2 mr-2">Nueva empresa</a>
+        <a href="{{ route('configuration_admin') }}" class="btn btn-primary btn-sm text-white mr-2">Nueva empresa</a>
     </div>
 </header>
 
-<div class="card border">
+<div class="card">
     <div class="table-responsive">
-        <table class="table table-striped table-hover" style="min-height: 150px">
+        <table class="table table-striped table-hover">
             <thead class="thead-light">
                 <tr>
                     <th>ID</th>
@@ -28,35 +35,48 @@
                         <td>{{ $row->total_documents }}</td>
                         <td>{{ $row->user->name }}</td>
                         <td>{{ $row->user->email }}</td>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-primary text-white btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    Acciones
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item text-secondary" href="#" data-toggle="modal" data-target="#editCompanyModal"
-                                        data-company-id="{{ $row->id }}"
-                                        data-identification-number="{{ $row->identification_number }}"
-                                        data-dv="{{ $row->dv }}"
-                                        data-type-document-identification-id="{{ $row->type_document_identification_id }}"
-                                        data-type-regime-id="{{ $row->type_regime_id }}"
-                                        data-type-liability-id="{{ $row->type_liability_id }}"
-                                        data-municipality-id="{{ $row->municipality_id }}"
-                                        data-merchant-registration="{{ $row->merchant_registration }}"
-                                        data-address="{{ $row->address }}"
-                                        data-phone="{{ $row->phone }}"
-                                        data-api-token="{{ $row->user->api_token }}">
+                        <td class="text-right">
+                            <el-dropdown trigger="click">
+                                <el-button size="small" class="btn-dropdown-toggle">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-dots"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+                                </el-button>
+                                <el-dropdown-menu slot="dropdown">
+                                    <el-dropdown-item class="d-flex align-items-center justify-content-between"
+                                        @click.native="openEditModal({{ $row->id }}, '{{ $row->identification_number }}', '{{ $row->dv }}', {{ $row->type_document_identification_id }}, {{ $row->type_regime_id }}, {{ $row->type_liability_id }}, {{ $row->municipality_id }}, '{{ $row->merchant_registration }}', '{{ $row->address }}', '{{ $row->phone }}', '{{ $row->user->api_token }}')">
                                         Editar Empresa
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <!-- <a class="dropdown-item text-secondary" href="{{ route('company', $row->identification_number)}}">Ver documentos</a> -->
-                                    <a class="dropdown-item text-secondary" href="{{ route('company.resolutions.index', $row->identification_number)}}">Resoluciones</a>
-                                    <a class="dropdown-item text-secondary" href="{{ route('company.production.index', $row->identification_number)}}">Documentos Electrónicos</a>
-                                    <a class="dropdown-item text-secondary" href="{{ route('company.users.index', $row->id)}}">Usuarios</a>
-                                    <a class="dropdown-item text-secondary" href="{{ route('company.email.index', $row->id)}}">Configurar Correo</a>
-                                    <a class="dropdown-item text-secondary" href="#" data-toggle="modal" data-target="#accessModal">Acceso a la App</a>
-                                </div>
-                            </div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit text-muted"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item divided></el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <a href="{{ route('company.resolutions.index', $row->identification_number)}}" style="text-decoration: none; color: inherit; display: block;">
+                                            Resoluciones
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-file-invoice text-muted"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M9 7l1 0" /><path d="M9 13l6 0" /><path d="M13 17l2 0" /></svg>
+                                        </a>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <a href="{{ route('company.production.index', $row->identification_number)}}" style="text-decoration: none; color: inherit; display: block;">
+                                            Documentos Electrónicos
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-file-description text-muted"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M9 17h6" /><path d="M9 13h6" /></svg>
+                                        </a>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <a href="{{ route('company.users.index', $row->id)}}" style="text-decoration: none; color: inherit; display: block;">
+                                            Usuarios
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-users-group text-muted"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 13a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M8 21v-1a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v1" /><path d="M15 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M17 10h2a2 2 0 0 1 2 2v1" /><path d="M5 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M3 13v-1a2 2 0 0 1 2 -2h2" /></svg>
+                                        </a>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <a href="{{ route('company.email.index', $row->id)}}" style="text-decoration: none; color: inherit; display: block;">
+                                            Configurar Correo
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-mail text-muted"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
+                                        </a>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item @click.native="openAccessModal()" class="d-flex align-items-center justify-content-between">
+                                        Acceso a la App
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-device-mobile text-muted"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 5a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2v-14z" /><path d="M11 4h2" /><path d="M12 17v.01" /></svg>
+                                    </el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
                         </td>
                     </tr>
                 @endforeach
@@ -350,6 +370,23 @@
 .custom-file-label::after {
     content: "Buscar";
 }
+
+/* Estilos para el dropdown de Element UI */
+.el-dropdown-menu__item a {
+    text-decoration: none;
+    color: #606266;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.el-dropdown-menu__item a:hover {
+    color: #409EFF;
+}
+
+.el-dropdown-menu__item a i {
+    margin-right: 8px;
+}
 </style>
 
 @endsection
@@ -366,36 +403,6 @@ $(document).ready(function () {
         clearLogoForm();
         // Asegurar que el primer tab esté activo
         $('#company-info-tab').tab('show');
-    });
-
-    // Configurar el modal para edición de empresa
-    $('#editCompanyModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var modal = $(this);
-
-        if (button && button.length > 0 && button.data('company-id')) {
-            currentCompanyId = button.data('company-id') || '';
-            currentApiToken = button.data('api-token') || '';
-            var identificationNumber = button.data('identification-number') || '';
-            var dv = button.data('dv') || '';
-            var typeDocumentIdentificationId = button.data('type-document-identification-id') || '';
-            var typeRegimeId = button.data('type-regime-id') || '';
-            var typeLiabilityId = button.data('type-liability-id') || '';
-            var municipalityId = button.data('municipality-id') || '';
-            var merchantRegistration = button.data('merchant-registration') || '';
-            var address = button.data('address') || '';
-            var phone = button.data('phone') || '';
-
-            modal.find('#identification_number').val(identificationNumber);
-            modal.find('#dv').val(dv);
-            modal.find('#type_document_identification_id').val(typeDocumentIdentificationId);
-            modal.find('#type_regime_id').val(typeRegimeId);
-            modal.find('#type_liability_id').val(typeLiabilityId);
-            modal.find('#municipality_id').val(municipalityId);
-            modal.find('#merchant_registration').val(merchantRegistration);
-            modal.find('#address').val(address);
-            modal.find('#phone').val(phone);
-        }
     });
 
     // Manejar cambio de tabs
@@ -480,7 +487,7 @@ $(document).ready(function () {
 
         // Realizar petición AJAX
         $.ajax({
-            url: `/companies/${currentCompanyId}`,
+            url: `/companies/${window.currentCompanyId || currentCompanyId}`,
             method: 'PUT',
             data: formData,
             dataType: 'json',
@@ -575,7 +582,7 @@ $(document).ready(function () {
                 url: '/api/ubl2.1/config/logo',
                 method: 'PUT',
                 headers: {
-                    'Authorization': 'Bearer ' + currentApiToken,
+                    'Authorization': 'Bearer ' + (window.currentApiToken || currentApiToken),
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },

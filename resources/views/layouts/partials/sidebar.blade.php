@@ -24,14 +24,14 @@ $cust_id = $path[2];
 
                     <li class="{{ ($path[0] === 'home')?'nav-active':'' }}">
                         <a class="nav-link" href="{{route('home')}}">
-                            <i class="fas fa-industry" aria-hidden="true"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-building-factory-2 mr-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 21h18" /><path d="M5 21v-12l5 4v-4l5 4h4" /><path d="M19 21v-8l-1.436 -9.574a.5 .5 0 0 0 -.495 -.426h-1.145a.5 .5 0 0 0 -.494 .418l-1.43 8.582" /><path d="M9 17h1" /><path d="M14 17h1" /></svg>
                             <span>Empresas</span>
                         </a>
                     </li>
 
                     <li class="{{ ($path[0] === 'tools')?'nav-active':'' }}">
                         <a class="nav-link" href="{{route('tools')}}">
-                            <i class="fas fa-wrench" aria-hidden="true"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-tool mr-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 10h3v-3l-3.5 -3.5a6 6 0 0 1 8 8l6 6a2 2 0 0 1 -3 3l-6 -6a6 6 0 0 1 -8 -8l3.5 3.5" /></svg>
                             <span>Herramientas</span>
                         </a>
                     </li>
@@ -60,7 +60,7 @@ $cust_id = $path[2];
                     @if(!Request::is('company*'))
                     <li class="">
                         <a href="{{route('logs')}}" class="nav-link" target="BLANK">
-                            <i class="fa fa-bug" aria-hidden="true"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-bug mr-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 9v-1a3 3 0 0 1 6 0v1" /><path d="M8 9h8a6 6 0 0 1 1 3v3a5 5 0 0 1 -10 0v-3a6 6 0 0 1 1 -3" /><path d="M3 13l4 0" /><path d="M17 13l4 0" /><path d="M12 20l0 -6" /><path d="M4 19l3.35 -2" /><path d="M20 19l-3.35 -2" /><path d="M4 7l3.75 2.4" /><path d="M20 7l-3.75 2.4" /></svg>
                             <span>Logs</span>
                         </a>
                     </li>

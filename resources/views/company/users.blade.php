@@ -1,34 +1,44 @@
 @extends('layouts.app')
 
 @section('content')
-<header class="page-header">
-    <h2>Listado de Usuarios</h2>
+<header class="page-header d-flex align-items-center justify-content-between">
+    <div>
+        <h2>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-users-group"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 13a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path><path d="M8 21v-1a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v1"></path><path d="M15 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path><path d="M17 10h2a2 2 0 0 1 2 2v1"></path><path d="M5 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path><path d="M3 13v-1a2 2 0 0 1 2 -2h2"></path></svg>
+        </h2>
+        <ol class="breadcrumbs">
+            <li class="active">
+                <span>Listado de Usuarios</span>
+            </li> 
+            <li class="active">
+                <span>
+                    {{ $company->user->name }}
+                </span>
+            </li> 
+        </ol>
+    </div>
+    <div class="right-wrapper text-right">
+        <button class="btn btn-primary btn-sm text-white mr-2" data-toggle="modal" data-target="#userModal">Añadir usuario</button>
+    </div>
 </header>
 
-<div class="card border">
-    <div class="card-header ">
-        <div class="row no-wrapper">
-            <div class="col" style="line-height: 1rem;">
-                {{ $company->user->name }} <br>
-            </div>
-        </div>
-    </div>
+<div class="card">
 
     <!-- Users Table -->
     <div class="table-responsive">
         <table class="table table-striped table-hover">
-            <thead>
+            <thead class="thead-light">
                 <tr>
                     <th>Tipo</th>
                     <th>Nombre</th>
                     <th>Correo</th>
                     <th>Documento</th>
-                    <th class="text-right"><button class="btn btn-primary mb-0 btn-sm" data-toggle="modal" data-target="#userModal">Añadir usuario</button></th>
+                    <th class="text-right"></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($users as $user)
-                <tr>
+                <tr class="table-light">
                     <td>
                         {{ $user->can_rips ? 'RIPS' : 'Facturación' }}
                         @if($user->id == $company->user->id)
@@ -104,28 +114,28 @@
                         </div>
 
                         <div class="form-group col-6">
-                            <label for="name">Name</label>
+                            <label for="name">Nombre</label>
                             <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" required>
                             @if ($errors->has('name'))
                                 <span class="text-danger">{{ $errors->first('name') }}</span>
                             @endif
                         </div>
                         <div class="form-group col-6">
-                            <label for="email">Email</label>
+                            <label for="email">Correo electrónico</label>
                             <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" required>
                             @if ($errors->has('email'))
                                 <span class="text-danger">{{ $errors->first('email') }}</span>
                             @endif
                         </div>
                         <div class="form-group col-6">
-                            <label for="password">Password</label>
+                            <label for="password">Contraseña</label>
                             <input type="password" name="password" id="password" class="form-control">
                             @if ($errors->has('password'))
                                 <span class="text-danger">{{ $errors->first('password') }}</span>
                             @endif
                         </div>
                         <div class="form-group col-6">
-                            <label for="password_confirmation">Confirm Password</label>
+                            <label for="password_confirmation">Confirmar Contraseña</label>
                             <input type="password" name="password_confirmation" id="password_confirmation" class="form-control">
                             @if ($errors->has('password_confirmation'))
                                 <span class="text-danger">{{ $errors->first('password_confirmation') }}</span>

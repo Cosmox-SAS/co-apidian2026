@@ -49,6 +49,9 @@
     <link rel="stylesheet" href="{{ asset('porto-light/css/theme.css') }}" />
     <link rel="stylesheet" href="{{ asset('porto-light/css/custom.css') }}" />
 
+    {{-- theme black --}}
+    <link rel="stylesheet" href="{{ asset('porto-light/css/skins/theme-black.css')}}" />
+
     @if (file_exists(public_path('theme/custom_styles.css')))
         <link rel="stylesheet" href="{{ asset('theme/custom_styles.css') }}" />
     @endif

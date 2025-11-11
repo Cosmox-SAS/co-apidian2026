@@ -3,24 +3,20 @@
 
 @section('content')
 <header class="page-header">
-    <h2>Configuración de Correo</h2>
-    {{-- <div class="right-wrapper text-end">
-        <a href="{{ route('home') }}" class="btn btn-secondary btn-sm mt-2">Volver al listado</a>
-    </div> --}}
+    <h2>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"></path><path d="M3 7l9 6l9 -6"></path></svg>
+    </h2>
+    <ol class="breadcrumbs">
+        <li class="active">
+            <span>Configuración de Correo</span>
+        </li> 
+        <li class="active">
+            <span>{{ $company->user->name }} - {{ $company->user->email }} - {{ $company->identification_number }}-{{ $company->dv }}</span>
+        </li> 
+    </ol>
 </header>
 
-<div class="card border">
-    <div class="card-header ">
-        <div class="row no-wrapper">
-            <div class="col" style="line-height: 1rem;">
-                {{ $company->user->name }} <br>
-                <small>
-                    {{ $company->user->email }}<br>
-                    {{ $company->identification_number }}-{{ $company->dv }}
-                </small>
-            </div>
-        </div>
-    </div>
+<div class="card card-config">
     <div class="card-header">
         <h5 class="card-title mb-0">
             @if($emailConfig['has_custom_config'])
@@ -31,7 +27,7 @@
         </h5>
     </div>
 
-    <div class="card-body">
+    <div class="card-body card-body-config">
         @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
@@ -137,9 +133,9 @@
             </div>
 
             <div class="row">
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Guardar Configuración</button>
+                <div class="col-12 text-right">
                     <a href="{{ route('home') }}" class="btn btn-secondary ml-2 text-white">Volver</a>
+                    <button type="submit" class="btn btn-primary">Guardar Configuración</button>                    
                 </div>
             </div>
         </form>

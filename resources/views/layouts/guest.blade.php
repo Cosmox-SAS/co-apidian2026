@@ -12,10 +12,12 @@
 
     <!-- Styles -->
     <link href="{{ asset('low/app2.css') }}" rel="stylesheet">
+    {{-- theme black --}}
+    <link rel="stylesheet" href="{{ asset('porto-light/css/skins/theme-black.css')}}" />
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
+        <nav class="navbar navbar-default navbar-static-top" style="display: none">
             <div class="container">
                 <div class="navbar-header">
 

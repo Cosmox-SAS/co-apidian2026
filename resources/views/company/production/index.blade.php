@@ -18,7 +18,7 @@ button.hab-menu-bar-btn {
     background: #fff;
     border: none;
     border-radius: 10px;
-    padding: 8px 18px 8px 8px;
+    padding: 8px;
     font-size: 15px;
     font-weight: 500;
     color: #2B323D;
@@ -97,18 +97,28 @@ hr {
 @endpush
 
 @section('content')
-<header class="page-header">
-    <h2>{{ $company->user->name }} - {{ $company->identification_number }}</h2>
-    <div class="right-wrapper text-end">
-        <a href="{{ route('home') }}" class="btn btn-outline-primary mt-1 mr-2">
+<header class="page-header d-flex justify-content-between align-items-center">
+    <div>
+        <h2>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-file-invoice"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path><path d="M9 7l1 0"></path><path d="M9 13l6 0"></path><path d="M13 17l2 0"></path></svg>
+        </h2>
+        <ol class="breadcrumbs">
+            <li class="active">
+                <span>Seleccione el tipo de documento</span>
+            </li> 
+            <li class="active">
+                <span>{{ $company->user->name }} - {{ $company->identification_number }}</span>
+            </li> 
+        </ol>
+    </div>
+    <div class="right-wrapper text-right">
+        <a href="{{ route('home') }}" class="btn btn-secondary mt-1 mr-2">
             <i class="fas fa-arrow-left me-2"></i> Volver
         </a>
     </div>
 </header>
 
-<div id="panel-form" class="container-fluid RadianContainerBegin">
-    <p class="sub-title">Seleccione el tipo de documento:</p>
-    <hr>
+<div id="panel-form" class="card-body">
     <div class="hab-menu-bar">
         <button class="hab-menu-bar-btn" onclick="window.location.href='{{ route('company.production.tabs', [$company->identification_number, 'invoice']) }}'">
             <img src="{{ asset('production/factura-electronica-icon.svg') }}" alt="Factura electrónica">

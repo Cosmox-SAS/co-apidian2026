@@ -52,4 +52,36 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#main-wrapper',
+    methods: {
+        openEditModal(companyId, identificationNumber, dv, typeDocId, typeRegimeId, typeLiabilityId, municipalityId, merchantReg, address, phone, apiToken) {
+            // console.log('openEditModal llamado con:', {companyId, identificationNumber});
+            
+            // Guardar en variables globales para uso posterior
+            window.currentCompanyId = companyId;
+            window.currentApiToken = apiToken;
+            
+            // Usar setTimeout para asegurar que jQuery esté listo
+            this.$nextTick(() => {
+                // Cargar datos en el formulario
+                $('#identification_number').val(identificationNumber);
+                $('#dv').val(dv);
+                $('#type_document_identification_id').val(typeDocId);
+                $('#type_regime_id').val(typeRegimeId);
+                $('#type_liability_id').val(typeLiabilityId);
+                $('#municipality_id').val(municipalityId);
+                $('#merchant_registration').val(merchantReg);
+                $('#address').val(address);
+                $('#phone').val(phone);
+                
+                // Abrir modal
+                $('#editCompanyModal').modal('show');
+            });
+        },
+        openAccessModal() {
+            console.log('openAccessModal llamado');
+            this.$nextTick(() => {
+                $('#accessModal').modal('show');
+            });
+        }
+    }
 });

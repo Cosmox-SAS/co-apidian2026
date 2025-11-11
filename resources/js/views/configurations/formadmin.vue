@@ -2,8 +2,39 @@
     <div class="card">
         <div class="card-body">
             <el-steps :active="active" finish-status="success">
-                <el-step title="Empresa" icon="fas fa-building fa-2x me-2"></el-step>
-                <el-step title="Certificado" icon="fas fa-file-alt fa-2x"></el-step>
+                <el-step title="Empresa">
+                    <template #icon>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler-outline icon-tabler-building">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M3 21h18" />
+                            <path d="M9 8h1" />
+                            <path d="M9 12h1" />
+                            <path d="M9 16h1" />
+                            <path d="M14 8h1" />
+                            <path d="M14 12h1" />
+                            <path d="M14 16h1" />
+                            <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16" />
+                        </svg>
+                    </template>
+                </el-step>
+            
+                <el-step title="Certificado">
+                    <template #icon>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-file-description">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+                            <path d="M9 17h6" />
+                            <path d="M9 13h6" />
+                        </svg>
+                    </template>
+                </el-step>
             </el-steps>
             <br />
             <br />
@@ -377,5 +408,8 @@
 <style>
     .form-control-feedback {
         color: red;
+    }
+    .el-step__icon.is-text{
+        border: none !important;
     }
 </style>
