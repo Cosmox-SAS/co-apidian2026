@@ -1,16 +1,18 @@
 <header class="page-header d-flex justify-content-between align-items-center">
     <h2>{{ $company->user->name }} - {{ $company->identification_number }}</h2>
     <div>
-        @if(isset($type) && $type == 'invoice')
-            <button class="btn btn-primary btn-lg shadow-sm" data-toggle="modal" data-target="#excelModal">
-                <i class="fas fa-upload mr-2"></i>Subida Masiva
-            </button>
-        @endif
-        <a href="{{ route('company.production.index', $company->identification_number) }}" class="btn btn-outline-primary">
+        <a href="{{ route('company.production.index', $company->identification_number) }}" class="btn btn-secondary btn-sm">
             <i class="fas fa-arrow-left me-2"></i> Volver
         </a>
+        @if(isset($type) && $type == 'invoice')
+            <button class="btn btn-primary btn-sm text-white ml-2" data-toggle="modal" data-target="#excelModal">
+                <i class="fas fa-upload mr-2"></i>Subida Masiva
+            </button>
+        @endif        
     </div>
 </header>
+
+
 
 @php
     // dd($resolution_credit_notes);
@@ -40,8 +42,8 @@
     </div>
 </div>
 @else
-<div class="card border">
-    <div class="table-responsive card-body p-0">
+<div class="card">
+    <div class="table-responsive">
         <table class="table table-sm table-striped table-hover">
             <thead class="thead-light">
                 <tr>
@@ -144,7 +146,7 @@
         </table>
         {{-- {{ dd($documents) }} --}}
     </div>
-    <div class="card-footer d-flex justify-content-center">
+    <div class="card-footer d-flex justify-content-center mt-2">
         {{ $documents->links() }}
     </div>
 </div>

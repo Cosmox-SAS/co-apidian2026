@@ -3,15 +3,13 @@
         <h2>{{ $company->user->name }} - {{ $company->identification_number }}</h2>
     </div>
     <div>
-        <a href="{{ route('company.production.index', $company->identification_number) }}" class="btn btn-outline-primary">
+        <a href="{{ route('company.production.index', $company->identification_number) }}" class="btn btn-secondary btn-sm">
             <i class="fas fa-arrow-left me-2"></i> Volver
         </a>
     </div>
 </header>
-<div class="card">
-    <div class="card-body p-0">
-        @include('partials.payrolls.table')
-    </div>
+<div class="card mt-2">
+    @include('partials.payrolls.table')
 </div>
 
 @push('scripts')

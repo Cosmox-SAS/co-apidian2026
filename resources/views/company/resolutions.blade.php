@@ -45,15 +45,12 @@
 <header class="page-header d-flex justify-content-between align-items-center">
     <div>
         <h2>
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-file-invoice"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path><path d="M9 7l1 0"></path><path d="M9 13l6 0"></path><path d="M13 17l2 0"></path></svg>
+            Listado de Resoluciones
         </h2>
-        <ol class="breadcrumbs">
-            <li class="active">
-                <span>Listado de Resoluciones</span>
-            </li> 
-        </ol>
+        <br>
+        <span class="text-muted">{{ $company->user->name }} - {{ $company->user->email }} - {{ $company->identification_number }}-{{ $company->dv }}</span>
     </div>
-    <div class="right-wrapper text-right">
+    <div class="right-wrapper text-right mt-auto">
         <button class="btn btn-primary btn-sm text-white mr-2" data-toggle="modal" data-target="#newResolutionModal">
             <i class="fas fa-plus"></i> Nueva resolución
         </button>
@@ -61,18 +58,6 @@
 </header>
 
 <div class="card">
-    <div class="card-header ">
-        <div class="row no-wrapper">
-            <div class="col" style="line-height: 1rem;">
-                {{ $company->user->name }} <br>
-                <small>
-                    {{ $company->user->email }}<br>
-                    {{ $company->identification_number }}-{{ $company->dv }}
-                </small>
-            </div>
-        </div>
-    </div>
-
     <!-- Users Table -->
     <div class="table-responsive">
         <table class="table table-striped table-hover">

@@ -3,7 +3,7 @@
         <h2>{{ $company->user->name }} - {{ $company->identification_number }}</h2>
     </div>
     <div>
-        <a href="{{ route('company.production.index', $company->identification_number) }}" class="btn btn-outline-primary">
+        <a href="{{ route('company.production.index', $company->identification_number) }}" class="btn btn-secondary btn-sm">
             <i class="fas fa-arrow-left me-2"></i> Volver
         </a>
     </div>
@@ -19,7 +19,9 @@
 @if(session('error'))
 <div class="alert alert-danger alert-dismissible fade show" role="alert">
     {{ session('error') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="alert">
+        <span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg></span>
+    </button>
 </div>
 @endif
 
@@ -30,14 +32,16 @@
                 <li>{{ $error }}</li>
             @endforeach
         </ul>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="alert">
+            <span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg></span>
+        </button>
     </div>
 @endif
 
-<div class="row">
+<div class="row mt-3">
     <div class="col-md-12 mb-4">
-        <div class="card">
-            <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+        <div class="card card-config">
+            <div class="card-header">
                 <h5 class="mb-0">
                     <i class="fas fa-cog me-2"></i>
                     Proceso de Configuración y Consulta Documentos Soporte
@@ -106,7 +110,7 @@
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-info">
+                                <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-save me-1"></i>
                                     {{ $environmentStatus['has_software'] ? 'Actualizar' : 'Crear' }} Software
                                 </button>
@@ -204,7 +208,7 @@
                                 </div>
                             </div>
                             <div class="mt-3 text-end">
-                                <button type="submit" class="btn btn-info" id="saveResolutionBtn">
+                                <button type="submit" class="btn btn-primary" id="saveResolutionBtn">
                                     <i class="fas fa-save"></i> Guardar
                                 </button>
                             </div>
@@ -257,10 +261,10 @@
                 </div>
                 <div class="d-flex justify-content-between mt-4">
                     <div id="btnPrevStepContainer" style="flex:1;">
-                        <button id="btnPrevStep" class="btn btn-outline-primary" style="display: none;">Volver</button>
+                        <button id="btnPrevStep" class="btn btn-secondary" style="display: none;">Volver</button>
                     </div>
                     <div style="flex:1; text-align: right;">
-                        <button id="btnNextStep" class="btn btn-info">Siguiente</button>
+                        <button id="btnNextStep" class="btn btn-primary">Siguiente</button>
                     </div>
                 </div>
             </div>
@@ -434,65 +438,9 @@
     border: none;
     box-shadow: 0 2px 10px rgba(0,0,0,0.08);
 }
-.card {
-    border-radius: 15px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-    border: none;
-}
-.card-header.bg-primary,
-.card-header.bg-info,
-.card-header.bg-success,
-.card-header.bg-warning,
-.card-header.bg-danger {
-    background: linear-gradient(90deg, #4170d7ff, #00B4DC) !important;
-    border-radius: 15px 15px 0 0;
-    border: none;
-}
 .card-header h5 {
     font-weight: 600;
     letter-spacing: 0.5px;
-}
-.btn-outline-primary,
-.btn-primary,
-.btn-info,
-.btn-success,
-.btn-warning,
-.btn-danger {
-    border-radius: 20px;
-    font-weight: bold;
-    font-size: 16px;
-    padding: 8px 24px;
-    transition: all 0.3s;
-}
-.btn-outline-primary {
-    border-color: #4170d7ff;
-    color: #4170d7ff;
-    background: #fff;
-}
-.btn-outline-primary:hover {
-    background: linear-gradient(90deg, #4170d7ff, #00B4DC);
-    color: #fff;
-    border-color: #4170d7ff;
-}
-.btn-primary,
-.btn-info,
-.btn-success,
-.btn-warning,
-.btn-danger {
-    background: linear-gradient(90deg, #4170d7ff, #00B4DC);
-    border: none;
-    color: #fff;
-}
-.btn-primary:hover,
-.btn-info:hover,
-.btn-success:hover,
-.btn-warning:hover,
-.btn-danger:hover {
-    background: linear-gradient(90deg, #00B4DC, #4170d7ff);
-    color: #fff;
-}
-.form-label strong {
-    color: #4170d7ff;
 }
 .form-control:focus {
     border-color: #4170d7ff;
@@ -554,12 +502,6 @@ hr {
     font-weight: 500;
     text-align: center;
     min-width: 90px;
-}
-.stepper-item.active .stepper-circle,
-.stepper-item.active .stepper-label {
-    background: linear-gradient(90deg, #4170d7ff, #00B4DC);
-    color: #fff;
-    border-color: #4170d7ff;
 }
 .stepper-item.completed .stepper-circle {
     background: #4170d7ff;

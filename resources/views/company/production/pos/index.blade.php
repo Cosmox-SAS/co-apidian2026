@@ -3,7 +3,7 @@
         <h2>{{ $company->user->name }} - {{ $company->identification_number }}</h2>
     </div>
     <div>
-        <a href="{{ route('company.production.index', $company->identification_number) }}" class="btn btn-outline-primary">
+        <a href="{{ route('company.production.index', $company->identification_number) }}" class="btn btn-secondary btn-sm">
             <i class="fas fa-arrow-left me-2"></i> Volver
         </a>
     </div>
@@ -19,7 +19,9 @@
 @if(session('error'))
 <div class="alert alert-danger alert-dismissible fade show" role="alert">
     {{ session('error') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="alert">
+        <span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg></span>
+    </button>
 </div>
 @endif
 
@@ -30,15 +32,17 @@
         <li>{{ $error }}</li>
         @endforeach
     </ul>
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="alert">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+    </button>
 </div>
 @endif
 
-<div class="row">
+<div class="row mt-3">
     <div class="col-md-12 mb-4">
-        <div class="card">
-            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">
+        <div class="card card-config">
+            <div class="card-header">
+                <h5 class="mb-0 m-0">
                     <i class="fas fa-cog me-2"></i>
                     Proceso de Configuración y Consulta POS
                 </h5>
@@ -256,7 +260,7 @@
                 </div>
                 <div class="d-flex justify-content-between mt-4">
                     <div id="btnPrevStepContainer" style="flex:1;">
-                        <button id="btnPrevStep" class="btn btn-outline-primary" style="display: none;">Volver</button>
+                        <button id="btnPrevStep" class="btn btn-secondary" style="display: none;">Volver</button>
                     </div>
                     <div style="flex:1; text-align: right;">
                         <button id="btnNextStep" class="btn btn-primary">Siguiente</button>
@@ -357,12 +361,6 @@
         font-weight: 500;
         text-align: center;
         min-width: 90px;
-    }
-    .stepper-item.active .stepper-circle,
-    .stepper-item.active .stepper-label {
-        background: linear-gradient(90deg, #4170d7ff, #00B4DC);
-        color: #fff;
-        border-color: #4170d7ff;
     }
     .stepper-item.completed .stepper-circle {
         background: #4170d7ff;

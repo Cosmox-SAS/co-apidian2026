@@ -62,7 +62,7 @@
                 </div>
             </div>
         </nav>
-        <section role="main" class="content-body" id="main-wrapper">
+        <section role="main" class="content-body content-body-auth" id="main-wrapper">
           @yield('content')
         </section>
     </div>

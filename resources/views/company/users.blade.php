@@ -4,21 +4,18 @@
 <header class="page-header d-flex align-items-center justify-content-between">
     <div>
         <h2>
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-users-group"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 13a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path><path d="M8 21v-1a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v1"></path><path d="M15 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path><path d="M17 10h2a2 2 0 0 1 2 2v1"></path><path d="M5 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path><path d="M3 13v-1a2 2 0 0 1 2 -2h2"></path></svg>
+            Listado de Usuarios
         </h2>
-        <ol class="breadcrumbs">
-            <li class="active">
-                <span>Listado de Usuarios</span>
-            </li> 
-            <li class="active">
-                <span>
-                    {{ $company->user->name }}
-                </span>
-            </li> 
-        </ol>
+        <br>
+        <span class="text-muted">
+            {{ $company->user->name }}
+        </span>
     </div>
     <div class="right-wrapper text-right">
-        <button class="btn btn-primary btn-sm text-white mr-2" data-toggle="modal" data-target="#userModal">Añadir usuario</button>
+        <button class="btn btn-primary btn-sm text-white mr-2" data-toggle="modal" data-target="#userModal">
+            <i class="fas fa-plus"></i>
+            Añadir usuario
+        </button>
     </div>
 </header>
 

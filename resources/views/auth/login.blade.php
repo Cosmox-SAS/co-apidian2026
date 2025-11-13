@@ -64,6 +64,7 @@
                                 </div>
                             </div>
                         @endif
+                        <p class="text-muted text-center" style="margin: 10px 0 0 0; font-size: 13px">v. 2026 - FacturaLatam</p>
                     </form>
                 </div>
             </div>

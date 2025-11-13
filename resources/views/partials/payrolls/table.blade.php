@@ -1,5 +1,5 @@
 @if ($documents->isEmpty())
-    <div>No hay documentos para mostrar.</div>
+    <div class="text-muted text-center mt-4">No hay documentos para mostrar.</div>
 @else
     @if(!(Request::is('company*') || Request::is('companies*')))
     <form method="GET" action="{{ url('/oksellerspayrollssearch/'.$company_idnumber) }}">
@@ -34,8 +34,8 @@
     </form>
     @endif
     <div class="table-responsive">
-        <table class="table table-sm">
-            <thead class="thead-dark">
+        <table class="table table-striped table-hover">
+            <thead class="thead-light">
                 <tr>
                     <th scope="col">Tipo Documento</th>
                     <th scope="col">Fecha</th>

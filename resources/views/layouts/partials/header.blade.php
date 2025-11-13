@@ -1,12 +1,12 @@
 <header class="header">
-    <div class="logo-container">
+    {{-- <div class="logo-container">
         <a href="{{route('home')}}" class="logo">
             APIDIAN
         </a>
         <div class="d-md-none toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
             <i class="fas fa-bars" aria-label="Toggle sidebar"></i>
         </div>
-    </div>
+    </div> --}}
     @if(Request::is('company*'))
                 <span class="separator"></span>
                 <div id="userbox" class="userbox mx-0 px-0">

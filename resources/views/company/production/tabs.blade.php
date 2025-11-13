@@ -20,7 +20,7 @@
             </button>
         </li>
     </ul>
-    <div class="tab-content" id="invoiceTabsContent" style="background: #f9f9f9;">
+    <div class="tab-content" id="invoiceTabsContent">
         <div class="tab-pane fade" id="list" role="tabpanel" aria-labelledby="list-tab">
             @include($listView, [
                 'documents' => $documents,
@@ -43,11 +43,6 @@
 
 @push('styles')
 <style>
-.nav-tabs {
-    border-bottom: 1px solid #eee;
-    margin-left: 0;
-    margin-right: 0;
-}
 .nav-tabs .nav-item {
     width: 50%;
     display: flex;

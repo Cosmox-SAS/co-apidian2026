@@ -9,10 +9,17 @@ $cust_id = $path[2];
 
 <aside id="sidebar-left" class="sidebar-left">
     <div class="sidebar-header">
-        <div class="sidebar-title" style="padding-left: 30px;">
-            Menu
-        </div>
-        <div class="sidebar-toggle d-none d-md-block" data-toggle-class="sidebar-left-collapsed" data-target="html" data-fire-event="sidebar-left-toggle">
+        <a href="{{route('home')}}" class="sidebar-title p-0 nav-link d-flex align-items-center">
+            <div class="icon-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-letter-a-small"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 16v-6a2 2 0 1 1 4 0v6" /><path d="M10 13h4" /></svg>
+            </div>            
+            <span class="sidebar-title-text-container">
+                <span class="sidebar-title-text">Apidian</span>
+                <br>
+                <span class="text-muted sidebar-title-text-second">Menu</span>
+            </span>
+        </a>
+        <div class="sidebar-toggle d-none d-md-block" data-toggle-class="sidebar-left-collapsed" data-target="html" data-fire-event="sidebar-left-toggle" style="display: none !important">
             <i class="fas fa-bars" aria-label="Toggle sidebar"></i>
         </div>
     </div>
