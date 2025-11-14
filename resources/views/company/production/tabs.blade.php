@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid px-0">
+<div class="container-fluid px-0 mt-2">
     <ul class="nav nav-tabs nav-justified mb-0" id="invoiceTabs" role="tablist" style="background: #fff;">
         <li class="nav-item d-flex" role="presentation">
             <button class="nav-link w-100 d-flex justify-content-center align-items-center px-3 py-2 fw-bold"

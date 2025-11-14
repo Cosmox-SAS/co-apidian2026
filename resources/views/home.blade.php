@@ -6,7 +6,7 @@
             Listado de Empresas    
         </h2>
     </div>
-    <div class="right-wrapper text-end">
+    <div class="right-wrapper text-end mt-auto pb-1">
         <a href="{{ route('configuration_admin') }}" class="btn btn-primary btn-sm text-white mr-2">
             <i class="fas fa-plus"></i>
             Nueva empresa

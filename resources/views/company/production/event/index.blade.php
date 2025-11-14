@@ -1,14 +1,3 @@
-<header class="page-header d-flex justify-content-between align-items-center mb-3">
-    <div>
-        <h2>{{ $company->user->name }} - {{ $company->identification_number }}</h2>
-    </div>
-    <div>
-        <a href="{{ route('company.production.index', $company->identification_number) }}" class="btn btn-secondary btn-sm">
-            <i class="fas fa-arrow-left me-2"></i> Volver
-        </a>
-    </div>
-</header>
-
 @if(session('success'))
 <div class="alert alert-success alert-dismissible fade show" role="alert">
     {{ session('success') }}
@@ -31,7 +20,7 @@
         <div class="card card-config">
             <div class="card-header">
                 <h5 class="mb-0 m-0">
-                    <i class="fas fa-server me-2"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-server" style="margin-top: -3px"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 4m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" /><path d="M3 12m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" /><path d="M7 8l0 .01" /><path d="M7 16l0 .01" /></svg>
                     Estado del Ambiente - Eventos RADIAN
                 </h5>
             </div>
@@ -58,12 +47,12 @@
                         <div class="mt-2">
                             @if($environmentStatus['environment_id'] == 1)
                                 <span class="badge bg-success fs-6">
-                                    <i class="fas fa-check-circle me-1"></i>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-circle-check" style="margin-top: -3px"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M9 12l2 2l4 -4" /></svg>
                                     Producción
                                 </span>
                             @else
                                 <span class="badge bg-warning fs-6">
-                                    <i class="fas fa-exclamation-triangle me-1"></i>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-alert-triangle" style="margin-top: -3px"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9v4" /><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" /><path d="M12 16h.01" /></svg>
                                     Habilitación
                                 </span>
                             @endif

@@ -50,8 +50,11 @@
         <br>
         <span class="text-muted">{{ $company->user->name }} - {{ $company->user->email }} - {{ $company->identification_number }}-{{ $company->dv }}</span>
     </div>
-    <div class="right-wrapper text-right mt-auto">
-        <button class="btn btn-primary btn-sm text-white mr-2" data-toggle="modal" data-target="#newResolutionModal">
+    <div class="right-wrapper text-right mt-auto pb-1">
+        <a href="{{ route('home') }}" class="btn btn-secondary btn-sm">
+            <i class="fas fa-arrow-left me-2"></i> Volver
+        </a>
+        <button class="btn btn-primary btn-sm text-white ml-2" data-toggle="modal" data-target="#newResolutionModal">
             <i class="fas fa-plus"></i> Nueva resolución
         </button>
     </div>

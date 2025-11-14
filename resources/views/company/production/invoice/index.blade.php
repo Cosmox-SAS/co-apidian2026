@@ -1,14 +1,3 @@
-<header class="page-header d-flex justify-content-between align-items-center mb-3">
-    <div>
-        <h2>{{ $company->user->name }} - {{ $company->identification_number }}</h2>
-    </div>
-    <div>
-        <a href="{{ route('company.production.index', $company->identification_number) }}" class="btn btn-secondary btn-sm">
-            <i class="fas fa-arrow-left me-2"></i> Volver
-        </a>
-    </div>
-</header>
-
 @if(session('success'))
 <div class="alert alert-success alert-dismissible fade show" role="alert">
     {{ session('success') }}
@@ -43,7 +32,7 @@
         <div class="card card-config">
             <div class="card-header">
                 <h5 class="mb-0">
-                    <i class="fas fa-cog me-2"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-settings" style="margin-top: -3px"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" /><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /></svg>
                     Proceso de Configuración y Consulta
                 </h5>
             </div>
@@ -111,7 +100,7 @@
                             </div>
                             <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save me-1"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-device-floppy" style="margin-top: -3px"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" /><path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M14 4l0 4l-6 0l0 -4" /></svg>
                 {{ $environmentStatus['has_software'] ? 'Actualizar' : 'Crear' }} Software
             </button>
         </div>
@@ -217,7 +206,8 @@
                             </div>
                             <div class="mt-3 text-end">
                                 <button type="submit" class="btn btn-primary" id="saveResolutionBtn">
-                                    <i class="fas fa-save"></i> Guardar
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-device-floppy" style="margin-top: -3px"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" /><path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M14 4l0 4l-6 0l0 -4" /></svg> 
+                                    Guardar
                                 </button>
                             </div>
                         </form>
@@ -474,7 +464,7 @@
                 updateStepper();
             } else if (currentStep === totalSteps) {
                 // Redirigir al listado de comprobantes al finalizar
-                window.location.href = "{{ route('company.production.tabs', [$company->identification_number, 'invoice']) }}";
+                window.location.href = "{{ route('company.production.index', $company->identification_number) }}";
             }
         });
     });

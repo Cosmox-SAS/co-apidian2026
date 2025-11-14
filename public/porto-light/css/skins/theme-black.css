@@ -42,6 +42,7 @@ section.content-body-auth {
     border-radius: 0;
     box-shadow: none !important;
     padding: 10px 2px 0 2px !important;
+    height: auto !important;
 }
 .page-header h2{
     border-bottom: 0;
@@ -377,6 +378,10 @@ html.sidebar-light:not(.dark) ul.nav-main li a svg{
     padding: 15px 0 0 0;
     border: none;
     box-shadow: none;
+}
+.nav-tabs.nav-justified li .nav-link{
+    border-radius: 6px !important;
+    outline: none !important;
 }
 .modal-header,
 .modal-footer,

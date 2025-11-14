@@ -11,8 +11,11 @@
             {{ $company->user->name }}
         </span>
     </div>
-    <div class="right-wrapper text-right">
-        <button class="btn btn-primary btn-sm text-white mr-2" data-toggle="modal" data-target="#userModal">
+    <div class="right-wrapper text-right mt-auto pb-1">
+        <a href="{{ route('home') }}" class="btn btn-secondary btn-sm">
+            <i class="fas fa-arrow-left me-2"></i> Volver
+        </a>
+        <button class="btn btn-primary btn-sm text-white ml-2" data-toggle="modal" data-target="#userModal">
             <i class="fas fa-plus"></i>
             Añadir usuario
         </button>

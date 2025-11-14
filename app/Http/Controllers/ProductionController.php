@@ -18,8 +18,67 @@ class ProductionController extends Controller
     public function index($company)
     {
         $company = Company::where('identification_number', $company)->firstOrFail();
+        
+        // Preparar datos para cada tipo de documento
+        $environmentStatuses = [
+            'invoice' => $this->getEnvironmentStatus($company, 'invoice'),
+            'payroll' => $this->getEnvironmentStatus($company, 'payroll'),
+            'support' => $this->getEnvironmentStatus($company, 'support'),
+            'pos' => $this->getEnvironmentStatus($company, 'pos'),
+            'event' => $this->getEnvironmentStatus($company, 'event'),
+        ];
+        
+        $typeDocuments = TypeDocument::all();
+        
+        // Cargar documentos para cada tipo
+        $invoiceData = [
+            'documents' => Document::where('identification_number', $company->identification_number)
+                ->whereIn('type_document_id', [1,2,3,4,5])
+                ->orderBy('id', 'DESC')
+                ->paginate(20, ['*'], 'invoice_page'),
+            'resolution_credit_notes' => Resolution::where('type_document_id', 4)
+                ->where('company_id', $company->id)
+                ->get()
+        ];
+        
+        $payrollData = [
+            'documents' => DocumentPayroll::where('state_document_id', 1)
+                ->where('identification_number', $company->identification_number)
+                ->orderBy('id', 'DESC')
+                ->paginate(20, ['*'], 'payroll_page')
+        ];
+        
+        $supportData = [
+            'documents' => Document::where('identification_number', $company->identification_number)
+                ->whereIn('type_document_id', [11,13])
+                ->orderBy('id', 'DESC')
+                ->paginate(20, ['*'], 'support_page')
+        ];
+        
+        $eventData = [
+            'documents' => ReceivedDocument::where('customer', $company->identification_number)
+                ->where('state_document_id', 1)
+                ->orderBy('id', 'DESC')
+                ->paginate(10, ['*'], 'event_page')
+        ];
+        
+        $posData = [
+            'documents' => Document::where('identification_number', $company->identification_number)
+                ->whereIn('type_document_id', [15,16,19,20,22,25,26])
+                ->orderBy('id', 'DESC')
+                ->paginate(20, ['*'], 'pos_page')
+        ];
 
-        return view('company.production.index', compact('company'));
+        return view('company.production.index', compact(
+            'company', 
+            'environmentStatuses', 
+            'typeDocuments',
+            'invoiceData',
+            'payrollData',
+            'supportData',
+            'eventData',
+            'posData'
+        ));
     }
 
     public function documentsTabs($company, $type = 'invoice')

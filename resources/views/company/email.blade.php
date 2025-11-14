@@ -10,15 +10,20 @@
         <br>
         <span class="text-muted">{{ $company->user->name }} - {{ $company->user->email }} - {{ $company->identification_number }}-{{ $company->dv }}</span>
     </div>
+    <div class="right-wrapper text-right mt-auto pb-1">
+        <a href="{{ route('home') }}" class="btn btn-secondary btn-sm">
+            <i class="fas fa-arrow-left me-2"></i> Volver
+        </a>
+    </div>
 </header>
 
 <div class="card card-config">
     <div class="card-header">
-        <h5 class="card-title mb-0">
+        <h5 class="m-0">
             @if($emailConfig['has_custom_config'])
-                <small class="text-muted">Configuración personalizada</small>
+                <span>Configuración personalizada</span>
             @else
-                <small class="text-muted">Usando configuración general del sistema</small>
+                <span>Usando configuración general del sistema</span>
             @endif
         </h5>
     </div>
