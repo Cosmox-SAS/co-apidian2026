@@ -2,27 +2,33 @@
 - LARAGON
 - VISUAL STUDIO CODE
 - POSTMAN
-- PHP 7.4
-
-https://laragon.org/download/index.html
-https://www.postman.com/downloads/
-https://code.visualstudio.com/docs/?dv=win
+- PHP 8.3
+descargar e instalar Laragon 5.0 [https://github.com/leokhoa/laragon/releases/download/5.0.0/laragon-wamp.x86.exe]
+instalar por defecto en C:/laragon 
+abrir la consola y verificar que cuente con:
+descargar php 8.3
+https://windows.php.net/downloads/releases/archives/php-8.3.0-nts-Win32-vs16-x64.zip
 
 Para tener otra versiones de PHP en tu Laragon:
 https://villagrabaez.medium.com/actualizar-php-a-la-versi%C3%B3n-7-4-en-laragon-75f3546114f1
 
+php 8.3 o superior php -v
+
+https://www.postman.com/downloads/
+https://code.visualstudio.com/docs/?dv=win
+
 #COMANDOS DE INSTALACION (usar la terminal de laragon):
-
 git config --global http.sslverify false
-git clone https://git.buho.la/facturalatam/co-apidian2025.git apidian2025
-cd apidian2025
+git clone https://git.buho.la/facturalatam/co-apidian2026.git apidian2026
+cd apidian2026
 cp .env.example .env
-#[Nota] Abra el archivo .env y verifique la cadena de conexión a la base de datos, son las variables con prefijos DB_
-
-composer self-update
+#[Nota] Crear la base de datos en laragon
+#[Nota] Abra el archivo .env y verifique la cadena de conexión a la base de datos, son las variables con prefijos DB_ y tambien agregar esta linea para la conversion del certificado URL_API_CERT_MODERNIZER="http://62.146.176.127:8091"
+composer self-update 2.8.0
 composer install
 php artisan key:generate
 php artisan migrate --seed
+php artisan migrate
 unzip storage.zip
 chmod -R 777 storage
 chmod -R 777 bootstrap/cache
