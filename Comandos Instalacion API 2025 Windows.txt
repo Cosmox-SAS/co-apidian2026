@@ -9,6 +9,14 @@ abrir la consola y verificar que cuente con:
 descargar php 8.3
 https://windows.php.net/downloads/releases/archives/php-8.3.0-nts-Win32-vs16-x64.zip
 
+descargar mysql 5.7.20
+https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.20-winx64.zip
+
+Para tener otras versiones de mysql en laragon (5.7.20)
+https://misterdigital.es/como-actualizar-mysql-en-laragon/
+
+mysql 5.7.20 | mysql -V
+
 Para tener otra versiones de PHP en tu Laragon:
 https://villagrabaez.medium.com/actualizar-php-a-la-versi%C3%B3n-7-4-en-laragon-75f3546114f1
 
