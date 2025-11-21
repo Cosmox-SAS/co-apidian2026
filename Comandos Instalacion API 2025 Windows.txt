@@ -12,6 +12,18 @@ https://windows.php.net/downloads/releases/archives/php-8.3.0-nts-Win32-vs16-x64
 descargar mysql 5.7.20
 https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.20-winx64.zip
 
+#OBS
+En caso de error no se encontro MSVCR120.dll, descargar https://www.microsoft.com/en-us/download/details.aspx?id=40784
+e instalar (ambos)
+-vcredist_x86.exe
+-vcredist_x64.exe
+
+Si no tiene instalado GIT, descargar e instalar:
+https://git-scm.com/install/windows
+
+Si no tiene instalado Composer, descargar e instalar:
+https://getcomposer.org/download/
+
 Para tener otras versiones de mysql en laragon (5.7.20)
 https://misterdigital.es/como-actualizar-mysql-en-laragon/
 
@@ -33,7 +45,11 @@ cp .env.example .env
 #[Nota] Crear la base de datos en laragon
 #[Nota] Abra el archivo .env y verifique la cadena de conexión a la base de datos, son las variables con prefijos DB_ y tambien agregar esta linea para la conversion del certificado URL_API_CERT_MODERNIZER="http://62.146.176.127:8091"
 composer self-update 2.8.0
-composer install
+#[Nota] Si da error de permisos por haber instalado en la unidad C, abra visual studio como Administrador
+
+omposer install
+#[nota] Si sale error por el paquete patie/laravel-backup, entonces debe activar la extensión zip desde laragon o desde php.ini ;extension=zip
+
 php artisan key:generate
 php artisan migrate --seed
 php artisan migrate
