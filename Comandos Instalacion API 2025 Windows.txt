@@ -12,6 +12,12 @@ https://windows.php.net/downloads/releases/archives/php-8.3.0-nts-Win32-vs16-x64
 descargar mysql 5.7.20
 https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.20-winx64.zip
 
+#OBS
+En caso de error no se encontro MSVCR120.dll, descargar https://www.microsoft.com/en-us/download/details.aspx?id=40784
+e instalar (ambos)
+-vcredist_x86.exe
+-vcredist_x64.exe
+
 Para tener otras versiones de mysql en laragon (5.7.20)
 https://misterdigital.es/como-actualizar-mysql-en-laragon/
 
