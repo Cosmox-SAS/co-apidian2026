@@ -21,6 +21,9 @@ e instalar (ambos)
 Si no tiene instalado GIT, descargar e instalar:
 https://git-scm.com/install/windows
 
+Si no tiene instalado Composer, descargar e instalar:
+https://getcomposer.org/download/
+
 Para tener otras versiones de mysql en laragon (5.7.20)
 https://misterdigital.es/como-actualizar-mysql-en-laragon/
 
