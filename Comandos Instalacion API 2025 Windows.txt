@@ -18,6 +18,9 @@ e instalar (ambos)
 -vcredist_x86.exe
 -vcredist_x64.exe
 
+Si no tiene instalado GIT, descargar e instalar:
+https://git-scm.com/install/windows
+
 Para tener otras versiones de mysql en laragon (5.7.20)
 https://misterdigital.es/como-actualizar-mysql-en-laragon/
 
