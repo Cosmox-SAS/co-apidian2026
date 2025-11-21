@@ -46,6 +46,8 @@ cp .env.example .env
 #[Nota] Abra el archivo .env y verifique la cadena de conexión a la base de datos, son las variables con prefijos DB_ y tambien agregar esta linea para la conversion del certificado URL_API_CERT_MODERNIZER="http://62.146.176.127:8091"
 composer self-update 2.8.0
 composer install
+#[nota] Si sale error por el paquete patie/laravel-backup, entonces debe activar la extensión zip desde laragon o desde php.ini ;extension=zip
+
 php artisan key:generate
 php artisan migrate --seed
 php artisan migrate
