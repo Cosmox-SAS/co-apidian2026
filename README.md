@@ -22,6 +22,10 @@ Estamos enfocados en crear herramientas y soluciones para desarrolladores de sof
      * [Pasos aquí](https://git.buho.la/-/snippets/31)
 - ### CPanel
   * [Ver manual aquí](https://git.buho.la/facturalatam/co-apidian2026/-/snippets/48)
+- ### Migracion Api2025 a Api2026 windows:
+  *  [Pasos aquí](https://git.buho.la/facturalatam/co-apidian2026/-/snippets/49)  
+- ### Migracion Api2025 a Api2026 Docker:
+  *  [Pasos aquí](https://git.buho.la/facturalatam/co-apidian2026/-/snippets/50)
 
 ## 2. Actualización
 
