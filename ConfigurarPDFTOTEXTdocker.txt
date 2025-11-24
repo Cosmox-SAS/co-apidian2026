@@ -1,0 +1,15 @@
+Procedimiento para habilitar la opcion de subir Fichas Rut en creacion de empresa:
+pasos:
+
+ejecutar docker ps
+
+Aparecera un listado con los contenedores activos, debemos identificar el contenedor mediante el COMMAND con valor php-api26 o similar
+copiar el primer valor de la linea equivalente a CONTAINER ID
+
+ejecutar docker exec -ti codigodelcontenedor bash
+
+una vez ingresado al contenedor, ejecutar 
+apt-get update
+apt-get install -y poppler-utils
+
+ejecutar php artisan config:cache && php artisan cache:clear && php artisan optimize:clear

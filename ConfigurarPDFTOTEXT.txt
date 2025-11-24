@@ -1,0 +1,67 @@
+Requisitos windows:
+
+1. instalar poppler:
+https://github.com/oschwartz10612/poppler-windows/releases/tag/v25.11.0-0
+
+2. Extraer Poppler en una ruta fija
+
+Recomendado:
+C:\poppler
+
+El ejecutable que usará Laravel será:
+C:\poppler\Library\bin\pdftotext.exe
+
+3. Agregar Poppler al PATH (para que Windows lo encuentre)
+
+Abrir Windows → Buscar "Editar las variables de entorno del sistema"
+
+Clic en Variables de entorno
+En la sección Variables del sistema, buscar → Path
+
+Clic en Editar
+
+Añadir:
+C:\poppler\Library\bin
+
+Aceptar todo
+
+4. Verificar instalación desde Laragon Terminal
+Abrir terminal de Laragon:
+pdftotext -v
+
+5. ACTUALIZAR DOCUMENTACIÓN DEL .env
+
+Agregar esta línea:
+PDFTOTEXT_PATH="C:/poppler/Library/bin/pdftotext.exe"
+
+Actualizar caché de Laravel:
+php artisan config:clear
+php artisan cache:clear
+php artisan config:cache
+
+
+Requisitos Linux:
+
+
+1. Instalar Poppler (Ubuntu/Debian):
+
+sudo apt-get update
+sudo apt-get install -y poppler-utils
+
+Esto instala:
+/usr/bin/pdftotext
+
+2. Verificar instalación:
+
+pdftotext -v
+
+Debe mostrar una versión → ✔ Instalado.
+
+3. Actualizar .env
+Agregar esta línea:
+PDFTOTEXT_PATH=/usr/bin/pdftotext
+
+Actualizar caché de Laravel:
+php artisan config:clear
+php artisan cache:clear
+php artisan config:cache
