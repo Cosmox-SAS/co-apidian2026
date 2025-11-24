@@ -180,9 +180,30 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-md-12 text-center mt-4">
-                    <el-button size="medium" :loading="loading_submit" type="primary" @click="saveCompany">
-                        Siguiente</el-button>
+                <div class="col-md-12 mt-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <el-upload
+                                ref="rutUploader"
+                                action="#"
+                                :show-file-list="false"
+                                :auto-upload="false"
+                                :on-change="onRutChange"
+                                accept="application/pdf"
+                                class="d-inline-block"
+                            >
+                                <el-button type="primary" icon="el-icon-upload" size="medium">
+                                    Cargar RUT
+                                </el-button>
+                            </el-upload>
+                        </div>
+                        <div class="flex-grow-1 d-flex justify-content-center">
+                            <el-button size="medium" :loading="loading_submit" type="primary" @click="saveCompany">
+                                Siguiente
+                            </el-button>
+                        </div>
+                        <div style="width: 120px;"></div> <!-- Espacio para equilibrar el layout -->
+                    </div>
                 </div>
             </div>
 
@@ -278,7 +299,8 @@
                 responseCompany: {},
                 responseSoftware: {},
                 responseCertificate: {},
-                responseResolution: {}
+                responseResolution: {},
+                selectedRutName: null,
             };
         },
         created() {
@@ -289,6 +311,21 @@
             initForm() {
                 this.form = {
                     generated_to_date: 0,
+                    nit: null,
+                    dv: null,
+                    business_name: null,
+                    merchant_registration: null,
+                    phone: null,
+                    email: null,
+                    address: null,
+
+                    department_id: null,
+                    municipality_id: null,
+
+                    type_document_identification_id: null,
+                    type_liability_id: null,
+                    type_organization_id: null,
+                    type_regime_id: null,
                 };
                 this.responseCompany = {};
                 this.responseSoftware = {};
@@ -400,6 +437,47 @@
                         })
                         .catch(error => {})
                         .then(() => {});
+                });
+            },
+            onRutChange(file) {
+                const realFile = file.raw;
+                this.selectedRutName = realFile.name;
+
+                if (!realFile) {
+                    this.$message.error("No se pudo leer el archivo");
+                    return;
+                }
+
+                this.initForm();
+
+                const formData = new FormData();
+                formData.append("rut", realFile);
+
+                this.$http.post("/configuration/extract-rut", formData, {
+                    headers: { "Content-Type": "multipart/form-data" }
+                })
+                .then(({ data }) => {
+                    if (!data.success) {
+                        this.$message.error(data.message);
+                        return;
+                    }
+
+                    Object.assign(this.form, data.fields);
+
+                    if (data.fields.department_id) {
+                        this.form.department_id = data.fields.department_id;
+                        this.filterMunicipality();
+                    }
+
+                    if (data.fields.municipality_id) {
+                        this.form.municipality_id = data.fields.municipality_id;
+                    }
+
+                    this.$message.success("Datos del RUT cargados correctamente");
+                })
+                .catch(err => {
+                    console.error(err);
+                    this.$message.error("Error procesando el RUT");
                 });
             }
         }

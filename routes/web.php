@@ -114,6 +114,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/configuration_admin', 'ConfigurationController@configuration_admin')->name('configuration_admin');
     Route::post('/configuration', 'ConfigurationController@store')->name('configuration_store');
     Route::get('configuration/tables', 'ConfigurationController@tables');
+    Route::post('configuration/extract-rut', 'ConfigurationController@extractRut');
     Route::get('configuration/records', 'ConfigurationController@records');
 
     Route::get('tax', 'TaxController@index')->name('tax_index');
