@@ -389,7 +389,7 @@
         flex: 1 1 0;
         height: 3px;
         background: #e0e7ef;
-        margin: 0 8px;
+        margin: -24px 8px 0 8px !important;
         border-radius: 2px;
         min-width: 30px;
         max-width: 60px;

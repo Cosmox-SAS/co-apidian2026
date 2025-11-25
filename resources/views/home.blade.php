@@ -13,7 +13,25 @@
         </a>
     </div>
 </header>
+<div class="card mb-3">
+    <div class="card-body">
+        <div class="row align-items-end">
+            <div class="col-md-8">
+                <label><strong>Búsqueda</strong></label>
+                <input type="text" id="filter-text" class="form-control" placeholder="Escribe para buscar...">
+            </div>
 
+            <div class="col-md-4">
+                <label><strong>Filtrar por</strong></label>
+                <select id="filter-type" class="form-control" clearable>
+                    <option value="nit">NIT</option>
+                    <option value="email">Correo</option>
+                    <option value="name">Nombre</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="card">
     <div class="table-responsive">
         <table class="table table-striped table-hover">
@@ -38,42 +56,108 @@
                         <td class="text-right">
                             <el-dropdown trigger="click">
                                 <el-button size="small" class="btn-dropdown-toggle">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-dots"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-dots">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/>
+                                        <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/>
+                                        <path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/>
+                                    </svg>
                                 </el-button>
                                 <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item class="d-flex align-items-center justify-content-between"
+                                    <el-dropdown-item class="d-flex align-items-center"
                                         @click.native="openEditModal({{ $row->id }}, '{{ $row->identification_number }}', '{{ $row->dv }}', {{ $row->type_document_identification_id }}, {{ $row->type_regime_id }}, {{ $row->type_liability_id }}, {{ $row->municipality_id }}, '{{ $row->merchant_registration }}', '{{ $row->address }}', '{{ $row->phone }}', '{{ $row->user->api_token }}')">
-                                        Editar Empresa
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit text-muted"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg>
+                                        <span class="dropdown-icon-left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-edit text-muted">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"/>
+                                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"/>
+                                                <path d="M16 5l3 3"/>
+                                            </svg>
+                                        </span>
+                                        <span class="ml-2">Editar Empresa</span>
                                     </el-dropdown-item>
                                     <el-dropdown-item divided></el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <a href="{{ route('company.resolutions.index', $row->identification_number)}}" style="text-decoration: none; color: inherit; display: block;">
-                                            Resoluciones
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-file-invoice text-muted"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M9 7l1 0" /><path d="M9 13l6 0" /><path d="M13 17l2 0" /></svg>
-                                        </a>
+                                    <el-dropdown-item class="d-flex align-items-center" onclick="redirectTo('{{ route('company.production.index', $row->identification_number) }}')">
+                                            <span class="dropdown-icon-left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="icon icon-tabler icons-tabler-outline icon-tabler-file-description text-muted">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                    <path d="M14 3v4a1 1 0 0 0 1 1h4"/>
+                                                    <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/>
+                                                    <path d="M9 17h6"/>
+                                                    <path d="M9 13h6"/>
+                                                </svg>
+                                            </span>
+                                            <span class="ml-2">Documentos Electrónicos</span>
+                                    </el-dropdown-item >
+                                    <el-dropdown-item class="d-flex align-items-center" onclick="redirectTo('{{ route('company.resolutions.index', $row->identification_number) }}')">
+                                            <span class="dropdown-icon-left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="icon icon-tabler icons-tabler-outline icon-tabler-file-invoice text-muted">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                    <path d="M14 3v4a1 1 0 0 0 1 1h4"/>
+                                                    <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/>
+                                                    <path d="M9 7h1"/>
+                                                    <path d="M9 13h6"/>
+                                                    <path d="M13 17h2"/>
+                                                </svg>
+                                            </span>
+                                            <span class="ml-2">Resoluciones</span>
                                     </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <a href="{{ route('company.production.index', $row->identification_number)}}" style="text-decoration: none; color: inherit; display: block;">
-                                            Documentos Electrónicos
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-file-description text-muted"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M9 17h6" /><path d="M9 13h6" /></svg>
-                                        </a>
+                                    <el-dropdown-item class="d-flex align-items-center" onclick="redirectTo('{{ route('company.users.index', $row->id) }}')">
+                                            <span class="dropdown-icon-left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="icon icon-tabler icons-tabler-outline icon-tabler-users-group text-muted">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                    <path d="M10 13a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/>
+                                                    <path d="M8 21v-1a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v1"/>
+                                                    <path d="M15 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/>
+                                                    <path d="M17 10h2a2 2 0 0 1 2 2v1"/>
+                                                    <path d="M5 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/>
+                                                    <path d="M3 13v-1a2 2 0 0 1 2 -2h2"/>
+                                                </svg>
+                                            </span>
+                                            <span class="ml-2">Usuarios</span>
                                     </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <a href="{{ route('company.users.index', $row->id)}}" style="text-decoration: none; color: inherit; display: block;">
-                                            Usuarios
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-users-group text-muted"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 13a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M8 21v-1a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v1" /><path d="M15 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M17 10h2a2 2 0 0 1 2 2v1" /><path d="M5 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M3 13v-1a2 2 0 0 1 2 -2h2" /></svg>
-                                        </a>
+                                    <el-dropdown-item class="d-flex align-items-center" onclick="redirectTo('{{ route('company.email.index', $row->id) }}')">
+                                            <span class="dropdown-icon-left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="icon icon-tabler icons-tabler-outline icon-tabler-mail text-muted">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                    <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"/>
+                                                    <path d="M3 7l9 6l9 -6"/>
+                                                </svg>
+                                            </span>
+                                            <span class="ml-2">Configurar Correo</span>
                                     </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <a href="{{ route('company.email.index', $row->id)}}" style="text-decoration: none; color: inherit; display: block;">
-                                            Configurar Correo
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-mail text-muted"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
-                                        </a>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item @click.native="openAccessModal()" class="d-flex align-items-center justify-content-between">
-                                        Acceso a la App
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-device-mobile text-muted"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 5a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2v-14z" /><path d="M11 4h2" /><path d="M12 17v.01" /></svg>
+                                    <el-dropdown-item class="d-flex align-items-center"
+                                        @click.native="openAccessModal()">
+                                        <span class="dropdown-icon-left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-device-mobile text-muted">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                <path d="M6 5a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2v-14z"/>
+                                                <path d="M11 4h2"/>
+                                                <path d="M12 17v.01"/>
+                                            </svg>
+                                        </span>
+                                        <span class="ml-2">Acceso a la App</span>
                                     </el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
@@ -393,6 +477,42 @@
 
 @push('scripts')
 <script>
+window.redirectTo = function(url) {
+    window.location.href = url;
+}
+document.addEventListener("DOMContentLoaded", function () {
+
+    const filterText = document.getElementById("filter-text");
+    const filterType = document.getElementById("filter-type");
+
+    const tableRows = document.querySelectorAll("table tbody tr");
+
+    function applyFilter() {
+        const value = filterText.value.toLowerCase().trim();
+        const type = filterType.value;
+
+        tableRows.forEach(row => {
+            let columnText = "";
+
+            if (type === "nit") {
+                columnText = row.children[1].textContent.toLowerCase(); // NIT
+            } else if (type === "email") {
+                columnText = row.children[4].textContent.toLowerCase(); // email
+            } else if (type === "name") {
+                columnText = row.children[3].textContent.toLowerCase(); // nombre
+            }
+
+            if (columnText.includes(value)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    }
+
+    filterText.addEventListener("keyup", applyFilter);
+    filterType.addEventListener("change", applyFilter);
+});
 $(document).ready(function () {
     let currentCompanyId = null;
     let currentApiToken = null;
@@ -710,6 +830,8 @@ $(document).ready(function () {
             e.preventDefault();
         }
     });
+
+
 });
 </script>
 @endpush

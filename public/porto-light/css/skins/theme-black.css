@@ -317,6 +317,7 @@ html.sidebar-light:not(.dark) ul.nav-main li a svg{
     border-color: var(--black-highlight) !important;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1) !important;
     border-radius: 10px !important;
+    width: 250px !important;
 }
 .el-popper[x-placement^=bottom] .popper__arrow{
     display: none;

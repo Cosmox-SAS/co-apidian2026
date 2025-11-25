@@ -41,169 +41,257 @@
 
             <!-- Empresa -->
             <div class="row" v-show="active == 0">
-                <div class="col-md-12">
+                <div class="col-md-4">
+                    <div class="card-body card p-3 text-center border-dashed">
+                        <h5 class="mb-3">Subir Ficha RUT (PDF)</h5>
+
+                        <el-upload
+                            ref="rutUpload"
+                            drag
+                            action="#"
+                            :auto-upload="false"
+                            :limit="1"
+                            accept="application/pdf"
+                            :on-change="onRutChange"
+                            :show-file-list="false"
+                            class="rut-drag"
+                        >
+                            <i class="el-icon-upload"></i>
+                            <div class="el-upload__text">
+                                Arrastra tu archivo aquí<br>
+                                <em>o haz clic para seleccionar</em>
+                            </div>
+                            <div slot="tip" class="el-upload__tip">Solo archivos PDF</div>
+                        </el-upload>
+
+                        <div v-if="selectedRutName" class="uploaded-wrapper mt-3">
+
+                            <!-- CABECERA: Icono + Nombre archivo + X -->
+                            <div class="uploaded-header d-flex align-items-center justify-content-between">
+                                
+                                <!-- Icono + texto -->
+                                <div class="d-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="pdf-icon" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+                                    </svg>
+                                    <span class="uploaded-name">{{ selectedRutName }}</span>
+                                </div>
+
+                                <!-- Botón X -->
+                                <button type="button" class="close file-close" @click="resetRutUpload">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <!-- PIE: Barra de progreso -->
+                            <div class="uploaded-footer mt-2">
+                                <el-progress
+                                    :percentage="rutProgress"
+                                    :status="rutProgress == 100 ? 'success' : null"
+                                    :stroke-width="8">
+                                </el-progress>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FORMULARIO EMPRESA -->
+                <div class="col-md-8">
                     <form autocomplete="off">
                         <div class="form-body">
                             <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group"
-                                        :class="{'has-danger': errors.type_document_identification_id}">
-                                        <label class="control-label">Tipo de Documento</label>
-                                        <el-select class="extend" v-model="form.type_document_identification_id"
-                                            filterable>
-                                            <el-option v-for="option in type_document_identification"
-                                                :key="option.id" :value="option.id" :label="option.name">
-                                            </el-option>
+
+                                <!-- tipo de documento -->
+                                <div class="col-md-6">
+                                    <div class="form-group" :class="{'has-danger': errors.type_document_identification_id}">
+                                        <label>Tipo de Documento</label>
+                                        <el-select class="extend" v-model="form.type_document_identification_id" filterable>
+                                            <el-option
+                                                v-for="option in type_document_identification"
+                                                :key="option.id"
+                                                :value="option.id"
+                                                :label="option.name"
+                                            ></el-option>
                                         </el-select>
-                                        <small class="form-control-feedback"
-                                            v-if="errors.type_document_identification_id"
-                                            v-text="errors.type_document_identification_id[0]"></small>
+                                        <small v-if="errors.type_document_identification_id" class="form-control-feedback">
+                                            {{ errors.type_document_identification_id[0] }}
+                                        </small>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+
+                                <!-- nit -->
+                                <div class="col-md-6">
                                     <div class="form-group" :class="{'has-danger': errors.nit}">
-                                        <label class="control-label">Número de documento</label>
+                                        <label>Número de documento</label>
                                         <el-input v-model="form.nit"></el-input>
-                                        <small class="form-control-feedback" v-if="errors.nit"
-                                            v-text="errors.nit[0]"></small>
+                                        <small v-if="errors.nit" class="form-control-feedback">{{ errors.nit[0] }}</small>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+
+                                <!-- dv -->
+                                <div class="col-md-3">
                                     <div class="form-group" :class="{'has-danger': errors.dv}">
-                                        <label class="control-label">DV</label>
+                                        <label>DV</label>
                                         <el-input v-model="form.dv"></el-input>
-                                        <small class="form-control-feedback" v-if="errors.dv"
-                                            v-text="errors.dv[0]"></small>
+                                        <small v-if="errors.dv" class="form-control-feedback">{{ errors.dv[0] }}</small>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+
+                                <!-- empresa -->
+                                <div class="col-md-9">
                                     <div class="form-group" :class="{'has-danger': errors.business_name}">
-                                        <label class="control-label">Empresa</label>
+                                        <label>Empresa</label>
                                         <el-input v-model="form.business_name"></el-input>
-                                        <small class="form-control-feedback" v-if="errors.business_name"
-                                            v-text="errors.business_name[0]"></small>
+                                        <small v-if="errors.business_name" class="form-control-feedback">
+                                            {{ errors.business_name[0] }}
+                                        </small>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+
+                                <!-- resto de campos -->
+                                <div class="col-md-6">
                                     <div class="form-group" :class="{'has-danger': errors.merchant_registration}">
-                                        <label class="control-label">Registro Mercantil</label>
+                                        <label>Registro Mercantil</label>
                                         <el-input v-model="form.merchant_registration"></el-input>
-                                        <small class="form-control-feedback" v-if="errors.merchant_registration"
-                                            v-text="errors.merchant_registration[0]"></small>
+                                        <small v-if="errors.merchant_registration" class="form-control-feedback">
+                                            {{ errors.merchant_registration[0] }}
+                                        </small>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+
+                                <div class="col-md-6">
                                     <div class="form-group" :class="{'has-danger': errors.phone}">
-                                        <label class="control-label">Telefono</label>
+                                        <label>Teléfono</label>
                                         <el-input v-model="form.phone"></el-input>
-                                        <small class="form-control-feedback" v-if="errors.phone"
-                                            v-text="errors.phone[0]"></small>
+                                        <small v-if="errors.phone" class="form-control-feedback">
+                                            {{ errors.phone[0] }}
+                                        </small>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+
+                                <div class="col-md-6">
                                     <div class="form-group" :class="{'has-danger': errors.email}">
-                                        <label class="control-label">Correo Electronico</label>
+                                        <label>Correo Electrónico</label>
                                         <el-input v-model="form.email"></el-input>
-                                        <small class="form-control-feedback" v-if="errors.email"
-                                            v-text="errors.email[0]"></small>
+                                        <small v-if="errors.email" class="form-control-feedback">
+                                            {{ errors.email[0] }}
+                                        </small>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="form-group" :class="{'has-danger': errors.department_id}">
-                                        <label class="control-label">Departamento</label>
-                                        <el-select class="extend" @change="filterMunicipality"
-                                            v-model="form.department_id" filterable>
-                                            <el-option v-for="option in department" :key="option.id"
-                                                :value="option.id" :label="option.name"></el-option>
-                                        </el-select>
-                                        <small class="form-control-feedback" v-if="errors.department_id"
-                                            v-text="errors.department_id[0]"></small>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group" :class="{'has-danger': errors.municipality_id}">
-                                        <label class="control-label">Municipio</label>
-                                        <el-select class="extend" v-model="form.municipality_id" filterable>
-                                            <el-option v-for="option in municipality_filter" :key="option.id"
-                                                :value="option.id" :label="option.name"></el-option>
-                                        </el-select>
-                                        <small class="form-control-feedback" v-if="errors.municipality_id"
-                                            v-text="errors.municipality_id[0]"></small>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
+
+                                <div class="col-md-6">
                                     <div class="form-group" :class="{'has-danger': errors.address}">
-                                        <label class="control-label">Direccion</label>
+                                        <label>Dirección</label>
                                         <el-input v-model="form.address"></el-input>
-                                        <small class="form-control-feedback" v-if="errors.address"
-                                            v-text="errors.address[0]"></small>
+                                        <small v-if="errors.address" class="form-control-feedback">
+                                            {{ errors.address[0] }}
+                                        </small>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="form-group"
-                                        :class="{'has-danger': errors.type_liability_id}">
-                                        <label class="control-label">Tipo Responsabilidad</label>
-                                        <el-select class="extend" v-model="form.type_liability_id"
-                                            filterable>
-                                            <el-option v-for="option in type_liability"
-                                                :key="option.id" :value="option.id" :label="option.name">
-                                            </el-option>
+
+                                <div class="col-md-6">
+                                    <div class="form-group" :class="{'has-danger': errors.department_id}">
+                                        <label>Departamento</label>
+                                        <el-select class="extend" @change="filterMunicipality" v-model="form.department_id" filterable>
+                                            <el-option
+                                                v-for="option in department"
+                                                :key="option.id"
+                                                :value="option.id"
+                                                :label="option.name"
+                                            ></el-option>
                                         </el-select>
-                                        <small class="form-control-feedback"
-                                            v-if="errors.type_liability_id"
-                                            v-text="errors.type_liability_id[0]"></small>
+                                        <small v-if="errors.department_id" class="form-control-feedback">
+                                            {{ errors.department_id[0] }}
+                                        </small>
                                     </div>
                                 </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group" :class="{'has-danger': errors.municipality_id}">
+                                        <label>Municipio</label>
+                                        <el-select class="extend" v-model="form.municipality_id" filterable>
+                                            <el-option
+                                                v-for="option in municipality_filter"
+                                                :key="option.id"
+                                                :value="option.id"
+                                                :label="option.name"
+                                            ></el-option>
+                                        </el-select>
+                                        <small v-if="errors.municipality_id" class="form-control-feedback">
+                                            {{ errors.municipality_id[0] }}
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <!-- Responsabilidad / Organización / Régimen -->
+                                <div class="col-md-4">
+                                    <div class="form-group" :class="{'has-danger': errors.type_liability_id}">
+                                        <label>Tipo Responsabilidad</label>
+                                        <el-select class="extend" v-model="form.type_liability_id" filterable>
+                                            <el-option
+                                                v-for="option in type_liability"
+                                                :key="option.id"
+                                                :value="option.id"
+                                                :label="option.name"
+                                            ></el-option>
+                                        </el-select>
+                                        <small v-if="errors.type_liability_id" class="form-control-feedback">
+                                            {{ errors.type_liability_id[0] }}
+                                        </small>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-4">
                                     <div class="form-group" :class="{'has-danger': errors.type_organization_id}">
-                                        <label class="control-label">Organizacion</label>
+                                        <label>Organización</label>
                                         <el-select class="extend" v-model="form.type_organization_id" filterable>
-                                            <el-option v-for="option in type_organization" :key="option.id"
-                                                :value="option.id" :label="option.name"></el-option>
+                                            <el-option
+                                                v-for="option in type_organization"
+                                                :key="option.id"
+                                                :value="option.id"
+                                                :label="option.name"
+                                            ></el-option>
                                         </el-select>
-                                        <small class="form-control-feedback" v-if="errors.type_organization_id"
-                                            v-text="errors.type_organization_id[0]"></small>
+                                        <small v-if="errors.type_organization_id" class="form-control-feedback">
+                                            {{ errors.type_organization_id[0] }}
+                                        </small>
                                     </div>
                                 </div>
+
                                 <div class="col-md-4">
                                     <div class="form-group" :class="{'has-danger': errors.type_regime_id}">
-                                        <label class="control-label">Regimen</label>
+                                        <label>Régimen</label>
                                         <el-select class="extend" v-model="form.type_regime_id" filterable>
-                                            <el-option v-for="option in type_regime" :key="option.id"
-                                                :value="option.id" :label="option.name"></el-option>
+                                            <el-option
+                                                v-for="option in type_regime"
+                                                :key="option.id"
+                                                :value="option.id"
+                                                :label="option.name"
+                                            ></el-option>
                                         </el-select>
-                                        <small class="form-control-feedback" v-if="errors.type_regime_id"
-                                            v-text="errors.type_regime_id[0]"></small>
+                                        <small v-if="errors.type_regime_id" class="form-control-feedback">
+                                            {{ errors.type_regime_id[0] }}
+                                        </small>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </form>
+
+                    <!-- <div class="text-center mt-4">
+                        <el-button size="medium" type="primary" :loading="loading_submit" @click="saveCompany">
+                            Siguiente
+                        </el-button>
+                    </div> -->
                 </div>
-                <div class="col-md-12 mt-4">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <el-upload
-                                ref="rutUploader"
-                                action="#"
-                                :show-file-list="false"
-                                :auto-upload="false"
-                                :on-change="onRutChange"
-                                accept="application/pdf"
-                                class="d-inline-block"
-                            >
-                                <el-button type="primary" icon="el-icon-upload" size="medium">
-                                    Cargar RUT
-                                </el-button>
-                            </el-upload>
-                        </div>
-                        <div class="flex-grow-1 d-flex justify-content-center">
-                            <el-button size="medium" :loading="loading_submit" type="primary" @click="saveCompany">
-                                Siguiente
-                            </el-button>
-                        </div>
-                        <div style="width: 120px;"></div> <!-- Espacio para equilibrar el layout -->
-                    </div>
+
+                <div class="col-md-12 text-center mt-4">
+                    <el-button size="medium" type="primary" :loading="loading_submit" @click="saveCompany">
+                        Siguiente
+                    </el-button>
                 </div>
             </div>
 
@@ -301,6 +389,9 @@
                 responseCertificate: {},
                 responseResolution: {},
                 selectedRutName: null,
+                rutProgress: 0,
+                simulatedInterval: null,
+                simulatedDuration: 0,
             };
         },
         created() {
@@ -442,6 +533,7 @@
             onRutChange(file) {
                 const realFile = file.raw;
                 this.selectedRutName = realFile.name;
+                this.rutProgress = 0;
 
                 if (!realFile) {
                     this.$message.error("No se pudo leer el archivo");
@@ -450,6 +542,37 @@
 
                 this.initForm();
 
+                // detener intervalos previos por si acaso
+                if (this.simulatedInterval) clearInterval(this.simulatedInterval);
+
+                // --- SIMULACIÓN DE PROGRESO LENTO ---
+                const steps = 100;
+                const stepTime = this.simulatedDuration / steps;
+
+                this.simulatedInterval = setInterval(() => {
+                    if (this.rutProgress < 100) {
+                        this.rutProgress++;
+                    } else {
+                        clearInterval(this.simulatedInterval);
+                        this.uploadRut(realFile); // cuando termina, ahora sí subimos el archivo
+                    }
+                }, stepTime);
+            },
+            resetRutUpload() {
+                this.selectedRutName = null;
+                this.rutProgress = 0;
+                this.initForm();
+
+                if (this.simulatedInterval) {
+                    clearInterval(this.simulatedInterval);
+                    this.simulatedInterval = null;
+                }
+
+                if (this.$refs.rutUpload) {
+                    this.$refs.rutUpload.clearFiles();
+                }
+            },
+            uploadRut(realFile) {
                 const formData = new FormData();
                 formData.append("rut", realFile);
 
@@ -457,11 +580,13 @@
                     headers: { "Content-Type": "multipart/form-data" }
                 })
                 .then(({ data }) => {
+
                     if (!data.success) {
                         this.$message.error(data.message);
                         return;
                     }
 
+                    // Llenar formulario con datos reales del backend
                     Object.assign(this.form, data.fields);
 
                     if (data.fields.department_id) {
@@ -474,10 +599,46 @@
                     }
 
                     this.$message.success("Datos del RUT cargados correctamente");
+                    this.validateRutFields();
                 })
                 .catch(err => {
                     console.error(err);
                     this.$message.error("Error procesando el RUT");
+                });
+            },
+            validateRutFields() {
+                this.errors = {}; // limpiar errores previos
+
+                // Campos críticos obligatorios del RUT
+                const requiredCritical = [
+                    "type_liability_id",
+                    "type_regime_id",
+                    "type_document_identification_id",
+                ];
+
+                requiredCritical.forEach(field => {
+                    if (!this.form[field]) {
+                        this.$set(this.errors, field, ["Campo obligatorio."]);
+                    }
+                });
+
+                // Campos generales del formulario que deberían venir del RUT
+                const generalFields = [
+                    "nit",
+                    "dv",
+                    "business_name",
+                    "merchant_registration",
+                    "phone",
+                    "email",
+                    "address",
+                    "department_id",
+                    "municipality_id"
+                ];
+
+                generalFields.forEach(field => {
+                    if (!this.form[field]) {
+                        this.$set(this.errors, field, ["Campo no detectado."]);
+                    }
                 });
             }
         }
@@ -489,5 +650,108 @@
     }
     .el-step__icon.is-text{
         border: none !important;
+    }
+    .uploaded-file {
+        background: #f8f9fa;
+        padding: 8px 12px;
+        border-radius: 6px;
+        border: 1px solid #e0e0e0;
+    }
+
+    .uploaded-file .file-name {
+        font-size: 14px;
+        color: #333;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .file-close {
+        font-size: 20px;
+        line-height: 1;
+        opacity: 0.6;
+        cursor: pointer;
+        border: none;
+        background: transparent;
+    }
+
+    .file-close:hover {
+        opacity: 1;
+        color: #dc3545;
+    }
+
+    /* Contenedor general */
+    .uploaded-wrapper {
+        border: 1px solid #dcdcdc;
+        border-radius: 8px;
+        padding: 12px;
+        background: #ffffff;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    /* Cabecera */
+    .uploaded-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Icono PDF */
+    .pdf-icon {
+        color: #1a1919;
+        margin-right: 8px;
+    }
+
+    /* Nombre del archivo */
+    .uploaded-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: #444;
+        max-width: 200px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    /* Botón X */
+    .file-close {
+        font-size: 22px;
+        opacity: 0.7;
+        cursor: pointer;
+        border: none;
+        background: transparent;
+    }
+
+    .file-close:hover {
+        opacity: 1;
+        color: #dc3545;
+    }
+
+    /* Pie */
+    .uploaded-footer {
+        padding-top: 6px;
+    }
+    .rut-drag .el-upload-dragger {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 100% !important;
+        padding: 20px !important;
+    }
+
+    /* Vista móvil */
+    @media (max-width: 576px) {
+        .rut-drag .el-upload-dragger {
+            padding: 16px !important;
+            min-height: 120px !important;
+        }
+
+        .rut-drag .el-upload__text {
+            font-size: 13px !important;
+            line-height: 1.3;
+        }
+
+        .rut-drag i.el-icon-upload {
+            font-size: 28px !important;
+        }
     }
 </style>

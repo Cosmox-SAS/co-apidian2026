@@ -14,7 +14,7 @@
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">Direccion de Correo</label>
+                            <label for="email" class="col-md-4 control-label">Dirección de Correo</label>
 
                             <div class="col-md-12">
                                 <input id="email" type="email" class="form-control" name="email" placeholder="correo@gmail.com" value="{{ old('email') }}" required autofocus>
@@ -64,7 +64,7 @@
                                 </div>
                             </div>
                         @endif
-                        <p class="text-muted text-center" style="margin: 10px 0 0 0; font-size: 13px">v. 2026 - FacturaLatam</p>
+                        <p class="text-muted text-center" style="margin: 10px 0 0 0; font-size: 13px">2026 - FacturaLatam</p>
                     </form>
                 </div>
             </div>

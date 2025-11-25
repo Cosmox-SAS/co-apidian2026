@@ -1,3 +1,11 @@
+<div id="loadingOverlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;background:rgba(255,255,255,0.8);display:flex;align-items:center;justify-content:center;">
+    <div>
+        <div class="spinner-border text-primary" style="width:3rem;height:3rem; margin-left:300px;" role="status">
+            <span class="sr-only">Cargando...</span>
+        </div>
+        <div class="mt-3 text-center text-primary font-weight-bold" style="margin-left:260px;">Cargando documentos...</div>
+    </div>
+</div>
 <header class="page-header d-flex justify-content-between align-items-center">
     <div>
         <h2>{{ $company->user->name }} - {{ $company->identification_number }}</h2>
@@ -970,6 +978,9 @@ $(document).ready(function() {
         return number ? Number(number).toFixed(2) : "0.00";
     }
 });
+$(window).on('load', function() {
+        $('#loadingOverlay').fadeOut(300);
+    });
 </script>
 @endpush
 
