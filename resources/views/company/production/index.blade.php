@@ -68,6 +68,30 @@ hr {
     margin: 20px 0;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
+#globalLoader {
+    position: fixed;
+    inset: 0;
+    /* Fondo anterior: #ffffff */
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(4px);
+    z-index: 3000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    transition: opacity .35s ease;
+    font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+#globalLoader.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+#globalLoader .loader-text {
+    font-size: 14px;
+    color: #555;
+    letter-spacing: .5px;
+}
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -92,6 +116,46 @@ hr {
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    // Loader helpers
+function hideGlobalLoader() {
+    const el = document.getElementById('globalLoader');
+    if (!el) return;
+    el.classList.add('fade-out');
+    setTimeout(()=> el.remove(), 400);
+}
+function showGlobalLoader() {
+    let el = document.getElementById('globalLoader');
+    if (el) {
+        el.classList.remove('fade-out');
+        return;
+    }
+    el = document.createElement('div');
+    el.id = 'globalLoader';
+    el.innerHTML = `
+        <div class="spinner-border text-primary" style="width:3rem;height:3rem;" role="status">
+            <span class="visually-hidden"></span>
+        </div>
+        <div class="loader-text">Cargando información...</div>
+    `;
+    document.body.appendChild(el);
+}
+
+// Ocultar cuando todo terminó de preparar (incluye los setTimeout internos)
+window.addEventListener('load', () => {
+    // Dar un pequeño margen para que se ejecuten scripts diferidos
+    setTimeout(hideGlobalLoader, 600);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('#documentTabs button[data-bs-toggle="tab"]').forEach(btn => {
+        btn.addEventListener('show.bs.tab', () => {
+            showGlobalLoader();
+            // Ocultarlo luego de estabilizar la vista
+            setTimeout(hideGlobalLoader, 700);
+        });
+    });
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     // Recuperar la pestaña activa de localStorage
     var activeTab = localStorage.getItem('documentTabActive') || '#invoice';
@@ -298,6 +362,12 @@ document.addEventListener('DOMContentLoaded', function() {
         </a>
     </div>
 </header> --}}
+<div id="globalLoader">
+    <div class="spinner-border text-primary" style="width:3rem;height:3rem;" role="status">
+        <span class="visually-hidden"></span>
+    </div>
+    <div class="loader-text">Cargando información...</div>
+</div>
 
 <div class="container-fluid px-0 mt-3">
     <ul class="nav nav-tabs nav-justified mb-0" id="documentTabs" role="tablist" style="background: #fff;">
