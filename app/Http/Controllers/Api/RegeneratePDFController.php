@@ -366,10 +366,12 @@ class RegeneratePDFController extends Controller
                 $orderreference = NULL;
 
             // Health Fields
-            if($request->health_fields)
+            if($request->health_fields) {
                 $healthfields = new HealthField($request->health_fields);
-            else
+                $healthfields->initRelations();
+            } else {
                 $healthfields = NULL;
+            }
 
             // Discrepancy response
             if(isset($request->discrepancyresponsecode))
@@ -486,16 +488,20 @@ class RegeneratePDFController extends Controller
                 $period = NULL;
 
             // Worker
-            if($request->worker)
+            if($request->worker) {
                 $worker = new Worker($request->worker);
-            else
+                $worker->initRelations();
+            } else {
                 $worker = NULL;
+            }
 
             // Payment
-            if($request->payment)
+            if($request->payment) {
                 $payment = new PayrollPayment($request->payment);
-            else
+                $payment->initRelations();
+            } else {
                 $payment = NULL;
+            }
 
             // Payment Dates
             $payment_dates = collect();
@@ -510,10 +516,12 @@ class RegeneratePDFController extends Controller
                 $accrued = NULL;
 
             // Deductions
-            if($request->deductions)
+            if($request->deductions) {
                 $deductions = new Deduction($request->deductions);
-            else
+                $deductions->initRelations();
+            } else {
                 $deductions = NULL;
+            }
 
             // Splited Name
             $splited_name = $this->split_name($user->name);

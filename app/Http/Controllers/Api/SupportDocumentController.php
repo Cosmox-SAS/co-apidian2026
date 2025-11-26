@@ -238,10 +238,12 @@ class SupportDocumentController extends Controller
             $orderreference = NULL;
 
         // Health Fields
-        if($request->health_fields)
+        if($request->health_fields) {
             $healthfields = new HealthField($request->health_fields);
-        else
+            $healthfields->initRelations();
+        } else {
             $healthfields = NULL;
+        }
 
         // Payment form
         if(isset($request->payment_form['payment_form_id']))
@@ -708,10 +710,12 @@ class SupportDocumentController extends Controller
             $orderreference = NULL;
 
         // Health Fields
-        if($request->health_fields)
+        if($request->health_fields) {
             $healthfields = new HealthField($request->health_fields);
-        else
+            $healthfields->initRelations();
+        } else {
             $healthfields = NULL;
+        }
 
         // Payment form
         if(isset($request->payment_form['payment_form_id']))

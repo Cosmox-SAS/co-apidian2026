@@ -237,10 +237,12 @@ class DebitNoteController extends Controller
             $invoice_period = NULL;
 
         // Health Fields
-        if($request->health_fields)
+        if($request->health_fields) {
             $healthfields = new HealthField($request->health_fields);
-        else
+            $healthfields->initRelations();
+        } else {
             $healthfields = NULL;
+        }
 
         // Discrepancy response
         $discrepancycode = $request->discrepancyresponsecode;
@@ -714,10 +716,12 @@ class DebitNoteController extends Controller
             $orderreference = NULL;
 
         // Health Fields
-        if($request->health_fields)
+        if($request->health_fields) {
             $healthfields = new HealthField($request->health_fields);
-        else
+            $healthfields->initRelations();
+        } else {
             $healthfields = NULL;
+        }
 
         // Discrepancy response
         $discrepancycode = $request->discrepancyresponsecode;
