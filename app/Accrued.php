@@ -82,7 +82,9 @@ class Accrued extends Model
         $HEs = collect();
 
         foreach ($data as $value) {
-            $HEs->push(new HE($value));
+            $he = new HE($value);
+            $he->initRelations();
+            $HEs->push($he);
         }
         return $HEs;
     }

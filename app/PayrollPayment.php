@@ -15,11 +15,15 @@ class PayrollPayment extends Model
     protected $fillable = [
         'payment_method_id', 'bank_name', 'account_type', 'account_number',
     ];
+    public function initRelations()
+    {
+        $this->payment_method = $this->payment_method();
+    }
 
     public function __construct(array $attributes = array())
     {
         parent::__construct($attributes);
-        $this->payment_method = $this->payment_method();
+        // $this->payment_method = $this->payment_method();
     }
 
     /**

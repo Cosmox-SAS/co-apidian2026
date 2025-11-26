@@ -16,12 +16,19 @@ class HealthField extends Model
         'users_info', 'invoice_period_start_date', 'invoice_period_end_date', 'health_type_operation_id', 'print_users_info_to_pdf'
     ];
 
-    public function __construct(array $attributes = array())
+    public function initRelations()
     {
-        parent::__construct($attributes);
         $this->health_type_operation = $this->health_type_operation();
         if(isset($this->attributes['users_info']))
             $this->users_info = $this->setusers_info($this->attributes['users_info']);
+    }
+
+    public function __construct(array $attributes = array())
+    {
+        parent::__construct($attributes);
+        // $this->health_type_operation = $this->health_type_operation();
+        // if(isset($this->attributes['users_info']))
+        //     $this->users_info = $this->setusers_info($this->attributes['users_info']);
     }
 
     /**
@@ -41,7 +48,9 @@ class HealthField extends Model
         $Users = collect();
 
         foreach ($data as $value) {
-            $Users->push(new HealthUser($value));
+            $user = new HealthUser($value);
+            $user->initRelations();
+            $Users->push($user);
         }
         return $Users;
     }

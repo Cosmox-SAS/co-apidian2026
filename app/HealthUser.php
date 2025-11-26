@@ -18,12 +18,17 @@ class HealthUser extends Model
         'autorization_numbers', 'mipres', 'mipres_delivery', 'contract_number', 'policy_number', 'co_payment', 'moderating_fee',
         'recovery_fee', 'shared_payment', 'advance_payment'
     ];
+    public function initRelations()
+    {
+        $this->health_contracting_payment_method = $this->health_contracting_payment_method();
+        $this->health_coverage = $this->health_coverage();
+    }
 
     public function __construct(array $attributes = array())
     {
         parent::__construct($attributes);
-        $this->health_contracting_payment_method = $this->health_contracting_payment_method();
-        $this->health_coverage = $this->health_coverage();
+        //$this->health_contracting_payment_method = $this->health_contracting_payment_method();
+        //$this->health_coverage = $this->health_coverage();
     }
 
     /**

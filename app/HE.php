@@ -16,10 +16,15 @@ class HE extends Model
         'start_time', 'end_time', 'quantity', 'percentage', 'payment',
     ];
 
+    public function initRelations()
+    {
+        $this->type_overtime_surcharge = $this->type_overtime_surcharge();
+    }
+
     public function __construct(array $attributes = array())
     {
         parent::__construct($attributes);
-        $this->type_overtime_surcharge = $this->type_overtime_surcharge();
+        //$this->type_overtime_surcharge = $this->type_overtime_surcharge();
     }
 
     /**

@@ -21,24 +21,48 @@ class Deduction extends Model
     public function __construct(array $attributes = array())
     {
         parent::__construct($attributes);
-        $this->eps_type_law_deductions = $this->type_law_deduction($this->attributes['eps_type_law_deductions_id']);
-        $this->pension_type_law_deductions = $this->type_law_deduction($this->attributes['pension_type_law_deductions_id']);
-        if(isset($this->attributes['fondossp_type_law_deductions_id']))
-            $this->fondossp_type_law_deductions = $this->type_law_deduction($this->attributes['fondossp_type_law_deductions_id']);
-        if(isset($this->attributes['fondossp_sub_type_law_deductions_id']))
-            $this->fondossp_sub_type_law_deductions = $this->type_law_deduction($this->attributes['fondossp_sub_type_law_deductions_id']);
-        if(isset($this->attributes['labor_union']))
-            $this->labor_union = $this->setGeneralItem($this->attributes['labor_union']);
-        if(isset($this->attributes['sanctions']))
-            $this->sanctions = $this->setGeneralItem($this->attributes['sanctions']);
-        if(isset($this->attributes['orders']))
-            $this->orders = $this->setGeneralItem($this->attributes['orders']);
-        if(isset($this->attributes['third_party_payments']))
-            $this->third_party_payments = $this->setGeneralItem($this->attributes['third_party_payments']);
-        if(isset($this->attributes['advances']))
-            $this->advances = $this->setGeneralItem($this->attributes['advances']);
-        if(isset($this->attributes['other_deductions']))
-            $this->other_deductions = $this->setGeneralItem($this->attributes['other_deductions']);
+        // $this->eps_type_law_deductions = $this->type_law_deduction($this->attributes['eps_type_law_deductions_id']);
+        // $this->pension_type_law_deductions = $this->type_law_deduction($this->attributes['pension_type_law_deductions_id']);
+        // if(isset($this->attributes['fondossp_type_law_deductions_id']))
+        //     $this->fondossp_type_law_deductions = $this->type_law_deduction($this->attributes['fondossp_type_law_deductions_id']);
+        // if(isset($this->attributes['fondossp_sub_type_law_deductions_id']))
+        //     $this->fondossp_sub_type_law_deductions = $this->type_law_deduction($this->attributes['fondossp_sub_type_law_deductions_id']);
+        // if(isset($this->attributes['labor_union']))
+        //     $this->labor_union = $this->setGeneralItem($this->attributes['labor_union']);
+        // if(isset($this->attributes['sanctions']))
+        //     $this->sanctions = $this->setGeneralItem($this->attributes['sanctions']);
+        // if(isset($this->attributes['orders']))
+        //     $this->orders = $this->setGeneralItem($this->attributes['orders']);
+        // if(isset($this->attributes['third_party_payments']))
+        //     $this->third_party_payments = $this->setGeneralItem($this->attributes['third_party_payments']);
+        // if(isset($this->attributes['advances']))
+        //     $this->advances = $this->setGeneralItem($this->attributes['advances']);
+        // if(isset($this->attributes['other_deductions']))
+        //     $this->other_deductions = $this->setGeneralItem($this->attributes['other_deductions']);
+    }
+
+    public function initRelations()
+    {
+        if(isset($this->eps_type_law_deductions_id))
+            $this->eps_type_law_deductions = $this->type_law_deduction($this->eps_type_law_deductions_id);
+        if(isset($this->pension_type_law_deductions_id))
+            $this->pension_type_law_deductions = $this->type_law_deduction($this->pension_type_law_deductions_id);
+        if(isset($this->fondossp_type_law_deductions_id))
+            $this->fondossp_type_law_deductions = $this->type_law_deduction($this->fondossp_type_law_deductions_id);
+        if(isset($this->fondossp_sub_type_law_deductions_id))
+            $this->fondossp_sub_type_law_deductions = $this->type_law_deduction($this->fondossp_sub_type_law_deductions_id);
+        if(isset($this->labor_union))
+            $this->labor_union = $this->setGeneralItem($this->labor_union);
+        if(isset($this->sanctions))
+            $this->sanctions = $this->setGeneralItem($this->sanctions);
+        if(isset($this->orders))
+            $this->orders = $this->setGeneralItem($this->orders);
+        if(isset($this->third_party_payments))
+            $this->third_party_payments = $this->setGeneralItem($this->third_party_payments);
+        if(isset($this->advances))
+            $this->advances = $this->setGeneralItem($this->advances);
+        if(isset($this->other_deductions))
+            $this->other_deductions = $this->setGeneralItem($this->other_deductions);
     }
 
     /**

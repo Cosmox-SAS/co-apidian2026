@@ -56,9 +56,12 @@ class PayrollController extends Controller
             $novelty = $request->novelty ? new Novelty($request->novelty) : null;
             $period = $request->period ? new Period($request->period) : null;
             $worker = $request->worker ? new Worker($request->worker) : null;
+            if ($worker) $worker->initRelations();
             $payment = $request->payment ? new PayrollPayment($request->payment) : null;
+            if ($payment) $payment->initRelations();
             $accrued = $request->accrued ? new Accrued($request->accrued) : null;
             $deductions = $request->deductions ? new Deduction($request->deductions) : null;
+            if ($deductions) $deductions->initRelations();
 
             // Payment Dates
             $payment_dates = collect($request->payment_dates ?? [])->map(function($payment_date) {
@@ -224,16 +227,20 @@ class PayrollController extends Controller
             $period = NULL;
 
         // Worker
-        if($request->worker)
+        if($request->worker) {
             $worker = new Worker($request->worker);
-        else
+            $worker->initRelations();
+        } else {
             $worker = NULL;
+        }
 
         // Payment
-        if($request->payment)
+        if($request->payment) {
             $payment = new PayrollPayment($request->payment);
-        else
+            $payment->initRelations();
+        } else {
             $payment = NULL;
+        }
 
         // Payment Dates
         $payment_dates = collect();
@@ -266,11 +273,12 @@ class PayrollController extends Controller
         else
             $accrued = NULL;
 
-        // Deductions
-        if($request->deductions)
+        if($request->deductions) {
             $deductions = new Deduction($request->deductions);
-        else
+            $deductions->initRelations();
+        } else {
             $deductions = NULL;
+        }
 
         // Splited Name
         $splited_name = $this->split_name($user->name);
@@ -468,16 +476,20 @@ class PayrollController extends Controller
             $period = NULL;
 
         // Worker
-        if($request->worker)
+        if($request->worker) {
             $worker = new Worker($request->worker);
-        else
+            $worker->initRelations();
+        } else {
             $worker = NULL;
+        }
 
         // Payment
-        if($request->payment)
+        if($request->payment) {
             $payment = new PayrollPayment($request->payment);
-        else
+            $payment->initRelations();
+        } else {
             $payment = NULL;
+        }
 
         // Payment Dates
         $payment_dates = collect();
@@ -511,10 +523,12 @@ class PayrollController extends Controller
             $accrued = NULL;
 
         // Deductions
-        if($request->deductions)
+        if($request->deductions) {
             $deductions = new Deduction($request->deductions);
-        else
+            $deductions->initRelations();
+        } else {
             $deductions = NULL;
+        }
 
         // Splited Name
         $splited_name = $this->split_name($user->name);
