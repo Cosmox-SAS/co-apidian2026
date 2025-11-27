@@ -452,7 +452,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         'resolution_credit_notes' => $invoiceData['resolution_credit_notes'] ?? collect(),
                         'company' => $company,
                         'company_idnumber' => $company->identification_number,
-                        'token_company' => $company->token_company ?? null,
+                        'token_company' => $company->user->api_token ?? null,
                         'type' => 'invoice'
                     ])
                 </div>
@@ -674,4 +674,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </div>
 </div>
+@include('company.modals', [
+    'resolution_credit_notes' => $invoiceData['resolution_credit_notes'] ?? collect()
+])
 @endsection

@@ -17,8 +17,7 @@ class ProductionController extends Controller
 {
     public function index($company)
     {
-        $company = Company::where('identification_number', $company)->firstOrFail();
-        
+        $company = Company::where('identification_number', $company)->firstOrFail();        
         // Preparar datos para cada tipo de documento
         $environmentStatuses = [
             'invoice' => $this->getEnvironmentStatus($company, 'invoice'),
@@ -91,7 +90,7 @@ class ProductionController extends Controller
             ->where('company_id', $company->id)
             ->get();
 
-        $token_company = $company->token_company ?? null;
+        $token_company = $company->user->api_token ?? null;
         $typeDocuments = TypeDocument::all();
 
         switch ($type) {

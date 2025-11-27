@@ -162,7 +162,7 @@ class InvoiceAIURequest extends FormRequest
             'customer.name' => 'required|string',
             'customer.phone' => 'required|string|max:20',
             'customer.address' => 'required|string',
-            'customer.email' => 'required|string|email',
+            'customer.email' => 'nullable|string|email',
             'customer.merchant_registration' => 'required|string',
 
             // SMTP Server Parameters

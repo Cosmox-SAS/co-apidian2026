@@ -157,7 +157,7 @@ class sdCreditNoteRequest extends FormRequest
             'seller.name' => 'required|string',
             'seller.phone' => 'required|string|max:20',
             'seller.address' => 'required|string',
-            'seller.email' => 'required|string|email',
+            'seller.email' => 'nullable|string|email',
             'seller.merchant_registration' => 'required|string',
             'seller.postal_zone_code' => 'required|numeric',
 

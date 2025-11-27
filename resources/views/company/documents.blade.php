@@ -156,7 +156,7 @@
 </div>
 @endif
 <!-- Modal -->
-<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
+{{-- <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -320,7 +320,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
 
 @push('scripts')
@@ -341,7 +341,8 @@ $(document).ready(function() {
     // Variable global para almacenar los datos
     window.transformedData = []; // Cambiamos a window.transformedData para acceso global
 
-    $('.makeApiRequest').click(function() {
+    $(document).off('click', '.makeApiRequest');
+    $(document).on('click', '.makeApiRequest', function() {
         var cufe = $(this).data('id');
         var $button = $(this);
         $button.prop('disabled', true);
@@ -364,12 +365,15 @@ $(document).ready(function() {
             }
         });
     });
-    $('.modalApiResponse').click(function() {
+
+    $(document).off('click', '.modalApiResponse');
+    $(document).on('click', '.modalApiResponse', function() {
         var content = $(this).data('content');
         $('#modalBodyResponse').html(JSON.stringify(content, null, 2));
         $('#responseModal').modal('show');
     });
-    $('.modalChangeState').click(function() {
+    $(document).off('click', '.modalChangeState');
+    $(document).on('click', '.modalChangeState', function() {
         var id = $(this).data('id');
         $('#verificarInput').val(id);
         $('#changeStateModal').modal('show');
@@ -380,6 +384,7 @@ $(document).ready(function() {
     window.currentButton = null;
 
     // Manejar clic en botón "Nota de crédito"
+    $(document).off('click', '.btn-credit-note');
     $(document).on('click', '.btn-credit-note', function() {
         var documentId = $(this).data('id');
         var $button = $(this);
@@ -404,6 +409,7 @@ $(document).ready(function() {
     });
 
     // Manejar selección de resolución
+    $(document).off('click', '.resolution-item');
     $(document).on('click', '.resolution-item', function() {
         var resolutionId = $(this).data('resolution-id');
         var resolutionPrefix = $(this).data('resolution-prefix');
@@ -468,7 +474,7 @@ $(document).ready(function() {
     // Función para procesar la nota de crédito
     async function processCreditNote(documentData, $button, selectedResolution) {
         try {
-            const token = '{{ $token_company }}';
+            const token = '{{ $company->user->api_token }}';
 
             if (!selectedResolution) {
                 throw new Error('No se encontró resolución seleccionada para notas de crédito');
@@ -529,6 +535,7 @@ $(document).ready(function() {
                 head_note: originalData.head_note || '',
                 foot_note: originalData.foot_note || '',
                 customer: originalData.customer,
+                allowance_charges: originalData.allowance_charges,
                 tax_totals: originalData.tax_totals,
                 legal_monetary_totals: originalData.legal_monetary_totals,
                 credit_note_lines: originalData.invoice_lines.map(line => ({
