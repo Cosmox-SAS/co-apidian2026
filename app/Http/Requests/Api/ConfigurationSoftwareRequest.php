@@ -36,6 +36,9 @@ class ConfigurationSoftwareRequest extends FormRequest
             'ideqdocs' => 'nullable|string',
             'pineqdocs' => 'nullable|required_with:ideqdocs|numeric|digits:5',
             'urleqdocs' => 'nullable|string|url',
+            'idsupportdocument' => 'nullable|string',
+            'pinsupportdocument' => 'nullable|required_with:idsupportdocument|numeric|digits:5',
+            'urlsupportdocument' => 'nullable|string|url',
         ];
     }
 }
