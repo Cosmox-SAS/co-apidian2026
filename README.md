@@ -36,7 +36,6 @@ Estamos enfocados en crear herramientas y soluciones para desarrolladores de sof
 
 - Descargar Postman [Aquí](https://www.postman.com/downloads/)
 - Ver ejemplos en sitio web. [Aquí](https://documenter.getpostman.com/view/1431398/2sAY4uCido) 
-
 (Puede descargar los ejemplos a Postman desde el boton superior derecho "RUN in postman")
 
 
