@@ -423,6 +423,32 @@
                 this.responseCertificate = {};
                 this.responseResolution = {};
             },
+            validateRequiredFields() {
+                const requiredFields = [
+                    "nit",
+                    "dv",
+                    "business_name",
+                    "merchant_registration",
+                    "phone",
+                    "email",
+                    "address",
+                    "department_id",
+                    "municipality_id",
+                    "type_document_identification_id",
+                    "type_liability_id",
+                    "type_organization_id",
+                    "type_regime_id"
+                ];
+                this.errors = {};
+                let valid = true;
+                requiredFields.forEach(field => {
+                    if (!this.form[field]) {
+                        this.$set(this.errors, field, ["Campo obligatorio."]);
+                        valid = false;
+                    }
+                });
+                return valid;
+            },
             getHeaderConfig() {
                 let token = this.responseCompany.token;
                 let axiosConfig = {
@@ -434,35 +460,48 @@
                 };
                 return axiosConfig;
             },
-            saveCompany() {
+            async saveCompany() {
+                if (!this.validateRequiredFields()) {
+                    this.$message.warning("Por favor complete todos los campos obligatorios antes de continuar.");
+                    return;
+                }
                 this.loading_submit = true;
-                return new Promise((resolve, reject) => {
-                    this.$http
-                        .post(
-                            `/${this.resourceapi}/${this.form.nit}/${this.form.dv}`,
-                            this.form
-                        )
-                        .then(response => {
-                            if (response.data.success) {
-                                this.responseCompany = response.data;
-                                this.$message.success(response.data.message);
-                                this.next();
-                            } else {
-                                this.$message.error(response.data.message);
-                            }
-                        })
-                        .catch(error => {
-                            if (error.response.status === 422) {
-                                this.errors = error.response.data.errors;
-                            } else {
-                                this.$message.error(error.response.data.message);
-                                this.initForm()
-                            }
-                        })
-                        .then(() => {
-                            this.loading_submit = false;
-                        });
-                });
+                try {
+                    const response = await this.$http.post(
+                        `/${this.resourceapi}/${this.form.nit}/${this.form.dv}`,
+                        this.form
+                    );
+                    if (response.data.success) {
+                        // Mostrar mensaje de éxito
+                        this.$message.success(response.data.message);
+                        // Guardar datos de la empresa y token para el siguiente paso
+                        this.responseCompany = response.data;
+                        // Avanzar al siguiente paso
+                        this.next();
+                    } else {
+                        if (response.data.error) {
+                            this.$message.error(response.data.error);
+                        } else if (response.data.message) {
+                            this.$message.error(response.data.message);
+                        } else {
+                            this.$message.error("Error al crear la empresa.");
+                        }
+                    }
+                } catch (error) {
+                    if (error.response && error.response.status === 422) {
+                        this.errors = error.response.data.errors;
+                        let allErrors = Object.values(this.errors).flat().join('\n');
+                        this.$message.error(allErrors);
+                    } else if (error.response && error.response.data && error.response.data.error) {
+                        this.$message.error(error.response.data.error);
+                    } else if (error.response && error.response.data && error.response.data.message) {
+                        this.$message.error(error.response.data.message);
+                    } else {
+                        this.$message.error("Error inesperado al guardar la empresa.");
+                    }
+                } finally {
+                    this.loading_submit = false;
+                }
             },
             saveCertificate() {
                 this.loading_submit = true;

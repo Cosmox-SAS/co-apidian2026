@@ -16,11 +16,7 @@
 <div class="card mb-3">
     <div class="card-body">
         <div class="row align-items-end">
-            <div class="col-md-8">
-                <label><strong>Búsqueda</strong></label>
-                <input type="text" id="filter-text" class="form-control" placeholder="Escribe para buscar...">
-            </div>
-
+            <!-- Filtro primero -->
             <div class="col-md-4">
                 <label><strong>Filtrar por</strong></label>
                 <select id="filter-type" class="form-control" clearable>
@@ -28,6 +24,11 @@
                     <option value="email">Correo</option>
                     <option value="name">Nombre</option>
                 </select>
+            </div>
+            <!-- Barra de búsqueda a la derecha -->
+            <div class="col-md-8">
+                <label><strong>Búsqueda</strong></label>
+                <input type="text" id="filter-text" class="form-control" placeholder="Escribe para buscar...">
             </div>
         </div>
     </div>
