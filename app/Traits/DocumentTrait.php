@@ -548,7 +548,17 @@ trait DocumentTrait
                     $pdf->SetHTMLHeader(View::make("pdfs.credit-note.header", compact("resolution", "date", "time", "user", "request", "company", "imgLogo")));
                     $pdf->SetHTMLFooter(View::make("pdfs.credit-note.footer", compact("resolution", "request", "cufecude", "date", "time")));
                     $pdf->WriteHTML(View::make("pdfs.credit-note.template".$template_pdf, compact("user", "company", "customer", "resolution", "date", "time", "paymentForm", "request", "cufecude", "imageQr", "imgLogo", "withHoldingTaxTotal", "notes", "healthfields")), HTMLParserMode::HTML_BODY);
-                    $filename = storage_path("app/public/{$company->identification_number}/NCS-{$resolution->next_consecutive}.pdf");
+                    // Notas de credito para Documentos Equivalentes: NCQS
+                    $is_eqdoc = false;
+                    if (isset($request->is_eqdoc) && $request->is_eqdoc) {
+                        $is_eqdoc = true;
+                    }
+                    if ($is_eqdoc && isset($typeDocument) && isset($typeDocument->prefix)) {
+                        $pdfPrefix = strtoupper($typeDocument->prefix) . 'S';
+                    } else {
+                        $pdfPrefix = 'NCS';
+                    }
+                    $filename = storage_path("app/public/{$company->identification_number}/{$pdfPrefix}-{$resolution->next_consecutive}.pdf");
                 }
                 else{
                     if($tipodoc == "ND"){
@@ -611,7 +621,16 @@ trait DocumentTrait
                         $pdf->SetHTMLFooter(View::make("pdfs.debit-note.footer", compact("resolution", "request", "cufecude", "date", "time")));
                         $pdf->WriteHTML(View::make("pdfs.debit-note.template".$template_pdf, compact("user", "company", "customer", "resolution", "date", "time", "paymentForm", "request", "cufecude", "imageQr", "imgLogo", "withHoldingTaxTotal", "notes", "healthfields")), HTMLParserMode::HTML_BODY);
 
-                        $filename = storage_path("app/public/{$company->identification_number}/NDS-{$resolution->next_consecutive}.pdf");
+                        $is_eqdoc = false;
+                        if (isset($request->is_eqdoc) && $request->is_eqdoc) {
+                            $is_eqdoc = true;
+                        }
+                        if ($is_eqdoc && isset($typeDocument) && isset($typeDocument->prefix)) {
+                            $pdfPrefix = strtoupper($typeDocument->prefix) . 'S';
+                        } else {
+                            $pdfPrefix = 'NDS';
+                        }
+                        $filename = storage_path("app/public/{$company->identification_number}/{$pdfPrefix}-{$resolution->next_consecutive}.pdf");
                     }
                     else
                         if($tipodoc == "SUPPORTDOCUMENT"){
