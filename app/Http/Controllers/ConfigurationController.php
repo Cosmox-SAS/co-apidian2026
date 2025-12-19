@@ -319,6 +319,9 @@ class ConfigurationController extends Controller
                 }
             }
         }
+        if (file_exists($fullPath)) {
+            @unlink($fullPath);
+        }
 
         return response()->json([
             'success' => true,
