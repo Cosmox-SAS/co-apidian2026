@@ -139,10 +139,22 @@ class SupportDocumentRequest extends FormRequest
             'seller' => 'required|array',
             'seller.identification_number' => 'required|alpha_num|between:1,15',
             'seller.dv' => 'nullable|numeric|digits:1|dian_dv:'.$this->seller["identification_number"],
-            'seller.type_document_identification_id' => 'nullable|exists:type_document_identifications,id',
+            'seller.type_document_identification_id' => [
+                'nullable',
+                'exists:type_document_identifications,id',
+                Rule::in([4, 5, 6, 7, 8, 9, 11]),
+            ],
             'seller.type_organization_id' => 'nullable|exists:type_organizations,id',
             'seller.language_id' => 'nullable|exists:languages,id',
             'seller.country_id' => 'nullable|exists:countries,id',
+            'seller.country_code' => [
+                'nullable',
+                function ($attribute, $value, $fail) {
+                    if (!\DB::table('countries')->where('code', 'LIKE', "%{$value}%")->exists()) {
+                        $fail('seller.country code es inválido.');
+                    }
+                }
+            ],
             'seller.municipality_id' => 'nullable|exists:municipalities,id',
             'seller.municipality_id_fact' => 'nullable|exists:municipalities,codefacturador',
             'seller.type_regime_id' => 'nullable|exists:type_regimes,id',

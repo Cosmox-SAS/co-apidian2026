@@ -72,6 +72,11 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/resolutions/{identification_number?}/{type_id?}', 'Api\ConfigurationController@table_resolutions');
         Route::get('/payment-methods', 'Api\PaymentController@getPaymentMethods');
         Route::get('/payment-forms', 'Api\PaymentController@getPaymentForms');
+        Route::post('/payment-methods', 'Api\PaymentController@store');
+        Route::put('/payment-methods/{id}', 'Api\PaymentController@update');
+        Route::delete('/payment-methods/{id}', 'Api\PaymentController@destroy');
+        Route::delete('/payment-methods', 'Api\PaymentController@destroyByFields');
+
         Route::get('/items', 'Api\ItemController@records');
     });
 

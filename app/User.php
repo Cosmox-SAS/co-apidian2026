@@ -86,4 +86,26 @@ class User extends Authenticatable
     {
         return $this->belongsTo(HealthTypeDocumentIdentification::class, 'document_type_id');
     }
+
+    public function getCompanyAttribute()
+    {
+        if ($this->relationLoaded('company') && $this->company()->exists()) {
+            return $this->getRelation('company');
+        }
+        if ($this->relationLoaded('companies') && $this->companies->isNotEmpty()) {
+            return $this->companies->first();
+        }
+        $direct = $this->company()->first();
+        if ($direct) {
+            return $direct;
+        }
+        $many = $this->companies()->first();
+        if ($many) {
+            return $many;
+        }
+        if (property_exists($this, 'attributes') && array_key_exists('company', $this->attributes)) {
+            return $this->attributes['company'];
+        }
+        return null;
+    }
 }

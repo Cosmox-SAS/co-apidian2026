@@ -144,7 +144,6 @@
                         </td>
                     </tr>
                 @endif
-                    @endif
                     @if(is_array($paymentForm))
                     <tr>
                         <td style="padding: 0; width: 50%;">Plazo Para Pagar:</td>

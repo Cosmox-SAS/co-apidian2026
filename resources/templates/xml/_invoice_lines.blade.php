@@ -107,12 +107,12 @@
             @endif
         </cac:Item>
         <cac:Price>
-{{--            @if(isset($idcurrency))
-                <cbc:PriceAmount currencyID="{{preg_replace("/[\r\n|\n|\r]+/", "", $idcurrency->code)}}">{{preg_replace("/[\r\n|\n|\r]+/", "", number_format(($invoiceLine->free_of_charge_indicator === 'true') ? 0 : $invoiceLine->price_amount, 2, '.', ''))}}</cbc:PriceAmount>
-            @else   --}}
-                <cbc:PriceAmount currencyID="{{preg_replace("/[\r\n|\n|\r]+/", "", $company->type_currency->code)}}">{{preg_replace("/[\r\n|\n|\r]+/", "", number_format(($invoiceLine->free_of_charge_indicator === 'true') ? 0 : $invoiceLine->price_amount, 2, '.', ''))}}</cbc:PriceAmount>
-{{--            @endif  --}}
-            <cbc:BaseQuantity unitCode="{{preg_replace("/[\r\n|\n|\r]+/", "", $invoiceLine->unit_measure->code)}}">{{preg_replace("/[\r\n|\n|\r]+/", "", number_format($invoiceLine->base_quantity, 6, '.', ''))}}</cbc:BaseQuantity>
+            <cbc:PriceAmount currencyID="{{preg_replace("/[\r\n|\n|\r]+/", "", $company->type_currency->code)}}">
+                {{preg_replace("/[\r\n|\n|\r]+/", "", number_format($invoiceLine->price_amount, 2, '.', ''))}}
+            </cbc:PriceAmount>
+            <cbc:BaseQuantity unitCode="{{preg_replace("/[\r\n|\n|\r]+/", "", $invoiceLine->unit_measure->code)}}">
+                {{preg_replace("/[\r\n|\n|\r]+/", "", number_format($invoiceLine->base_quantity, 6, '.', ''))}}
+            </cbc:BaseQuantity>
         </cac:Price>
     </cac:InvoiceLine>
 @endforeach

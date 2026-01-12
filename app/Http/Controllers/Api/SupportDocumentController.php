@@ -12,6 +12,7 @@ use App\TypeCurrency;
 use App\TypeOperation;
 use App\PaymentMethod;
 use App\AllowanceCharge;
+use App\Country;
 use App\LegalMonetaryTotal;
 use App\PrepaidPayment;
 use App\Municipality;
@@ -30,6 +31,7 @@ use ubl21dian\Templates\SOAP\SendBillSync;
 use ubl21dian\Templates\SOAP\SendTestSetAsync;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\InvoiceMail;
+use App\TypeDocumentIdentification;
 use Carbon\Carbon;
 use DateTime;
 use Storage;
@@ -637,10 +639,25 @@ class SupportDocumentController extends Controller
         if(isset($sellerAll['municipality_id_fact']))
             $sellerAll['municipality_id'] = Municipality::where('codefacturador', $sellerAll['municipality_id_fact'])->first();
         $seller = new User($sellerAll->toArray());
+        if (isset($sellerAll['country_code']) && !empty($sellerAll['country_code'])) {
+            $country = Country::where('code', 'LIKE', "%{$sellerAll['country_code']}%")->first();
+            if ($country) {
+                $sellerAll['country_id'] = $country->id;
+            }
+        }
+        $sellerAll['country_id'] = $sellerAll['country_id'] ?? 46;
 
         // Seller company
         $seller->company = new Company($sellerAll->toArray());
         $seller->postal_zone_code = $sellerAll['postal_zone_code'];
+        if (isset($sellerAll['type_document_identification_id'])) {
+            $seller->company->type_document_identification = TypeDocumentIdentification::find($sellerAll['type_document_identification_id']);
+        }
+        if ($seller->company->country_id != 46) {
+            $seller->company->municipality_name = $sellerAll['municipality_name'];
+            $seller->company->state_name = $sellerAll['state_name'];
+        }
+
 
         // Delivery
         if($request->delivery){

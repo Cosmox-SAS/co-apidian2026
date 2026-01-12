@@ -51,6 +51,12 @@
     @isset($invoice_period)
         @include('xml._invoice_period', ['node' => 'InvoicePeriod'])
     @endisset
+    {{-- DiscrepancyResponse --}}
+    @if($typeDocument->id != 26)
+        @isset($discrepancycode)
+            @include('xml._discrepancy_response')
+        @endisset
+    @endif
     {{-- OrderReference --}}
     @isset($orderreference)
         @include('xml._order_reference', ['node' => 'OrderReference'])
@@ -58,12 +64,6 @@
     @isset($request->additional_document_reference)
         @include('xml._additional_document_reference_general', ['node' => 'request'])
     @endisset
-    {{-- DiscrepancyResponse --}}
-    @if($typeDocument->id != 26)
-        @isset($discrepancycode)
-            @include('xml._discrepancy_response')
-        @endisset
-    @endif
     {{-- BillingReference --}}
     @isset($request['billing_reference'])
         @include('xml._billing_reference')
