@@ -548,15 +548,11 @@ trait DocumentTrait
                     $pdf->SetHTMLHeader(View::make("pdfs.credit-note.header", compact("resolution", "date", "time", "user", "request", "company", "imgLogo")));
                     $pdf->SetHTMLFooter(View::make("pdfs.credit-note.footer", compact("resolution", "request", "cufecude", "date", "time")));
                     $pdf->WriteHTML(View::make("pdfs.credit-note.template".$template_pdf, compact("user", "company", "customer", "resolution", "date", "time", "paymentForm", "request", "cufecude", "imageQr", "imgLogo", "withHoldingTaxTotal", "notes", "healthfields")), HTMLParserMode::HTML_BODY);
-                    // Notas de credito para Documentos Equivalentes: NCQS
-                    $is_eqdoc = false;
-                    if (isset($request->is_eqdoc) && $request->is_eqdoc) {
-                        $is_eqdoc = true;
-                    }
-                    if ($is_eqdoc && isset($typeDocument) && isset($typeDocument->prefix)) {
-                        $pdfPrefix = strtoupper($typeDocument->prefix) . 'S';
-                    } else {
-                        $pdfPrefix = 'NCS';
+                    $filename = storage_path("app/public/{$company->identification_number}/NCS-{$resolution->next_consecutive}.pdf");
+                    $pdfPrefix = 'NCS';
+                    if (!empty($request->is_eqdoc) && $request->is_eqdoc) {
+                        $typePrefix = isset($typeDocument->prefix) ? $typeDocument->prefix : 'NCQ';
+                        $pdfPrefix = strtoupper($typePrefix) . 'S';
                     }
                     $filename = storage_path("app/public/{$company->identification_number}/{$pdfPrefix}-{$resolution->next_consecutive}.pdf");
                 }
@@ -621,14 +617,10 @@ trait DocumentTrait
                         $pdf->SetHTMLFooter(View::make("pdfs.debit-note.footer", compact("resolution", "request", "cufecude", "date", "time")));
                         $pdf->WriteHTML(View::make("pdfs.debit-note.template".$template_pdf, compact("user", "company", "customer", "resolution", "date", "time", "paymentForm", "request", "cufecude", "imageQr", "imgLogo", "withHoldingTaxTotal", "notes", "healthfields")), HTMLParserMode::HTML_BODY);
 
-                        $is_eqdoc = false;
-                        if (isset($request->is_eqdoc) && $request->is_eqdoc) {
-                            $is_eqdoc = true;
-                        }
-                        if ($is_eqdoc && isset($typeDocument) && isset($typeDocument->prefix)) {
-                            $pdfPrefix = strtoupper($typeDocument->prefix) . 'S';
-                        } else {
-                            $pdfPrefix = 'NDS';
+                        $pdfPrefix = 'NDS';
+                        if (!empty($request->is_eqdoc) && $request->is_eqdoc) {
+                            $typePrefix = isset($typeDocument->prefix) ? $typeDocument->prefix : 'NDQ';
+                            $pdfPrefix = strtoupper($typePrefix) . 'S';
                         }
                         $filename = storage_path("app/public/{$company->identification_number}/{$pdfPrefix}-{$resolution->next_consecutive}.pdf");
                     }
@@ -916,7 +908,7 @@ trait DocumentTrait
             $margin_bottom = '10';
             $orientation = 'L';
 
-         }elseif($template == 2)  {
+         }elseif($template == 2 || $template == 8)  {
 
             $format_print = 'A4';
             $margin_top = '39';
@@ -1070,10 +1062,12 @@ trait DocumentTrait
     {
         $dir = preg_replace("/[\r\n|\n|\r]+/", "", "zip/{$resolution->company_id}");
         $nameXML = preg_replace("/[\r\n|\n|\r]+/", "", $this->getFileName($company, $resolution));
-        if ($batch)
-          $nameZip = $batch.".zip";
-        else
-          $nameZip = preg_replace("/[\r\n|\n|\r]+/", "", $this->getFileName($company, $resolution, 6, '.zip'));
+        if ($batch) {
+            $nameZip = $batch . ".zip";
+        } else {
+            $uniqueId = uniqid();
+            $nameZip = preg_replace("/[\r\n|\n|\r]+/", "", $this->getFileName($company, $resolution, 6, "-{$uniqueId}.zip"));
+        }
 
         $this->pathZIP = preg_replace("/[\r\n|\n|\r]+/", "", "app/zip/{$resolution->company_id}/{$nameZip}");
 

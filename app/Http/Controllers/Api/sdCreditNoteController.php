@@ -68,7 +68,7 @@ class sdCreditNoteController extends Controller
         $company = $user->company;
 
         // Verificar la disponibilidad de la DIAN antes de continuar
-        $dian_url = $company->software->url;
+        $dian_url = $company->software->url_support_document;
         if (!$this->verificarEstadoDIAN($dian_url)) {
             // Manejar la indisponibilidad del servicio, por ejemplo:
             return [
@@ -277,8 +277,8 @@ class sdCreditNoteController extends Controller
 
         // Signature XML
         $signCreditNote = new SignCreditNote($company->certificate->path, $company->certificate->password);
-        $signCreditNote->softwareID = $company->software->identifier;
-        $signCreditNote->pin = $company->software->pin;
+        $signCreditNote->softwareID = $company->software->identifier_support_document;
+        $signCreditNote->pin = $company->software->pin_support_document;
 
         if ($request->GuardarEn){
             if (!is_dir($request->GuardarEn)) {
@@ -297,7 +297,7 @@ class sdCreditNoteController extends Controller
             $signCreditNote->GuardarEn = storage_path("app/public/{$company->identification_number}/NDSN-{$resolution->next_consecutive}.xml");
 
         $sendBillSync = new SendBillSync($company->certificate->path, $company->certificate->password);
-        $sendBillSync->To = $company->software->url;
+        $sendBillSync->To = $company->software->url_support_document;
         $sendBillSync->fileName = "{$resolution->next_consecutive}.xml";
         if ($request->GuardarEn)
             $sendBillSync->contentFile = $this->zipBase64($company, $resolution, $signCreditNote->sign($crediNote), $request->GuardarEn."\\NDSNS-{$resolution->next_consecutive}");
@@ -545,7 +545,7 @@ class sdCreditNoteController extends Controller
         $company = $user->company;
 
         // Verificar la disponibilidad de la DIAN antes de continuar
-        $dian_url = $company->software->url;
+        $dian_url = $company->software->url_support_document;
         if (!$this->verificarEstadoDIAN($dian_url)) {
             // Manejar la indisponibilidad del servicio, por ejemplo:
             return [
@@ -707,8 +707,8 @@ class sdCreditNoteController extends Controller
 
         // Signature XML
         $signCreditNote = new SignCreditNote($company->certificate->path, $company->certificate->password);
-        $signCreditNote->softwareID = $company->software->identifier;
-        $signCreditNote->pin = $company->software->pin;
+        $signCreditNote->softwareID = $company->software->identifier_support_document;
+        $signCreditNote->pin = $company->software->pin_support_document;
 
         if ($request->GuardarEn){
             if (!is_dir($request->GuardarEn)) {
@@ -727,7 +727,7 @@ class sdCreditNoteController extends Controller
             $signCreditNote->GuardarEn = storage_path("app/public/{$company->identification_number}/NDSN-{$resolution->next_consecutive}.xml");
 
         $sendTestSetAsync = new SendTestSetAsync($company->certificate->path, $company->certificate->password);
-        $sendTestSetAsync->To = $company->software->url;
+        $sendTestSetAsync->To = $company->software->url_support_document;
         $sendTestSetAsync->fileName = "{$resolution->next_consecutive}.xml";
         if ($request->GuardarEn)
             $sendTestSetAsync->contentFile = $this->zipBase64($company, $resolution, $signCreditNote->sign($crediNote), $request->GuardarEn."\\NDSNS-{$resolution->next_consecutive}");

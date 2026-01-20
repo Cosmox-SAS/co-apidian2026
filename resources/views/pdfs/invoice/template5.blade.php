@@ -48,6 +48,14 @@
                         <td style="padding: 0; width: 40%;">Forma de Pago:</td>
                         <td style="padding: 0;">{{$paymentForm[0]->name}}</td>
                     </tr>
+                    <tr>
+                        <td style="padding: 0; width: 40%;">Medios de Pago:</td>
+                        <td style="padding: 0;">
+                            @foreach ($paymentForm as $paymentF)
+                                {{$paymentF->nameMethod}}<br>
+                            @endforeach
+                        </td>
+                    </tr>
                     @endif
                 </table>
             </td>

@@ -209,6 +209,10 @@ class ConfigurationController extends Controller
             else
                 $operacion = "CREATE";
 
+            $tax_id = $request->tax_id;
+            if (!$tax_id) {
+                $tax_id = ($request->type_liability_id == 117) ? 15 : 1;
+            }
             if($operacion == "CREATE"){
                 $user = User::create([
                     'name' => $request->business_name,
@@ -257,7 +261,7 @@ class ConfigurationController extends Controller
                     'identification_number' => $nit,
                     'dv' => $dv,
                     'language_id' => $request->language_id ?? 79,
-                    'tax_id' => $request->tax_id ?? 1,
+                    'tax_id' => $tax_id,
                     'type_environment_id' => $request->type_environment_id ?? 2,
                     'payroll_type_environment_id' => $request->payroll_type_environment_id ?? 2,
                     'eqdocs_type_environment_id' => $request->eqdocs_type_environment_id ?? 2,
@@ -295,6 +299,10 @@ class ConfigurationController extends Controller
                         'message' => 'Error de registro, el correo electronico ya existe o es el mismo que tiene registrado actualmente.',
                         'success' => false,
                     ];
+                }
+
+                if (!$request->tax_id) {
+                    $tax_id = ($request->type_liability_id == 117) ? 15 : ($user->company->tax_id ?? 1);
                 }
 
                 if(isset($request->type_plan_id) && (($request->type_plan_id != $user->company->type_plan_id) || (isset($request->renew_plan) && $request->renew_plan == TRUE)))
@@ -350,7 +358,7 @@ class ConfigurationController extends Controller
                 $user->company()->update([
                     'dv' => $dv,
                     'language_id' => $request->language_id ?? 79,
-                    'tax_id' => $request->tax_id ?? 1,
+                    'tax_id' => $tax_id,
 //                    'type_environment_id' => $request->type_environment_id ?? 2,
 //                    'payroll_type_environment_id' => $request->payroll_type_environment_id ?? 2,
                     'type_operation_id' => $request->type_operation_id ?? 10,
@@ -990,8 +998,9 @@ class ConfigurationController extends Controller
     */
     public function deleteCompany($nit, $dv)
     {
-        $company = Company::where('identification_number', '=', $nit)->get()->first();
+        $company = Company::where('identification_number', '=', $nit)->first();
         $id_user = $company->user_id;
+        Customer::where('companies_id', $company->id)->delete();
         Company::where('identification_number', $nit)->delete();
         Document::where('identification_number', $nit)->delete();
         Log::where('user_id', $id_user)->delete();

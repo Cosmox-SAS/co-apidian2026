@@ -37,7 +37,7 @@
 {{--                        @endif  --}}
                     @endif
                     <cac:TaxCategory>
-                        @if (!$taxTotal->is_fixed_value)
+                        @if(isset($taxTotal->percent) && $taxTotal->percent !== null && $taxTotal->percent !== '')
                             <cbc:Percent>{{preg_replace("/[\r\n|\n|\r]+/", "", number_format($taxTotal->percent, 2, '.', ''))}}</cbc:Percent>
                         @endif
                         <cac:TaxScheme>

@@ -36,7 +36,7 @@
                             <cbc:TaxAmount currencyID="{{preg_replace("/[\r\n|\n|\r]+/", "", $company->type_currency->code)}}">{{preg_replace("/[\r\n|\n|\r]+/", "", number_format($taxTotal->tax_amount, 3, '.', ''))}}</cbc:TaxAmount>
                         @endif
                     <cac:TaxCategory>
-                        @if (!$taxTotal->is_fixed_value)
+                        @if(isset($taxTotal->percent) && $taxTotal->percent !== null && $taxTotal->percent !== '')
                             <cbc:Percent>{{preg_replace("/[\r\n|\n|\r]+/", "", number_format($taxTotal->percent, 3, '.', ''))}}</cbc:Percent>
                         @endif
                         <cac:TaxScheme>

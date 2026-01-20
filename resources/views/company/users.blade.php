@@ -40,7 +40,14 @@
                 @foreach ($users as $user)
                 <tr class="table-light">
                     <td>
-                        {{ $user->can_rips ? 'RIPS' : 'Facturación' }}
+                        @if($user->can_rips && $user->can_health)
+                            Facturación + RIPS
+                        @elseif($user->can_rips)
+                            RIPS
+                        @else
+                            Facturación
+                        @endif
+
                         @if($user->id == $company->user->id)
                             <span class="badge bg-primary text-white">Principal</span>
                         @endif
@@ -157,18 +164,22 @@
                             @endif
                         </div>
                         <div class="form-group col-6 mt-2">
+                            <label>Tipo de usuario</label><br>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="can_rips" id="can_rips_yes" value="1" {{ old('can_rips') == '1' ? 'checked' : '' }}>
-                                <label class="form-check-label" for="can_rips_yes">RIPS</label>
+                                <input class="form-check-input" type="radio" name="user_type" id="type_facturacion" value="facturacion" {{ old('user_type') == 'facturacion' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="type_facturacion">Facturación</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="can_rips" id="can_rips_no" value="0" {{ old('can_rips') == '0' || old('can_rips') === null ? 'checked' : '' }}>
-                                <label class="form-check-label" for="can_rips_no">FACTURACIÓN</label>
+                                <input class="form-check-input" type="radio" name="user_type" id="type_rips" value="rips" {{ old('user_type') == 'rips' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="type_rips">RIPS</label>
                             </div>
-                            <br>
-                            {{-- <input type="checkbox" value="1" name="can_health" id="can_health" {{ old('can_health') ? 'checked' : '' }}> --}}
-                            {{-- <label for="can_health">Generar Factura de Sector Salud</label> --}}
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="user_type" id="type_ambos" value="ambos" {{ old('user_type') == 'ambos' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="type_ambos">Ambos</label>
+                            </div>
                         </div>
+                        <input type="hidden" name="can_rips" id="can_rips" value="{{ old('can_rips', 0) }}">
+                        <input type="hidden" name="can_health" id="can_health" value="{{ old('can_health', 0) }}">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -227,6 +238,21 @@ $(document).ready(function () {
         } else {
             modal.find('#formMethod').val('POST');
             modal.find('#userForm').attr('action', '{{ route('company.users.store', $company->id) }}');
+        }
+    });
+
+    // Actualizar los campos ocultos según el tipo seleccionado
+    $('input[name="user_type"]').on('change', function() {
+        var type = $(this).val();
+        if (type === 'facturacion') {
+            $('#can_rips').val(0);
+            $('#can_health').val(1);
+        } else if (type === 'rips') {
+            $('#can_rips').val(1);
+            $('#can_health').val(0);
+        } else if (type === 'ambos') {
+            $('#can_rips').val(1);
+            $('#can_health').val(1);
         }
     });
 

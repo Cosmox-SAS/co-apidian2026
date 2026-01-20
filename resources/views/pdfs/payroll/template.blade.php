@@ -169,8 +169,8 @@
                     <td></td>
                 </tr>
             @endif
-            @if(isset($request['accrued']['HEDs']))
-                @foreach($request['accrued']['HEDs'] as $HED)
+            @if(isset($request['accrued']['HEDs']) || isset($request['accrued']['heds']))
+                @foreach(isset($request['accrued']['HEDs']) ? $request['accrued']['HEDs'] : $request['accrued']['heds'] as $HED)
                 <?php $ItemNro = $ItemNro + 1; ?>
                     <tr>
                         <td>{{$ItemNro}}</td>
@@ -180,8 +180,8 @@
                     </tr>
                 @endforeach
             @endif
-            @if(isset($request['accrued']['HENs']))
-                @foreach($request['accrued']['HENs'] as $HEN)
+            @if(isset($request['accrued']['HENs']) || isset($request['accrued']['hens']))
+                @foreach(isset($request['accrued']['HENs']) ? $request['accrued']['HENs'] : $request['accrued']['hens'] as $HEN)
                 <?php $ItemNro = $ItemNro + 1; ?>
                     <tr>
                         <td>{{$ItemNro}}</td>
@@ -191,8 +191,8 @@
                     </tr>
                 @endforeach
             @endif
-            @if(isset($request['accrued']['HRNs']))
-                @foreach($request['accrued']['HRNs'] as $HRN)
+            @if(isset($request['accrued']['HRNs']) || isset($request['accrued']['hrns']))
+                @foreach(isset($request['accrued']['HRNs']) ? $request['accrued']['HRNs'] : $request['accrued']['hrns'] as $HRN)
                 <?php $ItemNro = $ItemNro + 1; ?>
                     <tr>
                         <td>{{$ItemNro}}</td>
@@ -202,8 +202,8 @@
                     </tr>
                 @endforeach
             @endif
-            @if(isset($request['accrued']['HEDDFs']))
-                @foreach($request['accrued']['HEDDFs'] as $HEDDF)
+            @if(isset($request['accrued']['HEDDFs']) || isset($request['accrued']['heddfs']))
+                @foreach(isset($request['accrued']['HEDDFs']) ? $request['accrued']['HEDDFs'] : $request['accrued']['heddfs'] as $HEDDF)
                 <?php $ItemNro = $ItemNro + 1; ?>
                     <tr>
                         <td>{{$ItemNro}}</td>
@@ -213,8 +213,8 @@
                     </tr>
                 @endforeach
             @endif
-            @if(isset($request['accrued']['HRDDFs']))
-                @foreach($request['accrued']['HRDDFs'] as $HRDDF)
+            @if(isset($request['accrued']['HRDDFs']) || isset($request['accrued']['hrddfs']))
+                @foreach(isset($request['accrued']['HRDDFs']) ? $request['accrued']['HRDDFs'] : $request['accrued']['hrddfs'] as $HRDDF)
                 <?php $ItemNro = $ItemNro + 1; ?>
                     <tr>
                         <td>{{$ItemNro}}</td>
@@ -224,19 +224,19 @@
                     </tr>
                 @endforeach
             @endif
-            @if(isset($request['accrued']['HENDFs']))
-                @foreach($request['accrued']['HENDFs'] as $HENDF)
+            @if(isset($request['accrued']['HENDFs']) || isset($request['accrued']['hendfs']))
+                @foreach(isset($request['accrued']['HENDFs']) ? $request['accrued']['HENDFs'] : $request['accrued']['hendfs'] as $HENDF)
                 <?php $ItemNro = $ItemNro + 1; ?>
                     <tr>
                         <td>{{$ItemNro}}</td>
-                        <td>PAGO DE {{$HENDF['quantity']}} HORA(S) EXTRA(S) NOCTURNA(S) DOMINICAL Y FESTIVO DESDE - {{$HENDF['start_time']}} HASTA {{$HENDF['end_time']}}</td>
+                        <td>PAGO DE {{$HENDF['quantity']}} HORA(S) EXTRA(S) NOCTURNA(S) DOMINICAL Y FESTIVO DESDE - {{$HENDF['start_date']}} HASTA {{$HENDF['end_date']}}</td>
                         <td class="text-right">{{number_format($HENDF['payment'], 2)}}</td>
                         <td></td>
                     </tr>
                 @endforeach
             @endif
-            @if(isset($request['accrued']['HRNDFs']))
-                @foreach($request['accrued']['HRNDFs'] as $HRNDF)
+            @if(isset($request['accrued']['HRNDFs']) || isset($request['accrued']['hrndfs']))
+                @foreach(isset($request['accrued']['HRNDFs']) ? $request['accrued']['HRNDFs'] : $request['accrued']['hrndfs'] as $HRNDF)
                 <?php $ItemNro = $ItemNro + 1; ?>
                     <tr>
                         <td>{{$ItemNro}}</td>
