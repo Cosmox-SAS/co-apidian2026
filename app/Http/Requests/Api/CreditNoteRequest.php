@@ -116,12 +116,7 @@ class CreditNoteRequest extends FormRequest
             'type_operation_id' => 'nullable|numeric|in:7,8,12,30,31,32',
 
             // Resolution number for document sending
-            'resolution_number' => Rule::requiredIf(function(){
-                if(auth()->user()->company->resolutions->where('type_document_id', $this->type_document_id)->count() >= 2 && is_null($this->invoice_period))
-                  return true;
-                else
-                  return false;
-            }),
+            'resolution_number' => 'nullable|string',
 
             // Prefijo de la resolucion a utilizar
 

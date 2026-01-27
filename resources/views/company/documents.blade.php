@@ -424,15 +424,15 @@ $(document).ready(function() {
         });
 
         // Verificar si la resolución tiene número (más flexible)
-        if (!resolutionNumber || resolutionNumber === 'undefined') {
-            new PNotify({
-                text: 'Esta resolución no tiene configurado el número de resolución. Por favor, agregue este campo en el menú de resoluciones.',
-                type: 'warning',
-                addclass: 'notification-warning',
-                delay: 5000
-            });
-            return;
-        }
+        // if (!resolutionNumber || resolutionNumber === 'undefined') {
+        //     new PNotify({
+        //         text: 'Esta resolución no tiene configurado el número de resolución. Por favor, agregue este campo en el menú de resoluciones.',
+        //         type: 'warning',
+        //         addclass: 'notification-warning',
+        //         delay: 5000
+        //     });
+        //     return;
+        // }
 
         // Procesar la nota de crédito con la resolución seleccionada
         if (window.currentDocumentData && window.currentButton) {
