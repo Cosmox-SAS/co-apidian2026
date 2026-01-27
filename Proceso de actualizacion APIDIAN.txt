@@ -1,6 +1,6 @@
 PROCEDIMIENTO DE ACTUALIZACION APIDIAN
 
-1... DESDE APIDIAN2021 o APIDIAN2022 o APIDIAN2023 o APIDIAN2O24 HACIA APIDIAN2O25
+1... DESDE APIDIAN2021 o APIDIAN2022 o APIDIAN2023 o APIDIAN2O24 o APIDIAN2025 HACIA APIDIAN2O26
 
 Dentro del directorio del apidian2021 o apidian2022 o apidian2023 o apidian2O24:
 
@@ -28,7 +28,7 @@ Dentro del directorio del apidian2021 o apidian2022 o apidian2023 o apidian2O24:
 	e. git pull origin master
 	e. Si aparecen conflictos ejecutar el comando: git reset --hard origin/master
 	f. composer clear-cache
-	g. composer self-update
+	g. composer self-update 2.8.0
 	h. rm composer.lock
 	i. composer install
 	j. php artisan migrate --seed
@@ -50,7 +50,7 @@ Dentro del directorio del apidian2025:
 	c. Si aparecen conflictos ejecutar el comando: git reset --hard origin/master
 	d. php artisan migrate --seed
 	e. composer clear-cache
-	f. composer self-update
+	f. composer self-update 2.8.0
 	g. rm composer.lock
 	h. composer install
 	i. unzip storage.zip
@@ -60,3 +60,9 @@ Dentro del directorio del apidian2025:
 	m. php artisan config:cache && php artisan config:clear && php artisan cache:clear
 	p. chmod 700 urn_on.sh
 	q. ./urn_on.sh
+
+3... Si no cambio la version del API, Usar estos comandos:
+
+	a. git pull origin master
+	b. php artisan migrate
+	c. ejecutar php artisan config:cache && php artisan cache:clear && php artisan optimize:clear
