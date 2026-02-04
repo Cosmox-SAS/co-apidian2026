@@ -108,7 +108,11 @@
                     </div>
                     <!-- Paso 2 -->
                     <div class="wizard-step d-none" id="wizard-step-2">
-                        <form id="newResolutionForm">
+                        <div class="alert d-none" role="alert" data-resolution-alert>
+                            <span data-resolution-alert-text></span>
+                            <button type="button" class="btn-close" aria-label="Cerrar"></button>
+                        </div>
+                        <form id="newResolutionForm" method="POST" action="{{ route('company.resolutions.store', ['company' => $company->identification_number]) }}">
                             @csrf
                             <div class="row">
                                 <div class="col-md-6">
@@ -583,6 +587,115 @@ hr {
             } else if (currentStep === totalSteps) {
                 window.location.href = "{{ route('company.production.tabs', [$company->identification_number, 'support']) }}";
             }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        function showInlineAlert($form, type, text) {
+            const $alert = $form.closest('.wizard-step').find('[data-resolution-alert]').first();
+            if ($alert.length === 0) return;
+
+            $alert.removeClass('d-none alert-success alert-danger alert-warning alert-info')
+                .addClass(type === 'success' ? 'alert-success' : 'alert-danger');
+            $alert.find('[data-resolution-alert-text]').text(text);
+        }
+
+        function hideInlineAlert($form) {
+            const $alert = $form.closest('.wizard-step').find('[data-resolution-alert]').first();
+            if ($alert.length === 0) return;
+            $alert.addClass('d-none');
+        }
+
+        function notify($form, type, text, delay) {
+            if (window.PNotify) {
+                new PNotify({
+                    text: text,
+                    type: type,
+                    addclass: type === 'success' ? 'notification-success' : 'notification-danger',
+                    delay: delay || (type === 'success' ? 3000 : 5000)
+                });
+            }
+            showInlineAlert($form, type, text);
+        }
+
+        function clearFormErrors($form) {
+            $form.find('.form-control').removeClass('is-invalid');
+            $form.find('.invalid-feedback').text('').hide();
+        }
+
+        function displayFormErrors($form, errors) {
+            $.each(errors, function(field, messages) {
+                const $input = $form.find(`[name="${field}"]`);
+                if ($input.length === 0) return;
+
+                const $feedback = $input.siblings('.invalid-feedback');
+                $input.addClass('is-invalid');
+                $feedback.text(messages[0]).show();
+            });
+        }
+
+        $(document).on('click', '[data-resolution-alert] .btn-close', function() {
+            $(this).closest('[data-resolution-alert]').addClass('d-none');
+        });
+
+        $(document).on('change', 'form#newResolutionForm select[name="type_document_id"]', function() {
+            const $form = $(this).closest('form');
+            const selectedOption = $(this).find('option:selected');
+            const code = selectedOption.data('code');
+            const simpleCodes = ['91', '92', '93', '94'];
+            const $info = $form.find('#simpleTypeInfo');
+
+            if ($info.length === 0) return;
+
+            if (simpleCodes.includes(code)) {
+                $info.slideDown();
+            } else {
+                $info.slideUp();
+            }
+        });
+
+        $(document).on('submit', 'form#newResolutionForm', function(e) {
+            e.preventDefault();
+
+            const $form = $(this);
+
+            const $submitBtn = $form.find('button[type="submit"]').first();
+            const originalHtml = $submitBtn.html();
+
+            $submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Guardando...');
+            hideInlineAlert($form);
+            clearFormErrors($form);
+
+            $.ajax({
+                url: $form.attr('action'),
+                method: 'POST',
+                data: $form.serialize(),
+                dataType: 'json',
+                success: function(response) {
+                    if (response && response.success) {
+                        notify($form, 'success', response.message || 'Resolución creada exitosamente.', 3000);
+                        $form[0].reset();
+                        $form.find('#simpleTypeInfo').hide();
+                    } else {
+                        notify($form, 'error', (response && response.message) ? response.message : 'Error al crear la resolución', 5000);
+                    }
+                },
+                error: function(xhr) {
+                    if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+                        displayFormErrors($form, xhr.responseJSON.errors);
+                        notify($form, 'error', 'Por favor corrige los errores en el formulario', 5000);
+                        return;
+                    }
+
+                    const message = (xhr.responseJSON && xhr.responseJSON.message) ? xhr.responseJSON.message : 'Error interno del servidor';
+                    notify($form, 'error', message, 5000);
+                },
+                complete: function() {
+                    $submitBtn.prop('disabled', false).html(originalHtml);
+                }
+            });
         });
     });
 </script>
