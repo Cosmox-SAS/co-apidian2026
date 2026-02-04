@@ -117,7 +117,7 @@
                                         <select class="form-control" id="type_document_id" name="type_document_id">
                                             <option value="">Seleccionar tipo de documento</option>
                                             @foreach($typeDocuments as $typeDocument)
-                                            <option value="{{ $typeDocument->id }}" data-code="{{ $typeDocument->code }}">{{ $typeDocument->name }}</option>
+                                            <option value="{{ $typeDocument->id }}" data-code="{{ $typeDocument->code }}" {{ old('type_document_id', 1) == $typeDocument->id ? 'selected' : '' }}>{{ $typeDocument->name }}</option>
                                             @endforeach
                                         </select>
                                         <div class="invalid-feedback"></div>

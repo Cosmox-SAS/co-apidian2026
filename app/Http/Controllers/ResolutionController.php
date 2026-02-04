@@ -7,8 +7,8 @@ use App\Resolution;
 use App\Company;
 use App\User;
 use App\TypeDocument;
-use DB;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class ResolutionController extends Controller
@@ -30,10 +30,12 @@ class ResolutionController extends Controller
      * Store a new resolution
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+        * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, $companyNumber)
     {
+        $expectsJson = $request->ajax() || $request->wantsJson() || $request->expectsJson();
+
         try {
             $typeDocument = TypeDocument::find($request->type_document_id);
 
@@ -119,13 +121,21 @@ class ResolutionController extends Controller
 
             DB::commit();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Resolución creada exitosamente.',
-                'resolution' => $resolution->load('type_document')
-            ]);
+            if ($expectsJson) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Resolución creada exitosamente.',
+                    'resolution' => $resolution->load('type_document')
+                ]);
+            }
+
+            return redirect()->back()->with('success', 'Resolución creada exitosamente.');
 
         } catch (ValidationException $e) {
+            if (!$expectsJson) {
+                throw $e;
+            }
+
             return response()->json([
                 'success' => false,
                 'message' => 'Error de validación.',
@@ -134,10 +144,14 @@ class ResolutionController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            return response()->json([
-                'success' => false,
-                'message' => 'Error al crear la resolución: ' . $e->getMessage()
-            ], 500);
+            if ($expectsJson) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error al crear la resolución: ' . $e->getMessage()
+                ], 500);
+            }
+
+            return redirect()->back()->with('error', 'Error al crear la resolución: ' . $e->getMessage());
         }
     }
 
@@ -146,10 +160,12 @@ class ResolutionController extends Controller
      *
      * @param Request $request
      * @param int $resolutionId
-     * @return \Illuminate\Http\JsonResponse
+        * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $companyNumber, $resolutionId)
     {
+        $expectsJson = $request->ajax() || $request->wantsJson() || $request->expectsJson();
+
         try {
             $resolution = Resolution::findOrFail($resolutionId);
             $company = Company::where('identification_number', $companyNumber)->first();
@@ -228,13 +244,21 @@ class ResolutionController extends Controller
 
             DB::commit();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Resolución actualizada exitosamente.',
-                'resolution' => $resolution->load('type_document')
-            ]);
+            if ($expectsJson) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Resolución actualizada exitosamente.',
+                    'resolution' => $resolution->load('type_document')
+                ]);
+            }
+
+            return redirect()->back()->with('success', 'Resolución actualizada exitosamente.');
 
         } catch (ValidationException $e) {
+            if (!$expectsJson) {
+                throw $e;
+            }
+
             return response()->json([
                 'success' => false,
                 'message' => 'Error de validación.',
@@ -243,10 +267,14 @@ class ResolutionController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            return response()->json([
-                'success' => false,
-                'message' => 'Error al actualizar la resolución: ' . $e->getMessage()
-            ], 500);
+            if ($expectsJson) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error al actualizar la resolución: ' . $e->getMessage()
+                ], 500);
+            }
+
+            return redirect()->back()->with('error', 'Error al actualizar la resolución: ' . $e->getMessage());
         }
     }
 

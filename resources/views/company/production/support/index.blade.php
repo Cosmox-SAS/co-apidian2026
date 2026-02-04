@@ -108,11 +108,13 @@
                     </div>
                     <!-- Paso 2 -->
                     <div class="wizard-step d-none" id="wizard-step-2">
-                        <div class="alert d-none" role="alert" data-resolution-alert>
+                        <div class="alert alert-dismissible d-none" role="alert" data-resolution-alert>
                             <span data-resolution-alert-text></span>
-                            <button type="button" class="btn-close" aria-label="Cerrar"></button>
+                            <button type="button" class="close" aria-label="Cerrar" style="background: transparent; border: 0; float: right; font-size: 1.5rem; line-height: 1; padding: 0;">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                        <form id="newResolutionForm" method="POST" action="{{ route('company.resolutions.store', ['company' => $company->identification_number]) }}">
+                        <form id="newResolutionForm" data-resolution-scope="support" method="POST" action="{{ route('company.resolutions.store', ['company' => $company->identification_number]) }}">
                             @csrf
                             <div class="row">
                                 <div class="col-md-6">
@@ -121,7 +123,7 @@
                                         <select class="form-control" id="type_document_id" name="type_document_id">
                                             <option value="">Seleccionar tipo de documento</option>
                                             @foreach($typeDocuments as $typeDocument)
-                                            <option value="{{ $typeDocument->id }}" data-code="{{ $typeDocument->code }}">{{ $typeDocument->name }}</option>
+                                            <option value="{{ $typeDocument->id }}" data-code="{{ $typeDocument->code }}" {{ old('type_document_id', 11) == $typeDocument->id ? 'selected' : '' }}>{{ $typeDocument->name }}</option>
                                             @endforeach
                                         </select>
                                         <div class="invalid-feedback"></div>
@@ -636,11 +638,11 @@ hr {
             });
         }
 
-        $(document).on('click', '[data-resolution-alert] .btn-close', function() {
+        $(document).on('click', '[data-resolution-alert] .btn-close, [data-resolution-alert] .close', function() {
             $(this).closest('[data-resolution-alert]').addClass('d-none');
         });
 
-        $(document).on('change', 'form#newResolutionForm select[name="type_document_id"]', function() {
+        $(document).on('change', 'form[data-resolution-scope="support"] select[name="type_document_id"]', function() {
             const $form = $(this).closest('form');
             const selectedOption = $(this).find('option:selected');
             const code = selectedOption.data('code');
@@ -656,7 +658,7 @@ hr {
             }
         });
 
-        $(document).on('submit', 'form#newResolutionForm', function(e) {
+        $(document).on('submit', 'form[data-resolution-scope="support"]', function(e) {
             e.preventDefault();
 
             const $form = $(this);
