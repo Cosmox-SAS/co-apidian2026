@@ -210,20 +210,61 @@ class ProductionController extends Controller
             'pin.digits' => 'El PIN debe contener exactamente 5 dígitos numéricos.'
         ]);
 
-        $software = $company->software ?: new Software(['company_id' => $company->id]);
+        $software = $company->software ?: new Software();
+        $isNewSoftware = !$software->exists;
+
+        // Asegurar company_id siempre
+        $software->company_id = $company->id;
+
+        // La tabla `software` fue creciendo con campos para nómina/eqdocs/etc.
+        // En MySQL con modo estricto, si esos campos son NOT NULL y no tienen default,
+        // insertar solo `identifier`/`pin` (factura) falla.
+        // Inicializamos los campos requeridos cuando el registro es nuevo.
+        if ($isNewSoftware) {
+            $defaultUrl = (($company->type_environment_id ?? 2) == 1)
+                ? 'https://vpfe.dian.gov.co/WcfDianCustomerServices.svc'
+                : 'https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc';
+
+            $software->identifier = '';
+            $software->pin = '';
+            $software->url = $defaultUrl;
+
+            $software->identifier_payroll = '';
+            $software->pin_payroll = '';
+            $software->url_payroll = $defaultUrl;
+
+            $software->identifier_eqdocs = '';
+            $software->pin_eqdocs = '';
+            $software->url_eqdocs = $defaultUrl;
+        }
 
         switch ($type) {
             case 'invoice':
                 $software->identifier = $request->id;
                 $software->pin = $request->pin;
+                if (empty($software->url)) {
+                    $software->url = (($company->type_environment_id ?? 2) == 1)
+                        ? 'https://vpfe.dian.gov.co/WcfDianCustomerServices.svc'
+                        : 'https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc';
+                }
                 break;
             case 'payroll':
                 $software->identifier_payroll = $request->id;
                 $software->pin_payroll = $request->pin;
+                if (empty($software->url_payroll)) {
+                    $software->url_payroll = (($company->payroll_type_environment_id ?? 2) == 1)
+                        ? 'https://vpfe.dian.gov.co/WcfDianCustomerServices.svc'
+                        : 'https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc';
+                }
                 break;
             case 'pos':
                 $software->identifier_eqdocs = $request->id;
                 $software->pin_eqdocs = $request->pin;
+                if (empty($software->url_eqdocs)) {
+                    $software->url_eqdocs = (($company->eqdocs_type_environment_id ?? 2) == 1)
+                        ? 'https://vpfe.dian.gov.co/WcfDianCustomerServices.svc'
+                        : 'https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc';
+                }
                 break;
             case 'support':
                 $software->identifier_support_document = $request->id;
@@ -232,8 +273,6 @@ class ProductionController extends Controller
             default:
                 return back()->with('error', 'Tipo de documento no válido.');
         }
-
-        $software->company_id = $company->id;
         $software->save();
 
         return back()->with('success', 'Software configurado correctamente.');
