@@ -1,68 +1,125 @@
 PROCEDIMIENTO DE ACTUALIZACION APIDIAN
 
-1... DESDE APIDIAN2021 o APIDIAN2022 o APIDIAN2023 o APIDIAN2O24 o APIDIAN2025 HACIA APIDIAN2O26
+Documento: Procedimiento de actualización y/o sincronización del repositorio.
 
-Dentro del directorio del apidian2021 o apidian2022 o apidian2023 o apidian2O24:
+Notas generales
+- Los comandos `apt-get` y `chmod` aplican en Linux (servidor) o dentro del contenedor Docker.
+- Si estás en Windows (Laragon), esos comandos se ejecutan en WSL/Docker o donde corra Linux.
+- Si aparecen conflictos de Git y necesitas descartar cambios locales: usar `git reset --hard origin/master`.
 
-	   git config --global http.sslverify false
-	a. git remote remove origin
-	b. git remote add origin https://git.buho.la/facturalatam/co-apidian2026.git
-	c. nano .git/config
-		Debe quedar dicho archivo de la siguiente manera, si falta algo, agregarlo manualmente
+=====================================================================
+1) ACTUALIZAR DESDE APIDIAN 2021/2022/2023/2024/2025 HACIA APIDIAN 2026
+=====================================================================
 
-			[core]
-				repositoryformatversion = 0
-				filemode = false
-				bare = false
-				logallrefupdates = true
-				symlinks = false
-				ignorecase = true
-			[remote "origin"]
-				url = https://git.buho.la/facturalatam/co-apidian2026.git
-				fetch = +refs/heads/*:refs/remotes/origin/*
-			[branch "master"]
-				remote = origin
-				merge = refs/heads/master
+1.1) IMPORTANTE (DOCKER)
+Si la instalación corre en Docker, primero actualiza la imagen a la nueva versión.
+Ejemplo (desde el directorio del proyecto donde está `docker-compose.yml`):
 
-	d. git pull
-	e. git pull origin master
-	e. Si aparecen conflictos ejecutar el comando: git reset --hard origin/master
-	f. composer clear-cache
-	g. composer self-update 2.8.0
-	h. rm composer.lock
-	i. composer install
-	j. php artisan migrate --seed
-	k. unzip storage.zip
-	l. chmod -R 777 storage
-	m. chmod -R 777 bootstrap/cache
-	n. chmod -R 777 vendor/mpdf/mpdf
-	o. php artisan config:cache && php artisan config:clear && php artisan cache:clear
-	p. chmod 700 urn_on.sh
-	q. ./urn_on.sh
+    1) nano docker-compose.yml
+    2) Verifica que en la sección `php_api` tenga:
+       image: rash07/php-fpm:8.2
+       (Si no aparece, cámbialo.)
 
+1.2) CAMBIAR EL ORIGIN DEL REPOSITORIO (en el proyecto antiguo)
+Dentro del directorio del proyecto (apidian2021/apidian2022/apidian2023/apidian2024/apidian2025):
 
-2... ACTUALIZAR APIDIAN2025
+    git config --global http.sslverify false
+    git remote remove origin
+    git remote add origin https://git.buho.la/facturalatam/co-apidian2026.git
 
-Dentro del directorio del apidian2025:
+1.3) VALIDAR/COMPLETAR LA CONFIGURACIÓN DE GIT
+Editar `.git/config`:
 
-	a. git pull
-	b. git pull origin master
-	c. Si aparecen conflictos ejecutar el comando: git reset --hard origin/master
-	d. php artisan migrate --seed
-	e. composer clear-cache
-	f. composer self-update 2.8.0
-	g. rm composer.lock
-	h. composer install
-	i. unzip storage.zip
-	j. chmod -R 777 storage
-	k. chmod -R 777 bootstrap/cache
-	l. chmod -R 777 vendor/mpdf/mpdf
-	m. php artisan config:cache && php artisan config:clear && php artisan cache:clear
-	p. chmod 700 urn_on.sh
-	q. ./urn_on.sh
+    nano .git/config
 
-3... Si no cambio la version del API, Usar estos comandos:
+Debe quedar así (si falta algo, agregarlo manualmente):
 
-	a. git pull origin master
-	b. php artisan migrate
-	c. ejecutar php artisan config:cache && php artisan cache:clear && php artisan optimize:clear
+    [core]
+        repositoryformatversion = 0
+        filemode = false
+        bare = false
+        logallrefupdates = true
+        symlinks = false
+        ignorecase = true
+    [remote "origin"]
+        url = https://git.buho.la/facturalatam/co-apidian2026.git
+        fetch = +refs/heads/*:refs/remotes/origin/*
+    [branch "master"]
+        remote = origin
+        merge = refs/heads/master
+
+1.4) SINCRONIZAR CÓDIGO
+
+    git pull
+    git pull origin master
+
+Si aparecen conflictos:
+
+    git reset --hard origin/master
+
+1.5) DEPENDENCIAS / MIGRACIONES / POST-INSTALACIÓN
+
+    composer clear-cache
+    composer self-update 2.8.0
+    rm composer.lock
+    composer install
+
+Dentro de Linux / contenedor (para habilitar la carga de fichas RUT):
+
+    apt-get update
+    apt-get -y install poppler-utils
+
+Luego:
+
+    php artisan migrate --seed
+    unzip storage.zip
+    chmod -R 777 storage
+    chmod -R 777 bootstrap/cache
+    chmod -R 777 vendor/mpdf/mpdf
+    php artisan config:cache && php artisan config:clear && php artisan cache:clear
+    chmod 700 urn_on.sh
+    ./urn_on.sh
+
+Nota (Docker)
+Cuando el contenedor Docker se reinicia, debes ejecutar nuevamente:
+
+    apt-get update
+    apt-get -y install poppler-utils
+
+Esto vuelve a habilitar la opción de cargar fichas RUT.
+
+================================
+2) ACTUALIZAR UN APIDIAN 2026 YA EXISTENTE
+================================
+
+Dentro del directorio del apidian2026:
+
+    git pull
+    git pull origin master
+
+Si aparecen conflictos:
+
+    git reset --hard origin/master
+
+Luego:
+
+    php artisan migrate --seed
+    composer clear-cache
+    composer self-update 2.8.0
+    rm composer.lock
+    composer install
+    unzip storage.zip
+    chmod -R 777 storage
+    chmod -R 777 bootstrap/cache
+    chmod -R 777 vendor/mpdf/mpdf
+    php artisan config:cache && php artisan config:clear && php artisan cache:clear
+    chmod 700 urn_on.sh
+    ./urn_on.sh
+
+===========================================
+3) ACTUALIZACIÓN RÁPIDA (SI NO CAMBIÓ LA VERSIÓN DEL API)
+===========================================
+
+    git pull origin master
+    php artisan migrate
+    php artisan config:cache && php artisan cache:clear && php artisan optimize:clear

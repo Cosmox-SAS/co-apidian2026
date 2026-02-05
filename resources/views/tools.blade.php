@@ -3,13 +3,13 @@
 <header class="page-header">
     <div>
         <h2>
-            Herramientas para la API
+            Documentación
         </h2>
     </div>
 </header>
 <div class="row">
 
-<div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3">
+    {{-- <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3">
         <section class="card mb-4">
             <div class="card-body bg-secondary">
                 <div class="widget-summary">
@@ -21,9 +21,9 @@
                     <div class="widget-summary-col">
                         <div class="summary">
                             <h4 class="title" style="word-break: normal;">ChatGPT BOT FacturaLatam</h4>
-                            {{-- <div class="info">
+                            <div class="info">
                                 <strong class="amount">1281</strong>
-                            </div> --}}
+                            </div>
                         </div>
                         <div class="summary-footer">
                             <a href="https://chatgpt.com/g/g-6757cbff7bf08191a45c4ee5ff55bc22-facturacion-electronica-dian-colombia" target="_blank" class="text-uppercase">Ir</a>
@@ -32,8 +32,9 @@
                 </div>
             </div>
         </section>
-    </div>
+    </div> --}}
     
+    {{--
     <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3">
         <section class="card mb-4">
             <div class="card-body bg-secondary">
@@ -48,7 +49,7 @@
                             <h4 class="title" style="word-break: normal;">Test API Swagger</h4>
                             {{-- <div class="info">
                                 <strong class="amount">1281</strong>
-                            </div> --}}
+                            </div>
                         </div>
                         <div class="summary-footer">
                             <a href="{{route('documentation')}}" target="_blank" class="text-uppercase">Ir</a>
@@ -58,7 +59,9 @@
             </div>
         </section>
     </div>
-    <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3">
+    --}}
+    
+    {{-- <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3">
         <section class="card mb-4">
             <div class="card-body bg-secondary">
                 <div class="widget-summary">
@@ -70,9 +73,9 @@
                     <div class="widget-summary-col">
                         <div class="summary">
                             <h4 class="title" style="word-break: normal;">Documentación Postman</h4>
-                            {{-- <div class="info">
+                            <div class="info">
                                 <strong class="amount">1281</strong>
-                            </div> --}}
+                            </div>
                         </div>
                         <div class="summary-footer">
                             <a href="https://documenter.getpostman.com/view/1431398/2sAY4uCido#intro" target="_blank" class="text-uppercase">Ir</a>
@@ -81,8 +84,9 @@
                 </div>
             </div>
         </section>
-    </div>
-
+    </div> --}}
+   
+    {{--
     <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3">
         <section class="card mb-4">
             <div class="card-body bg-secondary">
@@ -95,15 +99,42 @@
                     <div class="widget-summary-col">
                         <div class="summary">
                             <h4 class="title" style="word-break: normal;">APP Android</h4>
-                            {{-- <div class="info">
+                            <div class="info">
                                 <strong class="amount">1281</strong>
-                            </div> --}}
+                            </div>
                         </div>
                         <div class="summary-footer">
                             <a href="https://facturalatam.com/apk/apidian.apk" class="text-uppercase">Descargar</a>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
+    </div>
+    --}}
+
+    @php
+        // URL embebida para la documentación.
+        // Configura APP_DOCUMENTATION_URL en tu .env para apuntar a tu página.
+        $documentationUrl = env('APP_DOCUMENTATION_URL', 'https://manual.facturalatam.com/apidian/instalacion');
+    @endphp
+
+    <div class="col-12">
+        <section class="card mb-4">
+            <div class="card-body">
+                @if(empty($documentationUrl))
+                    <div class="alert alert-warning mb-3">
+                        Falta configurar <strong>APP_DOCUMENTATION_URL</strong> en el archivo <strong>.env</strong> para cargar la documentación aquí.
+                    </div>
+                @endif
+
+                <iframe
+                    src="{{ $documentationUrl ?: 'about:blank' }}"
+                    title="Documentación"
+                    style="width: 100%; height: 80vh; border: 0;"
+                    loading="lazy"
+                    referrerpolicy="no-referrer"
+                ></iframe>
             </div>
         </section>
     </div>

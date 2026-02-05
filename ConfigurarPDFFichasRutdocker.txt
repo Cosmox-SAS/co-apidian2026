@@ -13,3 +13,5 @@ apt-get update
 apt-get install -y poppler-utils
 
 ejecutar php artisan config:cache && php artisan cache:clear && php artisan optimize:clear
+
+Si el contenedor se reinicia debe volver a ejecutar los comandos

@@ -47,7 +47,7 @@ cp .env.example .env
 composer self-update 2.8.0
 #[Nota] Si da error de permisos por haber instalado en la unidad C, abra visual studio como Administrador
 
-omposer install
+composer install
 #[nota] Si sale error por el paquete patie/laravel-backup, entonces debe activar la extensión zip desde laragon o desde php.ini ;extension=zip
 
 php artisan key:generate

@@ -31,7 +31,7 @@ pdftotext -v
 
 5. ACTUALIZAR DOCUMENTACIÓN DEL .env
 
-Agregar esta línea:
+Agregar esta línea en .env:
 PDFTOTEXT_PATH="C:/poppler/Library/bin/pdftotext.exe"
 
 Actualizar caché de Laravel:
