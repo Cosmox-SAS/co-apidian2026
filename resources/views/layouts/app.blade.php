@@ -105,6 +105,30 @@
         a:link {
             color: #2E64FE;
         }
+
+        @guest
+        .guest-brand {
+            width: 100%;
+            text-align: center;
+            font-weight: 700;
+            color: #0088CC;
+            cursor: default;
+        }
+
+        @media only screen and (min-width: 768px) {
+            html.fixed .inner-wrapper {
+                padding-top: 60px !important;
+            }
+
+            html.fixed .content-body {
+                margin-left: 0 !important;
+            }
+
+            html.fixed .page-header {
+                left: 0 !important;
+            }
+        }
+        @endguest
     </style>
 
 </head>
@@ -115,19 +139,21 @@
         <!-- end: header -->
         <div class="inner-wrapper">
             <!-- start: sidebar -->
-            @if(isset($is_seller) && ($is_seller == true))
-                @include('layouts.partials.sidebar-seller')
-            @else
-                @if(isset($is_employee) && ($is_employee == true))
-                    @include('layouts.partials.sidebar-employee')
+            @auth
+                @if(isset($is_seller) && ($is_seller == true))
+                    @include('layouts.partials.sidebar-seller')
                 @else
-                    @if(isset($is_owner) && ($is_owner == true))
-                        @include('layouts.partials.sidebar-owner')
+                    @if(isset($is_employee) && ($is_employee == true))
+                        @include('layouts.partials.sidebar-employee')
                     @else
-                        @include('layouts.partials.sidebar')
+                        @if(isset($is_owner) && ($is_owner == true))
+                            @include('layouts.partials.sidebar-owner')
+                        @else
+                            @include('layouts.partials.sidebar')
+                        @endif
                     @endif
                 @endif
-            @endif
+            @endauth
             <!-- end: sidebar -->
             <section role="main" class="content-body" id="main-wrapper">
               @yield('content')

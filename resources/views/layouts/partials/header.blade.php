@@ -85,9 +85,9 @@
             <div class="container">
                 <div class="navbar-header">
                 <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                    </a>
+                    <span class="navbar-brand guest-brand">
+                        {{ config('app.name', 'APIDIAN') }}
+                    </span>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">

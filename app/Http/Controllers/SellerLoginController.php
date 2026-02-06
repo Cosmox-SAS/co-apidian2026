@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Storage;
+use Illuminate\Support\Facades\Storage;
 use App\Company;
 use App\Customer;
 use App\Document;
@@ -15,6 +15,7 @@ use App\Mail\PasswordCustomerMail;
 use App\Mail\RetrievePasswordCustomerMail;
 use App\Mail\RetrievePasswordSellerMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -223,11 +224,55 @@ class SellerLoginController extends Controller
     protected function RetrievePasswordSeller($company_idnumber, $mostrarvista = 'YES')
     {
         $seller = Company::where('identification_number', '=', $company_idnumber)->get()->first();
-        $password = \Str::random(6);
+        if (!$seller) {
+            if ($mostrarvista == 'YES') {
+                return view('customerloginmensaje', ['titulo' => 'Solicitud de nuevo password', 'mensaje' => 'No se encontró la empresa.']);
+            }
+
+            return [
+                'success' => false,
+                'message' => 'No se encontró la empresa.',
+            ];
+        }
+
+        $password = Str::random(6);
         $seller->newpassword = bcrypt($password);
         $seller->save();
         $user = User::where('id', $seller->user_id)->get()->first();
-        Mail::to($user->email)->send(new RetrievePasswordSellerMail($seller, $password));
+        if (!$user || empty($user->email)) {
+            $seller->newpassword = null;
+            $seller->save();
+            if ($mostrarvista == 'YES') {
+                return view('customerloginmensaje', ['titulo' => 'Solicitud de nuevo password', 'mensaje' => 'No hay email registrado para enviar la recuperación.']);
+            }
+
+            return [
+                'success' => false,
+                'message' => 'No hay email registrado para enviar la recuperación.',
+            ];
+        }
+
+        try {
+            Mail::to($user->email)->send(new RetrievePasswordSellerMail($seller, $password));
+        } catch (\Throwable $e) {
+            Log::error('Error enviando RetrievePasswordSellerMail.', [
+                'company_idnumber' => $company_idnumber,
+                'email' => $user->email,
+                'exception' => $e,
+            ]);
+
+            $seller->newpassword = null;
+            $seller->save();
+
+            if ($mostrarvista == 'YES') {
+                return view('customerloginmensaje', ['titulo' => 'Solicitud de nuevo password', 'mensaje' => 'No fue posible enviar el correo. Revise la configuración SMTP (MAIL_DRIVER/MAIL_HOST/MAIL_PORT/MAIL_USERNAME/MAIL_PASSWORD) y la conectividad.']);
+            }
+
+            return [
+                'success' => false,
+                'message' => 'No fue posible enviar el correo. Revise configuración SMTP y conectividad.',
+            ];
+        }
         if($mostrarvista == 'YES')
             return view('customerloginmensaje', ['titulo' => 'Solicitud de nuevo password', 'mensaje' => 'Se ha enviado un mensaje de correo electronico a la direccion '.$user->email.', debe confirmar este mensaje para que el cambio de contraseña se haga efectivo.']);
         else

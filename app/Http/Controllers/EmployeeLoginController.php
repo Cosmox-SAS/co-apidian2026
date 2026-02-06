@@ -12,6 +12,8 @@ use App\Mail\PasswordEmployeeMail;
 use App\Mail\RetrievePasswordEmployeeMail;
 use App\Mail\RetrievePasswordSellerMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -75,10 +77,52 @@ class EmployeeLoginController extends Controller
     protected function RetrievePasswordEmployee($employee_idnumber, $mostrarvista = 'YES')
     {
         $employee = Employee::where('identification_number', '=', $employee_idnumber)->get()->first();
-        $password = \Str::random(6);
+        if (!$employee) {
+            if ($mostrarvista == 'YES') {
+                return view('customerloginmensaje', ['titulo' => 'Solicitud de nuevo password', 'mensaje' => 'No se encontró el empleado.']);
+            }
+
+            return [
+                'success' => false,
+                'message' => 'No se encontró el empleado.',
+            ];
+        }
+
+        if (empty($employee->email)) {
+            if ($mostrarvista == 'YES') {
+                return view('customerloginmensaje', ['titulo' => 'Solicitud de nuevo password', 'mensaje' => 'El empleado no tiene email registrado.']);
+            }
+
+            return [
+                'success' => false,
+                'message' => 'El empleado no tiene email registrado.',
+            ];
+        }
+
+        $password = Str::random(6);
         $employee->newpassword = bcrypt($password);
         $employee->save();
-        Mail::to($employee->email)->send(new RetrievePasswordEmployeeMail($employee, $password));
+        try {
+            Mail::to($employee->email)->send(new RetrievePasswordEmployeeMail($employee, $password));
+        } catch (\Throwable $e) {
+            Log::error('Error enviando RetrievePasswordEmployeeMail.', [
+                'employee_idnumber' => $employee_idnumber,
+                'email' => $employee->email,
+                'exception' => $e,
+            ]);
+
+            $employee->newpassword = null;
+            $employee->save();
+
+            if ($mostrarvista == 'YES') {
+                return view('customerloginmensaje', ['titulo' => 'Solicitud de nuevo password', 'mensaje' => 'No fue posible enviar el correo. Revise la configuración SMTP (MAIL_DRIVER/MAIL_HOST/MAIL_PORT/MAIL_USERNAME/MAIL_PASSWORD) y la conectividad.']);
+            }
+
+            return [
+                'success' => false,
+                'message' => 'No fue posible enviar el correo. Revise configuración SMTP y conectividad.',
+            ];
+        }
         if($mostrarvista == 'YES')
             return view('customerloginmensaje', ['titulo' => 'Solicitud de nuevo password', 'mensaje' => 'Se ha enviado un mensaje de correo electronico a la direccion '.$employee->email.', debe confirmar este mensaje para que el cambio de contraseña se haga efectivo.']);
         else

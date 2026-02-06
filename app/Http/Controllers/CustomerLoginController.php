@@ -11,6 +11,8 @@ use App\Mail\PasswordCustomerMail;
 use App\Mail\RetrievePasswordCustomerMail;
 use App\Mail\RetrievePasswordSellerMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -65,19 +67,77 @@ class CustomerLoginController extends Controller
         $this->validate($request, $rules);
 
         $customer = Customer::where('identification_number', '=', $customer_idnumber)->get()->first();
+        if (!$customer) {
+            return view('customerloginmensaje', ['titulo' => 'Actualizacion de password', 'mensaje' => 'No se encontró el adquiriente.']);
+        }
         $customer->password = bcrypt($request->password);
         $customer->save();
-        Mail::to($customer->email)->send(new PasswordCustomerMail($customer, $request->password));
+        try {
+            if (empty($customer->email)) {
+                return view('customerloginmensaje', ['titulo' => 'Actualizacion de password', 'mensaje' => 'El password fue actualizado, pero el adquiriente no tiene email registrado para notificación.']);
+            }
+            Mail::to($customer->email)->send(new PasswordCustomerMail($customer, $request->password));
+        } catch (\Throwable $e) {
+            Log::error('Error enviando PasswordCustomerMail (customer).', [
+                'customer_idnumber' => $customer_idnumber,
+                'email' => $customer->email,
+                'exception' => $e,
+            ]);
+
+            return view('customerloginmensaje', ['titulo' => 'Actualizacion de password', 'mensaje' => 'El password fue actualizado, pero no fue posible enviar el correo. Revise la configuración SMTP (MAIL_DRIVER/MAIL_HOST/MAIL_PORT/MAIL_USERNAME/MAIL_PASSWORD) y la conectividad.']);
+        }
         return view('customerloginmensaje', ['titulo' => 'Actualizacion de password', 'mensaje' => 'El password ha sido actualizado satisfactoriamente.']);
     }
 
     protected function RetrievePassword($customer_idnumber, $mostrarvista = 'YES')
     {
         $customer = Customer::where('identification_number', '=', $customer_idnumber)->get()->first();
-        $password = \Str::random(6);
+        if (!$customer) {
+            if ($mostrarvista == 'YES') {
+                return view('customerloginmensaje', ['titulo' => 'Solicitud de nuevo password', 'mensaje' => 'No se encontró el adquiriente.']);
+            }
+
+            return [
+                'success' => false,
+                'message' => 'No se encontró el adquiriente.',
+            ];
+        }
+
+        if (empty($customer->email)) {
+            if ($mostrarvista == 'YES') {
+                return view('customerloginmensaje', ['titulo' => 'Solicitud de nuevo password', 'mensaje' => 'El adquiriente no tiene email registrado.']);
+            }
+
+            return [
+                'success' => false,
+                'message' => 'El adquiriente no tiene email registrado.',
+            ];
+        }
+
+        $password = Str::random(6);
         $customer->newpassword = bcrypt($password);
         $customer->save();
-        Mail::to($customer->email)->send(new RetrievePasswordCustomerMail($customer, $password));
+        try {
+            Mail::to($customer->email)->send(new RetrievePasswordCustomerMail($customer, $password));
+        } catch (\Throwable $e) {
+            Log::error('Error enviando RetrievePasswordCustomerMail.', [
+                'customer_idnumber' => $customer_idnumber,
+                'email' => $customer->email,
+                'exception' => $e,
+            ]);
+
+            $customer->newpassword = null;
+            $customer->save();
+
+            if ($mostrarvista == 'YES') {
+                return view('customerloginmensaje', ['titulo' => 'Solicitud de nuevo password', 'mensaje' => 'No fue posible enviar el correo. Revise la configuración SMTP (MAIL_DRIVER/MAIL_HOST/MAIL_PORT/MAIL_USERNAME/MAIL_PASSWORD) y la conectividad.']);
+            }
+
+            return [
+                'success' => false,
+                'message' => 'No fue posible enviar el correo. Revise configuración SMTP y conectividad.',
+            ];
+        }
         if($mostrarvista == 'YES')
             return view('customerloginmensaje', ['titulo' => 'Solicitud de nuevo password', 'mensaje' => 'Se ha enviado un mensaje de correo electronico a la direccion '.$customer->email.', debe confirmar este mensaje para que el cambio de contraseña se haga efectivo.']);
         else
