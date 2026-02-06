@@ -9,6 +9,7 @@ use App\Document;
 use App\Resolution;
 use App\ReceivedDocument;
 use App\DocumentPayroll;
+use App\User;
 use App\TypeRegime;
 use App\TypeLiability;
 use App\Municipality;
@@ -34,7 +35,20 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $companies = Company::get()->transform( function($row) {
+        /** @var User|null $user */
+        $user = auth()->user();
+
+        $companiesQuery = Company::query();
+        if ($user && method_exists($user, 'isPlatformAdmin') && !$user->isPlatformAdmin()) {
+            $companiesQuery->where(function ($q) use ($user) {
+                $q->where('user_id', $user->id)
+                    ->orWhereHas('users', function ($q2) use ($user) {
+                        $q2->where('users.id', $user->id);
+                    });
+            });
+        }
+
+        $companies = $companiesQuery->get()->transform(function ($row) {
             $documents = Document::where('identification_number', $row->identification_number)->count();
             $row->total_documents = $documents;
             return $row;
@@ -56,6 +70,12 @@ class HomeController extends Controller
 
     public function company(Company $company)
     {
+        /** @var User|null $user */
+        $user = auth()->user();
+        if ($user && !$user->canAccessCompany($company)) {
+            abort(403, 'No tienes acceso a esta empresa.');
+        }
+
         $documents = Document::where('identification_number', $company->identification_number)->orderBy('id', 'DESC')->paginate(20);
 
         $resolution_credit_notes = Resolution::where('type_document_id', 4)->where('company_id', $company->id)->get();
@@ -67,6 +87,12 @@ class HomeController extends Controller
 
     public function getXml(Company $company, $cufe)
     {
+        /** @var User|null $user */
+        $user = auth()->user();
+        if ($user && !$user->canAccessCompany($company)) {
+            abort(403, 'No tienes acceso a esta empresa.');
+        }
+
         $token = $company->user->api_token;
         $url = url('/api/ubl2.1/xml/document/'.$cufe);
 
@@ -147,6 +173,12 @@ class HomeController extends Controller
             ]);
 
             $company = Company::findOrFail($companyId);
+
+            /** @var User|null $user */
+            $user = auth()->user();
+            if ($user && !$user->isPlatformAdmin() && !$user->isCompanyOwner($company)) {
+                abort(403, 'No tienes permiso para editar esta empresa.');
+            }
 
             $company->update([
                 'identification_number' => $request->identification_number,

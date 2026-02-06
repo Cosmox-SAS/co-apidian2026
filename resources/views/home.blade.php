@@ -7,10 +7,12 @@
         </h2>
     </div>
     <div class="right-wrapper text-end mt-auto pb-1">
-        <a href="{{ route('configuration_admin') }}" class="btn btn-primary btn-sm text-white mr-2">
-            <i class="fas fa-plus"></i>
-            Nueva empresa
-        </a>
+        @if(auth()->user() && method_exists(auth()->user(), 'isPlatformAdmin') && auth()->user()->isPlatformAdmin())
+            <a href="{{ route('configuration_admin') }}" class="btn btn-primary btn-sm text-white mr-2">
+                <i class="fas fa-plus"></i>
+                Nueva empresa
+            </a>
+        @endif
     </div>
 </header>
 <div class="card mb-3">

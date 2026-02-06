@@ -10,9 +10,29 @@ use App\HealthTypeDocumentIdentification;
 
 class CompanyUserController extends Controller
 {
+    protected function ensureCanManageCompany(Company $company): void
+    {
+        /** @var User|null $user */
+        $user = auth()->user();
+        if (!$user) {
+            abort(403);
+        }
+
+        if ($user->isPlatformAdmin()) {
+            return;
+        }
+
+        if ($user->isCompanyOwner($company)) {
+            return;
+        }
+
+        abort(403, 'No tienes permiso para administrar usuarios de esta empresa.');
+    }
+
     public function index($companyId)
     {
         $company = Company::with('users')->findOrFail($companyId);
+        $this->ensureCanManageCompany($company);
         $document_types = HealthTypeDocumentIdentification::all();
 
         $allUserIds = $company->users->pluck('id')->toArray();
@@ -37,6 +57,7 @@ class CompanyUserController extends Controller
 
         try {
             $company = Company::findOrFail($companyId);
+            $this->ensureCanManageCompany($company);
 
             $user = User::create([
                 'name' => $request->name,
@@ -71,6 +92,7 @@ class CompanyUserController extends Controller
 
         try {
             $company = Company::findOrFail($companyId);
+            $this->ensureCanManageCompany($company);
             $user = User::findOrFail($userId);
             
             // Prevenir edición del usuario principal
@@ -98,6 +120,7 @@ class CompanyUserController extends Controller
     public function emailIndex($companyId)
     {
         $company = Company::with('user')->findOrFail($companyId);
+        $this->ensureCanManageCompany($company);
         $user = $company->user;
 
         // Obtener configuración actual
@@ -125,6 +148,7 @@ class CompanyUserController extends Controller
 
         try {
             $company = Company::findOrFail($companyId);
+            $this->ensureCanManageCompany($company);
             $user = $company->user;
 
             $user->update([

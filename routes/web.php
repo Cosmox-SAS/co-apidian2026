@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -69,7 +71,7 @@ Route::get('/listings', 'ListingController@index');
 Route::get('/portal', 'ListingController@index');
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::group(['middleware' => 'auth'], function() {
+Route::group(['middleware' => ['auth', 'company.web.access']], function() {
     Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/tools', 'HomeController@tools')->name('tools');
     Route::get('/company/{company}', 'HomeController@company')->name('company');

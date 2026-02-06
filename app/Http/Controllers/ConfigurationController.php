@@ -39,6 +39,10 @@ class ConfigurationController extends Controller
 
     public function configuration_admin()
     {
+        $user = auth()->user();
+        if ($user && method_exists($user, 'isPlatformAdmin') && !$user->isPlatformAdmin()) {
+            abort(403, 'No tienes permiso para crear empresas.');
+        }
         return view('configurations.formadmin');
     }
 

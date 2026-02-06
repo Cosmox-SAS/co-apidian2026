@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Company;
 
 class User extends Authenticatable
 {
@@ -69,6 +70,29 @@ class User extends Authenticatable
     public function companies()
     {
         return $this->belongsToMany(Company::class, 'company_user');
+    }
+
+    public function isPlatformAdmin(): bool
+    {
+        return !$this->company()->exists() && !$this->companies()->exists();
+    }
+
+    public function canAccessCompany(Company $company): bool
+    {
+        if ($this->isPlatformAdmin()) {
+            return true;
+        }
+
+        if ((int) $company->user_id === (int) $this->id) {
+            return true;
+        }
+
+        return $company->users()->where('users.id', $this->id)->exists();
+    }
+
+    public function isCompanyOwner(Company $company): bool
+    {
+        return (int) $company->user_id === (int) $this->id;
     }
 
     public function validate_mail_server()
