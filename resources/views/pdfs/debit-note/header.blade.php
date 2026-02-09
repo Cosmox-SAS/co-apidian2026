@@ -73,7 +73,9 @@
                 </div>
             </td>
             <td style="width: 30%; text-align: right;">
-                <img src="{{$imgLogo}}" style="width: 136px; height: auto;" alt="logo">
+                @if(!empty($imgLogo))
+                    <img src="{{$imgLogo}}" style="width: 136px; height: auto;" alt="logo">
+                @endif
             </td>
         </tr>
     </tbody>

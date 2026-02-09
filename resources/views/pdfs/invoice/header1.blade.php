@@ -96,7 +96,9 @@
             </div>
         </td>
         <td style="width: 17%; text-align: right;" class="vertical-align-top">
-            <img  style="width: 70px; height: auto;" src="{{$imgLogo}}" alt="logo">
+            @if(!empty($imgLogo))
+                <img  style="width: 70px; height: auto;" src="{{$imgLogo}}" alt="logo">
+            @endif
         </td>
     </tr>
 </table>

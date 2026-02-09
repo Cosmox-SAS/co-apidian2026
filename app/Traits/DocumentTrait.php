@@ -354,13 +354,7 @@ trait DocumentTrait
                 $logo_empresa_emisora = "data:image/jpg;base64, ".$request->logo_empresa_emisora;
             }
 
-            if(file_exists($filenameLogo)) {
-                $logoBase64     = base64_encode(file_get_contents($filenameLogo));
-                $imgLogo        = "data:image/jpg;base64, ".$logoBase64;
-            } else {
-                $logoBase64     = NULL;
-                $imgLogo        = NULL;
-            }
+            $imgLogo = $this->buildImageDataUriFromFile($filenameLogo);
 
             if($tipodoc == "ND")
                 $totalbase = $request->requested_monetary_totals['line_extension_amount'];
@@ -776,13 +770,7 @@ trait DocumentTrait
             else
                 $filenameLogo   = storage_path("app/public/{$company->identification_number}/{$company->identification_number}{$company->dv}.jpg");
 
-            if(file_exists($filenameLogo)) {
-                $logoBase64     = base64_encode(file_get_contents($filenameLogo));
-                $imgLogo        = "data:image/jpg;base64, ".$logoBase64;
-            } else {
-                $logoBase64     = NULL;
-                $imgLogo        = NULL;
-            }
+            $imgLogo = $this->buildImageDataUriFromFile($filenameLogo);
             if($tipodoc = "PAYROLL"){
                 if ($company->payroll_type_environment_id == 2){
                     $qrBase64 = base64_encode(QrCode::format('png')
@@ -838,13 +826,7 @@ trait DocumentTrait
             else
                 $filenameLogo   = storage_path("app/public/{$company->identification_number}/{$company->identification_number}{$company->dv}.jpg");
 
-            if(file_exists($filenameLogo)) {
-                $logoBase64     = base64_encode(file_get_contents($filenameLogo));
-                $imgLogo        = "data:image/jpg;base64, ".$logoBase64;
-            } else {
-                $logoBase64     = NULL;
-                $imgLogo        = NULL;
-            }
+            $imgLogo = $this->buildImageDataUriFromFile($filenameLogo);
             if ($company->payroll_type_environment_id == 2){
                 $qrBase64 = base64_encode(QrCode::format('png')
                                         ->errorCorrection('Q')
@@ -1536,6 +1518,30 @@ trait DocumentTrait
         if(strpos($name, " DE "))
             $name = str_replace(" DE ", " DE_", $name);
         return explode(' ', $name);
+    }
+
+    protected function buildImageDataUriFromFile(string $filename): ?string
+    {
+        if (!is_file($filename) || !is_readable($filename)) {
+            return null;
+        }
+
+        $binary = @file_get_contents($filename);
+        if ($binary === false || $binary === '') {
+            return null;
+        }
+
+        $imageInfo = @getimagesizefromstring($binary);
+        if ($imageInfo === false || empty($imageInfo['mime'])) {
+            return null;
+        }
+
+        $mime = $imageInfo['mime'];
+        if (!in_array($mime, ['image/jpeg', 'image/png', 'image/gif'], true)) {
+            return null;
+        }
+
+        return 'data:' . $mime . ';base64,' . base64_encode($binary);
     }
 
     public function storeLogo($base64logo)

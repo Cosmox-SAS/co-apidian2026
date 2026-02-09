@@ -11,7 +11,9 @@
     <!-- Logo en la parte superior -->
     <tr>
         <td style="text-align: center;">
-            <img style="max-width: 170px; height: auto; margin-bottom: 5px;" src="{{$imgLogo}}" alt="logo">
+            @if(!empty($imgLogo))
+                <img style="max-width: 170px; height: auto; margin-bottom: 5px;" src="{{$imgLogo}}" alt="logo">
+            @endif
         </td>
     </tr>
 
