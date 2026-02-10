@@ -42,7 +42,7 @@
         @if(@isset($item->description_concept))
             DescripcionConcepto="{{preg_replace("/[\r\n|\n|\r]+/", "", $item->description_concept)}}"
         @endif
-        @if(@isset($item->description))
+        @if(@isset($item->description) && $node != 'OtraDeduccion')
             Descripcion="{{preg_replace("/[\r\n|\n|\r]+/", "", $item->description)}}"
         @endif
         @if(@isset($item->salary_concept))
