@@ -63,7 +63,7 @@ DB_USERNAME=apidian
 DB_PASSWORD=uZ78R
 ```
 
-rm composer.lock
+rm vendor composer.lock
 composer self-update 2.8.0
 composer install
 php artisan key:generate
