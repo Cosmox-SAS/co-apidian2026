@@ -19,7 +19,7 @@
         "mtownsend/request-xml": "^2.6.0",
         "piotrooo/wsdl-creator": "^3.0",
         "rap2hpoutre/laravel-log-viewer": "^2.3",
-        "rguedes/pdfmerger": "^1.0",
+        "jurosh/pdf-merge": "^1.0",
         "simplesoftwareio/simple-qrcode": "^2.0",
         "spatie/flysystem-dropbox": "^3.0",
         "spatie/laravel-backup": "^8.5",
