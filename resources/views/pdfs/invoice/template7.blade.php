@@ -3,8 +3,14 @@
 <body>
     {{-- Logo --}}
     @if(isset($imgLogo) && $imgLogo)
-        <div class="text-center">
-            <img src="{{$imgLogo}}" alt="logo" style="max-width: 170px; height: auto; margin-bottom: 5px;">
+        <div class="text-center" style="margin-bottom: 5px;">
+            <table cellpadding="0" cellspacing="0" style="width:170px; height:80px; margin:0 auto; border-collapse:collapse;">
+                <tr>
+                    <td style="width:170px; height:80px; overflow:hidden; vertical-align:middle; text-align:center; padding:0;">
+                        <img src="{{$imgLogo}}" alt="logo" style="display:inline-block; max-width:170px; max-height:80px; width:auto; height:auto;">
+                    </td>
+                </tr>
+            </table>
         </div>
     @endif
 

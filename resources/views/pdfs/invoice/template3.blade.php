@@ -12,7 +12,13 @@
     <tr>
         <td style="text-align: center;">
             @if(!empty($imgLogo))
-                <img style="max-width: 170px; height: auto; margin-bottom: 5px;" src="{{$imgLogo}}" alt="logo">
+                <table cellpadding="0" cellspacing="0" style="width:170px; height:80px; margin:0 auto 5px auto; border-collapse:collapse;">
+                    <tr>
+                        <td style="width:170px; height:80px; overflow:hidden; vertical-align:middle; text-align:center; padding:0;">
+                            <img style="display:inline-block; max-width:170px; max-height:80px; width:auto; height:auto;" src="{{$imgLogo}}" alt="logo">
+                        </td>
+                    </tr>
+                </table>
             @endif
         </td>
     </tr>

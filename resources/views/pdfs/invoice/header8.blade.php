@@ -98,7 +98,15 @@
         </td>
         <td style="width: 25%; text-align: right;" class="vertical-align-top">
             @if(!empty($imgLogo))
-                <img  style="width: 150px; height: auto;" src="{{$imgLogo}}" alt="logo">
+                <div style="width:150px; height:70px; margin:0 0 0 auto; overflow:hidden;">
+                    <table cellpadding="0" cellspacing="0" style="width:150px; height:70px; border-collapse:collapse;">
+                        <tr>
+                            <td style="width:150px; height:70px; overflow:hidden; vertical-align:middle; text-align:right; padding:0;">
+                                <img style="display:inline-block; max-width:150px; max-height:70px; width:auto; height:auto;" src="{{$imgLogo}}" alt="logo">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             @endif
         </td>
     </tr>

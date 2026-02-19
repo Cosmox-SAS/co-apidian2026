@@ -4,7 +4,13 @@
         <tr>
             <td style="padding: 0; width: 25%;" class="text-center">
                 @if(isset($logo_empresa_emisora) and !is_null($logo_empresa_emisora))
-                    <img style="width: 70px;" src="{{$logo_empresa_emisora}}">
+                    <table cellpadding="0" cellspacing="0" style="width:70px; height:35px; margin:0 auto; border-collapse:collapse;">
+                        <tr>
+                            <td style="width:70px; height:35px; overflow:hidden; vertical-align:middle; text-align:center; padding:0;">
+                                <img style="display:inline-block; max-width:70px; max-height:35px; width:auto; height:auto;" src="{{$logo_empresa_emisora}}">
+                            </td>
+                        </tr>
+                    </table>
                 @endif
                 <?php $app_name = env("APP_NAME", "API DIAN"); ?>
                     <p style="color: black; font-size: 8px; margin-bottom: 2px; padding: 0px 0px 0px 0px;">Modo de operación: Software Propio generada con Software {{$app_name}}</p>
