@@ -14,7 +14,9 @@ services:
       - apinet
 
   php_api:
-    image: rash07/php-fpm:8.2
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: php_api
     working_dir: /var/www/html
     volumes:
