@@ -1,10 +1,21 @@
 @extends('layouts.app')
 @section('content')
 <header class="page-header">
-    <div>
-        <h2>
-            Documentación
-        </h2>
+    <div class="d-flex align-items-center">
+        <h2 class="h4 mb-0 me-2">Documentación</h2>
+        <a href="{{ env('APP_DOCUMENTATION_URL', 'https://manual.facturalatam.com/apidian/instalacion') }}"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="d-inline-flex align-items-center p-0"
+           style="color: #0d6efd; background: transparent; border: none; padding: 0; margin-left: .35rem;"
+           title="Abrir documentación en nueva pestaña"
+           aria-label="Abrir documentación en nueva pestaña">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:block;">
+                <path d="M18 13v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+        </a>
     </div>
 </header>
 <div class="row">
