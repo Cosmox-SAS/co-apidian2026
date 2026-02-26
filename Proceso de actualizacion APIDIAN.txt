@@ -17,7 +17,16 @@ Ejemplo (desde el directorio del proyecto donde está `docker-compose.yml`):
 
     1) nano docker-compose.yml
     2) Verifica que en la sección `php_api` tenga:
-       image: rash07/php-fpm:8.2
+        php_api:
+          build:
+            context: .
+            dockerfile: Dockerfile
+          container_name: php_api
+          working_dir: /var/www/html
+          volumes:
+            - ./:/var/www/html
+          networks:
+            - apinet
        (Si no aparece, cámbialo.)
 
 1.2) CAMBIAR EL ORIGIN DEL REPOSITORIO (en el proyecto antiguo)
@@ -64,11 +73,6 @@ Si aparecen conflictos:
     rm composer.lock
     composer install
 
-Dentro de Linux / contenedor (para habilitar la carga de fichas RUT):
-
-    apt-get update
-    apt-get -y install poppler-utils
-
 Luego:
 
     php artisan migrate --seed
@@ -81,10 +85,18 @@ Luego:
     ./urn_on.sh
 
 Nota (Docker)
-Cuando el contenedor Docker se reinicia, debes ejecutar nuevamente:
+Se debera ajustar tambien el archivo docker-compose.yml y buscar el campo php_api, Debe tener esta estructura:
 
-    apt-get update
-    apt-get -y install poppler-utils
+    php_api:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      container_name: php_api
+      working_dir: /var/www/html
+      volumes:
+        - ./:/var/www/html
+      networks:
+        - apinet
 
 Esto vuelve a habilitar la opción de cargar fichas RUT.
 
