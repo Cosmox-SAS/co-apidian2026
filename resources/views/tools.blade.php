@@ -143,6 +143,7 @@
                     src="{{ $documentationUrl ?: 'about:blank' }}"
                     title="Documentación"
                     style="width: 100%; height: 80vh; border: 0;"
+                    allow="clipboard-write; clipboard-read"
                     loading="lazy"
                     referrerpolicy="no-referrer"
                 ></iframe>
