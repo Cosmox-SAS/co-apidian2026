@@ -15,6 +15,9 @@ Notas generales
 Si la instalación corre en Docker, primero actualiza la imagen a la nueva versión.
 Ejemplo (desde el directorio del proyecto donde está `docker-compose.yml`):
 
+        IMPORTANTE: Antes de editar el `docker-compose.yml`, baja/detén los contenedores para que el cambio se aplique correctamente.
+        (Ejemplo: `docker compose down` o `docker-compose down` en el directorio del .yml)
+
     1) nano docker-compose.yml
     2) Verifica que en la sección `php_api` tenga:
         php_api:
@@ -86,6 +89,9 @@ Luego:
 
 Nota (Docker)
 Se debera ajustar tambien el archivo docker-compose.yml y buscar el campo php_api, Debe tener esta estructura:
+
+        IMPORTANTE: Antes de editar el `docker-compose.yml`, baja/detén los contenedores para que el cambio se aplique correctamente.
+        (Ejemplo: `docker compose down` o `docker-compose down` en el directorio del .yml)
 
     php_api:
       build:
