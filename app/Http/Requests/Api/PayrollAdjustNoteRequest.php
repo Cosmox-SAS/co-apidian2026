@@ -146,7 +146,7 @@ class PayrollAdjustNoteRequest extends FormRequest
             'worker.high_risk_pension' => 'nullable|required_if:type_note,1|boolean',
             'worker.identification_number' => 'nullable|required_if:type_note,1|alpha_num|between:1,15',
             'worker.surname' => 'nullable|required_if:type_note,1|string',
-            'worker.second_surname' => 'nullable|required_if:type_note,1|string',
+            'worker.second_surname' => 'nullable|string',
             'worker.first_name' => 'nullable|required_if:type_note,1|string',
             'worker.middle_name' => 'nullable|string',
             'worker.address' => 'nullable|required_if:type_note,1|string',
