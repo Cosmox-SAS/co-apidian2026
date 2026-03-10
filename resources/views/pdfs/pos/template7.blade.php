@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <body>
     {{-- Logo --}}
     @if(isset($imgLogo) && $imgLogo)
