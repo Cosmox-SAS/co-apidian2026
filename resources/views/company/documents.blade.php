@@ -682,17 +682,32 @@ $(document).ready(function() {
                 const transformedData = [];
                 const invoiceGroups = {};
 
-                // Primero agrupamos por número de factura
-                jsonData.forEach(row => {
-                    if (!invoiceGroups[row.number]) {
-                        invoiceGroups[row.number] = {
-                            header: row,
-                            lines: [],
-                            totalDiscount: parseFloat(row.discount_amount) || 0
-                        };
+                // Normalizar claves de encabezado: trim + lowercase
+                const normalizedRows = jsonData.map(r => {
+                    const nr = {};
+                    Object.keys(r).forEach(k => {
+                        const key = k ? k.toString().trim().toLowerCase() : k;
+                        nr[key] = r[k];
+                    });
+                    return nr;
+                });
+
+                // Primero agrupamos por número de factura (asegurando que sea string)
+                normalizedRows.forEach(row => {
+                    const invoiceKey = row.number !== undefined && row.number !== null ? String(row.number).trim() : '';
+                    if (!invoiceKey) {
+                        console.warn('Fila sin número detectada al procesar Excel:', row);
+                        return;
                     }
-                    // Agregamos la línea de producto sin descuento
-                    invoiceGroups[row.number].lines.push({
+
+                    if (!invoiceGroups[invoiceKey]) {
+                            invoiceGroups[invoiceKey] = {
+                                header: row,
+                                lines: [],
+                                totalDiscount: 0
+                            };
+                        }
+                        invoiceGroups[invoiceKey].lines.push({
                         unit_measure_id: parseInt(row.line_unit_measure_id),
                         invoiced_quantity: row.line_invoiced_quantity.toString(),
                         line_extension_amount: formatDecimal(row.line_extension_amount),
@@ -700,7 +715,7 @@ $(document).ready(function() {
                         allowance_charges: [{
                             charge_indicator: false,
                             allowance_charge_reason: "DESCUENTO GENERAL",
-                            amount: "0.00",
+                            amount: formatDecimal(row.discount_amount),
                             base_amount: formatDecimal(row.line_extension_amount)
                         }],
                         tax_totals: [{
@@ -818,7 +833,14 @@ $(document).ready(function() {
     });
 
     // Procesamiento de facturas
-    $('#processInvoices').on('click', async function() {
+    // Evitar bindings duplicados si el script se inicializa varias veces
+    $(document).off('click', '#processInvoices');
+    $(document).on('click', '#processInvoices', async function() {
+        if (window.processingInvoices) {
+            console.warn('Procesamiento ya en curso, clic ignorado.');
+            return;
+        }
+        window.processingInvoices = true;
         if (!window.transformedData || window.transformedData.length === 0) {
             alert('No hay facturas para procesar');
             return;
@@ -835,19 +857,20 @@ $(document).ready(function() {
         progressBar.removeClass('d-none');
         let results = [];
 
-        for (let i = 0; i < window.transformedData.length; i++) {
-            const invoice = window.transformedData[i];
-            const progress = ((i + 1) / window.transformedData.length * 100).toFixed(2);
+        // Envío concurrente: crear promesas por cada factura y ejecutarlas en paralelo.
+        const total = window.transformedData.length;
+        let completed = 0;
 
-            progressBarInner.css('width', progress + '%')
-                          .text(progress + '%');
+        const token = '{{ $company->user->api_token }}';
+        if (!token) {
+            alert('No se encontró el token de autenticación');
+            window.processingInvoices = false;
+            return;
+        }
 
+        const sendInvoice = async (invoice) => {
             try {
-                const token = '{{ $company->user->api_token }}';
-                if (!token) {
-                    throw new Error('No se encontró el token de autenticación');
-                }
-
+                console.log('Procesando factura (concurrente):', JSON.stringify(invoice));
                 const response = await fetch('/api/ubl2.1/invoice', {
                     method: 'POST',
                     headers: {
@@ -861,72 +884,71 @@ $(document).ready(function() {
                 const responseData = await response.json();
                 const statusCode = responseData.ResponseDian?.Envelope?.Body?.SendBillSyncResponse?.SendBillSyncResult?.StatusCode;
                 const errorMessage = responseData.ResponseDian?.Envelope?.Body?.SendBillSyncResponse?.SendBillSyncResult?.ErrorMessage?.string;
-
                 const isSuccess = statusCode === "00";
-                results.push({
+
+                const resultObj = {
                     invoice: invoice.number,
                     status: statusCode,
                     message: responseData.message,
                     error: errorMessage,
                     success: isSuccess
-                });
+                };
 
-                // Mostrar los resultados formateados
-                const resultadosFormateados = results.map(r => {
-                    let alertClass = 'alert-warning';
-                    let icon = 'question-circle';
-                    let message = '';
-
-                    if (r.status === "00") {
-                        alertClass = 'alert-success';
-                        icon = 'check-circle';
-                        message = `<div class="text-success">
-                            <strong>¡Enviado correctamente!</strong><br>
-                            ${r.message}
-                        </div>`;
-                    } else if (r.status === "99") {
-                        alertClass = 'alert-danger';
-                        icon = 'times-circle';
-                        message = `<div class="text-danger">
-                            <strong>Error en el envío:</strong><br>
-                            ${r.error}
-                        </div>`;
-                    }
-
-                    return `
-                        <div class="alert ${alertClass} mb-3">
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-${icon} mr-2"></i>
-                                <h6 class="font-weight-bold mb-0">Factura ${r.invoice}</h6>
-                            </div>
-                            <div class="mt-2">
-                                ${message}
-                            </div>
+                // Mostrar resultado individual para evitar mezcla
+                const elId = 'result-invoice-' + (invoice.prefix || '') + '-' + invoice.number;
+                const alertClass = isSuccess ? 'alert-success' : (statusCode === '99' ? 'alert-danger' : 'alert-warning');
+                const icon = isSuccess ? 'check-circle' : (statusCode === '99' ? 'times-circle' : 'question-circle');
+                const messageHtml = isSuccess ? `<div class="text-success"><strong>¡Enviado correctamente!</strong><br>${responseData.message}</div>` : (statusCode === '99' ? `<div class="text-danger"><strong>Error en el envío:</strong><br>${errorMessage}</div>` : '');
+                const html = `
+                    <div id="${elId}" class="alert ${alertClass} mb-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-${icon} mr-2"></i>
+                            <h6 class="font-weight-bold mb-0">Factura ${invoice.number}</h6>
                         </div>
-                    `;
-                }).join('');
+                        <div class="mt-2">${messageHtml}</div>
+                    </div>
+                `;
 
-                resultsContainer.html(resultadosFormateados);
-                resultsContainer.scrollTop(resultsContainer[0].scrollHeight);
+                // Reemplazar o agregar
+                if ($('#' + elId).length) {
+                    $('#' + elId).replaceWith(html);
+                } else {
+                    resultsContainer.append(html);
+                }
 
-                // Delay entre peticiones
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                completed++;
+                const progress = ((completed) / total * 100).toFixed(2);
+                progressBarInner.css('width', progress + '%').text(progress + '%');
 
+                return resultObj;
             } catch (error) {
-                console.error('Error procesando factura:', invoice.number, error);
+                const resultObj = { invoice: invoice.number, status: 'error', message: '', error: error.message, success: false };
                 resultsContainer.append(`
                     <div class="alert alert-danger mb-2">
                         <strong>Error en Factura ${invoice.number}:</strong><br>
                         ${error.message}
                     </div>
                 `);
-                resultsContainer.scrollTop(resultsContainer[0].scrollHeight);
+                completed++;
+                const progress = ((completed) / total * 100).toFixed(2);
+                progressBarInner.css('width', progress + '%').text(progress + '%');
+                return resultObj;
             }
-        }
+        };
+
+        // Ejecutar todas las promesas en paralelo
+        const promises = window.transformedData.map(inv => sendInvoice(inv));
+        const settled = await Promise.all(promises);
+
+        // Consolidar resultados
+        settled.forEach(r => results.push(r));
 
         // Ocultar barra de progreso
         progressBar.addClass('d-none');
         $finishButton.removeClass('d-none'); // Mostrar botón finalizar
+
+        // liberar bandera de procesamiento
+        window.processingInvoices = false;
 
         // Agregar mensaje de completado
         resultsContainer.prepend(`
