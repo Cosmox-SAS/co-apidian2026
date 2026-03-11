@@ -69,28 +69,70 @@
                 <h5 class="modal-title mr-3" id="excelModalLabel">
                     <i class="fas fa-upload mr-2"></i>Subida Masiva de Facturas
                 </h5>
-                <a href="{{ asset('xlsx/co-documents-batch.xlsx') }}" class="btn btn-sm btn-outline-primary">
-                    <i class="fas fa-download mr-1"></i>Descargar Plantilla
-                </a>
                 <button type="button" class="close ml-auto" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label for="excelFile" class="font-weight-bold d-block">
-                        <i class="fas fa-upload mr-2"></i>Archivo Excel
-                    </label>
-                    <input type="file" class="form-control-file" id="excelFile" accept=".xls,.xlsx">
-                </div>
-                <div class="progress mt-3 d-none" id="progressBar">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"></div>
-                </div>
-                <div class="card border mt-4">
-                    <div class="card-header">
-                        <i class="fas fa-list-alt mr-2"></i>Resultado del Procesamiento
+                <ul class="nav nav-tabs" id="excelTabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="sales-tab" data-toggle="tab" href="#sales" role="tab" aria-controls="sales" aria-selected="true">Facturas de Ventas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="health-tab" data-toggle="tab" href="#health" role="tab" aria-controls="health" aria-selected="false">Facturas de Salud</a>
+                    </li>
+                </ul>
+                <div class="tab-content mt-3" id="excelTabsContent">
+                    <div class="tab-pane fade show active" id="sales" role="tabpanel" aria-labelledby="sales-tab">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <h6 class="mb-0">Plantilla: Facturas de Ventas</h6>
+                            </div>
+                            <a href="{{ asset('xlsx/co-documents-batch.xlsx') }}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-download mr-1"></i>Descargar Plantilla
+                            </a>
+                        </div>
+                        <div class="form-group">
+                            <label for="excelFile" class="font-weight-bold d-block">
+                                <i class="fas fa-upload mr-2"></i>Archivo Excel
+                            </label>
+                            <input type="file" class="form-control-file" id="excelFile" accept=".xls,.xlsx">
+                        </div>
+                        <div class="progress mt-3 d-none" id="progressBar">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"></div>
+                        </div>
+                        <div class="card border mt-4">
+                            <div class="card-header">
+                                <i class="fas fa-list-alt mr-2"></i>Resultado del Procesamiento
+                            </div>
+                            <div id="apiResults" class="card-body bg-light" style="max-height: 300px; overflow-y: auto; font-family: monospace;"></div>
+                        </div>
                     </div>
-                    <div id="apiResults" class="card-body bg-light" style="max-height: 300px; overflow-y: auto; font-family: monospace;"></div>
+                    <div class="tab-pane fade" id="health" role="tabpanel" aria-labelledby="health-tab">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <h6 class="mb-0">Plantilla: Facturas de Salud</h6>
+                            </div>
+                            <a href="{{ asset('xlsx/co-documents-batch-health.xlsx') }}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-download mr-1"></i>Descargar Plantilla Salud
+                            </a>
+                        </div>
+                        <div class="form-group">
+                            <label for="excelFileHealth" class="font-weight-bold d-block">
+                                <i class="fas fa-upload mr-2"></i>Archivo Excel
+                            </label>
+                            <input type="file" class="form-control-file" id="excelFileHealth" accept=".xls,.xlsx">
+                        </div>
+                        <div class="progress mt-3 d-none" id="progressBarHealth">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"></div>
+                        </div>
+                        <div class="card border mt-4">
+                            <div class="card-header">
+                                <i class="fas fa-list-alt mr-2"></i>Resultado del Procesamiento
+                            </div>
+                            <div id="apiResultsHealth" class="card-body bg-light" style="max-height: 300px; overflow-y: auto; font-family: monospace;"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
