@@ -1096,173 +1096,178 @@ $(document).ready(function() {
                     return nr;
                 });
 
-                window.transformedHealthData = normalizedRows.map((row, idx) => {
-                    // Support both nested JSON fields (health_fields, invoice_lines) and flattened prefixed columns
-                    const invoice_lines_json = tryParseJSON(row.invoice_lines) || null;
-                    const health_fields_json = tryParseJSON(row.health_fields) || {};
+                // Agrupar filas por número de factura y concatenar sus invoice_lines
+                (function(){
+                    const invoiceGroups = {};
 
-                    // Helper to read prefixed field or fallback to nested
-                    const pick = (pref, nested) => {
-                        if (row[pref] !== undefined && row[pref] !== null && row[pref] !== '') return row[pref];
-                        return nested !== undefined ? nested : null;
-                    };
+                    normalizedRows.forEach((row, idx) => {
+                        const invoiceKey = row.number !== undefined && row.number !== null ? String(row.number).trim() : '';
+                        if (!invoiceKey) return;
 
-                    // Build health_fields object merging nested JSON and flattened prefixed columns
-                    const hf = Object.assign({}, health_fields_json);
-                    if (row.health_fields_invoice_period_start_date) hf.invoice_period_start_date = row.health_fields_invoice_period_start_date;
-                    if (row.health_fields_invoice_period_end_date) hf.invoice_period_end_date = row.health_fields_invoice_period_end_date;
-                    if (row.health_fields_health_type_operation_id) hf.health_type_operation_id = row.health_fields_health_type_operation_id;
-                    if (row.health_fields_print_users_info_to_pdf) hf.print_users_info_to_pdf = row.health_fields_print_users_info_to_pdf;
+                        const invoice_lines_json = tryParseJSON(row.invoice_lines) || null;
+                        const linesToAdd = [];
 
-                    // Build users_info array from nested or flattened prefixed fields
-                    let users_info = hf.users_info || [];
-                    const hasPrefixedUser = (
-                        row.health_fields_users_info_identification_number ||
-                        row.health_fields_users_info_surname ||
-                        row.health_fields_users_info_first_name
-                    );
-                    if (hasPrefixedUser) {
-                        const userObj = {
-                            provider_code: row.health_fields_users_info_provider_code || null,
-                            health_type_document_identification_id: row.health_fields_users_info_health_type_document_identification_id ? parseInt(row.health_fields_users_info_health_type_document_identification_id) : null,
-                            identification_number: row.health_fields_users_info_identification_number || null,
-                            surname: row.health_fields_users_info_surname || null,
-                            second_surname: row.health_fields_users_info_second_surname || null,
-                            first_name: row.health_fields_users_info_first_name || null,
-                            middle_name: row.health_fields_users_info_middle_name || null,
-                            health_type_user_id: row.health_fields_users_info_health_type_user_id ? parseInt(row.health_fields_users_info_health_type_user_id) : null,
-                            health_contracting_payment_method_id: row.health_fields_users_info_health_contracting_payment_method_id ? parseInt(row.health_fields_users_info_health_contracting_payment_method_id) : null,
-                            health_coverage_id: row.health_fields_users_info_health_coverage_id ? parseInt(row.health_fields_users_info_health_coverage_id) : null,
-                            autorization_numbers: row.health_fields_users_info_autorization_numbers || null,
-                            mipres: row.health_fields_users_info_mipres || null,
-                            mipres_delivery: row.health_fields_users_info_mipres_delivery || null,
-                            contract_number: row.health_fields_users_info_contract_number || null,
-                            policy_number: row.health_fields_users_info_policy_number || null,
-                            co_payment: row.health_fields_users_info_co_payment || null,
-                            moderating_fee: row.health_fields_users_info_moderating_fee || null,
-                            recovery_fee: row.health_fields_users_info_recovery_fee || null,
-                            shared_payment: row.health_fields_users_info_shared_payment || null
+                        if (Array.isArray(invoice_lines_json) && invoice_lines_json.length > 0) {
+                            invoice_lines_json.forEach(l => {
+                                const ln = Object.assign({}, l);
+                                if (ln.code !== undefined && ln.code !== null) ln.code = String(ln.code);
+                                linesToAdd.push(ln);
+                            });
+                        } else if (row.invoice_lines_description || row.invoice_lines_code) {
+                            const line = {
+                                unit_measure_id: row.invoice_lines_unit_measure_id ? parseInt(row.invoice_lines_unit_measure_id) : null,
+                                invoiced_quantity: row.invoice_lines_invoiced_quantity ? Number(row.invoice_lines_invoiced_quantity) : null,
+                                line_extension_amount: row.invoice_lines_line_extension_amount ? Number(row.invoice_lines_line_extension_amount) : 0,
+                                free_of_charge_indicator: (String(row.invoice_lines_free_of_charge_indicator || '').toLowerCase() === 'true') || false,
+                                description: row.invoice_lines_description || null,
+                                notes: row.invoice_lines_notes || null,
+                                code: row.invoice_lines_code !== undefined && row.invoice_lines_code !== null ? String(row.invoice_lines_code) : null,
+                                type_item_identification_id: row.invoice_lines_type_item_identification_id ? parseInt(row.invoice_lines_type_item_identification_id) : 4,
+                                price_amount: row.invoice_lines_price_amount ? Number(row.invoice_lines_price_amount) : null,
+                                base_quantity: row.invoice_lines_base_quantity ? Number(row.invoice_lines_base_quantity) : null
+                            };
+                            if (row.invoice_lines_allowance_charges_amount || row.invoice_lines_allowance_charges_base_amount) {
+                                line.allowance_charges = [{
+                                    charge_indicator: (String(row.invoice_lines_allowance_charges_charge_indicator || '').toLowerCase() === 'true') || false,
+                                    allowance_charge_reason: row.invoice_lines_allowance_charges_allowance_charge_reason || null,
+                                    amount: row.invoice_lines_allowance_charges_amount ? Number(row.invoice_lines_allowance_charges_amount) : 0,
+                                    base_amount: row.invoice_lines_allowance_charges_base_amount ? Number(row.invoice_lines_allowance_charges_base_amount) : 0
+                                }];
+                            }
+                            if (row.invoice_lines_tax_totals_tax_id || row.invoice_lines_tax_totals_tax_amount) {
+                                line.tax_totals = [{
+                                    tax_id: row.invoice_lines_tax_totals_tax_id || null,
+                                    tax_amount: row.invoice_lines_tax_totals_tax_amount ? Number(row.invoice_lines_tax_totals_tax_amount) : 0,
+                                    taxable_amount: row.invoice_lines_tax_totals_taxable_amount ? Number(row.invoice_lines_tax_totals_taxable_amount) : Number(row.invoice_lines_line_extension_amount || 0),
+                                    percent: row.invoice_lines_tax_totals_percent ? Number(row.invoice_lines_tax_totals_percent) : null
+                                }];
+                            }
+                            linesToAdd.push(line);
+                        }
+
+                        if (!invoiceGroups[invoiceKey]) invoiceGroups[invoiceKey] = { header: row, lines: [], rowIndexes: [] };
+                        invoiceGroups[invoiceKey].lines = invoiceGroups[invoiceKey].lines.concat(linesToAdd);
+                        invoiceGroups[invoiceKey].rowIndexes.push(idx+1);
+                    });
+
+                    const transformed = Object.entries(invoiceGroups).map(([number, data]) => {
+                        const row = data.header;
+                        const totals = data.lines.reduce((acc, line) => {
+                            const lineAmt = Number(line.line_extension_amount || 0);
+                            const taxAmt = Array.isArray(line.tax_totals) && line.tax_totals.length ? Number(line.tax_totals[0].tax_amount || 0) : 0;
+                            acc.line_extension_amount += lineAmt;
+                            acc.tax_amount += taxAmt;
+                            acc.payable_amount += lineAmt + taxAmt;
+                            return acc;
+                        }, { line_extension_amount: 0, tax_amount: 0, payable_amount: 0 });
+
+                        const lmt_json = tryParseJSON(row.legal_monetary_totals) || {};
+                        const lmt = Object.assign({}, lmt_json);
+                        if (!Object.keys(lmt).length) {
+                            lmt.line_extension_amount = Number(totals.line_extension_amount.toFixed(2));
+                            lmt.tax_exclusive_amount = Number(totals.line_extension_amount.toFixed(2));
+                            lmt.tax_inclusive_amount = Number(totals.payable_amount.toFixed(2));
+                            lmt.allowance_total_amount = lmt.allowance_total_amount ? Number(lmt.allowance_total_amount) : 0;
+                            lmt.payable_amount = Number(totals.payable_amount.toFixed(2));
+                        }
+
+                        const health_fields_json = tryParseJSON(row.health_fields) || {};
+                        const hf = Object.assign({}, health_fields_json);
+                        if (row.health_fields_invoice_period_start_date) hf.invoice_period_start_date = row.health_fields_invoice_period_start_date;
+                        if (row.health_fields_invoice_period_end_date) hf.invoice_period_end_date = row.health_fields_invoice_period_end_date;
+                        if (row.health_fields_health_type_operation_id) hf.health_type_operation_id = row.health_fields_health_type_operation_id;
+                        if (row.health_fields_print_users_info_to_pdf) hf.print_users_info_to_pdf = row.health_fields_print_users_info_to_pdf;
+
+                        let users_info = hf.users_info || [];
+                        const hasPrefixedUser = (
+                            row.health_fields_users_info_identification_number ||
+                            row.health_fields_users_info_surname ||
+                            row.health_fields_users_info_first_name
+                        );
+                        if (hasPrefixedUser) {
+                            const userObj = {
+                                provider_code: row.health_fields_users_info_provider_code || null,
+                                health_type_document_identification_id: row.health_fields_users_info_health_type_document_identification_id ? parseInt(row.health_fields_users_info_health_type_document_identification_id) : null,
+                                identification_number: row.health_fields_users_info_identification_number || null,
+                                surname: row.health_fields_users_info_surname || null,
+                                second_surname: row.health_fields_users_info_second_surname || null,
+                                first_name: row.health_fields_users_info_first_name || null,
+                                middle_name: row.health_fields_users_info_middle_name || null,
+                                health_type_user_id: row.health_fields_users_info_health_type_user_id ? parseInt(row.health_fields_users_info_health_type_user_id) : null,
+                                health_contracting_payment_method_id: row.health_fields_users_info_health_contracting_payment_method_id ? parseInt(row.health_fields_users_info_health_contracting_payment_method_id) : null,
+                                health_coverage_id: row.health_fields_users_info_health_coverage_id ? parseInt(row.health_fields_users_info_health_coverage_id) : null,
+                                autorization_numbers: row.health_fields_users_info_autorization_numbers || null,
+                                mipres: row.health_fields_users_info_mipres || null,
+                                mipres_delivery: row.health_fields_users_info_mipres_delivery || null,
+                                contract_number: row.health_fields_users_info_contract_number || null,
+                                policy_number: row.health_fields_users_info_policy_number || null,
+                                co_payment: row.health_fields_users_info_co_payment || null,
+                                moderating_fee: row.health_fields_users_info_moderating_fee || null,
+                                recovery_fee: row.health_fields_users_info_recovery_fee || null,
+                                shared_payment: row.health_fields_users_info_shared_payment || null
+                            };
+                            if (Array.isArray(users_info) && users_info.length > 0) users_info = users_info.concat([userObj]); else users_info = [userObj];
+                        }
+
+                        const payment_form_json = tryParseJSON(row.payment_form) || {};
+                        const payment_form = Object.assign({}, payment_form_json);
+                        if (row.payment_form_payment_form_id) payment_form.payment_form_id = row.payment_form_payment_form_id ? parseInt(row.payment_form_payment_form_id) : null;
+                        if (row.payment_form_payment_method_id) payment_form.payment_method_id = row.payment_form_payment_method_id ? parseInt(row.payment_form_payment_method_id) : null;
+                        if (row.payment_form_payment_due_date) payment_form.payment_due_date = formatDateHealth(row.payment_form_payment_due_date);
+                        if (row.payment_form_duration_measure) payment_form.duration_measure = row.payment_form_duration_measure;
+
+                        const customer = tryParseJSON(row.customer) || {
+                            identification_number: row.customer_identification_number ? String(row.customer_identification_number).replace(/\D/g, '') : null,
+                            dv: row.customer_dv ? String(row.customer_dv).replace(/\D/g, '') : null,
+                            name: row.customer_name ? String(row.customer_name).trim().toUpperCase() : null,
+                            phone: row.customer_phone ? String(row.customer_phone).replace(/\D/g, '') : null,
+                            address: row.customer_address || null,
+                            email: row.customer_email || null,
+                            merchant_registration: row.merchant_registration || row.customer_merchant_registration || null,
+                            type_document_identification_id: row.customer_type_document_identification_id ? parseInt(row.customer_type_document_identification_id) : null,
+                            type_organization_id: row.customer_type_organization_id ? parseInt(row.customer_type_organization_id) : null,
+                            type_liability_id: row.customer_type_liability_id ? parseInt(row.customer_type_liability_id) : null,
+                            municipality_id: row.customer_municipality_id ? parseInt(row.customer_municipality_id) : null,
+                            type_regime_id: row.customer_type_regime_id ? parseInt(row.customer_type_regime_id) : null
                         };
-                        // If hf.users_info already an array and not empty, merge first, otherwise set single
-                        if (Array.isArray(users_info) && users_info.length > 0) {
-                            users_info = users_info.concat([userObj]);
-                        } else {
-                            users_info = [userObj];
-                        }
-                    }
 
-                    // Build invoice_lines: prefer JSON array, otherwise build single-line from prefixed columns
-                    let invoice_lines = [];
-                    if (Array.isArray(invoice_lines_json) && invoice_lines_json.length > 0) {
-                        // Normalizar campos de cada línea (asegurar que `code` sea string)
-                        invoice_lines = invoice_lines_json.map(l => {
-                            const ln = Object.assign({}, l);
-                            if (ln.code !== undefined && ln.code !== null) ln.code = String(ln.code);
-                            return ln;
-                        });
-                    } else if (row.invoice_lines_description || row.invoice_lines_code) {
-                        const line = {
-                            unit_measure_id: row.invoice_lines_unit_measure_id ? parseInt(row.invoice_lines_unit_measure_id) : null,
-                            invoiced_quantity: row.invoice_lines_invoiced_quantity ? Number(row.invoice_lines_invoiced_quantity) : null,
-                            line_extension_amount: row.invoice_lines_line_extension_amount ? Number(row.invoice_lines_line_extension_amount) : null,
-                            free_of_charge_indicator: (String(row.invoice_lines_free_of_charge_indicator || '').toLowerCase() === 'true') || false,
-                            description: row.invoice_lines_description || null,
-                            notes: row.invoice_lines_notes || null,
-                            code: row.invoice_lines_code !== undefined && row.invoice_lines_code !== null ? String(row.invoice_lines_code) : null,
-                            type_item_identification_id: 4,
-                            price_amount: row.invoice_lines_price_amount ? Number(row.invoice_lines_price_amount) : null,
-                            base_quantity: row.invoice_lines_base_quantity ? Number(row.invoice_lines_base_quantity) : null
+                        return {
+                            number: Number(number),
+                            type_document_id: row.type_document_id ? parseInt(row.type_document_id) : null,
+                            date: formatDateHealth(row.date),
+                            time: formatTime(row.time) || (new Date(new Date().getTime() - (5 * 60 * 60 * 1000))).toTimeString().split(' ')[0],
+                            resolution_number: row.resolution_number || row.resolution,
+                            prefix: row.prefix,
+                            establishment_name: row.establishment_name,
+                            establishment_address: row.establishment_address,
+                            establishment_phone: row.establishment_phone ? String(row.establishment_phone) : '',
+                            establishment_municipality: row.establishment_municipality ? parseInt(row.establishment_municipality) : null,
+                            establishment_email: row.establishment_email,
+                            sendmail: (String(row.sendmail || '').toLowerCase() === 'true') || false,
+                            seze: row.seze || null,
+                            health_fields: {
+                                invoice_period_start_date: formatDateHealth(hf.invoice_period_start_date || hf.invoice_period_start_date),
+                                invoice_period_end_date: formatDateHealth(hf.invoice_period_end_date || hf.invoice_period_end_date),
+                                health_type_operation_id: hf.health_type_operation_id ? parseInt(hf.health_type_operation_id) : (row.health_type_operation_id ? parseInt(row.health_type_operation_id) : null),
+                                print_users_info_to_pdf: (String(hf.print_users_info_to_pdf || '').toLowerCase() === 'true') || false,
+                                users_info: users_info
+                            },
+                            customer: customer,
+                            payment_form: payment_form,
+                            prepaid_payment: tryParseJSON(row.prepaid_payment) || null,
+                            allowance_charges: tryParseJSON(row.allowance_charges) || [],
+                            legal_monetary_totals: lmt,
+                            tax_totals: tryParseJSON(row.tax_totals) || [{ tax_id: 1, tax_amount: Number(totals.tax_amount.toFixed(2)), percent: '19', taxable_amount: Number(totals.line_extension_amount.toFixed(2)) }],
+                            invoice_lines: data.lines,
+                            raw: row,
+                            rowIndexes: data.rowIndexes
                         };
-                        // allowance charges for the line (flattened)
-                        if (row.invoice_lines_allowance_charges_amount || row.invoice_lines_allowance_charges_base_amount) {
-                            line.allowance_charges = [{
-                                charge_indicator: (String(row.invoice_lines_allowance_charges_charge_indicator || '').toLowerCase() === 'true') || false,
-                                allowance_charge_reason: row.invoice_lines_allowance_charges_allowance_charge_reason || null,
-                                amount: row.invoice_lines_allowance_charges_amount ? Number(row.invoice_lines_allowance_charges_amount) : null,
-                                base_amount: row.invoice_lines_allowance_charges_base_amount ? Number(row.invoice_lines_allowance_charges_base_amount) : null
-                            }];
-                        }
-                        // tax totals for the line (flattened)
-                        if (row.invoice_lines_tax_totals_tax_id || row.invoice_lines_tax_totals_tax_amount) {
-                            line.tax_totals = [{
-                                tax_id: row.invoice_lines_tax_totals_tax_id || null,
-                                tax_amount: row.invoice_lines_tax_totals_tax_amount ? Number(row.invoice_lines_tax_totals_tax_amount) : null,
-                                taxable_amount: row.invoice_lines_tax_totals_taxable_amount ? Number(row.invoice_lines_tax_totals_taxable_amount) : null,
-                                percent: row.invoice_lines_tax_totals_percent ? Number(row.invoice_lines_tax_totals_percent) : null
-                            }];
-                        }
-                        invoice_lines = [line];
-                    }
+                    });
 
-                    // Legal monetary totals: from JSON or flattened prefixed columns
-                    const lmt_json = tryParseJSON(row.legal_monetary_totals) || {};
-                    const lmt = Object.assign({}, lmt_json);
-                    if (row.legal_monetary_totals_line_extension_amount) lmt.line_extension_amount = Number(row.legal_monetary_totals_line_extension_amount);
-                    if (row.legal_monetary_totals_tax_exclusive_amount) lmt.tax_exclusive_amount = Number(row.legal_monetary_totals_tax_exclusive_amount);
-                    if (row.legal_monetary_totals_tax_inclusive_amount) lmt.tax_inclusive_amount = Number(row.legal_monetary_totals_tax_inclusive_amount);
-                    if (row.legal_monetary_totals_allowance_total_amount) lmt.allowance_total_amount = Number(row.legal_monetary_totals_allowance_total_amount);
-                    if (row.legal_monetary_totals_charge_total_amount) lmt.charge_total_amount = Number(row.legal_monetary_totals_charge_total_amount);
-                    if (row.legal_monetary_totals_pre_paid_amount) lmt.pre_paid_amount = Number(row.legal_monetary_totals_pre_paid_amount);
-                    if (row.legal_monetary_totals_payable_amount) lmt.payable_amount = Number(row.legal_monetary_totals_payable_amount);
+                    window.transformedHealthData = transformed;
+                })();
 
-                    // Payment form: support prefixed
-                    const payment_form_json = tryParseJSON(row.payment_form) || {};
-                    const payment_form = Object.assign({}, payment_form_json);
-                    if (row.payment_form_payment_form_id) payment_form.payment_form_id = row.payment_form_payment_form_id ? parseInt(row.payment_form_payment_form_id) : null;
-                    if (row.payment_form_payment_method_id) payment_form.payment_method_id = row.payment_form_payment_method_id ? parseInt(row.payment_form_payment_method_id) : null;
-                    if (row.payment_form_payment_due_date) payment_form.payment_due_date = formatDateHealth(row.payment_form_payment_due_date);
-                    if (row.payment_form_duration_measure) payment_form.duration_measure = row.payment_form_duration_measure;
-
-                    // Build customer (many columns already match)
-                    const customer = tryParseJSON(row.customer) || {
-                        identification_number: row.customer_identification_number ? String(row.customer_identification_number).replace(/\D/g, '') : null,
-                        dv: row.customer_dv ? String(row.customer_dv).replace(/\D/g, '') : null,
-                        name: row.customer_name ? String(row.customer_name).trim().toUpperCase() : null,
-                        phone: row.customer_phone ? String(row.customer_phone).replace(/\D/g, '') : null,
-                        address: row.customer_address || null,
-                        email: row.customer_email || null,
-                        merchant_registration: row.merchant_registration || row.customer_merchant_registration || null,
-                        type_document_identification_id: row.customer_type_document_identification_id ? parseInt(row.customer_type_document_identification_id) : null,
-                        type_organization_id: row.customer_type_organization_id ? parseInt(row.customer_type_organization_id) : null,
-                        type_liability_id: row.customer_type_liability_id ? parseInt(row.customer_type_liability_id) : null,
-                        municipality_id: row.customer_municipality_id ? parseInt(row.customer_municipality_id) : null,
-                        type_regime_id: row.customer_type_regime_id ? parseInt(row.customer_type_regime_id) : null
-                    };
-
-                    return {
-                        number: row.number ? parseInt(row.number) : null,
-                        type_document_id: row.type_document_id ? parseInt(row.type_document_id) : null,
-                        date: formatDateHealth(row.date),
-                        time: formatTime(pick('time', row.time)) || (new Date(new Date().getTime() - (5 * 60 * 60 * 1000))).toTimeString().split(' ')[0],
-                        resolution_number: pick('resolution_number', row.resolution_number || row.resolution),
-                        prefix: pick('prefix', row.prefix),
-                        establishment_name: pick('establishment_name', row.establishment_name),
-                        establishment_address: pick('establishment_address', row.establishment_address),
-                        establishment_phone: pick('establishment_phone', row.establishment_phone) ? String(pick('establishment_phone', row.establishment_phone)) : '',
-                        establishment_municipality: pick('establishment_municipality', row.establishment_municipality) ? parseInt(pick('establishment_municipality', row.establishment_municipality)) : null,
-                        establishment_email: pick('establishment_email', row.establishment_email),
-                        sendmail: (String(pick('sendmail', row.sendmail) || '').toLowerCase() === 'true') || false,
-                        seze: row.seze || null,
-                        health_fields: {
-                            invoice_period_start_date: formatDateHealth(hf.invoice_period_start_date || hf.invoice_period_start_date),
-                            invoice_period_end_date: formatDateHealth(hf.invoice_period_end_date || hf.invoice_period_end_date),
-                            health_type_operation_id: hf.health_type_operation_id ? parseInt(hf.health_type_operation_id) : (row.health_type_operation_id ? parseInt(row.health_type_operation_id) : null),
-                            print_users_info_to_pdf: (String(hf.print_users_info_to_pdf || '').toLowerCase() === 'true') || false,
-                            users_info: users_info
-                        },
-                        customer: customer,
-                        payment_form: payment_form,
-                        prepaid_payment: tryParseJSON(row.prepaid_payment) || null,
-                        allowance_charges: tryParseJSON(row.allowance_charges) || [],
-                        legal_monetary_totals: Object.keys(lmt).length ? lmt : null,
-                        tax_totals: tryParseJSON(row.tax_totals) || [],
-                        invoice_lines: invoice_lines,
-                        raw: row,
-                        rowIndex: idx+1
-                    };
-                });
-
-                $('#apiResultsHealth').html('<div class="alert alert-info">'+window.transformedHealthData.length+' filas preparadas para procesar.</div>');
+                $('#apiResultsHealth').html('<div class="alert alert-info">'+window.transformedHealthData.length+' facturas de salud preparadas para procesar (agrupadas por número).</div>');
                 // facturas salud preparadas
             } catch (err) {
                 // error procesando Excel salud
@@ -1422,6 +1427,9 @@ $(document).ready(function() {
 
             progressBar.addClass('d-none');
             $finishButton.removeClass('d-none');
+            // Ocultar el botón procesar y mostrar el botón finalizar
+            $processButton.addClass('d-none');
+            $('#finishProcess').removeClass('d-none');
             window.processingInvoices = false;
 
             resultsContainer.prepend(`
@@ -1564,6 +1572,8 @@ $(document).ready(function() {
             // Ocultar barra de progreso
             progressBar.addClass('d-none');
             $finishButton.removeClass('d-none'); // Mostrar botón finalizar
+            // Ocultar el botón procesar
+            $processButton.addClass('d-none');
 
             // liberar bandera de procesamiento
             window.processingInvoices = false;
