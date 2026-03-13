@@ -29,6 +29,7 @@ use App\Mail\PayrollMail;
 use DateTime;
 use Storage;
 use Carbon\Carbon;
+use App\Services\StorageService;
 
 class PayrollController extends Controller
 {
@@ -69,10 +70,8 @@ class PayrollController extends Controller
             });
 
             // Crear directorio si no existe
-            $base_path = storage_path("app/public/{$company->identification_number}");
-            if (!file_exists($base_path)) {
-                mkdir($base_path, 0777, true);
-            }
+            StorageService::ensureDirectory("public/{$company->identification_number}");
+            $base_path = StorageService::tempPath("public/{$company->identification_number}");
 
             // Generar QR y PDF
             $QRStr = $this->createPDFPayroll(
@@ -314,15 +313,14 @@ class PayrollController extends Controller
         $signPayroll->softwareID = $company->software->identifier_payroll;
         $signPayroll->pin = $company->software->pin_payroll;
 
-        if (!is_dir(storage_path("app/public/{$company->identification_number}")))
-            mkdir(storage_path("app/public/{$company->identification_number}"));
+        StorageService::ensureDirectory("public/{$company->identification_number}");
 
-        $signPayroll->GuardarEn = storage_path("app/public/{$company->identification_number}/NI-{$resolution->next_consecutive}.xml");
+        $signPayroll->GuardarEn = StorageService::tempPath("public/{$company->identification_number}/NI-{$resolution->next_consecutive}.xml");
 
         $sendPayrollSync = new SendPayrollSync($company->certificate->path, $company->certificate->password);
         $sendPayrollSync->To = $company->software->url_payroll;
         $sendPayrollSync->fileName = "{$resolution->next_consecutive}.xml";
-        $sendPayrollSync->contentFile = $this->zipBase64($company, $resolution, $signPayroll->sign($payroll), storage_path("app/public/{$company->identification_number}/NIS-{$resolution->next_consecutive}"));
+        $sendPayrollSync->contentFile = $this->zipBase64($company, $resolution, $signPayroll->sign($payroll), StorageService::tempPath("public/{$company->identification_number}/NIS-{$resolution->next_consecutive}"));
 
         $QRStr = $this->createPDFPayroll($user, $company, $novelty, $period, $worker, $resolution, $payment, $payment_dates, $typeDocument, $notes, $accrued, $deductions, $request, $signPayroll->ConsultarCUNE(), "PAYROLL");
 
@@ -332,7 +330,7 @@ class PayrollController extends Controller
 //        $xml = new \DOMDocument;
         $ar = new \DOMDocument;
         try{
-            $respuestadian = $sendPayrollSync->signToSend(storage_path("app/public/{$company->identification_number}/ReqNI-{$resolution->next_consecutive}.xml"))->getResponseToObject(storage_path("app/public/{$company->identification_number}/RptaNI-{$resolution->next_consecutive}.xml"));
+            $respuestadian = $sendPayrollSync->signToSend(StorageService::tempPath("public/{$company->identification_number}/ReqNI-{$resolution->next_consecutive}.xml"))->getResponseToObject(StorageService::tempPath("public/{$company->identification_number}/RptaNI-{$resolution->next_consecutive}.xml"));
 //            return $QRStr;
 //            return $payroll->saveXML();
 //            return json_encode($respuestadian);
@@ -350,7 +348,7 @@ class PayrollController extends Controller
                 $payroll_doc->state_document_id = 1;
                 $payroll_doc->cune = $cufecude;
                 $payroll_doc->save();
-                $signedxml = file_get_contents(storage_path("app/xml/{$company->id}/".$respuestadian->Envelope->Body->SendNominaSyncResponse->SendNominaSyncResult->XmlFileName.".xml"));
+                $signedxml = StorageService::getAutoLocal("xml/{$company->id}/".$respuestadian->Envelope->Body->SendNominaSyncResponse->SendNominaSyncResult->XmlFileName.".xml");
 //            $xml->loadXML($signedxml);
                 if(strpos($signedxml, "</Invoice>") > 0)
                     $td = '/Invoice';
@@ -411,11 +409,11 @@ class PayrollController extends Controller
         return [
             'message' => "{$typeDocument->name} #{$resolution->next_consecutive} generada con éxito",
             'ResponseDian' => $respuestadian,
-            'payrollxml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/NIS-{$resolution->next_consecutive}.xml"))),
-            'zippayrollxml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/NIS-{$resolution->next_consecutive}.zip"))),
-            'unsignedpayrollxml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/NI-{$resolution->next_consecutive}.xml"))),
-            'reqni'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/ReqNI-{$resolution->next_consecutive}.xml"))),
-            'rptani'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/RptaNI-{$resolution->next_consecutive}.xml"))),
+            'payrollxml'=>base64_encode(file_get_contents(StorageService::tempPath("public/{$company->identification_number}/NIS-{$resolution->next_consecutive}.xml"))),
+            'zippayrollxml'=>base64_encode(file_get_contents(StorageService::tempPath("public/{$company->identification_number}/NIS-{$resolution->next_consecutive}.zip"))),
+            'unsignedpayrollxml'=>base64_encode(file_get_contents(StorageService::tempPath("public/{$company->identification_number}/NI-{$resolution->next_consecutive}.xml"))),
+            'reqni'=>base64_encode(file_get_contents(StorageService::tempPath("public/{$company->identification_number}/ReqNI-{$resolution->next_consecutive}.xml"))),
+            'rptani'=>base64_encode(file_get_contents(StorageService::tempPath("public/{$company->identification_number}/RptaNI-{$resolution->next_consecutive}.xml"))),
             'attacheddocument'=>base64_encode($at),
             'urlpayrollxml'=>"NIS-{$resolution->next_consecutive}.xml",
             'urlpayrollpdf'=>"NIS-{$resolution->next_consecutive}.pdf",
@@ -564,27 +562,26 @@ class PayrollController extends Controller
         $signPayroll->softwareID = $company->software->identifier_payroll;
         $signPayroll->pin = $company->software->pin_payroll;
 
-        if (!is_dir(storage_path("app/public/{$company->identification_number}")))
-            mkdir(storage_path("app/public/{$company->identification_number}"));
+        StorageService::ensureDirectory("public/{$company->identification_number}");
 
-        $signPayroll->GuardarEn = storage_path("app/public/{$company->identification_number}/NI-{$resolution->next_consecutive}.xml");
+        $signPayroll->GuardarEn = StorageService::tempPath("public/{$company->identification_number}/NI-{$resolution->next_consecutive}.xml");
 
         $sendPayrollASync = new SendPayrollASync($company->certificate->path, $company->certificate->password);
         $sendPayrollASync->To = $company->software->url_payroll;
         $sendPayrollASync->fileName = "{$resolution->next_consecutive}.xml";
-        $sendPayrollASync->contentFile = $this->zipBase64($company, $resolution, $signPayroll->sign($payroll), storage_path("app/public/{$company->identification_number}/NIS-{$resolution->next_consecutive}"));
+        $sendPayrollASync->contentFile = $this->zipBase64($company, $resolution, $signPayroll->sign($payroll), StorageService::tempPath("public/{$company->identification_number}/NIS-{$resolution->next_consecutive}"));
         $sendPayrollASync->testSetId = $testSetId;
 
         $QRStr = $this->createPDFPayroll($user, $company, $novelty, $period, $worker, $resolution, $payment, $payment_dates, $typeDocument, $notes, $accrued, $deductions, $request, $signPayroll->ConsultarCUNE(), "PAYROLL");
 
         return [
             'message' => "{$typeDocument->name} #{$resolution->next_consecutive} generada con éxito",
-            'ResponseDian' => $sendPayrollASync->signToSend(storage_path("app/public/{$company->identification_number}/ReqNI-{$resolution->next_consecutive}.xml"))->getResponseToObject(storage_path("app/public/{$company->identification_number}/RptaNI-{$resolution->next_consecutive}.xml")),
-            'payrollxml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/NIS-{$resolution->next_consecutive}.xml"))),
-            'zippayrollxml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/NIS-{$resolution->next_consecutive}.zip"))),
-            'unsignedpayrollxml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/NI-{$resolution->next_consecutive}.xml"))),
-            'reqni'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/ReqNI-{$resolution->next_consecutive}.xml"))),
-            'rptani'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/RptaNI-{$resolution->next_consecutive}.xml"))),
+            'ResponseDian' => $sendPayrollASync->signToSend(StorageService::tempPath("public/{$company->identification_number}/ReqNI-{$resolution->next_consecutive}.xml"))->getResponseToObject(StorageService::tempPath("public/{$company->identification_number}/RptaNI-{$resolution->next_consecutive}.xml")),
+            'payrollxml'=>base64_encode(file_get_contents(StorageService::tempPath("public/{$company->identification_number}/NIS-{$resolution->next_consecutive}.xml"))),
+            'zippayrollxml'=>base64_encode(file_get_contents(StorageService::tempPath("public/{$company->identification_number}/NIS-{$resolution->next_consecutive}.zip"))),
+            'unsignedpayrollxml'=>base64_encode(file_get_contents(StorageService::tempPath("public/{$company->identification_number}/NI-{$resolution->next_consecutive}.xml"))),
+            'reqni'=>base64_encode(file_get_contents(StorageService::tempPath("public/{$company->identification_number}/ReqNI-{$resolution->next_consecutive}.xml"))),
+            'rptani'=>base64_encode(file_get_contents(StorageService::tempPath("public/{$company->identification_number}/RptaNI-{$resolution->next_consecutive}.xml"))),
             'urlpayrollxml'=>"NIS-{$resolution->next_consecutive}.xml",
             'urlpayrollpdf'=>"NIS-{$resolution->next_consecutive}.pdf",
             'cune' => $signPayroll->ConsultarCUNE(),

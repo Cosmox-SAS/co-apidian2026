@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use ubl21dian\Templates\SOAP\GetXmlByDocumentKey;
 use App\Http\Requests\Api\XmlDocumentRequest;
 use App\Traits\DocumentTrait;
+use App\Services\StorageService;
 
 class XmlDocumentController extends Controller
 {
