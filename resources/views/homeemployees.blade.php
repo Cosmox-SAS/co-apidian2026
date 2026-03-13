@@ -36,8 +36,8 @@
                                 @if($allow_public_downloads)
                                     <td><a href="{{ url('/api/download/'.$company_idnumber.'/'.$document->xml) }}"><i class="fa fa-download"></i></a></td>
                                     <td><a href="{{ url('/api/download/'.$company_idnumber.'/'.$document->pdf) }}"><i class="fa fa-download"></i></a></td>
-                                    <td><a href="{{ url('/api/download/'.$company_idnumber.'/'.str_replace(['NIS-', 'NAS-'], ['RptaNI-', 'RptaNA-'], $document->xml)) }}" title="Descargar RptaDIAN"><i class="fa fa-download"></i></a></td>
-                                    <td><a href="{{ url('/api/download/'.$company_idnumber.'/'.str_replace('.xml', '.zip', $document->xml)) }}" title="Descargar ZIP"><i class="fa fa-download"></i></a></td>
+                                    <td><a href="{{ url('/api/download/'.$company_idnumber.'/Attachment-'.$document->prefix.$document->consecutive.'.xml') }}"><i class="fa fa-download"></i></a></td>
+                                    <td><a href="{{ url('/api/download/'.$company_idnumber.'/ZipAttachm-'.$document->prefix.$document->consecutive.'.xml') }}"><i class="fa fa-download"></i></a></td>
                                     <td><form action="{{ route('send-email-customer') }}" method="POST">
                                             <input type="hidden" name="company_idnumber" value="{{$company_idnumber}}">
                                             <input type="hidden" name="prefix" value="{{$document->prefix}}">

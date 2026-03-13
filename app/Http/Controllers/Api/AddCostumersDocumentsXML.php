@@ -11,7 +11,6 @@ use App\Company;
 use App\User;
 use App\Resolution;
 use App\TypeDocument;
-use App\Services\StorageService;
 
 class AddCostumersDocumentsXML extends Controller
 {
@@ -52,13 +51,13 @@ class AddCostumersDocumentsXML extends Controller
         $respuestadian = '';
         $ar = new \DOMDocument;
         $xmls = [];
-        $files = array_diff(scandir(StorageService::tempPath("public/{$nit}")), array('..', '.'));
+        $files = array_diff(scandir(storage_path("app/public/{$nit}")), array('..', '.'));
         foreach($files as $f){
             if((substr($f, 0, 4) == 'FES-' || substr($f, 0, 4) == 'NCS-' || substr($f, 0, 4) == 'NDS-') && (strtoupper(substr($f, strlen($f) - 3, 3)) == 'XML'))
                 array_push($xmls, $f);
         }
         foreach($xmls as $x){
-            $xml = StorageService::getAutoLocal("public/{$nit}/{$x}");
+            $xml = file_get_contents(storage_path("app/public/{$nit}/{$x}"));
             if(strpos($xml, "</CreditNote>") > 0)
                 $td = '/CreditNote';
             else
@@ -138,12 +137,11 @@ class AddCostumersDocumentsXML extends Controller
             }
             $id_env_actual = $company->type_environment_id;
             $id_software_actual = $company->software->identifier;
-            $attachmentRelativePath = "public/{$company->identification_number}/Attachment-".$this->valueXML($xml, $td."/cbc:ID/").".xml";
-            if(!StorageService::exists($attachmentRelativePath)){
+            if(!file_exists(storage_path("app/public/{$company->identification_number}/Attachment-".$this->valueXML($xml, $td."/cbc:ID/").".xml"))){
                 $this->environment($document->ambient_id, $company, $this->ValueXML($xml, $td."/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/sts:DianExtensions/sts:SoftwareProvider/sts:SoftwareID/"));
                 $getStatus = new GetStatus($company->certificate->path, $company->certificate->password, $company->software->url);
                 $getStatus->trackId = $document->cufe;
-                $respuestadian = $getStatus->signToSend(StorageService::tempPath("public/{$nit}/ReqZIP-".$document->cufe.".xml"))->getResponseToObject(StorageService::tempPath("public/{$nit}/RptaZIP-".$document->cufe.".xml"));
+                $respuestadian = $getStatus->signToSend(storage_path("app/public/{$nit}/ReqZIP-".$document->cufe.".xml"))->getResponseToObject(storage_path("app/public/{$nit}/RptaZIP-".$document->cufe.".xml"));
                 $this->environment($id_env_actual, $company, $id_software_actual);
                 if($respuestadian->Envelope->Body->GetStatusResponse->GetStatusResult->IsValid == 'true'){
                     $appresponsexml = base64_decode($respuestadian->Envelope->Body->GetStatusResponse->GetStatusResult->XmlBase64Bytes);
@@ -157,12 +155,9 @@ class AddCostumersDocumentsXML extends Controller
                     $attacheddocument = $this->createXML(compact('user', 'company', 'customer', 'resolution', 'typeDocument', 'cufecude', 'signedxml', 'appresponsexml', 'fechavalidacion', 'horavalidacion'));
                     $at = $attacheddocument->saveXML();
 //                    $at = str_replace("&gt;", ">", str_replace("&quot;", '"', str_replace("&lt;", "<", $at)));
-                    $localAttachmentPath = StorageService::tempPath($attachmentRelativePath);
-                    StorageService::ensureDirectory("public/{$company->identification_number}");
-                    $file = fopen($localAttachmentPath, "w");
+                    $file = fopen(storage_path("app/public/{$company->identification_number}/Attachment-".$this->valueXML($xml, $td."/cbc:ID/").".xml"), "w");
                     fwrite($file, $at);
                     fclose($file);
-                    StorageService::putLocalFile($attachmentRelativePath, $localAttachmentPath, false);
                 }
                 else
                      $at = '';

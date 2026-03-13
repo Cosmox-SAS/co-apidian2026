@@ -11,7 +11,6 @@ use App\DocumentPayroll;
 use App\Employee;
 use App\Company;
 use App\User;
-use App\Services\StorageService;
 
 class PayrollMail extends Mailable
 {
@@ -41,7 +40,7 @@ class PayrollMail extends Mailable
         $this->user = User::where('id', $company->user_id)->firstOrFail();
         if($PDFAlternativo){
             $this->PDFAlternativo = TRUE;
-            $file = fopen(StorageService::tempPath("public/{$this->company->identification_number}/PDF-{$this->payroll[0]->prefix}{$this->payroll[0]->consecutive}.pdf"), "w");
+            $file = fopen(storage_path("app/public/{$this->company->identification_number}/PDF-{$this->payroll[0]->prefix}{$this->payroll[0]->consecutive}.pdf"), "w");
             fwrite($file, base64_decode($PDFAlternativo));
             fclose($file);
         }
@@ -51,15 +50,52 @@ class PayrollMail extends Mailable
 
     public function build()
     {
-        // Usar los nombres reales de archivos almacenados en el documento de nómina
-        $xmlPath = StorageService::localPath("public/{$this->company->identification_number}/{$this->payroll[0]->xml}");
-        $pdfPath = StorageService::localPath("public/{$this->company->identification_number}/{$this->payroll[0]->pdf}");
-        
-        $nameZIP = $this->zipEmailPayroll($xmlPath, $pdfPath);
-        
-        return $this->view('mails.mail_employee')
-            ->subject("Nomina Electronica: {$this->company->identification_number}-{$this->company->user->name}-{$this->payroll[0]->prefix}{$this->payroll[0]->consecutive}-{$this->payroll[0]->type_document->code}-{$this->company->user->name}")
-            ->from(\Config::get('mail.from.address'), \Config::get('mail.from.name'))
-            ->attach($nameZIP);
+        if($this->PDFAlternativo)
+            if(env('MAIL_USERNAME') and $this->user->validate_mail_server() == false){
+                if($this->filename)
+                    $nameZIP = $this->zipEmailPayroll(storage_path("app/public/{$this->company->identification_number}/{$this->filename}.xml"), storage_path("app/public/{$this->company->identification_number}/PDF-{$this->payroll[0]->prefix}{$this->payroll[0]->consecutive}.pdf"));
+                else
+                    $nameZIP = $this->zipEmailPayroll(storage_path("app/public/{$this->company->identification_number}/{$this->filename}.xml"), storage_path("app/public/{$this->company->identification_number}/PDF-{$this->payroll[0]->prefix}{$this->payroll[0]->consecutive}.pdf"));
+                return $this->view('mails.mail_employee')->subject("Nomina Electronica: {$this->company->identification_number}-{$this->company->user->name}-{$this->payroll[0]->prefix}{$this->payroll[0]->consecutive}-{$this->payroll[0]->type_document->code}-{$this->company->user->name}")
+                                                  ->from(\Config::get('mail.from.address'), \Config::get('mail.from.name'))
+//                                                ->from(env('MAIL_FROM_ADDRESS', env('MAIL_USERNAME')), env('MAIL_FROM_NAME', env('APP_NAME')))
+//                                                ->from(env('MAIL_USERNAME'))
+                                                ->attach($nameZIP);
+            }
+            else{
+                if($this->filename)
+                    $nameZIP = $this->zipEmailPayroll(storage_path("app/public/{$this->company->identification_number}/{$this->filename}.xml"), storage_path("app/public/{$this->company->identification_number}/PDF-{$this->payroll[0]->prefix}{$this->payroll[0]->consecutive}.pdf"));
+                else
+                    $nameZIP = $this->zipEmailPayroll(storage_path("app/public/{$this->company->identification_number}/{$this->filename}.xml"), storage_path("app/public/{$this->company->identification_number}/PDF-{$this->payroll[0]->prefix}{$this->payroll[0]->consecutive}.pdf"));
+                return $this->view('mails.mail_employee')->subject("Nomina Electronica: {$this->company->identification_number}-{$this->company->user->name}-{$this->payroll[0]->prefix}{$this->payroll[0]->consecutive}-{$this->payroll[0]->type_document->code}-{$this->company->user->name}")
+                                                  ->from(\Config::get('mail.from.address'), \Config::get('mail.from.name'))
+//                                                ->from(env('MAIL_FROM_ADDRESS', config('mail.username')), env('MAIL_FROM_NAME', env('APP_NAME')))
+//                                                ->from(config('mail.username'))
+                                                ->attach($nameZIP);
+            }
+        else{
+            if(env('MAIL_USERNAME') and $this->user->validate_mail_server() == false){
+                if($this->filename)
+                    $nameZIP = $this->zipEmailPayroll(storage_path("app/public/{$this->company->identification_number}/{$this->filename}.xml"), storage_path("app/public/{$this->company->identification_number}/{$this->payroll[0]->pdf}"));
+                else
+                    $nameZIP = $this->zipEmailPayroll(storage_path("app/public/{$this->company->identification_number}/{$this->filename}.xml"), storage_path("app/public/{$this->company->identification_number}/{$this->payroll[0]->pdf}"));
+                return $this->view('mails.mail_employee')->subject("Nomina Electronica: {$this->company->identification_number}-{$this->company->user->name}-{$this->payroll[0]->prefix}{$this->payroll[0]->consecutive}-{$this->payroll[0]->type_document->code}-{$this->company->user->name}")
+                                                  ->from(\Config::get('mail.from.address'), \Config::get('mail.from.name'))
+//                                                ->from(env('MAIL_FROM_ADDRESS', env('MAIL_USERNAME')), env('MAIL_FROM_NAME', env('APP_NAME')))
+//                                                ->from(env('MAIL_USERNAME'))
+                                                ->attach($nameZIP);
+            }
+            else{
+                if($this->filename)
+                    $nameZIP = $this->zipEmailPayroll(storage_path("app/public/{$this->company->identification_number}/{$this->filename}.xml"), storage_path("app/public/{$this->company->identification_number}/FES-{$this->payroll[0]->prefix}{$this->payroll[0]->consecutive}.pdf"));
+                else
+                    $nameZIP = $this->zipEmailPayroll(storage_path("app/public/{$this->company->identification_number}/{$this->filename}.xml"), storage_path("app/public/{$this->company->identification_number}/FES-{$this->payroll[0]->prefix}{$this->payroll[0]->consecutive}.pdf"));
+                return $this->view('mails.mail_employee')->subject("Nomina Electronica: {$this->company->identification_number}-{$this->company->user->name}-{$this->payroll[0]->prefix}{$this->payroll[0]->consecutive}-{$this->payroll[0]->type_document->code}-{$this->company->user->name}")
+                                                  ->from(\Config::get('mail.from.address'), \Config::get('mail.from.name'))
+//                                                ->from(env('MAIL_FROM_ADDRESS', config('mail.username')), env('MAIL_FROM_NAME', env('APP_NAME')))
+//                                                ->from(config('mail.username'))
+                                                ->attach($nameZIP);
+            }
+        }
     }
 }

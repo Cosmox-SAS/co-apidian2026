@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use ubl21dian\Templates\SOAP\GetStatus;
 use ubl21dian\Templates\SOAP\GetStatusZip;
 use App\Http\Requests\Api\StatusZipRequest;
-use App\Services\StorageService;
+use Storage;
 
 class StatusZipController extends Controller
 {
@@ -46,23 +46,22 @@ class StatusZipController extends Controller
         }
 
         $name = "{$request->password}.p12";
-        // Certificate must be stored locally for OpenSSL signing
-        StorageService::ensureDirectory("certificates");
-        $certPath = StorageService::tempPath("certificates/{$name}");
-        file_put_contents($certPath, $certificateBinary);
+        Storage::put("certificates/{$name}", $certificateBinary);
 
         if($request->ambiente == 'HABILITACION')
-            $getStatus = new GetStatusZip($certPath, $request->password, 'https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc');
+            $getStatus = new GetStatusZip(storage_path("app/certificates/".$name), $request->password, 'https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc');
         else
-            $getStatus = new GetStatusZip($certPath, $request->password, 'https://vpfe.dian.gov.co/WcfDianCustomerServices.svc');
+            $getStatus = new GetStatusZip(storage_path("app/certificates/".$name), $request->password, 'https://vpfe.dian.gov.co/WcfDianCustomerServices.svc');
 
         $getStatus->trackId = $request->zipkey;
 
-        StorageService::ensureDirectory("public/{$request->password}");
+        if (!is_dir(storage_path("app/public/{$request->password}"))) {
+                mkdir(storage_path("app/public/{$request->password}"));
+            }
             
         return [
             'message' => 'Consulta generada con éxito',
-            'ResponseDian' => $getStatus->signToSend(StorageService::tempPath("public/{$request->password}/ReqZIP-".$request->zipkey.".xml"))->getResponseToObject(StorageService::tempPath("public/{$request->password}/RptaZIP-".$request->zipkey.".xml")),
+            'ResponseDian' => $getStatus->signToSend(storage_path("app/public/{$request->password}/ReqZIP-".$request->zipkey.".xml"))->getResponseToObject(storage_path("app/public/{$request->password}/RptaZIP-".$request->zipkey.".xml")),
         ];
     }
 }

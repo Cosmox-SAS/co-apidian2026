@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Services\StorageService;
 
 class Certificate extends Model
 {
@@ -35,13 +34,12 @@ class Certificate extends Model
     ];
 
     /**
-     * Get the certificate path (always local filesystem).
-     * Certificates must always be local for OpenSSL signing.
+     * Get the invoice line allowance charges.
      *
      * @return string
      */
     public function getPathAttribute()
     {
-        return StorageService::localStoragePath("certificates/{$this->name}");
+        return storage_path("app/certificates/{$this->name}");
     }
 }

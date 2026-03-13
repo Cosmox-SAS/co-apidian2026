@@ -34,7 +34,7 @@ use ubl21dian\XAdES\SignCreditNote;
 use App\InvoiceLine as DebitNoteLine;
 use App\Http\Requests\Api\DebitNoteRequest;
 use ubl21dian\XAdES\SignDebitNote;
-use App\Services\StorageService;
+use Storage;
 
 class BatchController extends Controller
 {
@@ -203,13 +203,15 @@ class BatchController extends Controller
             $signInvoice->GuardarEn = $request->GuardarEn."\\FE-{$resolution->next_consecutive}.xml";
         }
         else{
-            StorageService::ensureDirectory("public/{$company->identification_number}");
-            $signInvoice->GuardarEn = StorageService::tempPath("public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml");
+            if (!is_dir(storage_path("app/public/{$company->identification_number}"))) {
+                mkdir(storage_path("app/public/{$company->identification_number}"));
+            }
+            $signInvoice->GuardarEn = storage_path("app/public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml");
         }
         if ($request->GuardarEn)
           $z = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), $request->GuardarEn."\\FES-{$resolution->next_consecutive}", $batch);
         else
-          $z = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), StorageService::tempPath("public/{$company->identification_number}/FES-{$resolution->next_consecutive}"), $batch);
+          $z = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), storage_path("app/public/{$company->identification_number}/FES-{$resolution->next_consecutive}"), $batch);
 
         $QRStr = $this->createPDF($user, $company, $customer, $typeDocument, $resolution, $date, $time, $paymentForm, $request, $signInvoice->ConsultarCUFE(), "INVOICE", $withHoldingTaxTotal, $notes);
 
@@ -248,16 +250,11 @@ class BatchController extends Controller
             ];
         }
         else{
-            StorageService::uploadBatchIfS3([
-                "public/{$company->identification_number}/FES-{$resolution->next_consecutive}.xml",
-                "public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml",
-                "public/{$company->identification_number}/FES-{$resolution->next_consecutive}.pdf",
-            ]);
             return [
                 'message' => "{$typeDocument->name} #{$resolution->next_consecutive} generada y agregada con éxito al batch {$batch}.zip",
-                'invoicexml'=>StorageService::getBase64Auto("public/{$company->identification_number}/FES-{$resolution->next_consecutive}.xml"),
-                'zipinvoicexml'=>base64_encode(file_get_contents(StorageService::tempPath("zip/{$company->id}/{$batch}.zip"))),
-                'unsignedinvoicexml'=>StorageService::getBase64Auto("public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml"),
+                'invoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/FES-{$resolution->next_consecutive}.xml"))),
+                'zipinvoicexml'=>base64_encode(file_get_contents(storage_path("app/zip/{$company->id}/{$batch}.zip"))),
+                'unsignedinvoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml"))),
                 'urlinvoicexml'=>"FES-{$resolution->next_consecutive}.xml",
                 'urlinvoicepdf'=>"FES-{$resolution->next_consecutive}.pdf",
                 'cufe' => $signInvoice->ConsultarCUFE(),
@@ -431,14 +428,16 @@ class BatchController extends Controller
             $signInvoice->GuardarEn = $request->GuardarEn."\\FE-{$resolution->next_consecutive}.xml";
         }
         else{
-            StorageService::ensureDirectory("public/{$company->identification_number}");
-            $signInvoice->GuardarEn = StorageService::tempPath("public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml");
+            if (!is_dir(storage_path("app/public/{$company->identification_number}"))) {
+                mkdir(storage_path("app/public/{$company->identification_number}"));
+            }
+            $signInvoice->GuardarEn = storage_path("app/public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml");
         }
 
         if ($request->GuardarEn)
           $z = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), $request->GuardarEn."\\FES-{$resolution->next_consecutive}", $batch);
         else
-          $z = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), StorageService::tempPath("public/{$company->identification_number}/FES-{$resolution->next_consecutive}"), $batch);
+          $z = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), storage_path("app/public/{$company->identification_number}/FES-{$resolution->next_consecutive}"), $batch);
 
         $QRStr = $this->createPDF($user, $company, $customer, $typeDocument, $resolution, $date, $time, $paymentForm, $request, $signInvoice->ConsultarCUFE(), "INVOICE", $withHoldingTaxTotal, $notes);
 
@@ -475,23 +474,17 @@ class BatchController extends Controller
                 'cufe' => $signInvoice->ConsultarCUFE(),
                 'QRStr' => $QRStr
             ];
-        else{
-            StorageService::uploadBatchIfS3([
-                "public/{$company->identification_number}/FES-{$resolution->next_consecutive}.xml",
-                "public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml",
-                "public/{$company->identification_number}/FES-{$resolution->next_consecutive}.pdf",
-            ]);
+        else
             return [
                 'message' => "{$typeDocument->name} #{$resolution->next_consecutive} generada y agregada con éxito al batch {$batch}.zip",
-                'invoicexml'=>StorageService::getBase64Auto("public/{$company->identification_number}/FES-{$resolution->next_consecutive}.xml"),
-                'zipinvoicexml'=>base64_encode(file_get_contents(StorageService::tempPath("zip/{$company->id}/{$batch}.zip"))),
-                'unsignedinvoicexml'=>StorageService::getBase64Auto("public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml"),
+                'invoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/FES-{$resolution->next_consecutive}.xml"))),
+                'zipinvoicexml'=>base64_encode(file_get_contents(storage_path("app/zip/{$company->id}/{$batch}.zip"))),
+                'unsignedinvoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml"))),
                 'urlinvoicexml'=>"FES-{$resolution->next_consecutive}.xml",
                 'urlinvoicepdf'=>"FES-{$resolution->next_consecutive}.pdf",
                 'cufe' => $signInvoice->ConsultarCUFE(),
                 'QRStr' => $QRStr
             ];
-        }
     }
 
     /**
@@ -656,14 +649,16 @@ class BatchController extends Controller
             $signInvoice->GuardarEn = $request->GuardarEn."\\FE-{$resolution->next_consecutive}.xml";
         }
         else{
-            StorageService::ensureDirectory("public/{$company->identification_number}");
-            $signInvoice->GuardarEn = StorageService::tempPath("public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml");
+            if (!is_dir(storage_path("app/public/{$company->identification_number}"))) {
+                mkdir(storage_path("app/public/{$company->identification_number}"));
+            }
+            $signInvoice->GuardarEn = storage_path("app/public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml");
         }
 
         if ($request->GuardarEn)
           $z = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), $request->GuardarEn."\\FES-{$resolution->next_consecutive}", $batch);
         else
-          $z = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), StorageService::tempPath("public/{$company->identification_number}/FES-{$resolution->next_consecutive}"), $batch);
+          $z = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), storage_path("app/public/{$company->identification_number}/FES-{$resolution->next_consecutive}"), $batch);
 
         $QRStr = $this->createPDF($user, $company, $customer, $typeDocument, $resolution, $date, $time, $paymentForm, $request, $signInvoice->ConsultarCUFE(), "INVOICE", $withHoldingTaxTotal, $notes);
 
@@ -700,23 +695,17 @@ class BatchController extends Controller
                 'cufe' => $signInvoice->ConsultarCUFE(),
                 'QRStr' => $QRStr
             ];
-        else{
-            StorageService::uploadBatchIfS3([
-                "public/{$company->identification_number}/FES-{$resolution->next_consecutive}.xml",
-                "public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml",
-                "public/{$company->identification_number}/FES-{$resolution->next_consecutive}.pdf",
-            ]);
+        else
             return [
                 'message' => "{$typeDocument->name} #{$resolution->next_consecutive} generada y agregada con éxito al batch {$batch}.zip",
-                'invoicexml'=>StorageService::getBase64Auto("public/{$company->identification_number}/FES-{$resolution->next_consecutive}.xml"),
-                'zipinvoicexml'=>base64_encode(file_get_contents(StorageService::tempPath("zip/{$company->id}/{$batch}.zip"))),
-                'unsignedinvoicexml'=>StorageService::getBase64Auto("public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml"),
+                'invoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/FES-{$resolution->next_consecutive}.xml"))),
+                'zipinvoicexml'=>base64_encode(file_get_contents(storage_path("app/zip/{$company->id}/{$batch}.zip"))),
+                'unsignedinvoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml"))),
                 'urlinvoicexml'=>"FES-{$resolution->next_consecutive}.xml",
                 'urlinvoicepdf'=>"FES-{$resolution->next_consecutive}.pdf",
                 'cufe' => $signInvoice->ConsultarCUFE(),
                 'QRStr' => $QRStr
             ];
-        }
     }
 
     /**
@@ -893,13 +882,15 @@ class BatchController extends Controller
             $signInvoice->GuardarEn = $request->GuardarEn."\\FE-{$resolution->next_consecutive}.xml";
         }
         else{
-            StorageService::ensureDirectory("public/{$company->identification_number}");
-            $signInvoice->GuardarEn = StorageService::tempPath("public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml");
+            if (!is_dir(storage_path("app/public/{$company->identification_number}"))) {
+                mkdir(storage_path("app/public/{$company->identification_number}"));
+            }
+            $signInvoice->GuardarEn = storage_path("app/public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml");
         }
         if ($request->GuardarEn)
           $z = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), $request->GuardarEn."\\FES-{$resolution->next_consecutive}", $batch);
         else
-          $z = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), StorageService::tempPath("public/{$company->identification_number}/FES-{$resolution->next_consecutive}"), $batch);
+          $z = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), storage_path("app/public/{$company->identification_number}/FES-{$resolution->next_consecutive}"), $batch);
 
         $QRStr = $this->createPDF($user, $company, $customer, $typeDocument, $resolution, $date, $time, $paymentForm, $request, $signInvoice->ConsultarCUFE(), "INVOICE", $withHoldingTaxTotal, $notes);
 
@@ -936,23 +927,17 @@ class BatchController extends Controller
                 'cufe' => $signInvoice->ConsultarCUFE(),
                 'QRStr' => $QRStr
             ];
-        else{
-            StorageService::uploadBatchIfS3([
-                "public/{$company->identification_number}/FES-{$resolution->next_consecutive}.xml",
-                "public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml",
-                "public/{$company->identification_number}/FES-{$resolution->next_consecutive}.pdf",
-            ]);
+        else
             return [
                 'message' => "{$typeDocument->name} #{$resolution->next_consecutive} generada y agregada con éxito al batch {$batch}.zip",
-                'invoicexml'=>StorageService::getBase64Auto("public/{$company->identification_number}/FES-{$resolution->next_consecutive}.xml"),
-                'zipinvoicexml'=>base64_encode(file_get_contents(StorageService::tempPath("zip/{$company->id}/{$batch}.zip"))),
-                'unsignedinvoicexml'=>StorageService::getBase64Auto("public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml"),
+                'invoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/FES-{$resolution->next_consecutive}.xml"))),
+                'zipinvoicexml'=>base64_encode(file_get_contents(storage_path("app/zip/{$company->id}/{$batch}.zip"))),
+                'unsignedinvoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml"))),
                 'urlinvoicexml'=>"FES-{$resolution->next_consecutive}.xml",
                 'urlinvoicepdf'=>"FES-{$resolution->next_consecutive}.pdf",
                 'cufe' => $signInvoice->ConsultarCUFE(),
                 'QRStr' => $QRStr
             ];
-        }
     }
 
     /**
@@ -1114,14 +1099,16 @@ class BatchController extends Controller
             $signInvoice->GuardarEn = $request->GuardarEn."\\FE-{$resolution->next_consecutive}.xml";
         }
         else{
-            StorageService::ensureDirectory("public/{$company->identification_number}");
-            $signInvoice->GuardarEn = StorageService::tempPath("public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml");
+            if (!is_dir(storage_path("app/public/{$company->identification_number}"))) {
+                mkdir(storage_path("app/public/{$company->identification_number}"));
+            }
+            $signInvoice->GuardarEn = storage_path("app/public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml");
         }
 
         if ($request->GuardarEn)
           $z = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), $request->GuardarEn."\\FES-{$resolution->next_consecutive}", $batch);
         else
-          $z = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), StorageService::tempPath("public/{$company->identification_number}/FES-{$resolution->next_consecutive}"), $batch);
+          $z = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), storage_path("app/public/{$company->identification_number}/FES-{$resolution->next_consecutive}"), $batch);
 
         $invoice_doc->prefix = $resolution->prefix;
         $invoice_doc->customer = $customer->company->identification_number;
@@ -1154,22 +1141,16 @@ class BatchController extends Controller
                 'urlinvoicepdf'=>"FES-{$resolution->next_consecutive}.pdf",
                 'cude' => $signInvoice->ConsultarCUDE()
             ];
-        else{
-            StorageService::uploadBatchIfS3([
-                "public/{$company->identification_number}/FES-{$resolution->next_consecutive}.xml",
-                "public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml",
-                "public/{$company->identification_number}/FES-{$resolution->next_consecutive}.pdf",
-            ]);
+        else
             return [
                 'message' => "{$typeDocument->name} #{$resolution->next_consecutive} generada y agregada con éxito al batch {$batch}.zip",
-                'invoicexml'=>StorageService::getBase64Auto("public/{$company->identification_number}/FES-{$resolution->next_consecutive}.xml"),
-                'zipinvoicexml'=>base64_encode(file_get_contents(StorageService::tempPath("zip/{$company->id}/{$batch}.zip"))),
-                'unsignedinvoicexml'=>StorageService::getBase64Auto("public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml"),
+                'invoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/FES-{$resolution->next_consecutive}.xml"))),
+                'zipinvoicexml'=>base64_encode(file_get_contents(storage_path("app/zip/{$company->id}/{$batch}.zip"))),
+                'unsignedinvoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml"))),
                 'urlinvoicexml'=>"FES-{$resolution->next_consecutive}.xml",
                 'urlinvoicepdf'=>"FES-{$resolution->next_consecutive}.pdf",
                 'cude' => $signInvoice->ConsultarCUDE()
             ];
-        }
         }
 
     /**
@@ -1306,14 +1287,16 @@ class BatchController extends Controller
             $signCreditNote->GuardarEn = $request->GuardarEn."\\NC-{$resolution->next_consecutive}.xml";
         }
         else{
-            StorageService::ensureDirectory("public/{$company->identification_number}");
-            $signCreditNote->GuardarEn = StorageService::tempPath("public/{$company->identification_number}/NC-{$resolution->next_consecutive}.xml");
+            if (!is_dir(storage_path("app/public/{$company->identification_number}"))) {
+                mkdir(storage_path("app/public/{$company->identification_number}"));
+            }
+            $signCreditNote->GuardarEn = storage_path("app/public/{$company->identification_number}/NC-{$resolution->next_consecutive}.xml");
         }
 
         if ($request->GuardarEn)
           $z = $this->zipBase64($company, $resolution, $signCreditNote->sign($crediNote), $request->GuardarEn."\\NCS-{$resolution->next_consecutive}", $batch);
         else
-          $z = $this->zipBase64($company, $resolution, $signCreditNote->sign($crediNote), StorageService::tempPath("public/{$company->identification_number}/NCS-{$resolution->next_consecutive}"), $batch);
+          $z = $this->zipBase64($company, $resolution, $signCreditNote->sign($crediNote), storage_path("app/public/{$company->identification_number}/NCS-{$resolution->next_consecutive}"), $batch);
 
         $QRStr = $this->createPDF($user, $company, $customer, $typeDocument, $resolution, $date, $time, $paymentForm, $request, $signCreditNote->ConsultarCUDE(), "NC", $withHoldingTaxTotal, $notes);
 
@@ -1350,23 +1333,17 @@ class BatchController extends Controller
                 'cude' => $signCreditNote->ConsultarCUDE(),
                 'QRStr' => $QRStr
             ];
-        else{
-            StorageService::uploadBatchIfS3([
-                "public/{$company->identification_number}/NCS-{$resolution->next_consecutive}.xml",
-                "public/{$company->identification_number}/NC-{$resolution->next_consecutive}.xml",
-                "public/{$company->identification_number}/NCS-{$resolution->next_consecutive}.pdf",
-            ]);
+        else
             return [
                 'message' => "{$typeDocument->name} #{$resolution->next_consecutive} generada y agregada con éxito al batch {$batch}.zip",
-                'invoicexml'=>StorageService::getBase64Auto("public/{$company->identification_number}/NCS-{$resolution->next_consecutive}.xml"),
-                'zipinvoicexml'=>base64_encode(file_get_contents(StorageService::tempPath("zip/{$company->id}/{$batch}.zip"))),
-                'unsignedinvoicexml'=>StorageService::getBase64Auto("public/{$company->identification_number}/NC-{$resolution->next_consecutive}.xml"),
+                'invoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/NCS-{$resolution->next_consecutive}.xml"))),
+                'zipinvoicexml'=>base64_encode(file_get_contents(storage_path("app/zip/{$company->id}/{$batch}.zip"))),
+                'unsignedinvoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/NC-{$resolution->next_consecutive}.xml"))),
                 'urlinvoicexml'=>"NCS-{$resolution->next_consecutive}.xml",
                 'urlinvoicepdf'=>"NCS-{$resolution->next_consecutive}.pdf",
                 'cude' => $signCreditNote->ConsultarCUDE(),
                 'QRStr' => $QRStr
             ];
-        }
     }
 
     /**
@@ -1503,14 +1480,16 @@ class BatchController extends Controller
             $signDebitNote->GuardarEn = $request->GuardarEn."\\ND-{$resolution->next_consecutive}.xml";
         }
         else{
-            StorageService::ensureDirectory("public/{$company->identification_number}");
-            $signDebitNote->GuardarEn = StorageService::tempPath("public/{$company->identification_number}/ND-{$resolution->next_consecutive}.xml");
+            if (!is_dir(storage_path("app/public/{$company->identification_number}"))) {
+                mkdir(storage_path("app/public/{$company->identification_number}"));
+            }
+            $signDebitNote->GuardarEn = storage_path("app/public/{$company->identification_number}/ND-{$resolution->next_consecutive}.xml");
         }
 
         if ($request->GuardarEn)
           $z = $this->zipBase64($company, $resolution, $signDebitNote->sign($debitNote), $request->GuardarEn."\\NDS-{$resolution->next_consecutive}", $batch);
         else
-          $z = $this->zipBase64($company, $resolution, $signDebitNote->sign($debitNote), StorageService::tempPath("public/{$company->identification_number}/NDS-{$resolution->next_consecutive}"), $batch);
+          $z = $this->zipBase64($company, $resolution, $signDebitNote->sign($debitNote), storage_path("app/public/{$company->identification_number}/NDS-{$resolution->next_consecutive}"), $batch);
 
         $QRStr = $this->createPDF($user, $company, $customer, $typeDocument, $resolution, $date, $time, $paymentForm, $request, $signDebitNote->ConsultarCUDE(), "ND", $withHoldingTaxTotal, $notes);
 
@@ -1547,23 +1526,17 @@ class BatchController extends Controller
                 'cude' => $signDebitNote->ConsultarCUDE(),
                 'QRStr' => $QRStr
             ];
-        else{
-            StorageService::uploadBatchIfS3([
-                "public/{$company->identification_number}/NDS-{$resolution->next_consecutive}.xml",
-                "public/{$company->identification_number}/ND-{$resolution->next_consecutive}.xml",
-                "public/{$company->identification_number}/NDS-{$resolution->next_consecutive}.pdf",
-            ]);
+        else
             return [
                 'message' => "{$typeDocument->name} #{$resolution->next_consecutive} generada y agregada con éxito al batch {$batch}.zip",
-                'invoicexml'=>StorageService::getBase64Auto("public/{$company->identification_number}/NDS-{$resolution->next_consecutive}.xml"),
-                'zipinvoicexml'=>base64_encode(file_get_contents(StorageService::tempPath("zip/{$company->id}/{$batch}.zip"))),
-                'unsignedinvoicexml'=>StorageService::getBase64Auto("public/{$company->identification_number}/ND-{$resolution->next_consecutive}.xml"),
+                'invoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/NDS-{$resolution->next_consecutive}.xml"))),
+                'zipinvoicexml'=>base64_encode(file_get_contents(storage_path("app/zip/{$company->id}/{$batch}.zip"))),
+                'unsignedinvoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/ND-{$resolution->next_consecutive}.xml"))),
                 'urlinvoicexml'=>"NDS-{$resolution->next_consecutive}.xml",
                 'urlinvoicepdf'=>"NDS-{$resolution->next_consecutive}.pdf",
                 'cude' => $signDebitNote->ConsultarCUDE(),
                 'QRStr' => $QRStr
             ];
-        }
     }
 
     /**
@@ -1585,22 +1558,14 @@ class BatchController extends Controller
         $sendBillAsync->To = $company->software->url;
         $sendBillAsync->fileName = "{$batch}.zip";
 
-        $sendBillAsync->contentFile = base64_encode(file_get_contents(StorageService::tempPath("zip/{$company->id}/{$batch}.zip")));
-
-        StorageService::ensureDirectory("public/{$company->identification_number}");
-        $responseDian = $sendBillAsync->signToSend(StorageService::tempPath("public/{$company->identification_number}/ReqBATCH-{$batch}.xml"))->getResponseToObject(StorageService::tempPath("public/{$company->identification_number}/RptaBATCH-{$batch}.xml"));
-
-        StorageService::uploadBatchIfS3([
-            "public/{$company->identification_number}/ReqBATCH-{$batch}.xml",
-            "public/{$company->identification_number}/RptaBATCH-{$batch}.xml",
-        ]);
+        $sendBillAsync->contentFile = base64_encode(file_get_contents(storage_path("app/zip/{$company->id}/{$batch}.zip")));
 
         return [
             'message' => "Batch {$batch}.zip enviado con éxito",
-            'ResponseDian' => $responseDian,
-            'zipinvoicexml'=>base64_encode(file_get_contents(StorageService::tempPath("zip/{$company->id}/{$batch}.zip"))),
-            'reqfe'=>StorageService::getBase64Auto("public/{$company->identification_number}/ReqBATCH-{$batch}.xml"),
-            'rptafe'=>StorageService::getBase64Auto("public/{$company->identification_number}/RptaBATCH-{$batch}.xml"),
+            'ResponseDian' => $sendBillAsync->signToSend(storage_path("app/public/{$company->identification_number}/ReqBATCH-{$batch}.xml"))->getResponseToObject(storage_path("app/public/{$company->identification_number}/RptaBATCH-{$batch}.xml")),
+            'zipinvoicexml'=>base64_encode(file_get_contents(storage_path("app/zip/{$company->id}/{$batch}.zip"))),
+            'reqfe'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/ReqBATCH-{$batch}.xml"))),
+            'rptafe'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/RptaBATCH-{$batch}.xml"))),
         ];
     }
 }

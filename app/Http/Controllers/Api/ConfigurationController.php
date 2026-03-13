@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use DB;
+use Storage;
 use App\User;
 use Exception;
-use App\Services\StorageService;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
@@ -508,8 +508,7 @@ class ConfigurationController extends Controller
             $company = auth()->user()->company;
         else
             $company = $user->company;
-        // Certificados SIEMPRE se leen localmente (necesarios para OpenSSL)
-        $pfxContent = StorageService::getLocal("certificates/".$company->certificate->name);
+        $pfxContent = file_get_contents(storage_path("app/certificates/".$company->certificate->name));
         try {
             if (!openssl_pkcs12_read($pfxContent, $x509certdata, $company->certificate->password)) {
                 throw new Exception('The certificate could not be read.');
@@ -633,10 +632,9 @@ class ConfigurationController extends Controller
             $company = auth()->user()->company;
             $name = "{$company->identification_number}{$company->dv}.p12";
 
-            // Certificados SIEMPRE se guardan localmente (necesarios para OpenSSL)
-            StorageService::putLocal("certificates/{$name}", $certificateBinary);
+            Storage::put("certificates/{$name}", $certificateBinary);
 
-            $pfxContent = StorageService::getLocal("certificates/{$name}");
+            $pfxContent = file_get_contents(storage_path("app/certificates/".$name));
             if (!openssl_pkcs12_read($pfxContent, $x509certdata, $request->password)) {
                 throw new Exception('The certificate could not be read.');
             }
@@ -707,8 +705,7 @@ class ConfigurationController extends Controller
             $company = auth()->user()->company;
             $name = "{$company->identification_number}{$company->dv}.jpg";
 
-            // Logos SIEMPRE se guardan localmente (necesarios para generar PDFs)
-            StorageService::putLocal("public/{$company->identification_number}/{$name}", base64_decode($request->logo));
+            Storage::put("public/{$company->identification_number}/{$name}", base64_decode($request->logo));
 
             return [
                 'success' => true,

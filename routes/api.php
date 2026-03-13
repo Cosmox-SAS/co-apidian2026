@@ -1,7 +1,4 @@
 <?php
-
-use App\Services\StorageService;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -324,37 +321,33 @@ Route::middleware('auth:api')->group(function () {
 
 Route::get('invoice/xml/{filename}', function($fisicroute)
 {
-    $content = StorageService::getAuto($fisicroute);
-    if ($content === null) {
-        abort(404, 'XML no encontrado');
-    }
-    return response($content, 200, [
+    $path = storage_path($fisicroute);
+    return response(file_get_contents($path), 200, [
         'Content-Type' => 'application/xml'
     ]);
 });
 
 Route::get('invoice/pdf/{filename}', function($fisicroute)
 {
-    $content = StorageService::getAuto($fisicroute);
-    if ($content === null) {
-        abort(404, 'PDF no encontrado');
-    }
-    return response($content, 200, [
+    $path = storage_path("app/".$fisicroute);
+    return response(file_get_contents($path), 200, [
         'Content-Type' => 'application/pdf'
     ]);
 });
 
 Route::get('invoice/{identification}/{filename}', function($identification, $filename)
 {
-    $relativePath = "public/".$identification."/".$filename;
-    return StorageService::downloadAuto($relativePath);
+    $path = storage_path("app/public/".$identification."/".$filename);
+//    return response(base64_encode(file_get_contents($path)), 200);
+    return response()->download($path);
 });
 
 Route::get('receivedfile/{identification}/{filename}', function($identification, $filename)
 {
     try{
-        $relativePath = "public/".$identification."/".$filename;
-        return StorageService::downloadAuto($relativePath);
+        $path = storage_path("received/".$identification."/".$filename);
+//    return response(base64_encode(file_get_contents($path)), 200);
+        return response()->download($path);
     } catch (\Exception $e) {
         return [
             'success' => false,
@@ -402,17 +395,15 @@ if(env('ALLOW_PUBLIC_DOWNLOAD', TRUE)){
         {
             $u = new \App\Utils;
             if(strpos($file, 'Attachment-') === false and strpos($file, 'ZipAttachm-') === false)
-                if(StorageService::existsAuto("public/{$identification}/{$file}"))
+                if(file_exists(storage_path("app/public/{$identification}/{$file}")))
                     if($type_response && $type_response === 'BASE64')
                         return [
                             'success' => true,
                             'message' => "Archivo: ".$file." se encontro.",
-                            'filebase64'=>StorageService::getBase64AutoFallback("public/{$identification}/{$file}")
+                            'filebase64'=>base64_encode(file_get_contents(storage_path("app/public/{$identification}/{$file}")))
                         ];
-                    elseif($type_response && $type_response === 'INLINE')
-                        return StorageService::inlineAuto("public/{$identification}/{$file}");
                     else
-                        return StorageService::downloadAuto("public/{$identification}/{$file}");
+                        return Storage::download("public/{$identification}/{$file}");
                 else
                     return [
                         'success' => false,
@@ -421,17 +412,15 @@ if(env('ALLOW_PUBLIC_DOWNLOAD', TRUE)){
             else{
                 if(strpos($file, 'ZipAttachm-') === false){
                     $filename = $u->attacheddocumentname($identification, $file);
-                    if(StorageService::existsAuto("public/{$identification}/{$filename}.xml"))
+                    if(file_exists(storage_path("app/public/{$identification}/{$filename}.xml")))
                         if($type_response && $type_response === 'BASE64')
                             return [
                                 'success' => true,
                                 'message' => "Archivo: ".$filename.".xml se encontro.",
-                                'filebase64'=>StorageService::getBase64AutoFallback("public/{$identification}/{$filename}.xml")
+                                'filebase64'=>base64_encode(file_get_contents(storage_path("app/public/{$identification}/{$filename}.xml")))
                             ];
-                        elseif($type_response && $type_response === 'INLINE')
-                            return StorageService::inlineAuto("public/{$identification}/{$filename}.xml");
                         else
-                            return StorageService::downloadAuto("public/{$identification}/{$filename}.xml");
+                            return Storage::download("public/{$identification}/{$filename}.xml");
                     else
                         return [
                             'success' => false,
@@ -440,17 +429,15 @@ if(env('ALLOW_PUBLIC_DOWNLOAD', TRUE)){
                 }
                 else{
                     $filename = $u->attacheddocumentname($identification, $file);
-                    if(StorageService::existsAuto("public/{$identification}/{$filename}.zip"))
+                    if(file_exists(storage_path("app/public/{$identification}/{$filename}.zip")))
                         if($type_response && $type_response === 'BASE64')
                             return [
                                 'success' => true,
                                 'message' => "Archivo: ".$filename.".zip se encontro.",
-                                'filebase64'=>StorageService::getBase64AutoFallback("public/{$identification}/{$filename}.zip")
+                                'filebase64'=>base64_encode(file_get_contents(storage_path("app/public/{$identification}/{$filename}.zip")))
                             ];
-                        elseif($type_response && $type_response === 'INLINE')
-                            return StorageService::inlineAuto("public/{$identification}/{$filename}.zip");
                         else
-                            return StorageService::downloadAuto("public/{$identification}/{$filename}.zip");
+                            return Storage::download("public/{$identification}/{$filename}.zip");
                     else
                         return [
                             'success' => false,
@@ -461,15 +448,6 @@ if(env('ALLOW_PUBLIC_DOWNLOAD', TRUE)){
         }
     );
 }
-
-// Ruta para visualizar archivos en el navegador (XML, PDF)
-Route::get('view/{identification}/{file}', function($identification, $file) {
-    $path = "public/{$identification}/{$file}";
-    if (!StorageService::existsAuto($path)) {
-        abort(404, 'Archivo no encontrado');
-    }
-    return StorageService::inlineAuto($path, $file);
-});
 
 Route::post('login', 'Api\AuthController@login');
 

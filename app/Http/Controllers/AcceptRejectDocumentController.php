@@ -16,7 +16,6 @@ use App\Http\Controllers\Api\SendEventController;
 use Illuminate\Validation\Rule;
 use App\Traits\DocumentTrait;
 use Storage;
-use App\Services\StorageService;
 
 class AcceptRejectDocumentController extends Controller
 {
@@ -40,15 +39,15 @@ class AcceptRejectDocumentController extends Controller
         {
             $u = new \App\Utils;
             if(strpos($request->file, 'Attachment-') === false and strpos($request->file, 'ZipAttachm-') === false)
-                if(StorageService::existsAuto("public/{$request->identification}/{$request->file}"))
+                if(file_exists(storage_path("app/public/{$request->identification}/{$request->file}")))
                     if($request->type_response && $request->type_response === 'BASE64')
                         return [
                             'success' => true,
                             'message' => "Archivo: ".$request->file." se encontro.",
-                            'filebase64'=>StorageService::getBase64AutoFallback("public/{$request->identification}/{$request->file}")
+                            'filebase64'=>base64_encode(file_get_contents(storage_path("app/public/{$request->identification}/{$request->file}")))
                         ];
                     else
-                        return StorageService::downloadAuto("public/{$request->identification}/{$request->file}");
+                        return Storage::download("public/{$request->identification}/{$request->file}");
                 else
                     return [
                         'success' => false,
@@ -57,15 +56,15 @@ class AcceptRejectDocumentController extends Controller
             else{
                 if(strpos($request->file, 'ZipAttachm-') === false){
                     $filename = $u->attacheddocumentname($request->identification, $request->file);
-                    if(StorageService::existsAuto("public/{$request->identification}/{$filename}.xml"))
+                    if(file_exists(storage_path("app/public/{$request->identification}/{$filename}.xml")))
                         if($request->type_response && $request->type_response === 'BASE64')
                             return [
                                 'success' => true,
                                 'message' => "Archivo: ".$filename.".xml se encontro.",
-                                'filebase64'=>StorageService::getBase64AutoFallback("public/{$request->identification}/{$filename}.xml")
+                                'filebase64'=>base64_encode(file_get_contents(storage_path("app/public/{$request->identification}/{$filename}.xml")))
                             ];
                         else
-                            return StorageService::downloadAuto("public/{$request->identification}/{$filename}.xml");
+                            return Storage::download("public/{$request->identification}/{$filename}.xml");
                     else
                         return [
                             'success' => false,
@@ -74,15 +73,15 @@ class AcceptRejectDocumentController extends Controller
                 }
                 else{
                     $filename = $u->attacheddocumentname($request->identification, $request->file);
-                    if(StorageService::existsAuto("public/{$request->identification}/{$filename}.zip"))
+                    if(file_exists(storage_path("app/public/{$request->identification}/{$filename}.zip")))
                         if($request->type_response && $request->type_response === 'BASE64')
                             return [
                                 'success' => true,
                                 'message' => "Archivo: ".$filename.".zip se encontro.",
-                                'filebase64'=>StorageService::getBase64AutoFallback("public/{$request->identification}/{$filename}.zip")
+                                'filebase64'=>base64_encode(file_get_contents(storage_path("app/public/{$request->identification}/{$filename}.zip")))
                             ];
                         else
-                            return StorageService::downloadAuto("public/{$request->identification}/{$filename}.zip");
+                            return Storage::download("public/{$request->identification}/{$filename}.zip");
                     else
                         return [
                             'success' => false,
@@ -103,7 +102,7 @@ class AcceptRejectDocumentController extends Controller
             else
                 $d = Document::where('identification_number', $request->company_idnumber)->where('customer', $request->customer_idnumber)->where('number', $request->docnumber)->where('state_document_id', 1)->firstOrFail();
             $filename = $u->attacheddocumentname($d->identification_number, "Attachment-{$d->prefix}{$d->number}.xml").".xml";
-            $att_str = base64_encode(StorageService::get('public/'.$d->identification_number.'/'.$filename));
+            $att_str = base64_encode(file_get_contents(storage_path('app/public/'.$d->identification_number.'/'.$filename)));
         }
         else{
             if(!is_null($request->prefix) && $request->prefix != '')
@@ -111,7 +110,7 @@ class AcceptRejectDocumentController extends Controller
             else
                 $d = ReceivedDocument::where('identification_number', $request->company_idnumber)->where('customer', $request->customer_idnumber)->where('number', $request->docnumber)->firstOrFail();
             $filename = $d->xml;
-            $att_str = base64_encode(StorageService::get('received/'.$d->customer.'/'.$d->xml));
+            $att_str = base64_encode(file_get_contents(storage_path('received/'.$d->customer.'/'.$d->xml)));
         }
         if($request->eventcode == "2")
             $send = [

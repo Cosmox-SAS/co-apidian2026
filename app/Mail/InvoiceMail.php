@@ -11,7 +11,6 @@ use App\Document;
 use App\Customer;
 use App\Company;
 use App\User;
-use App\Services\StorageService;
 
 class InvoiceMail extends Mailable
 {
@@ -47,7 +46,7 @@ class InvoiceMail extends Mailable
             if($GuardarEn)
                 $file = fopen($GuardarEn."\\PDF-{$this->invoice[0]->prefix}{$this->invoice[0]->number}.pdf", "w");
             else
-                $file = fopen(StorageService::tempPath("public/{$this->company->identification_number}/PDF-{$this->invoice[0]->prefix}{$this->invoice[0]->number}.pdf"), "w");
+                $file = fopen(storage_path("app/public/{$this->company->identification_number}/PDF-{$this->invoice[0]->prefix}{$this->invoice[0]->number}.pdf"), "w");
             fwrite($file, base64_decode($PDFAlternativo));
             fclose($file);
         }
@@ -104,9 +103,9 @@ class InvoiceMail extends Mailable
             if($this->PDFAlternativo)
                 if(config('mail.username') and $this->user->validate_mail_server() == false){
                     if($this->filename)
-                        $nameZIP = $this->zipEmail(StorageService::localPath("public/{$this->company->identification_number}/{$this->filename}.xml"), StorageService::localPath("public/{$this->company->identification_number}/PDF-{$this->invoice[0]->prefix}{$this->invoice[0]->number}.pdf"));
+                        $nameZIP = $this->zipEmail(storage_path("app/public/{$this->company->identification_number}/{$this->filename}.xml"), storage_path("app/public/{$this->company->identification_number}/PDF-{$this->invoice[0]->prefix}{$this->invoice[0]->number}.pdf"));
                     else
-                        $nameZIP = $this->zipEmail(StorageService::localPath("public/{$this->company->identification_number}/{$this->filename}.xml"), StorageService::localPath("public/{$this->company->identification_number}/PDF-{$this->invoice[0]->prefix}{$this->invoice[0]->number}.pdf"));
+                        $nameZIP = $this->zipEmail(storage_path("app/public/{$this->company->identification_number}/{$this->filename}.xml"), storage_path("app/public/{$this->company->identification_number}/PDF-{$this->invoice[0]->prefix}{$this->invoice[0]->number}.pdf"));
                     return $this->view('mails.mail')
                         ->subject("{$this->company->identification_number};{$this->company->user->name};{$this->invoice[0]->prefix}{$this->invoice[0]->number};{$this->invoice[0]->type_document->code};{$this->company->user->name}")
                         ->from(config('mail.from.address'), config('mail.from.name'))
@@ -114,9 +113,9 @@ class InvoiceMail extends Mailable
                 }
                 else{
                     if($this->filename)
-                        $nameZIP = $this->zipEmail(StorageService::localPath("public/{$this->company->identification_number}/{$this->filename}.xml"), StorageService::localPath("public/{$this->company->identification_number}/PDF-{$this->invoice[0]->prefix}{$this->invoice[0]->number}.pdf"));
+                        $nameZIP = $this->zipEmail(storage_path("app/public/{$this->company->identification_number}/{$this->filename}.xml"), storage_path("app/public/{$this->company->identification_number}/PDF-{$this->invoice[0]->prefix}{$this->invoice[0]->number}.pdf"));
                     else
-                        $nameZIP = $this->zipEmail(StorageService::localPath("public/{$this->company->identification_number}/{$this->filename}.xml"), StorageService::localPath("public/{$this->company->identification_number}/PDF-{$this->invoice[0]->prefix}{$this->invoice[0]->number}.pdf"));
+                        $nameZIP = $this->zipEmail(storage_path("app/public/{$this->company->identification_number}/{$this->filename}.xml"), storage_path("app/public/{$this->company->identification_number}/PDF-{$this->invoice[0]->prefix}{$this->invoice[0]->number}.pdf"));
                     return $this->view('mails.mail')
                         ->subject("{$this->company->identification_number};{$this->company->user->name};{$this->invoice[0]->prefix}{$this->invoice[0]->number};{$this->invoice[0]->type_document->code};{$this->company->user->name}")
                         ->from(config('mail.from.address'), config('mail.from.name'))
@@ -125,20 +124,20 @@ class InvoiceMail extends Mailable
             else{
                 if(config('mail.username') and $this->user->validate_mail_server() == false){
                     if($this->filename)
-                        $nameZIP = $this->zipEmail(StorageService::localPath("public/{$this->company->identification_number}/{$this->filename}.xml"), StorageService::localPath("public/{$this->company->identification_number}/{$this->invoice[0]->pdf}"));
+                        $nameZIP = $this->zipEmail(storage_path("app/public/{$this->company->identification_number}/{$this->filename}.xml"), storage_path("app/public/{$this->company->identification_number}/{$this->invoice[0]->pdf}"));
                     else
-                        $nameZIP = $this->zipEmail(StorageService::localPath("public/{$this->company->identification_number}/{$this->filename}.xml"), StorageService::localPath("public/{$this->company->identification_number}/{$this->invoice[0]->pdf}"));
+                        $nameZIP = $this->zipEmail(storage_path("app/public/{$this->company->identification_number}/{$this->filename}.xml"), storage_path("app/public/{$this->company->identification_number}/{$this->invoice[0]->pdf}"));
                     return $this->view('mails.mail')
                         ->subject("{$this->company->identification_number};{$this->company->user->name};{$this->invoice[0]->prefix}{$this->invoice[0]->number};{$this->invoice[0]->type_document->code};{$this->company->user->name}")
                         ->from(config('mail.from.address'), config('mail.from.name'))
                         ->attach($nameZIP);
                 }
                 else{
-                    // \Log::debug(StorageService::localPath("public/{$this->company->identification_number}/{$this->invoice[0]->pdf}"));
+                    // \Log::debug(storage_path("app/public/{$this->company->identification_number}/{$this->invoice[0]->pdf}"));
                     if($this->filename)
-                        $nameZIP = $this->zipEmail(StorageService::localPath("public/{$this->company->identification_number}/{$this->filename}.xml"), StorageService::localPath("public/{$this->company->identification_number}/{$this->invoice[0]->pdf}"));
+                        $nameZIP = $this->zipEmail(storage_path("app/public/{$this->company->identification_number}/{$this->filename}.xml"), storage_path("app/public/{$this->company->identification_number}/{$this->invoice[0]->pdf}"));
                     else
-                        $nameZIP = $this->zipEmail(StorageService::localPath("public/{$this->company->identification_number}/{$this->filename}.xml"), StorageService::localPath("public/{$this->company->identification_number}/{$this->invoice[0]->pdf}"));
+                        $nameZIP = $this->zipEmail(storage_path("app/public/{$this->company->identification_number}/{$this->filename}.xml"), storage_path("app/public/{$this->company->identification_number}/{$this->invoice[0]->pdf}"));
                     return $this->view('mails.mail')
                         ->subject("{$this->company->identification_number};{$this->company->user->name};{$this->invoice[0]->prefix}{$this->invoice[0]->number};{$this->invoice[0]->type_document->code};{$this->company->user->name}")
                         ->from(config('mail.from.address'), config('mail.from.name'))

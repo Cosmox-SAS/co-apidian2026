@@ -21,7 +21,6 @@ use App\Http\Requests\Api\SendPayrollEmailRequest;
 use App\Mail\DocumentPayrollEmail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
-use App\Services\StorageService;
 
 class SendEmailController extends Controller
 {
@@ -81,24 +80,24 @@ class SendEmailController extends Controller
             $email = $customer->email;
 
         if($document[0]->type_document_id == 1)
-            $rptafe = StorageService::getAutoLocal("public/{$company->identification_number}/RptaFE-".$document[0]->prefix.$document[0]->number.".xml");
+            $rptafe = file_get_contents(storage_path("app/public/{$company->identification_number}/"."RptaFE-".$document[0]->prefix.$document[0]->number.".xml"));
         else
             if($document[0]->type_document_id == 4)
-                $rptafe = StorageService::getAutoLocal("public/{$company->identification_number}/RptaNC-".$document[0]->prefix.$document[0]->number.".xml");
+                $rptafe = file_get_contents(storage_path("app/public/{$company->identification_number}/"."RptaNC-".$document[0]->prefix.$document[0]->number.".xml"));
             else
                 if ($document[0]->type_document_id == 11)
-                    $rptafe = StorageService::getAutoLocal("public/{$company->identification_number}/RptaDS-".$document[0]->prefix.$document[0]->number.".xml");
+                    $rptafe = file_get_contents(storage_path("app/public/{$company->identification_number}/"."RptaDS-".$document[0]->prefix.$document[0]->number.".xml"));
                 else
                     if ($document[0]->type_document_id == 15)
-                        $rptafe = StorageService::getAutoLocal("public/{$company->identification_number}/RptaPOS-".$document[0]->prefix.$document[0]->number.".xml");
+                        $rptafe = file_get_contents(storage_path("app/public/{$company->identification_number}/"."RptaPOS-".$document[0]->prefix.$document[0]->number.".xml"));
                     else
                         if ($document[0]->type_document_id == 19)
-                            $rptafe = StorageService::getAutoLocal("public/{$company->identification_number}/RptaTTR-".$document[0]->prefix.$document[0]->number.".xml");
+                            $rptafe = file_get_contents(storage_path("app/public/{$company->identification_number}/"."RptaTTR-".$document[0]->prefix.$document[0]->number.".xml"));
                         else
                             if ($document[0]->type_document_id == 24)
-                                $rptafe = StorageService::getAutoLocal("public/{$company->identification_number}/RptaSRV-".$document[0]->prefix.$document[0]->number.".xml");
+                                $rptafe = file_get_contents(storage_path("app/public/{$company->identification_number}/"."RptaSRV-".$document[0]->prefix.$document[0]->number.".xml"));
                             else
-                               $rptafe = StorageService::getAutoLocal("public/{$company->identification_number}/RptaND-".$document[0]->prefix.$document[0]->number.".xml");
+                               $rptafe = file_get_contents(storage_path("app/public/{$company->identification_number}/"."RptaND-".$document[0]->prefix.$document[0]->number.".xml"));
 
         $filename = str_replace('pos', 'ad', str_replace('ttr', 'ad', str_replace('srv', 'ad', str_replace('nd', 'ad', str_replace('nc', 'ad', str_replace('fv', 'ad', $this->getTag($rptafe, 'XmlFileName')->nodeValue))))));
         try{
@@ -186,18 +185,18 @@ class SendEmailController extends Controller
 
         $customer = Customer::findOrFail($document[0]->customer);
         if($document[0]->type_document_id == 1)
-            $rptafe = StorageService::getAutoLocal("public/{$company->identification_number}/RptaFE-".$document[0]->prefix.$document[0]->number.".xml");
+            $rptafe = file_get_contents(storage_path("app/public/{$company->identification_number}/"."RptaFE-".$document[0]->prefix.$document[0]->number.".xml"));
         else
             if($document[0]->type_document_id == 4)
-                $rptafe = StorageService::getAutoLocal("public/{$company->identification_number}/RptaNC-".$document[0]->prefix.$document[0]->number.".xml");
+                $rptafe = file_get_contents(storage_path("app/public/{$company->identification_number}/"."RptaNC-".$document[0]->prefix.$document[0]->number.".xml"));
             else
                 if ($document[0]->type_document_id == 11)
-                    $rptafe = StorageService::getAutoLocal("public/{$company->identification_number}/RptaDS-".$document[0]->prefix.$document[0]->number.".xml");
+                    $rptafe = file_get_contents(storage_path("app/public/{$company->identification_number}/"."RptaDS-".$document[0]->prefix.$document[0]->number.".xml"));
                 else
-                    $rptafe = StorageService::getAutoLocal("public/{$company->identification_number}/RptaND-".$document[0]->prefix.$document[0]->number.".xml");
+                    $rptafe = file_get_contents(storage_path("app/public/{$company->identification_number}/"."RptaND-".$document[0]->prefix.$document[0]->number.".xml"));
 
         if(isset($this->getTag($rptafe, 'ZipKey')->nodeValue))
-            $rptafe = StorageService::getAutoLocal("public/{$company->identification_number}/RptaZIP-".$this->getTag($rptafe, 'ZipKey')->nodeValue.".xml");
+            $rptafe = file_get_contents(storage_path("app/public/{$company->identification_number}/"."RptaZIP-".$this->getTag($rptafe, 'ZipKey')->nodeValue.".xml"));
 
         $filename = str_replace('nd', 'ad', str_replace('nc', 'ad', str_replace('fv', 'ad', $this->getTag($rptafe, 'XmlFileName')->nodeValue)));
 //        return $user->email;
@@ -273,13 +272,13 @@ class SendEmailController extends Controller
 
         $employee = Employee::findOrFail($document[0]->employee_id);
         if($document[0]->type_document_id == 9)
-            $rptafe = StorageService::getAutoLocal("public/{$company->identification_number}/RptaNI-".$document[0]->prefix.$document[0]->consecutive.".xml");
+            $rptafe = file_get_contents(storage_path("app/public/{$company->identification_number}/"."RptaNI-".$document[0]->prefix.$document[0]->consecutive.".xml"));
         else
             if($document[0]->type_document_id == 10)
-                $rptafe = StorageService::getAutoLocal("public/{$company->identification_number}/RptaNA-".$document[0]->prefix.$document[0]->consecutive.".xml");
+                $rptafe = file_get_contents(storage_path("app/public/{$company->identification_number}/"."RptaNA-".$document[0]->prefix.$document[0]->consecutive.".xml"));
 
         if(isset($this->getTag($rptafe, 'ZipKey')->nodeValue))
-            $rptafe = StorageService::getAutoLocal("public/{$company->identification_number}/RptaZIP-".$this->getTag($rptafe, 'ZipKey')->nodeValue.".xml");
+            $rptafe = file_get_contents(storage_path("app/public/{$company->identification_number}/"."RptaZIP-".$this->getTag($rptafe, 'ZipKey')->nodeValue.".xml"));
 
         $filename = str_replace('na', 'ad', (str_replace('ni', 'ad', str_replace('nd', 'ad', str_replace('nc', 'ad', str_replace('fv', 'ad', $this->getTag($rptafe, 'XmlFileName')->nodeValue))))));
 //        return $user->email;

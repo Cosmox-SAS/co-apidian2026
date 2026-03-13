@@ -45,7 +45,7 @@ use Illuminate\Support\Facades\Route;
 use App\Mail\InvoiceMail;
 use Carbon\Carbon;
 use DateTime;
-use App\Services\StorageService;
+use Storage;
 
 class RegeneratePDFController extends Controller
 {
@@ -550,7 +550,7 @@ class RegeneratePDFController extends Controller
             return [
                 'success' => true,
                 'message' => "Archivo: ".$invoice_doc[0]->pdf." se encontro.",
-                'filebase64'=>StorageService::getBase64Auto("public/{$invoice_doc[0]->identification_number}/{$invoice_doc[0]->pdf}")
+                'filebase64'=>base64_encode(file_get_contents(storage_path("app/public/{$invoice_doc[0]->identification_number}/{$invoice_doc[0]->pdf}")))
             ];
 
         } catch (\Exception $e) {

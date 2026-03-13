@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use App\Certificate;
-use App\Services\StorageService;
 
 class AddExpirationDateFieldToCertificates extends Migration
 {
@@ -23,8 +22,7 @@ class AddExpirationDateFieldToCertificates extends Migration
             $certs = Certificate::where('id', '>', 0)->get();
             if(count($certs) > 0){
                 foreach($certs as $cert){
-                    // Certificates are always stored locally
-                    $pfxContent = StorageService::getLocal("certificates/".$cert->name);
+                    $pfxContent = file_get_contents(storage_path("app/certificates/".$cert->name));
                     if (!openssl_pkcs12_read($pfxContent, $x509certdata, $cert->password)) {
                         throw new Exception('The certificate could not be read.');
                     }

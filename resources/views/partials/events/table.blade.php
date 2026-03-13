@@ -1,14 +1,3 @@
-{{-- Toast de notificación para descargas --}}
-<div id="event-toast" style="display:none; position:fixed; top:20px; right:20px; z-index:9999; min-width:300px; max-width:450px;">
-    <div class="alert alert-warning alert-dismissible fade show mb-0" role="alert" style="box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-        <strong><i class="fa fa-exclamation-triangle"></i> Aviso:</strong>
-        <span id="event-toast-msg"></span>
-        <button type="button" class="close" onclick="document.getElementById('event-toast').style.display='none'">
-            <span>&times;</span>
-        </button>
-    </div>
-</div>
-
 @if ($documents->isEmpty())
     <div class="text-muted text-center">No hay documentos para mostrar.</div>
 @else
@@ -100,8 +89,8 @@
                         <td>{!! $document->number !!}</td>
                         <td align="right">{!! number_format($document->total_tax, 2) !!}</td>
                         <td align="right">{!! number_format($document->total, 2) !!}</td>
-                        <td><a href="#" onclick="downloadEventFile('{{ url('/api/receivedfile/'.$company_idnumber.'/'.$document->xml) }}'); return false;"><i class="fa fa-download"></i></a></td>
-                        <td><a href="#" onclick="downloadEventFile('{{ url('/api/receivedfile/'.$company_idnumber.'/'.$document->pdf) }}'); return false;"><i class="fa fa-download"></i></a></td>
+                        <td><a href="{{ url('/api/receivedfile/'.$company_idnumber.'/'.$document->xml) }}"><i class="fa fa-download"></i></a></td>
+                        <td><a href="{{ url('/api/receivedfile/'.$company_idnumber.'/'.$document->pdf) }}"><i class="fa fa-download"></i></a></td>
                         <td>
                             @if($document->acu_recibo == 0)
                                 @if($document->type_document_id == 1 || $document->type_document_id == 2 || $document->type_document_id == 3)
@@ -227,44 +216,3 @@
         </table>
     </div>
 @endif
-
-<script>
-function showEventToast(message) {
-    var toast = document.getElementById('event-toast');
-    document.getElementById('event-toast-msg').textContent = message;
-    toast.style.display = 'block';
-    setTimeout(function() { toast.style.display = 'none'; }, 6000);
-}
-
-function downloadEventFile(url) {
-    fetch(url).then(function(response) {
-        var ct = response.headers.get('content-type') || '';
-        if (ct.indexOf('application/json') !== -1) {
-            return response.json().then(function(data) {
-                showEventToast(data.message || 'El archivo no fue encontrado.');
-            });
-        }
-        if (!response.ok) {
-            showEventToast('El archivo solicitado no fue encontrado.');
-            return;
-        }
-        var disposition = response.headers.get('content-disposition');
-        var filename = 'archivo';
-        if (disposition) {
-            var match = disposition.match(/filename="?([^"]+)"?/);
-            if (match) filename = match[1];
-        }
-        return response.blob().then(function(blob) {
-            var a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(a.href);
-        });
-    }).catch(function() {
-        showEventToast('Error al intentar descargar el archivo.');
-    });
-}
-</script>

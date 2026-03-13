@@ -9,7 +9,7 @@ use App\Http\Requests\Api\SignDocumentRequest;
 use ubl21dian\XAdES\SignInvoice;
 use ubl21dian\XAdES\SignCreditNote;
 use ubl21dian\XAdES\SignDebitNote;
-use App\Services\StorageService;
+use Storage;
 
 class SignDocumentController extends Controller
 {
@@ -54,23 +54,20 @@ class SignDocumentController extends Controller
         }
 
         $name = "{$request->password}.p12";
-        // Certificate must be stored locally for OpenSSL signing
-        $certPath = StorageService::tempPath("certificates/{$name}");
-        StorageService::ensureDirectory("certificates");
-        file_put_contents($certPath, $certificateBinary);
+        Storage::put("certificates/{$name}", $certificateBinary);
 
         // Create XML
         $invoice = base64_decode($request->documentbase64);
 
         // Signature XML
         if($request->tipodoc == 'INVOICE')
-            $signDocument = new SignInvoice($certPath, $request->password);
+            $signDocument = new SignInvoice(storage_path("app/certificates/".$name), $request->password);
         else
             if($request->tipodoc == 'NC')    
-                $signDocument = new SignCreditNote($certPath, $request->password);
+                $signDocument = new SignCreditNote(storage_path("app/certificates/".$name), $request->password);
             else
                 if($request->tipodoc == 'ND')
-                    $signDocument = new SignDebitNote($certPath, $request->password);
+                    $signDocument = new SignDebitNote(storage_path("app/certificates/".$name), $request->password);
                 else    
                     return [
                         'message' => "El tipo de documento {$request->tipodoc} no es soportado por esta peticion",
@@ -82,29 +79,25 @@ class SignDocumentController extends Controller
         if($request->tipodoc == 'INVOICE')
             $signDocument->technicalKey = $request->technicalKey;
 
-        StorageService::ensureDirectory("public/{$request->password}");
+        if (!is_dir(storage_path("app/public/{$request->password}"))) {
+            mkdir(storage_path("app/public/{$request->password}"));
+        }
 
-        $signDocument->GuardarEn = StorageService::tempPath("public/{$request->password}/DOC-{$request->documentnumber}.xml");
-        $file = fopen(StorageService::tempPath("public/{$request->password}/DOCS-{$request->documentnumber}.xml"), "w");
+        $signDocument->GuardarEn = storage_path("app/public/{$request->password}/DOC-{$request->documentnumber}.xml");
+        $file = fopen(storage_path("app/public/{$request->password}/DOCS-{$request->documentnumber}.xml"), "w");
         fwrite($file, $signDocument->sign($invoice)->xml);
-        fclose($file);
-
-        // Upload to S3 if configured
-        StorageService::uploadBatchIfS3([
-            "public/{$request->password}/DOC-{$request->documentnumber}.xml",
-            "public/{$request->password}/DOCS-{$request->documentnumber}.xml",
-        ]);
+        fclose($file);        
         
         if($request->tipodoc == 'INVOICE')
             return [
                 'message' => "El documento Nro {$request->documentnumber} firmado con éxito",
-                'invoicexml'=>StorageService::getBase64Auto("public/{$request->password}/DOCS-{$request->documentnumber}.xml"),
+                'invoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$request->password}/DOCS-{$request->documentnumber}.xml"))),
                 'cufe' => $signDocument->ConsultarCUFE()
             ];
         else
             return [
                 'message' => "El documento Nro {$request->documentnumber} firmado con éxito",
-                'invoicexml'=>StorageService::getBase64Auto("public/{$request->password}/DOCS-{$request->documentnumber}.xml"),
+                'invoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$request->password}/DOCS-{$request->documentnumber}.xml"))),
                 'cude' => $signDocument->ConsultarCUDE()
             ];
     }

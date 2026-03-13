@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Services\StorageService;
+use Storage;
 use App\Traits\DocumentTrait;
 use App\Document;
 use App\Municipality;
@@ -160,18 +160,15 @@ class DownloadController extends Controller
 
             if(strpos($file, 'Attachment-') === false and strpos($file, 'ZipAttachm-') === false){
 
-                // Usar existsAuto para buscar primero en local, luego en S3
-                if(StorageService::existsAuto("public/{$identification}/{$file}"))
+                if(file_exists(storage_path("app/public/{$identification}/{$file}")))
                     if($type_response && $type_response === 'BASE64')
                         return [
                             'success' => true,
                             'message' => "Archivo: ".$file." se encontro.",
-                            'filebase64'=>StorageService::getBase64AutoFallback("public/{$identification}/{$file}")
+                            'filebase64'=>base64_encode(file_get_contents(storage_path("app/public/{$identification}/{$file}")))
                         ];
-                    elseif($type_response && $type_response === 'INLINE')
-                        return StorageService::inlineAuto("public/{$identification}/{$file}");
                     else
-                        return StorageService::downloadAuto("public/{$identification}/{$file}");
+                        return Storage::download("public/{$identification}/{$file}");
                 else
                     return [
                         'success' => false,
@@ -181,15 +178,15 @@ class DownloadController extends Controller
             else{
                 if(strpos($file, 'ZipAttachm-') === false){
                     $filename = $u->attacheddocumentname($identification, $file);
-                    if(StorageService::existsAuto("public/{$identification}/{$filename}.xml"))
+                    if(file_exists(storage_path("app/public/{$identification}/{$filename}.xml")))
                         if($type_response && $type_response === 'BASE64')
                             return [
                                 'success' => true,
                                 'message' => "Archivo: ".$filename.".xml se encontro.",
-                                'filebase64'=>StorageService::getBase64AutoFallback("public/{$identification}/{$filename}.xml")
+                                'filebase64'=>base64_encode(file_get_contents(storage_path("app/public/{$identification}/{$filename}.xml")))
                             ];
                         else
-                            return StorageService::downloadAuto("public/{$identification}/{$filename}.xml");
+                            return Storage::download("public/{$identification}/{$filename}.xml");
                     else
                         return [
                             'success' => false,
@@ -198,15 +195,15 @@ class DownloadController extends Controller
                 }
                 else{
                     $filename = $u->attacheddocumentname($identification, $file);
-                    if(StorageService::existsAuto("public/{$identification}/{$filename}.zip"))
+                    if(file_exists(storage_path("app/public/{$identification}/{$filename}.zip")))
                         if($type_response && $type_response === 'BASE64')
                             return [
                                 'success' => true,
                                 'message' => "Archivo: ".$filename.".zip se encontro.",
-                                'filebase64'=>StorageService::getBase64AutoFallback("public/{$identification}/{$filename}.zip")
+                                'filebase64'=>base64_encode(file_get_contents(storage_path("app/public/{$identification}/{$filename}.zip")))
                             ];
                         else
-                            return StorageService::downloadAuto("public/{$identification}/{$filename}.zip");
+                            return Storage::download("public/{$identification}/{$filename}.zip");
                     else
                         return [
                             'success' => false,

@@ -1,14 +1,3 @@
-{{-- Toast de notificación para descargas y acciones --}}
-<div id="payroll-toast" style="display:none; position:fixed; top:20px; right:20px; z-index:9999; min-width:300px; max-width:450px;">
-    <div id="payroll-toast-box" class="alert alert-dismissible fade show mb-0" role="alert" style="box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-        <span id="payroll-toast-icon"></span>
-        <span id="payroll-toast-msg"></span>
-        <button type="button" class="close" onclick="document.getElementById('payroll-toast').style.display='none'">
-            <span>&times;</span>
-        </button>
-    </div>
-</div>
-
 @if ($documents->isEmpty())
     <div class="text-muted text-center mt-4">No hay documentos para mostrar.</div>
 @else
@@ -72,11 +61,11 @@
                             $allow_public_downloads = env("ALLOW_PUBLIC_DOWNLOAD", true)
                         @endphp
                         @if($allow_public_downloads)
-                            <td><a href="#" onclick="downloadPayrollFile('{{ url('/api/download/'.$company_idnumber.'/'.$document->xml) }}'); return false;"><i class="fa fa-download"></i></a></td>
-                            <td><a href="#" onclick="downloadPayrollFile('{{ url('/api/download/'.$company_idnumber.'/'.$document->pdf) }}'); return false;"><i class="fa fa-download"></i></a></td>
-                            <td><a href="#" onclick="downloadPayrollFile('{{ url('/api/download/'.$company_idnumber.'/'.str_replace(['NIS-', 'NAS-'], ['RptaNI-', 'RptaNA-'], $document->xml)) }}'); return false;" title="Descargar RptaDIAN"><i class="fa fa-download"></i></a></td>
-                            <td><a href="#" onclick="downloadPayrollFile('{{ url('/api/download/'.$company_idnumber.'/'.str_replace('.xml', '.zip', $document->xml)) }}'); return false;" title="Descargar ZIP"><i class="fa fa-download"></i></a></td>
-                            <td><form action="{{ url('/api/send-email-employee/NO') }}" method="POST" onsubmit="return submitPayrollAction(event, this);">
+                            <td><a href="{{ url('/api/download/'.$company_idnumber.'/'.$document->xml) }}"><i class="fa fa-download"></i></a></td>
+                            <td><a href="{{ url('/api/download/'.$company_idnumber.'/'.$document->pdf) }}"><i class="fa fa-download"></i></a></td>
+                            <td><a href="{{ url('/api/download/'.$company_idnumber.'/Attachment-'.$document->prefix.$document->consecutive.'.xml') }}"><i class="fa fa-download"></i></a></td>
+                            <td><a href="{{ url('/api/download/'.$company_idnumber.'/ZipAttachm-'.$document->prefix.$document->consecutive.'.xml') }}"><i class="fa fa-download"></i></a></td>
+                            <td><form action="{{ route('send-email-customer') }}" method="POST">
                                     <input type="hidden" name="company_idnumber" value="{{$company_idnumber}}">
                                     <input type="hidden" name="prefix" value="{{$document->prefix}}">
                                     <input type="hidden" name="number" value="{{$document->consecutive}}">
@@ -84,21 +73,21 @@
                                 </form>
                             </td>
                         @else
-                            <td><form action="{{ route('downloadfile') }}" method="POST" onsubmit="return downloadPayrollPost(event, this);">
+                            <td><form action="{{ route('downloadfile') }}" method="POST">
                                     <input type="hidden" name="identification" value="{{$company_idnumber}}">
                                     <input type="hidden" name="file" value="{{$document->xml}}">
                                     <input type="hidden" name="type_response" value="false">
                                     <button type="submit" class="fa fa-download"></button>
                                 </form>
                             </td>
-                            <td><form action="{{ route('downloadfile') }}" method="POST" onsubmit="return downloadPayrollPost(event, this);">
+                            <td><form action="{{ route('downloadfile') }}" method="POST">
                                     <input type="hidden" name="identification" value="{{$company_idnumber}}">
                                     <input type="hidden" name="file" value="{{$document->pdf}}">
                                     <input type="hidden" name="type_response" value="false">
                                     <button type="submit" class="fa fa-download"></button>
                                 </form>
                             </td>
-                            <td><form action="{{ url('/api/send-email-employee/NO') }}" method="POST" onsubmit="return submitPayrollAction(event, this);">
+                            <td><form action="{{ route('send-email-employee') }}" method="POST">
                                     <input type="hidden" name="company_idnumber" value="{{$company_idnumber}}">
                                     <input type="hidden" name="prefix" value="{{$document->prefix}}">
                                     <input type="hidden" name="number" value="{{$document->consecutive}}">
@@ -115,113 +104,3 @@
         </table>
     </div>
 @endif
-
-<script>
-function showPayrollToast(message, type) {
-    var toast = document.getElementById('payroll-toast');
-    var box = document.getElementById('payroll-toast-box');
-    var icon = document.getElementById('payroll-toast-icon');
-    box.className = 'alert alert-dismissible fade show mb-0 alert-' + (type === 'success' ? 'success' : type === 'danger' ? 'danger' : 'warning');
-    icon.innerHTML = type === 'success'
-        ? '<strong><i class="fa fa-check-circle"></i> </strong>'
-        : '<strong><i class="fa fa-exclamation-triangle"></i> </strong>';
-    document.getElementById('payroll-toast-msg').textContent = message;
-    toast.style.display = 'block';
-    setTimeout(function() { toast.style.display = 'none'; }, 6000);
-}
-
-function triggerBlobDownload(blob, disposition) {
-    var filename = 'archivo';
-    if (disposition) {
-        var match = disposition.match(/filename="?([^"]+)"?/);
-        if (match) filename = match[1];
-    }
-    var a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(a.href);
-}
-
-function downloadPayrollFile(url) {
-    fetch(url).then(function(response) {
-        var ct = response.headers.get('content-type') || '';
-        if (ct.indexOf('application/json') !== -1) {
-            return response.json().then(function(data) {
-                showPayrollToast(data.message || 'El archivo no fue encontrado.', 'warning');
-            });
-        }
-        if (!response.ok) {
-            showPayrollToast('El archivo solicitado no fue encontrado.', 'warning');
-            return;
-        }
-        return response.blob().then(function(blob) {
-            triggerBlobDownload(blob, response.headers.get('content-disposition'));
-        });
-    }).catch(function() {
-        showPayrollToast('Error al intentar descargar el archivo.', 'danger');
-    });
-}
-
-function downloadPayrollPost(event, form) {
-    event.preventDefault();
-    var formData = new FormData(form);
-    fetch(form.action, {
-        method: 'POST',
-        body: formData
-    }).then(function(response) {
-        var ct = response.headers.get('content-type') || '';
-        if (ct.indexOf('application/json') !== -1) {
-            return response.json().then(function(data) {
-                if (!data.success) {
-                    showPayrollToast(data.message || 'El archivo no fue encontrado.', 'warning');
-                }
-            });
-        }
-        if (!response.ok) {
-            showPayrollToast('El archivo solicitado no fue encontrado.', 'warning');
-            return;
-        }
-        return response.blob().then(function(blob) {
-            triggerBlobDownload(blob, response.headers.get('content-disposition'));
-        });
-    }).catch(function() {
-        showPayrollToast('Error al intentar descargar el archivo.', 'danger');
-    });
-    return false;
-}
-
-function submitPayrollAction(event, form) {
-    event.preventDefault();
-    var btn = form.querySelector('button[type="submit"]');
-    btn.disabled = true;
-    var formData = new FormData(form);
-    fetch(form.action, {
-        method: 'POST',
-        body: formData
-    }).then(function(response) {
-        var ct = response.headers.get('content-type') || '';
-        if (ct.indexOf('application/json') !== -1) {
-            return response.json().then(function(data) {
-                if (data.success) {
-                    showPayrollToast(data.message || 'Operación realizada con éxito.', 'success');
-                } else {
-                    showPayrollToast(data.message || 'No se pudo completar la operación.', 'warning');
-                }
-            });
-        }
-        if (!response.ok) {
-            showPayrollToast('Error al procesar la solicitud.', 'danger');
-            return;
-        }
-        showPayrollToast('Operación realizada.', 'success');
-    }).catch(function() {
-        showPayrollToast('Error de conexión al procesar la solicitud.', 'danger');
-    }).finally(function() {
-        btn.disabled = false;
-    });
-    return false;
-}
-</script>

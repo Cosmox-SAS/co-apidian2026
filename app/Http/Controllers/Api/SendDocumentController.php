@@ -12,7 +12,7 @@ use ubl21dian\XAdES\SignDebitNote;
 use ubl21dian\Templates\SOAP\SendBillAsync;
 use ubl21dian\Templates\SOAP\SendBillSync;
 use ubl21dian\Templates\SOAP\SendTestSetAsync;
-use App\Services\StorageService;
+use Storage;
 
 class SendDocumentController extends Controller
 {
@@ -57,23 +57,20 @@ class SendDocumentController extends Controller
         }
 
         $name = "{$request->password}.p12";
-        // Certificate must be stored locally for OpenSSL signing
-        StorageService::ensureDirectory("certificates");
-        $certPath = StorageService::tempPath("certificates/{$name}");
-        file_put_contents($certPath, $certificateBinary);
+        Storage::put("certificates/{$name}", $certificateBinary);
 
         // Create XML
         $invoice = base64_decode($request->documentbase64);
 
         // Signature XML
         if($request->tipodoc == 'INVOICE')
-            $SendDocument = new SignInvoice($certPath, $request->password);
+            $SendDocument = new SignInvoice(storage_path("app/certificates/".$name), $request->password);
         else
             if($request->tipodoc == 'NC')    
-                $SendDocument = new SignCreditNote($certPath, $request->password);
+                $SendDocument = new SignCreditNote(storage_path("app/certificates/".$name), $request->password);
             else
                 if($request->tipodoc == 'ND')
-                    $SendDocument = new SignDebitNote($certPath, $request->password);
+                    $SendDocument = new SignDebitNote(storage_path("app/certificates/".$name), $request->password);
                 else    
                     return [
                         'message' => "El tipo de documento {$request->tipodoc} no es soportado por esta peticion",
@@ -85,28 +82,30 @@ class SendDocumentController extends Controller
         if($request->tipodoc == 'INVOICE')
             $SendDocument->technicalKey = $request->technicalKey;
 
-        StorageService::ensureDirectory("public/{$request->password}");
+        if (!is_dir(storage_path("app/public/{$request->password}"))) {
+            mkdir(storage_path("app/public/{$request->password}"));
+        }
 
-        $SendDocument->GuardarEn = StorageService::tempPath("public/{$request->password}/DOC-{$request->documentnumber}.xml");
-        $file = fopen(StorageService::tempPath("public/{$request->password}/DOCS-{$request->documentnumber}.xml"), "w");
+        $SendDocument->GuardarEn = storage_path("app/public/{$request->password}/DOC-{$request->documentnumber}.xml");
+        $file = fopen(storage_path("app/public/{$request->password}/DOCS-{$request->documentnumber}.xml"), "w");
         fwrite($file, $SendDocument->sign($invoice)->xml);
         fclose($file);
 
         if($request->ambiente == 'HABILITACION')
         {
-            $sendTestSetAsync = new SendTestSetAsync($certPath, $request->password);
+            $sendTestSetAsync = new SendTestSetAsync(storage_path("app/certificates/".$name), $request->password);
             $sendTestSetAsync->To = 'https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc';
             $sendTestSetAsync->fileName = "{$request->documentnumber}.xml";
-            $sendTestSetAsync->contentFile = $this->zipBase64SendDocument($request->password, $request->identificationnumber, $request->tipodoc, $request->documentnumber, $SendDocument->sign($invoice), StorageService::tempPath("public/{$request->password}/DOCS-{$request->documentnumber}"));
+            $sendTestSetAsync->contentFile = $this->zipBase64SendDocument($request->password, $request->identificationnumber, $request->tipodoc, $request->documentnumber, $SendDocument->sign($invoice), storage_path("app/public/{$request->password}/DOCS-{$request->documentnumber}"));
             $sendTestSetAsync->testSetId = $request->testSetID;
         }
         else
             if($request->ambiente == 'PRODUCCION')
             {
-                $sendBillSync = new SendBillSync($certPath, $request->password);
+                $sendBillSync = new SendBillSync(storage_path("app/certificates/".$name), $request->password);
                 $sendBillSync->To = 'https://vpfe.dian.gov.co/WcfDianCustomerServices.svc';
                 $sendBillSync->fileName = "{$request->documentnumber}.xml";
-                $sendBillSync->contentFile = $this->zipBase64SendDocument($request->password, $request->identificationnumber, $request->tipodoc, $request->documentnumber, $SendDocument->sign($invoice), StorageService::tempPath("public/{$request->password}/DOCS-{$request->documentnumber}"));
+                $sendBillSync->contentFile = $this->zipBase64SendDocument($request->password, $request->identificationnumber, $request->tipodoc, $request->documentnumber, $SendDocument->sign($invoice), storage_path("app/public/{$request->password}/DOCS-{$request->documentnumber}"));
             }
             else
                 return [
@@ -114,43 +113,35 @@ class SendDocumentController extends Controller
                     'success' => 'false'
                 ];
 
-        // Upload to S3 if configured
-        StorageService::uploadBatchIfS3([
-            "public/{$request->password}/DOC-{$request->documentnumber}.xml",
-            "public/{$request->password}/DOCS-{$request->documentnumber}.xml",
-            "public/{$request->password}/DOCS-{$request->documentnumber}.zip",
-            "public/{$request->password}/ReqDOC-{$request->documentnumber}.xml",
-            "public/{$request->password}/RptaDOC-{$request->documentnumber}.xml",
-        ]);
         
         if($request->tipodoc == 'INVOICE')
             if($request->ambiente == 'PRODUCCION')
                 return [
                     'message' => "El documento Nro {$request->documentnumber} firmado y enviado con éxito",
-                    'ResponseDian' => $sendBillSync->signToSend(StorageService::tempPath("public/{$request->password}/ReqDOC-{$request->documentnumber}.xml"))->getResponseToObject(StorageService::tempPath("public/{$request->password}/RptaDOC-{$request->documentnumber}.xml")),
-                    'invoicexml'=>StorageService::getBase64Auto("public/{$request->password}/DOCS-{$request->documentnumber}.xml"),
+                    'ResponseDian' => $sendBillSync->signToSend(storage_path("app/public/{$request->password}/ReqDOC-{$request->documentnumber}.xml"))->getResponseToObject(storage_path("app/public/{$request->password}/RptaDOC-{$request->documentnumber}.xml")),
+                    'invoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$request->password}/DOCS-{$request->documentnumber}.xml"))),
                     'cufe' => $SendDocument->ConsultarCUFE()
                 ];
             else    
                 return [
                     'message' => "El documento Nro {$request->documentnumber} firmado y enviado con éxito",
-                    'ResponseDian' => $sendTestSetAsync->signToSend(StorageService::tempPath("public/{$request->password}/ReqDOC-{$request->documentnumber}.xml"))->getResponseToObject(StorageService::tempPath("public/{$request->password}/RptaDOC-{$request->documentnumber}.xml")),
-                    'invoicexml'=>StorageService::getBase64Auto("public/{$request->password}/DOCS-{$request->documentnumber}.xml"),
+                    'ResponseDian' => $sendTestSetAsync->signToSend(storage_path("app/public/{$request->password}/ReqDOC-{$request->documentnumber}.xml"))->getResponseToObject(storage_path("app/public/{$request->password}/RptaDOC-{$request->documentnumber}.xml")),
+                    'invoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$request->password}/DOCS-{$request->documentnumber}.xml"))),
                     'cufe' => $SendDocument->ConsultarCUFE()
                 ];
         else
             if($request->ambiente == 'PRODUCCION')
                 return [
                     'message' => "El documento Nro {$request->documentnumber} firmado y enviado con éxito",
-                    'ResponseDian' => $sendBillSync->signToSend(StorageService::tempPath("public/{$request->password}/ReqDOC-{$request->documentnumber}.xml"))->getResponseToObject(StorageService::tempPath("public/{$request->password}/RptaDOC-{$request->documentnumber}.xml")),
-                    'invoicexml'=>StorageService::getBase64Auto("public/{$request->password}/DOCS-{$request->documentnumber}.xml"),
+                    'ResponseDian' => $sendBillSync->signToSend(storage_path("app/public/{$request->password}/ReqDOC-{$request->documentnumber}.xml"))->getResponseToObject(storage_path("app/public/{$request->password}/RptaDOC-{$request->documentnumber}.xml")),
+                    'invoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$request->password}/DOCS-{$request->documentnumber}.xml"))),
                     'cude' => $SendDocument->ConsultarCUDE()
                 ];
             else
                 return [
                     'message' => "El documento Nro {$request->documentnumber} firmado con éxito",
-                    'ResponseDian' => $sendTestSetAsync->signToSend(StorageService::tempPath("public/{$request->password}/ReqDOC-{$request->documentnumber}.xml"))->getResponseToObject(StorageService::tempPath("public/{$request->password}/RptaDOC-{$request->documentnumber}.xml")),
-                    'invoicexml'=>StorageService::getBase64Auto("public/{$request->password}/DOCS-{$request->documentnumber}.xml"),
+                    'ResponseDian' => $sendTestSetAsync->signToSend(storage_path("app/public/{$request->password}/ReqDOC-{$request->documentnumber}.xml"))->getResponseToObject(storage_path("app/public/{$request->password}/RptaDOC-{$request->documentnumber}.xml")),
+                    'invoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$request->password}/DOCS-{$request->documentnumber}.xml"))),
                     'cude' => $SendDocument->ConsultarCUDE()
                 ];
 
