@@ -10,7 +10,7 @@ use App\DocumentPayroll;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\JoinPDFsRequest;
 use App\Http\Requests\Api\NextConsecutiveRequest;
-use Storage;
+use App\Services\StorageService;
 use App\Traits\DocumentTrait;
 use Exception;
 use PDFMerger;
@@ -99,14 +99,19 @@ class MiscelaneousController extends Controller
                                 else
                                     if($pdf['type_document_id'] == 11)
                                       $type_document = "DSS-";
-                $new_pdf->addPDF(storage_path("app/public/{$company->identification_number}/{$type_document}{$pdf['prefix']}{$pdf['number']}".".pdf"), 'all');
+                $pdfPath = StorageService::localPath("public/{$company->identification_number}/{$type_document}{$pdf['prefix']}{$pdf['number']}".".pdf");
+                $new_pdf->addPDF($pdfPath, 'all');
             }
 
-            $new_pdf->merge('file', storage_path("app/public/{$company->identification_number}/{$request->name_joined_pdfs}"));
+            $outputRelative = "public/{$company->identification_number}/{$request->name_joined_pdfs}";
+            $outputPath = StorageService::tempPath($outputRelative);
+            StorageService::ensureDirectory("public/{$company->identification_number}");
+            $new_pdf->merge('file', $outputPath);
+            StorageService::uploadIfS3($outputRelative, $outputPath);
             return [
                 'success' => true,
                 'message' => 'Operacion realizada con exito.',
-                'pdfbase64' => base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/{$request->name_joined_pdfs}")))
+                'pdfbase64' => base64_encode(file_get_contents($outputPath))
             ];
         }
         catch(Exception $e) {

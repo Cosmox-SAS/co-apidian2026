@@ -11,6 +11,7 @@ use Mpdf\Mpdf;
 use Storage;
 use App\User;
 use App\Traits\DocumentTrait;
+use App\Services\StorageService;
 
 class DocumentPayrollEmail extends Mailable
 {
@@ -47,8 +48,8 @@ class DocumentPayrollEmail extends Mailable
      */
     public function build() {
 
-        $path_file = storage_path("app/public/{$this->document->identification_number}/{$this->document->pdf}");
-        $path_file_xml = storage_path("app/public/{$this->document->identification_number}/{$this->document->xml}");
+        $path_file = StorageService::localPath("public/{$this->document->identification_number}/{$this->document->pdf}");
+        $path_file_xml = StorageService::localPath("public/{$this->document->identification_number}/{$this->document->xml}");
 
         return $this->from(\Config::get('mail.from.address'), \Config::get('mail.from.name'))
                     ->markdown('emails.send.graphicRepresentationPayroll')

@@ -95,12 +95,12 @@
                         <td>
                             <a class="btn btn-success btn-xs text-white"
                                 role="button"
-                                href="{{ '/storage/'.$row->identification_number.'/'.$row->xml }}" target="_BLANK">
+                                href="{{ url('/api/view/'.$row->identification_number.'/'.$row->xml) }}" target="_BLANK">
                                 XML
                             </a>
                             <a class="btn btn-success btn-xs text-white mt-1"
                                 role="button"
-                                href="{{ '/storage/'.$row->identification_number.'/'.$row->pdf }}" target="_BLANK">
+                                href="{{ url('/api/view/'.$row->identification_number.'/'.$row->pdf) }}" target="_BLANK">
                                 PDF
                             </a>
                         </td>

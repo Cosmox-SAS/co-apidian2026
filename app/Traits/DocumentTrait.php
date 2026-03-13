@@ -34,6 +34,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\Api\ConfigurationController;
+use App\Services\StorageService;
 use DateTime;
 use Carbon\Carbon;
 
@@ -338,11 +339,11 @@ trait DocumentTrait
         $QRStr = '';
 //        try {
             if(isset($request->establishment_logo)){
-                $filenameLogo   = storage_path("app/public/{$company->identification_number}/alternate_{$company->identification_number}{$company->dv}.jpg");
+                $filenameLogo   = StorageService::localPath("public/{$company->identification_number}/alternate_{$company->identification_number}{$company->dv}.jpg");
                 $this->storeLogo($request->establishment_logo);
             }
             else
-                $filenameLogo   = storage_path("app/public/{$company->identification_number}/{$company->identification_number}{$company->dv}.jpg");
+                $filenameLogo   = StorageService::localPath("public/{$company->identification_number}/{$company->identification_number}{$company->dv}.jpg");
 
             $firma_facturacion = null;
             if(isset($request->firma_facturacion)){
@@ -372,7 +373,7 @@ trait DocumentTrait
                 $pdf->SetHTMLHeader(View::make("pdfs.".strtolower($tipodoc).".header".$template_pdf, compact("user", "company", "customer", "resolution", "date", "time", "paymentForm", "request", "cufecude", "imgLogo", "withHoldingTaxTotal", "notes", "healthfields", "firma_facturacion", "logo_empresa_emisora")));
                 $pdf->SetHTMLFooter(View::make("pdfs.".strtolower($tipodoc).".footer".$template_pdf, compact("user", "company", "customer", "resolution", "date", "time", "paymentForm", "request", "cufecude", "imgLogo", "withHoldingTaxTotal", "notes", "healthfields", "firma_facturacion", "logo_empresa_emisora")));
                 $pdf->WriteHTML(View::make("pdfs.".strtolower($tipodoc).".template".$temp_template_pdf, compact("user", "company", "customer", "resolution", "date", "time", "paymentForm", "request", "cufecude", "imgLogo", "withHoldingTaxTotal", "notes", "healthfields", "firma_facturacion", "logo_empresa_emisora")), HTMLParserMode::HTML_BODY);
-                $filename = storage_path("app/public/{$company->identification_number}/TTRS-{$resolution->next_consecutive}.pdf");
+                $filename = StorageService::tempPath("public/{$company->identification_number}/TTRS-{$resolution->next_consecutive}.pdf");
                 // dd($filename);
 
                 if ($company->eqdocs_type_environment_id == 1) {
@@ -394,9 +395,10 @@ trait DocumentTrait
                 $pdf->SetHTMLHeader(View::make("pdfs.".strtolower($tipodoc).".header".$template_pdf, compact("user", "company", "customer", "resolution", "date", "time", "paymentForm", "request", "cufecude", "imageQr", "imgLogo", "withHoldingTaxTotal", "notes", "healthfields", "firma_facturacion", "logo_empresa_emisora")));
                 $pdf->SetHTMLFooter(View::make("pdfs.".strtolower($tipodoc).".footer".$template_pdf, compact("user", "company", "customer", "resolution", "date", "time", "paymentForm", "request", "cufecude", "imageQr", "imgLogo", "withHoldingTaxTotal", "notes", "healthfields", "firma_facturacion", "logo_empresa_emisora")));
                 $pdf->WriteHTML(View::make("pdfs.".strtolower($tipodoc).".template".$temp_template_pdf, compact("user", "company", "customer", "resolution", "date", "time", "paymentForm", "request", "cufecude", "imageQr", "imgLogo", "withHoldingTaxTotal", "notes", "healthfields", "firma_facturacion", "logo_empresa_emisora")), HTMLParserMode::HTML_BODY);
-                $filename = storage_path("app/public/{$company->identification_number}/SRVS-{$resolution->next_consecutive}.pdf");
+                $filename = StorageService::tempPath("public/{$company->identification_number}/SRVS-{$resolution->next_consecutive}.pdf");
                 $pdf->Output($filename);
-                if (file_exists($filename)) {
+                StorageService::putLocalFile("public/{$company->identification_number}/SRVS-{$resolution->next_consecutive}.pdf", $filename, StorageService::isS3());
+                if (file_exists($filename) || StorageService::exists("public/{$company->identification_number}/SRVS-{$resolution->next_consecutive}.pdf")) {
                     \Log::info("PDF generado correctamente: " . $filename);
                 } else {
                     \Log::error("No se pudo generar el PDF: " . $filename);
@@ -482,9 +484,9 @@ trait DocumentTrait
                 }
 
                 if($tipodoc == 'POS')
-                    $filename = storage_path("app/public/{$company->identification_number}/POSS-{$resolution->next_consecutive}.pdf");
+                    $filename = StorageService::tempPath("public/{$company->identification_number}/POSS-{$resolution->next_consecutive}.pdf");
                 else
-                    $filename = storage_path("app/public/{$company->identification_number}/FES-{$resolution->next_consecutive}.pdf");
+                    $filename = StorageService::tempPath("public/{$company->identification_number}/FES-{$resolution->next_consecutive}.pdf");
             }
             else
                 if($tipodoc == "NC"){
@@ -542,13 +544,13 @@ trait DocumentTrait
                     $pdf->SetHTMLHeader(View::make("pdfs.credit-note.header", compact("resolution", "date", "time", "user", "request", "company", "imgLogo")));
                     $pdf->SetHTMLFooter(View::make("pdfs.credit-note.footer", compact("resolution", "request", "cufecude", "date", "time")));
                     $pdf->WriteHTML(View::make("pdfs.credit-note.template".$template_pdf, compact("user", "company", "customer", "resolution", "date", "time", "paymentForm", "request", "cufecude", "imageQr", "imgLogo", "withHoldingTaxTotal", "notes", "healthfields")), HTMLParserMode::HTML_BODY);
-                    $filename = storage_path("app/public/{$company->identification_number}/NCS-{$resolution->next_consecutive}.pdf");
+                    $filename = StorageService::tempPath("public/{$company->identification_number}/NCS-{$resolution->next_consecutive}.pdf");
                     $pdfPrefix = 'NCS';
                     if (!empty($request->is_eqdoc) && $request->is_eqdoc) {
                         $typePrefix = isset($typeDocument->prefix) ? $typeDocument->prefix : 'NCQ';
                         $pdfPrefix = strtoupper($typePrefix) . 'S';
                     }
-                    $filename = storage_path("app/public/{$company->identification_number}/{$pdfPrefix}-{$resolution->next_consecutive}.pdf");
+                    $filename = StorageService::tempPath("public/{$company->identification_number}/{$pdfPrefix}-{$resolution->next_consecutive}.pdf");
                 }
                 else{
                     if($tipodoc == "ND"){
@@ -616,7 +618,7 @@ trait DocumentTrait
                             $typePrefix = isset($typeDocument->prefix) ? $typeDocument->prefix : 'NDQ';
                             $pdfPrefix = strtoupper($typePrefix) . 'S';
                         }
-                        $filename = storage_path("app/public/{$company->identification_number}/{$pdfPrefix}-{$resolution->next_consecutive}.pdf");
+                        $filename = StorageService::tempPath("public/{$company->identification_number}/{$pdfPrefix}-{$resolution->next_consecutive}.pdf");
                     }
                     else
                         if($tipodoc == "SUPPORTDOCUMENT"){
@@ -679,7 +681,7 @@ trait DocumentTrait
                             $pdf->SetHTMLFooter(View::make("pdfs.support.footer".$template_pdf, compact("resolution", "request", "cufecude", "date", "time", "logo_empresa_emisora")));
                             $pdf->WriteHTML(View::make("pdfs.support.template".$template_pdf, compact("user", "company", "customer", "resolution", "date", "time", "paymentForm", "request", "cufecude", "imageQr", "imgLogo", "withHoldingTaxTotal", "notes", "healthfields", "logo_empresa_emisora")), HTMLParserMode::HTML_BODY);
 
-                            $filename = storage_path("app/public/{$company->identification_number}/DSS-{$resolution->next_consecutive}.pdf");
+                            $filename = StorageService::tempPath("public/{$company->identification_number}/DSS-{$resolution->next_consecutive}.pdf");
                         }
                         else
                             if($tipodoc == "SUPPORTDOCUMENTNOTE"){
@@ -742,10 +744,16 @@ trait DocumentTrait
                                 $pdf->SetHTMLFooter(View::make("pdfs.support-credit-note.footer", compact("resolution", "request", "cufecude", "date", "time")));
                                 $pdf->WriteHTML(View::make("pdfs.support-credit-note.template".$template_pdf, compact("user", "company", "customer", "resolution", "date", "time", "paymentForm", "request", "cufecude", "imageQr", "imgLogo", "withHoldingTaxTotal", "notes", "healthfields")), HTMLParserMode::HTML_BODY);
 
-                                $filename = storage_path("app/public/{$company->identification_number}/NDSNS-{$resolution->next_consecutive}.pdf");
+                                $filename = StorageService::tempPath("public/{$company->identification_number}/NDSNS-{$resolution->next_consecutive}.pdf");
                             }
             }
             $pdf->Output($filename);
+            // Upload generated PDF to configured storage (S3 or local)
+            $relativePath = str_replace(StorageService::tempPath(''), '', $filename);
+            if (empty($relativePath) || $relativePath === $filename) {
+                $relativePath = "public/{$company->identification_number}/" . basename($filename);
+            }
+            StorageService::putLocalFile($relativePath, $filename, StorageService::isS3());
             return $QRStr;
     }
 
@@ -764,11 +772,11 @@ trait DocumentTrait
 //        try {
             define("DOMPDF_ENABLE_REMOTE", true);
             if(isset($request->establishment_logo)){
-                $filenameLogo   = storage_path("app/public/{$company->identification_number}/alternate_{$company->identification_number}{$company->dv}.jpg");
+                $filenameLogo   = StorageService::localPath("public/{$company->identification_number}/alternate_{$company->identification_number}{$company->dv}.jpg");
                 $this->storeLogo($request->establishment_logo);
             }
             else
-                $filenameLogo   = storage_path("app/public/{$company->identification_number}/{$company->identification_number}{$company->dv}.jpg");
+                $filenameLogo   = StorageService::localPath("public/{$company->identification_number}/{$company->identification_number}{$company->dv}.jpg");
 
             $imgLogo = $this->buildImageDataUriFromFile($filenameLogo);
             if($tipodoc = "PAYROLL"){
@@ -797,10 +805,13 @@ trait DocumentTrait
             $pdf->WriteHTML(View::make("pdfs.payroll.template", compact("user", "company", "predecessor", "period", "worker", "resolution", "payment", "typeDocument", "notes", "accrued", "deductions", "request", "imageQr")), HTMLParserMode::HTML_BODY);
 
             if($request->type_document_id == 9)
-                $filename = storage_path("app/public/{$company->identification_number}/NIS-{$resolution->next_consecutive}.pdf");
+                $filename = StorageService::tempPath("public/{$company->identification_number}/NIS-{$resolution->next_consecutive}.pdf");
             else
-                $filename = storage_path("app/public/{$company->identification_number}/NAS-{$resolution->next_consecutive}.pdf");
+                $filename = StorageService::tempPath("public/{$company->identification_number}/NAS-{$resolution->next_consecutive}.pdf");
             $pdf->Output($filename);
+            // Upload generated PDF to configured storage
+            $pdfBasename = basename($filename);
+            StorageService::putLocalFile("public/{$company->identification_number}/{$pdfBasename}", $filename, StorageService::isS3());
 //            return compact("resolution", "period", "user", "request", "company", "imgLogo");
             return $QRStr;
     }
@@ -820,11 +831,11 @@ trait DocumentTrait
 //        try {
             define("DOMPDF_ENABLE_REMOTE", true);
             if(isset($request->establishment_logo)){
-                $filenameLogo   = storage_path("app/public/{$company->identification_number}/alternate_{$company->identification_number}{$company->dv}.jpg");
+                $filenameLogo   = StorageService::localPath("public/{$company->identification_number}/alternate_{$company->identification_number}{$company->dv}.jpg");
                 $this->storeLogo($request->establishment_logo);
             }
             else
-                $filenameLogo   = storage_path("app/public/{$company->identification_number}/{$company->identification_number}{$company->dv}.jpg");
+                $filenameLogo   = StorageService::localPath("public/{$company->identification_number}/{$company->identification_number}{$company->dv}.jpg");
 
             $imgLogo = $this->buildImageDataUriFromFile($filenameLogo);
             if ($company->payroll_type_environment_id == 2){
@@ -850,8 +861,11 @@ trait DocumentTrait
             $pdf->SetHTMLFooter(View::make("pdfs.event.footer", compact("user", "company", "typeDocument", "event", "sender", "documentReference", "typeDocumentReference", "issuerparty", "typerejection", "notes", "request", "cufecude", "imageQr", "imgLogo")));
             $pdf->WriteHTML(View::make("pdfs.event.template", compact("user", "company", "typeDocument", "event", "sender", "documentReference", "typeDocumentReference", "issuerparty", "typerejection", "notes", "request", "cufecude", "imageQr", "imgLogo")), HTMLParserMode::HTML_BODY);
 
-            $filename = preg_replace("/[\r\n|\n|\r]+/", "", storage_path("app/public/{$company->identification_number}/EVS-{$sender->company->identification_number}{$documentReference->number}{$event->code}.pdf"));
+            $evtPdfName = preg_replace("/[\r\n|\n|\r]+/", "", "EVS-{$sender->company->identification_number}{$documentReference->number}{$event->code}.pdf");
+            $filename = preg_replace("/[\r\n|\n|\r]+/", "", StorageService::tempPath("public/{$company->identification_number}/{$evtPdfName}"));
             $pdf->Output($filename);
+            // Upload generated PDF to configured storage
+            StorageService::putLocalFile("public/{$company->identification_number}/{$evtPdfName}", $filename, StorageService::isS3());
 //            return compact("resolution", "period", "user", "request", "company", "imgLogo");
             return $QRStr;
     }
@@ -968,16 +982,17 @@ trait DocumentTrait
      */
     protected function zipEmailPayroll($xml, $pdf)
     {
-//        $nameXML = preg_replace("/[\r\n|\n|\r]+/", "", $xml);
+        // Usar directamente los parámetros $xml y $pdf que contienen las rutas reales
+        $nameXML = preg_replace("/[\r\n|\n|\r]+/", "", $xml);
         $namePDF = preg_replace("/[\r\n|\n|\r]+/", "", $pdf);
-        $nameXML = preg_replace("/[\r\n|\n|\r]+/", "", substr($pdf, 0, strlen($pdf) - 3)."xml");
-        $nameZip = preg_replace("/[\r\n|\n|\r]+/", "", substr($pdf, 0, strlen($pdf) - 3)."zip");
+        // Derivar el ZIP del PDF (mismo nombre, diferente extensión)
+        $nameZip = preg_replace("/[\r\n|\n|\r]+/", "", substr($namePDF, 0, strlen($namePDF) - 3)."zip");
 
         $zip = new ZipArchive();
 
         $result_code = $zip->open($nameZip, ZipArchive::CREATE);
         $zip->addFile($nameXML, basename($nameXML));
-        $zip->addFile($namePDF, str_replace('xml', 'pdf', basename($nameXML)));
+        $zip->addFile($namePDF, basename($namePDF));
 
         $zip->close();
         return $nameZip;
@@ -1053,37 +1068,57 @@ trait DocumentTrait
 
         $this->pathZIP = preg_replace("/[\r\n|\n|\r]+/", "", "app/zip/{$resolution->company_id}/{$nameZip}");
 
-        Storage::put(preg_replace("/[\r\n|\n|\r]+/", "", "xml/{$resolution->company_id}/{$nameXML}"), $sign->xml);
+        // Save XML to storage
+        StorageService::put(preg_replace("/[\r\n|\n|\r]+/", "", "xml/{$resolution->company_id}/{$nameXML}"), $sign->xml);
 
-        if (!Storage::has($dir)) {
-            Storage::makeDirectory($dir);
+        if (!StorageService::has($dir)) {
+            StorageService::makeDirectory($dir);
+        }
+
+        // For ZipArchive we need local filesystem access
+        $localXmlPath = preg_replace("/[\r\n|\n|\r]+/", "", StorageService::tempPath("xml/{$resolution->company_id}/{$nameXML}"));
+        $localZipPath = preg_replace("/[\r\n|\n|\r]+/", "", StorageService::tempPath("zip/{$resolution->company_id}/{$nameZip}"));
+
+        // Ensure local XML exists for ZIP creation
+        if (StorageService::isS3()) {
+            $xmlDir = dirname($localXmlPath);
+            if (!is_dir($xmlDir)) { mkdir($xmlDir, 0755, true); }
+            file_put_contents($localXmlPath, $sign->xml);
+            $zipDir = dirname($localZipPath);
+            if (!is_dir($zipDir)) { mkdir($zipDir, 0755, true); }
         }
 
         $zip = new ZipArchive();
 
-        $result_code = $zip->open(storage_path($this->pathZIP), ZipArchive::CREATE);
+        $result_code = $zip->open($localZipPath, ZipArchive::CREATE);
         if($result_code !== true){
             $zip = new zipfileDIAN();
-            $zip->add_file(implode("", file(preg_replace("/[\r\n|\n|\r]+/", "", storage_path("app/xml/{$resolution->company_id}/{$nameXML}")))), preg_replace("/[\r\n|\n|\r]+/", "", $nameXML));
-			Storage::put(preg_replace("/[\r\n|\n|\r]+/", "", "zip/{$resolution->company_id}/{$nameZip}"), $zip->file());
+            $zip->add_file(implode("", file($localXmlPath)), preg_replace("/[\r\n|\n|\r]+/", "", $nameXML));
+            $zipContent = $zip->file();
+			StorageService::put(preg_replace("/[\r\n|\n|\r]+/", "", "zip/{$resolution->company_id}/{$nameZip}"), $zipContent);
+            if (StorageService::isS3()) {
+                file_put_contents($localZipPath, $zipContent);
+            }
         }
         else{
-            $zip->addFile(preg_replace("/[\r\n|\n|\r]+/", "", storage_path("app/xml/{$resolution->company_id}/{$nameXML}")), preg_replace("/[\r\n|\n|\r]+/", "", $nameXML));
+            $zip->addFile($localXmlPath, preg_replace("/[\r\n|\n|\r]+/", "", $nameXML));
             $zip->close();
+            // Upload ZIP to configured storage
+            StorageService::putLocalFile(preg_replace("/[\r\n|\n|\r]+/", "", "zip/{$resolution->company_id}/{$nameZip}"), $localZipPath, false);
         }
 
         if ($GuardarEn){
-            copy(preg_replace("/[\r\n|\n|\r]+/", "", storage_path("app/xml/{$resolution->company_id}/{$nameXML}")), $GuardarEn.".xml");
-            copy(preg_replace("/[\r\n|\n|\r]+/", "", storage_path($this->pathZIP)), $GuardarEn.".zip");
+            copy($localXmlPath, $GuardarEn.".xml");
+            copy($localZipPath, $GuardarEn.".zip");
         }
 
         if($ret_array)
             return[
-                'ZipBase64Bytes' => $this->ZipBase64Bytes = base64_encode(file_get_contents(preg_replace("/[\r\n|\n|\r]+/", "", storage_path($this->pathZIP)))),
+                'ZipBase64Bytes' => $this->ZipBase64Bytes = base64_encode(file_get_contents($localZipPath)),
                 'xml_filename' => $nameXML
             ];
         else
-            return $this->ZipBase64Bytes = base64_encode(file_get_contents(preg_replace("/[\r\n|\n|\r]+/", "", storage_path($this->pathZIP))));
+            return $this->ZipBase64Bytes = base64_encode(file_get_contents($localZipPath));
     }
 
     /**
@@ -1103,30 +1138,46 @@ trait DocumentTrait
         $GuardarEn = preg_replace("/[\r\n|\n|\r]+/", "", $GuardarEn);
         $this->pathZIP = preg_replace("/[\r\n|\n|\r]+/", "", "app/zip/{$company->id}/{$nameZip}");
 
-        Storage::put(preg_replace("/[\r\n|\n|\r]+/", "", "xml/{$company->id}/{$nameXML}"), $sign->xml);
+        StorageService::put(preg_replace("/[\r\n|\n|\r]+/", "", "xml/{$company->id}/{$nameXML}"), $sign->xml);
 
-        if (!Storage::has($dir)) {
-            Storage::makeDirectory($dir);
+        if (!StorageService::has($dir)) {
+            StorageService::makeDirectory($dir);
+        }
+
+        $localXmlPath = preg_replace("/[\r\n|\n|\r]+/", "", StorageService::tempPath("xml/{$company->id}/{$nameXML}"));
+        $localZipPath = preg_replace("/[\r\n|\n|\r]+/", "", StorageService::tempPath("zip/{$company->id}/{$nameZip}"));
+
+        if (StorageService::isS3()) {
+            $xmlDir = dirname($localXmlPath);
+            if (!is_dir($xmlDir)) { mkdir($xmlDir, 0755, true); }
+            file_put_contents($localXmlPath, $sign->xml);
+            $zipDir = dirname($localZipPath);
+            if (!is_dir($zipDir)) { mkdir($zipDir, 0755, true); }
         }
 
         $zip = new ZipArchive();
 
-        $result_code = $zip->open(storage_path($this->pathZIP), ZipArchive::CREATE);
+        $result_code = $zip->open($localZipPath, ZipArchive::CREATE);
         if($result_code !== true){
             $zip = new zipfileDIAN();
-            $zip->add_file(implode("", file(preg_replace("/[\r\n|\n|\r]+/", "", storage_path("app/xml/{$company->id}/{$nameXML}")))), preg_replace("/[\r\n|\n|\r]+/", "", $nameXML));
-			Storage::put(preg_replace("/[\r\n|\n|\r]+/", "", "zip/{$company->id}/{$nameZip}"), $zip->file());
+            $zip->add_file(implode("", file($localXmlPath)), preg_replace("/[\r\n|\n|\r]+/", "", $nameXML));
+            $zipContent = $zip->file();
+			StorageService::put(preg_replace("/[\r\n|\n|\r]+/", "", "zip/{$company->id}/{$nameZip}"), $zipContent);
+            if (StorageService::isS3()) {
+                file_put_contents($localZipPath, $zipContent);
+            }
         }
         else{
-            $zip->addFile(preg_replace("/[\r\n|\n|\r]+/", "", storage_path("app/xml/{$company->id}/{$nameXML}")), preg_replace("/[\r\n|\n|\r]+/", "", $nameXML));
+            $zip->addFile($localXmlPath, preg_replace("/[\r\n|\n|\r]+/", "", $nameXML));
             $zip->close();
+            StorageService::putLocalFile(preg_replace("/[\r\n|\n|\r]+/", "", "zip/{$company->id}/{$nameZip}"), $localZipPath, false);
         }
         if ($GuardarEn){
-            copy(preg_replace("/[\r\n|\n|\r]+/", "", storage_path("app/xml/{$company->id}/{$nameXML}")), $GuardarEn.".xml");
-            copy(preg_replace("/[\r\n|\n|\r]+/", "", storage_path($this->pathZIP)), $GuardarEn.".zip");
+            copy($localXmlPath, $GuardarEn.".xml");
+            copy($localZipPath, $GuardarEn.".zip");
         }
 
-        return $this->ZipBase64Bytes = base64_encode(file_get_contents(preg_replace("/[\r\n|\n|\r]+/", "", storage_path($this->pathZIP))));
+        return $this->ZipBase64Bytes = base64_encode(file_get_contents($localZipPath));
     }
 
     /**
@@ -1144,33 +1195,51 @@ trait DocumentTrait
         $nameXML = preg_replace("/[\r\n|\n|\r]+/", "", $this->getFileNameSendDocument($identificationnumber, $tipodoc, $documentnumber));
         $nameZip = preg_replace("/[\r\n|\n|\r]+/", "", $this->getFileNameSendDocument($identificationnumber, 'ZIP', $documentnumber, '.zip'));
 
+        $relativeZipPath = preg_replace("/[\r\n|\n|\r]+/", "", "zip/{$passwordcertificate}/{$nameZip}");
         $this->pathZIP = preg_replace("/[\r\n|\n|\r]+/", "", "app/zip/{$passwordcertificate}/{$nameZip}");
 
-        Storage::put(preg_replace("/[\r\n|\n|\r]+/", "", "xml/{$passwordcertificate}/{$nameXML}"), $sign->xml);
+        $relativeXmlPath = preg_replace("/[\r\n|\n|\r]+/", "", "xml/{$passwordcertificate}/{$nameXML}");
+        StorageService::put($relativeXmlPath, $sign->xml);
 
-        if (!Storage::has($dir)) {
-            Storage::makeDirectory($dir);
+        if (!StorageService::has($dir)) {
+            StorageService::makeDirectory($dir);
+        }
+
+        // Local paths for ZipArchive (needs local filesystem)
+        $localXmlPath = StorageService::tempPath($relativeXmlPath);
+        $localZipPath = StorageService::tempPath($relativeZipPath);
+
+        // Ensure local temp dirs exist for S3
+        if (StorageService::isS3()) {
+            @mkdir(dirname($localXmlPath), 0755, true);
+            @mkdir(dirname($localZipPath), 0755, true);
+            file_put_contents($localXmlPath, $sign->xml);
         }
 
         $zip = new ZipArchive();
 
-        $result_code = $zip->open(storage_path($this->pathZIP), ZipArchive::CREATE);
+        $result_code = $zip->open($localZipPath, ZipArchive::CREATE);
         if($result_code !== true){
             $zip = new zipfileDIAN();
-            $zip->add_file(implode("", file(preg_replace("/[\r\n|\n|\r]+/", "", storage_path("app/xml/{$passwordcertificate}/{$nameXML}")))), preg_replace("/[\r\n|\n|\r]+/", "", $nameXML));
-			Storage::put(preg_replace("/[\r\n|\n|\r]+/", "", "zip/{$passwordcertificate}/{$nameZip}"), $zip->file());
+            $zip->add_file(implode("", file($localXmlPath)), preg_replace("/[\r\n|\n|\r]+/", "", $nameXML));
+            StorageService::put($relativeZipPath, $zip->file());
+            // Write locally too for base64 read
+            if (StorageService::isS3()) {
+                file_put_contents($localZipPath, $zip->file());
+            }
         }
         else{
-            $zip->addFile(preg_replace("/[\r\n|\n|\r]+/", "", storage_path("app/xml/{$passwordcertificate}/{$nameXML}")), preg_replace("/[\r\n|\n|\r]+/", "", $nameXML));
+            $zip->addFile($localXmlPath, preg_replace("/[\r\n|\n|\r]+/", "", $nameXML));
             $zip->close();
+            StorageService::putLocalFile($relativeZipPath, $localZipPath, StorageService::isS3());
         }
 
         if ($GuardarEn){
-            copy(preg_replace("/[\r\n|\n|\r]+/", "", storage_path("app/xml/{$passwordcertificate}/{$nameXML}")), $GuardarEn.".xml");
-            copy(preg_replace("/[\r\n|\n|\r]+/", "", storage_path($this->pathZIP)), $GuardarEn.".zip");
+            copy($localXmlPath, $GuardarEn.".xml");
+            copy($localZipPath, $GuardarEn.".zip");
         }
 
-        return $this->ZipBase64Bytes = base64_encode(file_get_contents(preg_replace("/[\r\n|\n|\r]+/", "", storage_path($this->pathZIP))));
+        return $this->ZipBase64Bytes = base64_encode(file_get_contents($localZipPath));
     }
 
     /**
@@ -1293,13 +1362,26 @@ trait DocumentTrait
     }
 
     protected function InvoiceByZipKey($company_idnumber, $zipkey){
-        $directory = storage_path('app/public/'.$company_idnumber, SCANDIR_SORT_DESCENDING);
-        $scanned_directory = array_diff(scandir($directory), array('..', '.'));
-        foreach($scanned_directory as $archivo){
-            if (substr($archivo, 0, 7) == "RptaFE-"){
-                $signedxml = file_get_contents(storage_path("app/public/".$company_idnumber."/".$archivo));
-                if(strpos($signedxml, "<b:ZipKey>{$zipkey}</b:ZipKey>") <> false)
-                    return substr($archivo, strpos($archivo, '-') + 1);
+        $relativePath = 'public/'.$company_idnumber;
+        if (StorageService::isS3()) {
+            $files = StorageService::disk()->files($relativePath);
+            foreach($files as $archivo){
+                $basename = basename($archivo);
+                if (substr($basename, 0, 7) == "RptaFE-"){
+                    $signedxml = StorageService::get($archivo);
+                    if(strpos($signedxml, "<b:ZipKey>{$zipkey}</b:ZipKey>") <> false)
+                        return substr($basename, strpos($basename, '-') + 1);
+                }
+            }
+        } else {
+            $directory = StorageService::tempPath('public/'.$company_idnumber);
+            $scanned_directory = array_diff(scandir($directory, SCANDIR_SORT_DESCENDING), array('..', '.'));
+            foreach($scanned_directory as $archivo){
+                if (substr($archivo, 0, 7) == "RptaFE-"){
+                    $signedxml = file_get_contents(StorageService::tempPath("public/".$company_idnumber."/".$archivo));
+                    if(strpos($signedxml, "<b:ZipKey>{$zipkey}</b:ZipKey>") <> false)
+                        return substr($archivo, strpos($archivo, '-') + 1);
+                }
             }
         }
         return false;
@@ -1569,7 +1651,8 @@ trait DocumentTrait
         try {
             $company = auth()->user()->company;
             $name = "alternate_{$company->identification_number}{$company->dv}.jpg";
-            Storage::put("public/{$company->identification_number}/{$name}", base64_decode($base64logo));
+            // Logos alternativos SIEMPRE se guardan localmente (necesarios para generar PDFs)
+            StorageService::putLocal("public/{$company->identification_number}/{$name}", base64_decode($base64logo));
 
             return [
                 'success' => true,

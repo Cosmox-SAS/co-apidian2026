@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Services\StorageService;
 
 /*
 |--------------------------------------------------------------------------
@@ -142,16 +143,22 @@ Route::get('/listings', 'ListingController@index');
 
 Route::get('invoice/xml/{filename}', function($fisicroute)
 {
-    $path = storage_path($fisicroute);
-    return response(file_get_contents($path), 200, [
+    $content = StorageService::getAuto($fisicroute);
+    if ($content === null) {
+        abort(404, 'Archivo XML no encontrado');
+    }
+    return response($content, 200, [
         'Content-Type' => 'application/xml'
     ]);
 });
 
 Route::get('invoice/pdf/{filename}', function($fisicroute)
 {
-    $path = storage_path("facturas/pdf/".$fisicroute);
-    return response(file_get_contents($path), 200, [
+    $content = StorageService::getAuto("facturas/pdf/".$fisicroute);
+    if ($content === null) {
+        abort(404, 'Archivo PDF no encontrado');
+    }
+    return response($content, 200, [
         'Content-Type' => 'application/pdf'
     ]);
 });

@@ -12,6 +12,7 @@ use App\ReceivedDocument;
 use App\Customer;
 use App\Company;
 use App\User;
+use App\Services\StorageService;
 
 class EventMail extends Mailable
 {
@@ -46,9 +47,9 @@ class EventMail extends Mailable
     {
         if(env('MAIL_USERNAME') and $this->user->validate_mail_server() == false){
             if($this->filename)
-                $nameZIP = $this->zipEmailEvent(storage_path("app/public/{$this->sender->company['identification_number']}/{$this->filename}.xml"), storage_path("app/public/{$this->sender->company['identification_number']}/EVS-{$this->sender->company['identification_number']}{$this->document[0]->number}{$this->event->code}.pdf"));
+                $nameZIP = $this->zipEmailEvent(StorageService::localPath("public/{$this->sender->company['identification_number']}/{$this->filename}.xml"), StorageService::localPath("public/{$this->sender->company['identification_number']}/EVS-{$this->sender->company['identification_number']}{$this->document[0]->number}{$this->event->code}.pdf"));
             else
-                $nameZIP = $this->zipEmailEvent(storage_path("app/public/{$this->sender->company['identification_number']}/{$this->filename}.xml"), storage_path("app/public/{$this->sender->company['identification_number']}/EVS-{$this->sender->company['identification_number']}{$this->document[0]->number}{$this->event->code}.pdf"));
+                $nameZIP = $this->zipEmailEvent(StorageService::localPath("public/{$this->sender->company['identification_number']}/{$this->filename}.xml"), StorageService::localPath("public/{$this->sender->company['identification_number']}/EVS-{$this->sender->company['identification_number']}{$this->document[0]->number}{$this->event->code}.pdf"));
             return $this->view('mails.mail_event')->subject("Evento: {$this->sender->company['identification_number']};{$this->sender->name};{$this->sender->company['identification_number']}{$this->document[0]->number}{$this->event->code};{$this->document[0]->type_document->code};{$this->sender->name}")
                                                   ->from(\Config::get('mail.from.address'), \Config::get('mail.from.name'))
 //                                            ->from(env('MAIL_FROM_ADDRESS', env('MAIL_USERNAME')), env('MAIL_FROM_NAME', env('APP_NAME')))
@@ -57,9 +58,9 @@ class EventMail extends Mailable
         }
         else{
             if($this->filename)
-                $nameZIP = $this->zipEmailEvent(storage_path("app/public/{$this->sender->company['identification_number']}/{$this->filename}.xml"), storage_path("app/public/{$this->sender->company['identification_number']}/EVS-{$this->sender->company['identification_number']}{$this->document[0]->number}{$this->event->code}.pdf"));
+                $nameZIP = $this->zipEmailEvent(StorageService::localPath("public/{$this->sender->company['identification_number']}/{$this->filename}.xml"), StorageService::localPath("public/{$this->sender->company['identification_number']}/EVS-{$this->sender->company['identification_number']}{$this->document[0]->number}{$this->event->code}.pdf"));
             else
-                $nameZIP = $this->zipEmailEvent(storage_path("app/public/{$this->sender->company['identification_number']}/{$this->filename}.xml"), storage_path("app/public/{$this->sender->company['identification_number']}/EVS-{$this->sender->company['identification_number']}{$this->document[0]->number}{$this->event->code}.pdf"));
+                $nameZIP = $this->zipEmailEvent(StorageService::localPath("public/{$this->sender->company['identification_number']}/{$this->filename}.xml"), StorageService::localPath("public/{$this->sender->company['identification_number']}/EVS-{$this->sender->company['identification_number']}{$this->document[0]->number}{$this->event->code}.pdf"));
             return $this->view('mails.mail_event')->subject("Evento: {$this->sender->company['identification_number']};{$this->sender->name};{$this->sender->company['identification_number']}{$this->document[0]->number}{$this->event->code};{$this->document[0]->type_document->code};{$this->sender->name}")
                                                   ->from(env('MAIL_FROM_ADDRESS', config('mail.username')), 'nomail@nomail.com')
 //                                            ->from(env('MAIL_FROM_ADDRESS', config('mail.username')), env('MAIL_FROM_NAME', env('APP_NAME')))

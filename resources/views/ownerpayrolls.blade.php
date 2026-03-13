@@ -69,8 +69,8 @@
                                 @if($allow_public_downloads)
                                     <td><a href="{{ url('/api/download/'.$document->identification_number.'/'.$document->xml) }}"><i class="fa fa-download"></i></a></td>
                                     <td><a href="{{ url('/api/download/'.$document->identification_number.'/'.$document->pdf) }}"><i class="fa fa-download"></i></a></td>
-                                    <td><a href="{{ url('/api/download/'.$document->identification_number.'/Attachment-'.$document->prefix.$document->consecutive.'.xml') }}"><i class="fa fa-download"></i></a></td>
-                                    <td><a href="{{ url('/api/download/'.$document->identification_number.'/ZipAttachm-'.$document->prefix.$document->consecutive.'.xml') }}"><i class="fa fa-download"></i></a></td>
+                                    <td><a href="{{ url('/api/download/'.$document->identification_number.'/'.str_replace(['NIS-', 'NAS-'], ['RptaNI-', 'RptaNA-'], $document->xml)) }}" title="Descargar RptaDIAN"><i class="fa fa-download"></i></a></td>
+                                    <td><a href="{{ url('/api/download/'.$document->identification_number.'/'.str_replace('.xml', '.zip', $document->xml)) }}" title="Descargar ZIP"><i class="fa fa-download"></i></a></td>
                                     <td><form action="{{ route('send-email-customer') }}" method="POST">
                                             <input type="hidden" name="document->identification_number" value="{{$document->identification_number}}">
                                             <input type="hidden" name="prefix" value="{{$document->prefix}}">
