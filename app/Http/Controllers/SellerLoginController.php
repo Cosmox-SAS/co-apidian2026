@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Traits\DocumentTrait;
+use App\Services\StorageService;
 
 class SellerLoginController extends Controller
 {
@@ -61,41 +62,48 @@ class SellerLoginController extends Controller
     }
 
     protected function cleantmp_route($tmp_route, $company_idnumber){
-        if(!file_exists(storage_path('received/'.$company_idnumber)))
-            mkdir(storage_path('received/'.$company_idnumber), 0777, true);
+        StorageService::ensureDirectory('received/'.$company_idnumber);
 
-        $files = glob(storage_path($tmp_route)."/*.*");
+        $files = glob(StorageService::tempPath($tmp_route)."/*.*");
         foreach($files as $file){
             if(is_file($file))
                 if(!strpos($file, '.xml'))
                     unlink($file);
-                else
-                    rename($file, storage_path('received/'.$company_idnumber.'/'.basename($file)));
+                else{
+                    $relativePath = 'received/'.$company_idnumber.'/'.basename($file);
+                    StorageService::putLocalFile($relativePath, $file);
+                    unlink($file);
+                }
         }
-        rmdir(storage_path($tmp_route));
+        rmdir(StorageService::tempPath($tmp_route));
     }
 
     protected function SellersDocumentsReception(Request $request, $company_idnumber)
     {
         $tmp_route = Str::random(15);
         try{
-            if (!Storage::has($tmp_route)){
+            $localTmpPath = StorageService::tempPath($tmp_route);
+            if (!is_dir($localTmpPath)){
                 $old = umask(0);
-                mkdir(storage_path($tmp_route), 0777);
+                mkdir($localTmpPath, 0777);
                 umask($old);
             }
 
-            if(move_uploaded_file($_FILES['formFileInput']['tmp_name'], storage_path($tmp_route."/".basename($_FILES['formFileInput']['name'])))){
-                if(strpos(basename($_FILES['formFileInput']['name']), '.pdf')){
-                    $exists = ReceivedDocument::where('customer', $company_idnumber)->where('pdf', basename($_FILES['formFileInput']['name']))->get();
+            $uploadedFileName = basename($_FILES['formFileInput']['name']);
+            $localFilePath = $localTmpPath."/".$uploadedFileName;
+            if(move_uploaded_file($_FILES['formFileInput']['tmp_name'], $localFilePath)){
+                if(strpos($uploadedFileName, '.pdf')){
+                    $exists = ReceivedDocument::where('customer', $company_idnumber)->where('pdf', $uploadedFileName)->get();
                     if(count($exists) > 0){
-                        rename(storage_path($tmp_route."/".basename($_FILES['formFileInput']['name'])), storage_path('received/'.$company_idnumber.'/'.basename($_FILES['formFileInput']['name'])));
+                        $relativePath = 'received/'.$company_idnumber.'/'.$uploadedFileName;
+                        StorageService::putLocalFile($relativePath, $localFilePath);
+                        unlink($localFilePath);
                         $this->cleantmp_route($tmp_route, $company_idnumber);
-                        return view('customerloginmensaje', ['titulo' => 'Recepcion de documentos...', 'mensaje' => "El archivo ".basename($_FILES['formFileInput']['name'])." fue cargado exitosamente"]);
+                        return view('customerloginmensaje', ['titulo' => 'Recepcion de documentos...', 'mensaje' => "El archivo ".$uploadedFileName." fue cargado exitosamente"]);
                     }
                     else{
                         $this->cleantmp_route($tmp_route, $company_idnumber);
-                        return view('customerloginmensaje', ['titulo' => 'Recepcion de documentos...', 'mensaje' => "El archivo ".basename($_FILES['formFileInput']['name'])." no corresponde a ningun registro de la base de datos"]);
+                        return view('customerloginmensaje', ['titulo' => 'Recepcion de documentos...', 'mensaje' => "El archivo ".$uploadedFileName." no corresponde a ningun registro de la base de datos"]);
                     }
                 }
 
@@ -103,7 +111,7 @@ class SellerLoginController extends Controller
                 $att->preserveWhiteSpace = false;
                 $att->formatOutput = true;
 
-                $attXMLStr = base64_encode($this->file_get_contents_utf8(storage_path($tmp_route."/".basename($_FILES['formFileInput']['name']))));
+                $attXMLStr = base64_encode($this->file_get_contents_utf8($localFilePath));
 
                 if(!$att->loadXML(base64_decode($attXMLStr))){
                     $this->cleantmp_route($tmp_route, $company_idnumber);

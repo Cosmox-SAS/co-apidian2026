@@ -23,6 +23,7 @@ use ubl21dian\XAdES\SignAttachedDocument;
 use App\Http\Requests\Api\StatusRequest;
 use App\Http\Requests\Api\XmlDocumentRequest;
 use Illuminate\Support\Facades\Mail;
+use App\Services\StorageService;
 
 class StateController extends Controller
 {
@@ -101,10 +102,7 @@ class StateController extends Controller
             }
         }
         else{
-            if (!is_dir(storage_path("app/public/{$company->identification_number}"))) {
-                mkdir(storage_path("app/public/{$company->identification_number}"));
-            }
-
+            StorageService::ensureDirectory("public/{$company->identification_number}");
         }
 
         $respuestadian = '';
@@ -126,10 +124,10 @@ class StateController extends Controller
                     if(isset($respuestadian->Envelope->Body->GetStatusZipResponse->GetStatusZipResult->DianResponse->XmlFileName->_attributes))
                     {
                         $invoicenumber = $this->InvoiceByZipKey($company->identification_number, $trackId);
-                        $signedxml = file_get_contents(storage_path("app/public/{$company->identification_number}/FES-".$invoicenumber));
+                        $signedxml = StorageService::getAutoLocal("public/{$company->identification_number}/FES-".$invoicenumber);
                     }
                     else
-                        $signedxml = file_get_contents(storage_path("app/xml/{$company->id}/".$respuestadian->Envelope->Body->GetStatusZipResponse->GetStatusZipResult->DianResponse->XmlFileName.".xml"));
+                        $signedxml = StorageService::getAutoLocal("xml/{$company->id}/".$respuestadian->Envelope->Body->GetStatusZipResponse->GetStatusZipResult->DianResponse->XmlFileName.".xml");
 
                     if(strpos($signedxml, "</Invoice>") > 0)
                         $td = '/Invoice';
@@ -313,7 +311,7 @@ class StateController extends Controller
         }
         else{
             try{
-                $respuestadian = $getStatusZip->signToSend(storage_path("app/public/{$company->identification_number}/ReqZIP-".$trackId.".xml"))->getResponseToObject(storage_path("app/public/{$company->identification_number}/RptaZIP-".$trackId.".xml"));
+                $respuestadian = $getStatusZip->signToSend(StorageService::tempPath("public/{$company->identification_number}/ReqZIP-".$trackId.".xml"))->getResponseToObject(StorageService::tempPath("public/{$company->identification_number}/RptaZIP-".$trackId.".xml"));
                 if(isset($respuestadian->html))
                     return [
                         'success' => false,
@@ -324,10 +322,10 @@ class StateController extends Controller
                     if(isset($respuestadian->Envelope->Body->GetStatusZipResponse->GetStatusZipResult->DianResponse->XmlFileName->_attributes))
                     {
                         $invoicenumber = $this->InvoiceByZipKey($company->identification_number, $trackId);
-                        $signedxml = file_get_contents(storage_path("app/public/{$company->identification_number}/FES-".$invoicenumber));
+                        $signedxml = StorageService::getAutoLocal("public/{$company->identification_number}/FES-".$invoicenumber);
                     }
                     else{
-                        $signedxml = file_get_contents(storage_path("app/xml/{$company->id}/".$respuestadian->Envelope->Body->GetStatusZipResponse->GetStatusZipResult->DianResponse->XmlFileName.".xml"));
+                        $signedxml = StorageService::getAutoLocal("xml/{$company->id}/".$respuestadian->Envelope->Body->GetStatusZipResponse->GetStatusZipResult->DianResponse->XmlFileName.".xml");
                     }
                     //  $xml->loadXML($signedxml);
                     if(strpos($signedxml, "</Invoice>") > 0)
@@ -420,11 +418,11 @@ class StateController extends Controller
                         $attacheddocument = $this->createXML(compact('user', 'company', 'customer', 'resolution', 'typeDocument', 'cufecude', 'signedxml', 'appresponsexml', 'fechavalidacion', 'horavalidacion', 'document_number'));
                         // Signature XML
                         $signAttachedDocument = new SignAttachedDocument($company->certificate->path, $company->certificate->password);
-                        $signAttachedDocument->GuardarEn = storage_path("app/public/{$company->identification_number}/{$filename}.xml");
+                        $signAttachedDocument->GuardarEn = StorageService::tempPath("public/{$company->identification_number}/{$filename}.xml");
 
                         $at = $signAttachedDocument->sign($attacheddocument)->xml;
                         //      $at = str_replace("&gt;", ">", str_replace("&quot;", '"', str_replace("&lt;", "<", $at)));
-                        $file = fopen(storage_path("app/public/{$company->identification_number}/{$filename}".".xml"), "w");
+                        $file = fopen(StorageService::tempPath("public/{$company->identification_number}/{$filename}".".xml"), "w");
                         fwrite($file, $at);
                         fclose($file);
                         if($this->valueXML($signedxml, $td."/cbc:ProfileID/") != 'DIAN 2.1: documento soporte en adquisiciones efectuadas a no obligados a facturar.' && $this->valueXML($signedxml, $td."/cbc:ProfileID/") != 'DIAN 2.1: Nota de ajuste al documento soporte en adquisiciones efectuadas a sujetos no obligados a expedir factura o documento equivalente')
@@ -504,11 +502,16 @@ class StateController extends Controller
             } catch (\Exception $e) {
                 return $e->getMessage().' '.preg_replace("/[\r\n|\n|\r]+/", "", json_encode($respuestadian));
             }
+            StorageService::uploadBatchIfS3([
+                "public/{$company->identification_number}/ReqZIP-{$trackId}.xml",
+                "public/{$company->identification_number}/RptaZIP-{$trackId}.xml",
+                "public/{$company->identification_number}/{$filename}.xml",
+            ]);
             return [
                 'message' => 'Consulta generada con éxito',
                 'ResponseDian' => $respuestadian,
-                'reqzip'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/ReqZIP-{$trackId}.xml"))),
-                'rptazip'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/RptaZIP-{$trackId}.xml"))),
+                'reqzip'=>StorageService::getBase64Auto("public/{$company->identification_number}/ReqZIP-{$trackId}.xml"),
+                'rptazip'=>StorageService::getBase64Auto("public/{$company->identification_number}/RptaZIP-{$trackId}.xml"),
                 'attacheddocument'=>base64_encode($at),
                 'certificate_days_left' => $certificate_days_left,
             ];
@@ -586,9 +589,7 @@ class StateController extends Controller
             }
         }
         else{
-            if (!is_dir(storage_path("app/public/{$company->identification_number}"))) {
-                mkdir(storage_path("app/public/{$company->identification_number}"));
-            }
+            StorageService::ensureDirectory("public/{$company->identification_number}");
         }
 
         $respuestadian = '';
@@ -614,7 +615,7 @@ class StateController extends Controller
                         $filename = $request->atacheddocument_name_prefix.$filename;
 
                     $cufecude = $respuestadian->Envelope->Body->GetStatusResponse->GetStatusResult->XmlDocumentKey;
-                    $signedxml = file_get_contents(storage_path("app/xml/{$company->id}/".$respuestadian->Envelope->Body->GetStatusResponse->GetStatusResult->XmlFileName.".xml"));
+                    $signedxml = StorageService::getAutoLocal("xml/{$company->id}/".$respuestadian->Envelope->Body->GetStatusResponse->GetStatusResult->XmlFileName.".xml");
                     //  $xml->loadXML($signedxml);
                     if(strpos($signedxml, "</Invoice>") > 0)
                         $td = '/Invoice';
@@ -792,7 +793,7 @@ class StateController extends Controller
         }
         else{
             try{
-                $respuestadian = $getStatus->signToSend(storage_path("app/public/{$company->identification_number}/ReqZIP-".$trackId.".xml"))->getResponseToObject(storage_path("app/public/{$company->identification_number}/RptaZIP-".$trackId.".xml"));
+                $respuestadian = $getStatus->signToSend(StorageService::tempPath("public/{$company->identification_number}/ReqZIP-".$trackId.".xml"))->getResponseToObject(StorageService::tempPath("public/{$company->identification_number}/RptaZIP-".$trackId.".xml"));
                 if(isset($respuestadian->html))
                     return [
                         'success' => false,
@@ -805,8 +806,8 @@ class StateController extends Controller
                         $filename = $request->atacheddocument_name_prefix.$filename;
                     $cufecude = $respuestadian->Envelope->Body->GetStatusResponse->GetStatusResult->XmlDocumentKey;
                     $document_generator_warning = "";
-                    if(file_exists(storage_path("app/xml/{$company->id}/".$respuestadian->Envelope->Body->GetStatusResponse->GetStatusResult->XmlFileName.".xml"))){
-                        $signedxml = file_get_contents(storage_path("app/xml/{$company->id}/".$respuestadian->Envelope->Body->GetStatusResponse->GetStatusResult->XmlFileName.".xml"));
+                    if(StorageService::existsLocal("xml/{$company->id}/".$respuestadian->Envelope->Body->GetStatusResponse->GetStatusResult->XmlFileName.".xml")){
+                        $signedxml = StorageService::getAutoLocal("xml/{$company->id}/".$respuestadian->Envelope->Body->GetStatusResponse->GetStatusResult->XmlFileName.".xml");
                         $QRStr = $this->getTag($signedxml, 'QRCode', 0)->nodeValue ?? null;
                     }
                     else{
@@ -907,12 +908,12 @@ class StateController extends Controller
                     //          return $attacheddocument->saveXML();
                             // Signature XML
                             $signAttachedDocument = new SignAttachedDocument($company->certificate->path, $company->certificate->password);
-                            $signAttachedDocument->GuardarEn = storage_path("app/public/{$company->identification_number}/{$filename}.xml");
+                            $signAttachedDocument->GuardarEn = StorageService::tempPath("public/{$company->identification_number}/{$filename}.xml");
 
                             $at = $signAttachedDocument->sign($attacheddocument)->xml;
                     //          $at = str_replace("&gt;", ">", str_replace("&quot;", '"', str_replace("&lt;", "<", $at)));
-                            $file = fopen(storage_path("app/public/{$company->identification_number}/{$filename}".".xml"), "w");
-                    //          $file = fopen(storage_path("app/public/{$company->identification_number}/Attachment-".$this->valueXML($signedxml, $td."/cbc:ID/").".xml"), "w");
+                            $file = fopen(StorageService::tempPath("public/{$company->identification_number}/{$filename}".".xml"), "w");
+                    //          $file = fopen(StorageService::tempPath("public/{$company->identification_number}/Attachment-".$this->valueXML($signedxml, $td."/cbc:ID/").".xml"), "w");
                             fwrite($file, $at);
                             fclose($file);
                             if($this->valueXML($signedxml, $td."/cbc:ProfileID/") != 'DIAN 2.1: documento soporte en adquisiciones efectuadas a no obligados a facturar.' && $this->valueXML($signedxml, $td."/cbc:ProfileID/") != 'DIAN 2.1: Nota de ajuste al documento soporte en adquisiciones efectuadas a sujetos no obligados a expedir factura o documento equivalente')
@@ -999,11 +1000,16 @@ class StateController extends Controller
             } catch (\Exception $e) {
                 return $e->getMessage().' '.preg_replace("/[\r\n|\n|\r]+/", "", json_encode($respuestadian));
             }
+            StorageService::uploadBatchIfS3([
+                "public/{$company->identification_number}/ReqZIP-{$trackId}.xml",
+                "public/{$company->identification_number}/RptaZIP-{$trackId}.xml",
+                "public/{$company->identification_number}/{$filename}.xml",
+            ]);
             return [
                 'message' => 'Consulta generada con éxito'.$document_generator_warning,
                 'ResponseDian' => $respuestadian,
-                'reqzip'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/ReqZIP-{$trackId}.xml"))),
-                'rptazip'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/RptaZIP-{$trackId}.xml"))),
+                'reqzip'=>StorageService::getBase64Auto("public/{$company->identification_number}/ReqZIP-{$trackId}.xml"),
+                'rptazip'=>StorageService::getBase64Auto("public/{$company->identification_number}/RptaZIP-{$trackId}.xml"),
                 'attacheddocument'=>base64_encode($at),
                 'cufecude'=>$cufecude,
                 'certificate_days_left' => $certificate_days_left,
@@ -1036,9 +1042,7 @@ class StateController extends Controller
         $getStatus = new GetStatusEvents($user->company->certificate->path, $user->company->certificate->password, $user->company->software->url);
 
         $getStatus->trackId = $trackId;
-        if (!is_dir(storage_path("app/public/{$company->identification_number}"))) {
-            mkdir(storage_path("app/public/{$company->identification_number}"));
-        }
+        StorageService::ensureDirectory("public/{$company->identification_number}");
 
         $respuestadian = '';
         $typeDocument = TypeDocument::findOrFail(7);
@@ -1048,7 +1052,7 @@ class StateController extends Controller
 //        $xml = new \DOMDocument;
         $ar = new \DOMDocument;
         try{
-            $respuestadian = $getStatus->signToSend(storage_path("app/public/{$company->identification_number}/ReqEVENTS-".$trackId.".xml"))->getResponseToObject(storage_path("app/public/{$company->identification_number}/RptaEVENTS-".$trackId.".xml"));
+            $respuestadian = $getStatus->signToSend(StorageService::tempPath("public/{$company->identification_number}/ReqEVENTS-".$trackId.".xml"))->getResponseToObject(StorageService::tempPath("public/{$company->identification_number}/RptaEVENTS-".$trackId.".xml"));
             if(isset($respuestadian->html))
                 return [
                     'success' => false,

@@ -7,6 +7,7 @@ use App\Document;
 use App\Http\Resources\DocumentCollection;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Support\Facades\Log;
+use App\Services\StorageService;
 
 class DocumentController extends Controller
 {
@@ -40,13 +41,13 @@ class DocumentController extends Controller
     public function downloadxml($xml)
     {
         //$invoice =  Document::find($id);
-        return response()->download(storage_path($xml));
+        return StorageService::downloadAuto($xml);
     }
 
     public function downloadpdf($pdf)
     {
 
-        return response()->download(storage_path("app/{$pdf}"));
+        return StorageService::downloadAuto($pdf);
        // return false;
         //$invoice =  Document::find($id);
        // return response()->download(storage_path("app\FES-SETP{$invoice->number}.xml"));

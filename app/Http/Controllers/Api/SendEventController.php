@@ -29,6 +29,7 @@ use Goutte\Client;
 use Carbon\Carbon;
 use DateTime;
 use Storage;
+use App\Services\StorageService;
 
 class SendEventController extends Controller
 {
@@ -334,8 +335,7 @@ class SendEventController extends Controller
                 ];
 
             if($request->event_id != "5")
-                if(!file_exists(storage_path('received/'.$company->identification_number)))
-                    mkdir(storage_path('received/'.$company->identification_number), 0777, true);
+                StorageService::ensureDirectory('received/'.$company->identification_number);
 
             $invoiceXMLStr = str_replace("&", "&amp;", substr(base64_decode($request->base64_attacheddocument), strpos(base64_decode($request->base64_attacheddocument), "<Invoice"), strpos(base64_decode($request->base64_attacheddocument), "/Invoice>") - strpos(base64_decode($request->base64_attacheddocument), "<Invoice") + 9));
             $invoiceXMLStr = preg_replace("/[\r\n|\n|\r]+/", "","<?xml version=\"1.0\" encoding=\"utf-8\"?>".$invoiceXMLStr);
@@ -393,7 +393,7 @@ class SendEventController extends Controller
                 $exists = Document::where('identification_number', $invoice_doc->identification_number)->where('prefix', $invoice_doc->prefix)->where('number', $invoice_doc->number)->where('state_document_id', 1)->get();
             }
             else{
-                $file = fopen(storage_path('received/'.$company->identification_number.'/'.$request->base64_attacheddocument_name), "w+");
+                $file = fopen(StorageService::tempPath('received/'.$company->identification_number.'/'.$request->base64_attacheddocument_name), "w+");
                 fwrite($file, base64_decode($request->base64_attacheddocument));
                 fclose($file);
 
@@ -630,14 +630,12 @@ class SendEventController extends Controller
             }
         }
         else{
-            if (!is_dir(storage_path("app/public/{$company->identification_number}"))) {
-                mkdir(storage_path("app/public/{$company->identification_number}"));
-            }
+            StorageService::ensureDirectory("public/{$company->identification_number}");
         }
         if ($request->GuardarEn)
             $signEvent->GuardarEn = $request->GuardarEn."\\EV-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}.xml";
         else
-            $signEvent->GuardarEn = storage_path("app/public/{$company->identification_number}/EV-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}.xml");
+            $signEvent->GuardarEn = StorageService::tempPath("public/{$company->identification_number}/EV-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}.xml");
 
         $sendEvent = new SendEvent($company->certificate->path, $company->certificate->password);
         $sendEvent->To = $company->software->url_event;
@@ -647,7 +645,7 @@ class SendEventController extends Controller
             $filename = "EVS-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}";
         }
         else{
-            $sendEvent->contentFile = $this->zipBase64SendEvent($company, $event->code, $sender->company->identification_number, $documentReference->getPrefixAttribute().$documentReference->getNumberAttribute(), $signEvent->sign($eventXML), storage_path("app/public/{$company->identification_number}/EVS-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}"));
+            $sendEvent->contentFile = $this->zipBase64SendEvent($company, $event->code, $sender->company->identification_number, $documentReference->getPrefixAttribute().$documentReference->getNumberAttribute(), $signEvent->sign($eventXML), StorageService::tempPath("public/{$company->identification_number}/EVS-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}"));
             $filename = "EVS-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}";
         }
 
@@ -758,7 +756,7 @@ class SendEventController extends Controller
         }
         else{
             try{
-                $respuestadian = $sendEvent->signToSend(storage_path("app/public/{$company->identification_number}/ReqEV-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}.xml"))->getResponseToObject(storage_path("app/public/{$company->identification_number}/RptaEV-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}.xml"));
+                $respuestadian = $sendEvent->signToSend(StorageService::tempPath("public/{$company->identification_number}/ReqEV-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}.xml"))->getResponseToObject(StorageService::tempPath("public/{$company->identification_number}/RptaEV-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}.xml"));
                 $r = [
                     'success' => true,
                     'message' => "{$typeDocument->name} #{$documentReference->getPrefixAttribute()}{$documentReference->getNumberAttribute()} generada con éxito",
@@ -1426,14 +1424,12 @@ class SendEventController extends Controller
             }
         }
         else{
-            if (!is_dir(storage_path("app/public/{$company->identification_number}"))) {
-                mkdir(storage_path("app/public/{$company->identification_number}"));
-            }
+            StorageService::ensureDirectory("public/{$company->identification_number}");
         }
         if ($request->GuardarEn)
             $signEvent->GuardarEn = $request->GuardarEn."\\EV-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}.xml";
         else
-            $signEvent->GuardarEn = storage_path("app/public/{$company->identification_number}/EV-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}.xml");
+            $signEvent->GuardarEn = StorageService::tempPath("public/{$company->identification_number}/EV-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}.xml");
 
         $sendEvent = new SendEvent($company->certificate->path, $company->certificate->password);
         $sendEvent->To = $company->software->url_event;
@@ -1443,7 +1439,7 @@ class SendEventController extends Controller
             $filename = "EVS-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}";
         }
         else{
-            $sendEvent->contentFile = $this->zipBase64SendEvent($company, $event->code, $sender->company->identification_number, $documentReference->getPrefixAttribute().$documentReference->getNumberAttribute(), $signEvent->sign($eventXML), storage_path("app/public/{$company->identification_number}/EVS-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}"));
+            $sendEvent->contentFile = $this->zipBase64SendEvent($company, $event->code, $sender->company->identification_number, $documentReference->getPrefixAttribute().$documentReference->getNumberAttribute(), $signEvent->sign($eventXML), StorageService::tempPath("public/{$company->identification_number}/EVS-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}"));
             $filename = "EVS-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}";
         }
 
@@ -1549,7 +1545,7 @@ class SendEventController extends Controller
         }
         else{
             try{
-                $respuestadian = $sendEvent->signToSend(storage_path("app/public/{$company->identification_number}/ReqEV-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}.xml"))->getResponseToObject(storage_path("app/public/{$company->identification_number}/RptaEV-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}.xml"));
+                $respuestadian = $sendEvent->signToSend(StorageService::tempPath("public/{$company->identification_number}/ReqEV-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}.xml"))->getResponseToObject(StorageService::tempPath("public/{$company->identification_number}/RptaEV-{$event->code}-{$sender->company->identification_number}-{$documentReference->getPrefixAttribute()}-{$documentReference->getNumberAttribute()}.xml"));
                 $r = [
                     'success' => true,
                     'message' => "{$typeDocument->name} #{$documentReference->getPrefixAttribute()}{$documentReference->getNumberAttribute()} generada con éxito",

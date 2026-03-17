@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\InvoiceMail;
 use Carbon\Carbon;
 use DateTime;
-use Storage;
+use App\Services\StorageService;
 use DB;
 
 class InvoiceExportController extends Controller
@@ -344,15 +344,13 @@ class InvoiceExportController extends Controller
             }
         }
         else{
-            if (!is_dir(storage_path("app/public/{$company->identification_number}"))) {
-                mkdir(storage_path("app/public/{$company->identification_number}"));
-            }
+            StorageService::ensureDirectory("public/{$company->identification_number}");
         }
 
         if ($request->GuardarEn)
             $signInvoice->GuardarEn = $request->GuardarEn."\\FE-{$resolution->next_consecutive}.xml";
         else
-            $signInvoice->GuardarEn = storage_path("app/public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml");
+            $signInvoice->GuardarEn = StorageService::tempPath("public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml");
 
         $sendBillSync = new SendBillSync($company->certificate->path, $company->certificate->password);
         $sendBillSync->To = $company->software->url;
@@ -360,7 +358,7 @@ class InvoiceExportController extends Controller
         if ($request->GuardarEn)
             $sendBillSync->contentFile = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), $request->GuardarEn."\\FES-{$resolution->next_consecutive}");
         else
-            $sendBillSync->contentFile = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), storage_path("app/public/{$company->identification_number}/FES-{$resolution->next_consecutive}"));
+            $sendBillSync->contentFile = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), StorageService::tempPath("public/{$company->identification_number}/FES-{$resolution->next_consecutive}"));
 
         $QRStr = $this->createPDF($user, $company, $customer, $typeDocument, $resolution, $date, $time, $paymentForm, $request, $signInvoice->ConsultarCUFE(), "INVOICE", $withHoldingTaxTotal, $notes, NULL);
 
@@ -408,7 +406,7 @@ class InvoiceExportController extends Controller
                     $invoice_doc->state_document_id = 1;
                     $invoice_doc->cufe = $cufecude;
                     $invoice_doc->save();
-                    $signedxml = file_get_contents(storage_path("app/xml/{$company->id}/".$respuestadian->Envelope->Body->SendBillSyncResponse->SendBillSyncResult->XmlFileName.".xml"));
+                    $signedxml = file_get_contents(StorageService::tempPath("xml/{$company->id}/".$respuestadian->Envelope->Body->SendBillSyncResponse->SendBillSyncResult->XmlFileName.".xml"));
 //                    $xml->loadXML($signedxml);
                     if(strpos($signedxml, "</Invoice>") > 0)
                         $td = '/Invoice';
@@ -491,7 +489,7 @@ class InvoiceExportController extends Controller
         }
         else{
             try{
-                $respuestadian = $sendBillSync->signToSend(storage_path("app/public/{$company->identification_number}/ReqFE-{$resolution->next_consecutive}.xml"))->getResponseToObject(storage_path("app/public/{$company->identification_number}/RptaFE-{$resolution->next_consecutive}.xml"));
+                $respuestadian = $sendBillSync->signToSend(StorageService::tempPath("public/{$company->identification_number}/ReqFE-{$resolution->next_consecutive}.xml"))->getResponseToObject(StorageService::tempPath("public/{$company->identification_number}/RptaFE-{$resolution->next_consecutive}.xml"));
                 if(isset($respuestadian->html))
                     return [
                         'success' => false,
@@ -506,7 +504,7 @@ class InvoiceExportController extends Controller
                     $invoice_doc->state_document_id = 1;
                     $invoice_doc->cufe = $cufecude;
                     $invoice_doc->save();
-                    $signedxml = file_get_contents(storage_path("app/xml/{$company->id}/".$respuestadian->Envelope->Body->SendBillSyncResponse->SendBillSyncResult->XmlFileName.".xml"));
+                    $signedxml = file_get_contents(StorageService::tempPath("xml/{$company->id}/".$respuestadian->Envelope->Body->SendBillSyncResponse->SendBillSyncResult->XmlFileName.".xml"));
 //                    $xml->loadXML($signedxml);
                     if(strpos($signedxml, "</Invoice>") > 0)
                         $td = '/Invoice';
@@ -524,12 +522,12 @@ class InvoiceExportController extends Controller
                     $attacheddocument = $this->createXML(compact('user', 'company', 'customer', 'resolution', 'typeDocument', 'cufecude', 'signedxml', 'appresponsexml', 'fechavalidacion', 'horavalidacion', 'document_number'));
                     // Signature XML
                     $signAttachedDocument = new SignAttachedDocument($company->certificate->path, $company->certificate->password);
-                    $signAttachedDocument->GuardarEn = storage_path("app/public/{$company->identification_number}/{$filename}.xml");
+                    $signAttachedDocument->GuardarEn = StorageService::tempPath("public/{$company->identification_number}/{$filename}.xml");
 
                     $at = $signAttachedDocument->sign($attacheddocument)->xml;
 //                    $at = str_replace("&gt;", ">", str_replace("&quot;", '"', str_replace("&lt;", "<", $at)));
-                    $file = fopen(storage_path("app/public/{$company->identification_number}/{$filename}".".xml"), "w");
-//                    $file = fopen(storage_path("app/public/{$company->identification_number}/Attachment-".$this->valueXML($signedxml, $td."/cbc:ID/").".xml"), "w");
+                    $file = fopen(StorageService::tempPath("public/{$company->identification_number}/{$filename}".".xml"), "w");
+//                    $file = fopen(StorageService::tempPath("public/{$company->identification_number}/Attachment-".$this->valueXML($signedxml, $td."/cbc:ID/").".xml"), "w");
                     fwrite($file, $at);
                     fclose($file);
                     if(isset($request->annexes))
@@ -567,16 +565,28 @@ class InvoiceExportController extends Controller
             } catch (\Exception $e) {
                 return $e->getMessage().' '.preg_replace("/[\r\n|\n|\r]+/", "", json_encode($respuestadian));
             }
+
+            // Subir archivos a S3 si está configurado
+            StorageService::uploadBatchIfS3([
+                "public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml",
+                "public/{$company->identification_number}/FES-{$resolution->next_consecutive}.xml",
+                "public/{$company->identification_number}/FES-{$resolution->next_consecutive}.zip",
+                "public/{$company->identification_number}/FES-{$resolution->next_consecutive}.pdf",
+                "public/{$company->identification_number}/ReqFE-{$resolution->next_consecutive}.xml",
+                "public/{$company->identification_number}/RptaFE-{$resolution->next_consecutive}.xml",
+                "public/{$company->identification_number}/{$filename}.xml",
+            ]);
+
             return [
                 'message' => "{$typeDocument->name} #{$resolution->next_consecutive} generada con éxito",
                 'send_email_success' => (null !== $invoice && $request->sendmail == true) ?? $invoice[0]->send_email_success == 1,
                 'send_email_date_time' => (null !== $invoice && $request->sendmail == true) ?? Carbon::now()->format('Y-m-d H:i'),
                 'ResponseDian' => $respuestadian,
-                'invoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/FES-{$resolution->next_consecutive}.xml"))),
-                'zipinvoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/FES-{$resolution->next_consecutive}.zip"))),
-                'unsignedinvoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml"))),
-                'reqfe'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/ReqFE-{$resolution->next_consecutive}.xml"))),
-                'rptafe'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/RptaFE-{$resolution->next_consecutive}.xml"))),
+                'invoicexml'=>StorageService::getBase64Auto("public/{$company->identification_number}/FES-{$resolution->next_consecutive}.xml"),
+                'zipinvoicexml'=>StorageService::getBase64Auto("public/{$company->identification_number}/FES-{$resolution->next_consecutive}.zip"),
+                'unsignedinvoicexml'=>StorageService::getBase64Auto("public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml"),
+                'reqfe'=>StorageService::getBase64Auto("public/{$company->identification_number}/ReqFE-{$resolution->next_consecutive}.xml"),
+                'rptafe'=>StorageService::getBase64Auto("public/{$company->identification_number}/RptaFE-{$resolution->next_consecutive}.xml"),
                 'attacheddocument'=>base64_encode($at),
                 'urlinvoicexml'=>"FES-{$resolution->next_consecutive}.xml",
                 'urlinvoicepdf'=>"FES-{$resolution->next_consecutive}.pdf",
@@ -809,10 +819,8 @@ class InvoiceExportController extends Controller
             $signInvoice->GuardarEn = $request->GuardarEn."\\FE-{$resolution->next_consecutive}.xml";
         }
         else{
-            if (!is_dir(storage_path("app/public/{$company->identification_number}"))) {
-                mkdir(storage_path("app/public/{$company->identification_number}"));
-            }
-            $signInvoice->GuardarEn = storage_path("app/public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml");
+            StorageService::ensureDirectory("public/{$company->identification_number}");
+            $signInvoice->GuardarEn = StorageService::tempPath("public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml");
         }
         $sendTestSetAsync = new SendTestSetAsync($company->certificate->path, $company->certificate->password);
         $sendTestSetAsync->To = $company->software->url;
@@ -820,7 +828,7 @@ class InvoiceExportController extends Controller
         if ($request->GuardarEn)
           $sendTestSetAsync->contentFile = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), $request->GuardarEn."\\FES-{$resolution->next_consecutive}");
         else
-          $sendTestSetAsync->contentFile = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), storage_path("app/public/{$company->identification_number}/FES-{$resolution->next_consecutive}"));
+          $sendTestSetAsync->contentFile = $this->zipBase64($company, $resolution, $signInvoice->sign($invoice), StorageService::tempPath("public/{$company->identification_number}/FES-{$resolution->next_consecutive}"));
         $sendTestSetAsync->testSetId = $testSetId;
 
         $QRStr = $this->createPDF($user, $company, $customer, $typeDocument, $resolution, $date, $time, $paymentForm, $request, $signInvoice->ConsultarCUFE(), "INVOICE", $withHoldingTaxTotal, $notes, NULL);
@@ -864,15 +872,27 @@ class InvoiceExportController extends Controller
                 'certificate_days_left' => $certificate_days_left,
                 'resolution_days_left' => $this->days_between_dates(Carbon::now()->format('Y-m-d'), $resolution->date_to),
             ];
-        else
+        else {
+            $respDian = $sendTestSetAsync->signToSend(StorageService::tempPath("public/{$company->identification_number}/ReqFE-{$resolution->next_consecutive}.xml"))->getResponseToObject(StorageService::tempPath("public/{$company->identification_number}/RptaFE-{$resolution->next_consecutive}.xml"));
+
+            // Subir archivos a S3 si está configurado
+            StorageService::uploadBatchIfS3([
+                "public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml",
+                "public/{$company->identification_number}/FES-{$resolution->next_consecutive}.xml",
+                "public/{$company->identification_number}/FES-{$resolution->next_consecutive}.zip",
+                "public/{$company->identification_number}/FES-{$resolution->next_consecutive}.pdf",
+                "public/{$company->identification_number}/ReqFE-{$resolution->next_consecutive}.xml",
+                "public/{$company->identification_number}/RptaFE-{$resolution->next_consecutive}.xml",
+            ]);
+
             return [
                 'message' => "{$typeDocument->name} #{$resolution->next_consecutive} generada con éxito",
-                'ResponseDian' => $sendTestSetAsync->signToSend(storage_path("app/public/{$company->identification_number}/ReqFE-{$resolution->next_consecutive}.xml"))->getResponseToObject(storage_path("app/public/{$company->identification_number}/RptaFE-{$resolution->next_consecutive}.xml")),
-                'invoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/FES-{$resolution->next_consecutive}.xml"))),
-                'zipinvoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/FES-{$resolution->next_consecutive}.zip"))),
-                'unsignedinvoicexml'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml"))),
-                'reqfe'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/ReqFE-{$resolution->next_consecutive}.xml"))),
-                'rptafe'=>base64_encode(file_get_contents(storage_path("app/public/{$company->identification_number}/RptaFE-{$resolution->next_consecutive}.xml"))),
+                'ResponseDian' => $respDian,
+                'invoicexml'=>StorageService::getBase64Auto("public/{$company->identification_number}/FES-{$resolution->next_consecutive}.xml"),
+                'zipinvoicexml'=>StorageService::getBase64Auto("public/{$company->identification_number}/FES-{$resolution->next_consecutive}.zip"),
+                'unsignedinvoicexml'=>StorageService::getBase64Auto("public/{$company->identification_number}/FE-{$resolution->next_consecutive}.xml"),
+                'reqfe'=>StorageService::getBase64Auto("public/{$company->identification_number}/ReqFE-{$resolution->next_consecutive}.xml"),
+                'rptafe'=>StorageService::getBase64Auto("public/{$company->identification_number}/RptaFE-{$resolution->next_consecutive}.xml"),
                 'urlinvoicexml'=>"FES-{$resolution->next_consecutive}.xml",
                 'urlinvoicepdf'=>"FES-{$resolution->next_consecutive}.pdf",
                 'urlinvoiceattached'=>"Attachment-{$resolution->next_consecutive}.xml",
@@ -881,5 +901,6 @@ class InvoiceExportController extends Controller
                 'certificate_days_left' => $certificate_days_left,
                 'resolution_days_left' => $this->days_between_dates(Carbon::now()->format('Y-m-d'), $resolution->date_to),
             ];
+        }
     }
 }
