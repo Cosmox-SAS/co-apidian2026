@@ -212,6 +212,11 @@ class InvoiceExportRequest extends FormRequest
             'order_reference.id_order' => 'nullable|string',
             'order_reference.issue_date_order' => 'nullable|date_format:Y-m-d',
 
+            // Receipt Document References
+            'receipt_document_references' => 'nullable|array',
+            'receipt_document_references.*.id' => 'required_with:receipt_document_references|string|max:20',
+            'receipt_document_references.*.issue_date' => 'nullable|date_format:Y-m-d',
+
             // Additional Document Reference
             'additional_document_reference' => 'nullable|array',
             'additional_document_reference.id' => 'nullable|string',
