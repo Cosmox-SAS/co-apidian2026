@@ -327,6 +327,7 @@ class InvoiceRequest extends FormRequest
             // Holding Tax totals
             'with_holding_tax_total' => 'nullable|array',
             'with_holding_tax_total.*.tax_id' => 'nullable|exists:taxes,id|numeric',
+            'with_holding_tax_total.*.tax_name' => 'nullable|string',
             'with_holding_tax_total.*.percent' => 'nullable|numeric',
             'with_holding_tax_total.*.tax_amount' => 'nullable|numeric',
             'with_holding_tax_total.*.taxable_amount' => 'nullable|numeric',

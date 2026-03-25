@@ -401,7 +401,7 @@
                                     <tr>
                                         <?php $TotalImpuestos = $TotalImpuestos + $item['tax_amount'] ?>
                                         @inject('tax', 'App\\Tax')
-                                        <td>{{$tax->findOrFail($item['tax_id'])['name']}}</td>
+                                        <td>{{ isset($item['tax_name']) && $item['tax_name'] ? $item['tax_name'] : $tax->findOrFail($item['tax_id'])['name'] }}</td>
                                         <td class="text-right">{{number_format($item['taxable_amount'], 2)}}</td>
                                         @if(isset($request['deliveryterms']))
                                             <td class="text-right" style="background-color: rgb(194, 241, 194);">{{number_format($item['taxable_amount'] / $trmValue, 2)}}</td>
@@ -450,7 +450,7 @@
                                     <tr>
                                         <?php $TotalRetenciones = $TotalRetenciones + $item['tax_amount'] ?>
                                         @inject('tax', 'App\\Tax')
-                                        <td>{{$tax->findOrFail($item['tax_id'])['name']}}</td>
+                                        <td>{{ isset($item['tax_name']) && $item['tax_name'] ? $item['tax_name'] : $tax->findOrFail($item['tax_id'])['name'] }}</td>
                                         <td class="text-right">{{number_format($item['taxable_amount'], 2)}}</td>
                                         @if(isset($request['deliveryterms']))
                                             <td class="text-right" style="background-color: rgb(194, 241, 194);">{{number_format($item['taxable_amount'] / $trmValue, 2)}}</td>

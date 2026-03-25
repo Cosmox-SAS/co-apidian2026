@@ -408,7 +408,7 @@
                             @foreach($request->tax_totals as $item)
                                 <?php $TotalImpuestos += $item['tax_amount']; ?>
                                 @inject('tax', 'App\Tax')
-                                <div>{{$tax->findOrFail($item['tax_id'])['name']}} 
+                                <div>{{ isset($item['tax_name']) && $item['tax_name'] ? $item['tax_name'] : $tax->findOrFail($item['tax_id'])['name'] }} 
                                     @if(isset($item['percent']))
                                         {{ number_format($item['percent'], 2) }}%
                                     @elseif(isset($item['per_unit_amount']) && isset($item['base_unit_measure']))
@@ -430,7 +430,7 @@
                             @foreach($withHoldingTaxTotal as $item)
                                 <?php $TotalRetenciones += $item['tax_amount']; ?>
                                 @inject('tax', 'App\Tax')
-                                <div>{{$tax->findOrFail($item['tax_id'])['name']}}: {{number_format($item['tax_amount'], 2)}}</div>
+                                <div>{{ isset($item['tax_name']) && $item['tax_name'] ? $item['tax_name'] : $tax->findOrFail($item['tax_id'])['name'] }}: {{number_format($item['tax_amount'], 2)}}</div>
                             @endforeach
                         @endif
                     </td>

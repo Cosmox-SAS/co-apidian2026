@@ -390,7 +390,7 @@
                                     <tr>
                                         <?php $TotalImpuestos = $TotalImpuestos + $item['tax_amount'] ?>
                                         @inject('tax', 'App\Tax')
-                                        <td>{{$tax->findOrFail($item['tax_id'])['name']}}</td>
+                                        <td>{{ isset($item['tax_name']) && $item['tax_name'] ? $item['tax_name'] : $tax->findOrFail($item['tax_id'])['name'] }}</td>
                                         <td class="text-right">{{number_format($item['taxable_amount'], 2)}}</td>
                                         <td class="text-right">
                                             @if(isset($item['percent']))
@@ -413,7 +413,7 @@
                                     <tr>
                                         <?php $TotalRetenciones = $TotalRetenciones + $item['tax_amount'] ?>
                                         @inject('tax', 'App\Tax')
-                                        <td>{{$tax->findOrFail($item['tax_id'])['name']}}</td>
+                                        <td>{{ isset($item['tax_name']) && $item['tax_name'] ? $item['tax_name'] : $tax->findOrFail($item['tax_id'])['name'] }}</td>
                                         <td class="text-right">{{number_format($item['taxable_amount'], 2)}}</td>
                                         <td class="text-right">
                                             @if(isset($item['percent']))
