@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class UpdateTaxNameForZZCodeId15 extends Migration
 {
@@ -12,16 +13,36 @@ class UpdateTaxNameForZZCodeId15 extends Migration
      */
     public function up()
     {
-        DB::table('taxes')
-            ->where('id', 15)
-            ->where(function ($query) {
-                $query->where('code', 'ZZ')
-                    ->orWhere('code', "ZZ\r");
-            })
-            ->update([
-                'name' => 'No aplica *',
-                'code' => 'ZZ',
-            ]);
+        try {
+            if (!Schema::hasTable('taxes')) {
+                return;
+            }
+
+            $exists = DB::table('taxes')
+                ->where('id', 15)
+                ->where(function ($query) {
+                    $query->where('code', 'ZZ')
+                        ->orWhere('code', "ZZ\r");
+                })
+                ->exists();
+
+            if (!$exists) {
+                return;
+            }
+
+            DB::table('taxes')
+                ->where('id', 15)
+                ->where(function ($query) {
+                    $query->where('code', 'ZZ')
+                        ->orWhere('code', "ZZ\r");
+                })
+                ->update([
+                    'name' => 'No aplica *',
+                    'code' => 'ZZ',
+                ]);
+        } catch (\Exception $e) {
+            return;
+        }
     }
 
     /**
@@ -31,14 +52,34 @@ class UpdateTaxNameForZZCodeId15 extends Migration
      */
     public function down()
     {
-        DB::table('taxes')
-            ->where('id', 15)
-            ->where(function ($query) {
-                $query->where('code', 'ZZ')
-                    ->orWhere('code', "ZZ\r");
-            })
-            ->update([
-                'name' => 'No aplica',
-            ]);
+        try {
+            if (!Schema::hasTable('taxes')) {
+                return;
+            }
+
+            $exists = DB::table('taxes')
+                ->where('id', 15)
+                ->where(function ($query) {
+                    $query->where('code', 'ZZ')
+                        ->orWhere('code', "ZZ\r");
+                })
+                ->exists();
+
+            if (!$exists) {
+                return;
+            }
+
+            DB::table('taxes')
+                ->where('id', 15)
+                ->where(function ($query) {
+                    $query->where('code', 'ZZ')
+                        ->orWhere('code', "ZZ\r");
+                })
+                ->update([
+                    'name' => 'No aplica',
+                ]);
+        } catch (\Exception $e) {
+            return;
+        }
     }
 }

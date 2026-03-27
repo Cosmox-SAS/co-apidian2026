@@ -14,7 +14,7 @@ class UpdateTaxesTable extends Migration
 	public function up()
 	{
         Tax::where('code', '02')->update(['id' => 2, 'description' => 'Impuesto al Consumo Departamental Nominal', 'code' => '02']);
-        Tax::where('code', 'ZZ')->update(['id' => 15, 'name' => 'Nombre de la figura tributaria', 'description' => 'Otros tributos, tasas, contribuciones, y similares', 'code' => 'ZZ']);
+        Tax::where('code', 'ZZ')->update(['id' => 15, 'name' => 'No aplica *', 'description' => 'Otros tributos, tasas, contribuciones, y similares', 'code' => 'ZZ']);
         Tax::create(['name' => 'ICL', 'description' => 'Impuesto al Consumo de Licores','code' => '32']);
         Tax::where('code', '32')->update(['id' => 19, 'name' => 'ICL', 'description' => 'Impuesto al Consumo de Licores','code' => '32']);
         Tax::create(['name' => 'INPP', 'description' => 'Impuesto nacional productos plásticos','code' => '33']);
