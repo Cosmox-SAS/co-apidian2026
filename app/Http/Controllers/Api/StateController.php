@@ -109,6 +109,7 @@ class StateController extends Controller
         $typeDocument = TypeDocument::findOrFail(7);
         $resolution = NULL;
         $customer = NULL;
+        $filename = '';
         //        $xml = new \DOMDocument;
         $ar = new \DOMDocument;
         if ($GuardarEn){
@@ -502,11 +503,13 @@ class StateController extends Controller
             } catch (\Exception $e) {
                 return $e->getMessage().' '.preg_replace("/[\r\n|\n|\r]+/", "", json_encode($respuestadian));
             }
-            StorageService::uploadBatchIfS3([
+            $batchFiles = [
                 "public/{$company->identification_number}/ReqZIP-{$trackId}.xml",
                 "public/{$company->identification_number}/RptaZIP-{$trackId}.xml",
-                "public/{$company->identification_number}/{$filename}.xml",
-            ]);
+            ];
+            if($filename !== '')
+                $batchFiles[] = "public/{$company->identification_number}/{$filename}.xml";
+            StorageService::uploadBatchIfS3($batchFiles);
             return [
                 'message' => 'Consulta generada con éxito',
                 'ResponseDian' => $respuestadian,
@@ -597,6 +600,7 @@ class StateController extends Controller
         $resolution = NULL;
         $customer = NULL;
         $cufecude = '';
+        $filename = '';
 //        $xml = new \DOMDocument;
         $document_generator_warning = "";
         $ar = new \DOMDocument;
@@ -1000,11 +1004,13 @@ class StateController extends Controller
             } catch (\Exception $e) {
                 return $e->getMessage().' '.preg_replace("/[\r\n|\n|\r]+/", "", json_encode($respuestadian));
             }
-            StorageService::uploadBatchIfS3([
+            $batchFiles = [
                 "public/{$company->identification_number}/ReqZIP-{$trackId}.xml",
                 "public/{$company->identification_number}/RptaZIP-{$trackId}.xml",
-                "public/{$company->identification_number}/{$filename}.xml",
-            ]);
+            ];
+            if($filename !== '')
+                $batchFiles[] = "public/{$company->identification_number}/{$filename}.xml";
+            StorageService::uploadBatchIfS3($batchFiles);
             return [
                 'message' => 'Consulta generada con éxito'.$document_generator_warning,
                 'ResponseDian' => $respuestadian,
