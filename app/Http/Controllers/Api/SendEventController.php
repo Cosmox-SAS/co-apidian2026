@@ -610,8 +610,15 @@ class SendEventController extends Controller
             $typerejection = NULL;
 
         if($request->event_id == "5"){
-            $customer_info = Customer::where('identification_number', $invoice_doc->customer)->firstOrFail();
-            $notes = "Manifiesto bajo la gravedad de juramento que transcurridos 3 días hábiles contados desde la creación del Recibo de bienes y servicios, el adquirente {$customer_info->name} identificado con NIT {$customer_info->identification_number} no manifestó expresamente la aceptación o rechazo de la referida factura, ni reclamó en contra de su contenido.";
+            $customer_info = Customer::where('identification_number', $invoice_doc->customer)->first();
+            if($customer_info){
+                $customer_name = $customer_info->name;
+                $customer_id = $customer_info->identification_number;
+            } else {
+                $customer_name = $invoice_doc->client ?? $invoice_doc->customer;
+                $customer_id = $invoice_doc->customer;
+            }
+            $notes = "Manifiesto bajo la gravedad de juramento que transcurridos 3 días hábiles contados desde la creación del Recibo de bienes y servicios, el adquirente {$customer_name} identificado con NIT {$customer_id} no manifestó expresamente la aceptación o rechazo de la referida factura, ni reclamó en contra de su contenido.";
         }
         else
             $notes = NULL;
@@ -875,13 +882,13 @@ class SendEventController extends Controller
                                     break;
                                 case 2:
                                     $invoice[0]->rechazo = 1;
-                                    if(is_null($invoice[0]->rechazo) || $invoice[0]->rechazo == ""){
+                                    if(is_null($invoice[0]->cude_rechazo) || $invoice[0]->cude_rechazo == ""){
                                         $invoice[0]->cude_rechazo = $signEvent->ConsultarCUDEEVENT();
                                         $invoice[0]->payload_rechazo = json_encode($r);
                                     }
                                     break;
                                 case 3:
-                                    $invoice[0]->cude_rec_bienes = 1;
+                                    $invoice[0]->rec_bienes = 1;
                                     if(is_null($invoice[0]->cude_rec_bienes) || $invoice[0]->cude_rec_bienes == ""){
                                         $invoice[0]->cude_rec_bienes = $signEvent->ConsultarCUDEEVENT();
                                         $invoice[0]->payload_rec_bienes = json_encode($r);
@@ -1047,7 +1054,7 @@ class SendEventController extends Controller
             $invoice_doc = Document::where('identification_number', '=', $company->identification_number)
                                    ->where('prefix', '=', $prefix)
                                    ->where('number', '=', substr($number, strpos($number, $prefix) + strlen($prefix)))
-                                   ->where('state_document_id', '=', 1)->firstOrFail();
+                                   ->where('state_document_id', '=', 1)->first();
             if(is_null($invoice_doc)){
 //                $invoice_doc = new Document();
 //                $invoice_doc->identification_number = $company->identification_number;
@@ -1259,7 +1266,7 @@ class SendEventController extends Controller
         else{
             switch($event->id){
                 case 1:
-                    if($exists[0]->acu_recibo == 1)
+                    if($exists[0]->acu_recibo == 1){
                         return [
                             'success' => false,
                             'message' => "Ya se registro este evento para este documento.",
@@ -1270,9 +1277,10 @@ class SendEventController extends Controller
                             'invoice_number' => $exists[0]->prefix.' - '.$exists[0]->number,
                             'invoice_cufe' => $exists[0]->cufe,
                         ];
+                    }
                     break;
                 case 2:
-                    if($exists[0]->rechazo == 1)
+                    if($exists[0]->rechazo == 1){
                         return [
                             'success' => false,
                             'message' => "Ya se registro este evento para este documento.",
@@ -1283,9 +1291,10 @@ class SendEventController extends Controller
                             'invoice_number' => $exists[0]->prefix.' - '.$exists[0]->number,
                             'invoice_cufe' => $exists[0]->cufe,
                         ];
+                    }
                     break;
                 case 3:
-                    if($exists[0]->rec_bienes == 1)
+                    if($exists[0]->rec_bienes == 1){
                         return [
                             'success' => false,
                             'message' => "Ya se registro este evento para este documento.",
@@ -1296,9 +1305,10 @@ class SendEventController extends Controller
                             'invoice_number' => $exists[0]->prefix.' - '.$exists[0]->number,
                             'invoice_cufe' => $exists[0]->cufe,
                         ];
+                    }
                     break;
                 case 4:
-                    if($exists[0]->aceptacion == 1)
+                    if($exists[0]->aceptacion == 1){
                         return [
                             'success' => false,
                             'message' => "Ya se registro este evento para este documento.",
@@ -1309,9 +1319,10 @@ class SendEventController extends Controller
                             'invoice_number' => $exists[0]->prefix.' - '.$exists[0]->number,
                             'invoice_cufe' => $exists[0]->cufe,
                         ];
+                    }
                     break;
                 case 5:
-                    if($exists[0]->aceptacion == 1)
+                    if($exists[0]->aceptacion == 1){
                         return [
                             'success' => false,
                             'message' => "Ya se registro este evento para este documento.",
@@ -1322,6 +1333,7 @@ class SendEventController extends Controller
                             'invoice_number' => $exists[0]->prefix.' - '.$exists[0]->number,
                             'invoice_cufe' => $exists[0]->cufe,
                         ];
+                    }
                     break;
             }
         }
@@ -1404,8 +1416,15 @@ class SendEventController extends Controller
             $typerejection = NULL;
 
         if($request->event_id == "5"){
-            $customer_info = Customer::where('identification_number', $invoice_doc->customer)->firstOrFail();
-            $notes = "Manifiesto bajo la gravedad de juramento que transcurridos 3 días hábiles contados desde la creación del Recibo de bienes y servicios, el adquirente {$customer_info->name} identificado con NIT {$customer_info->identification_number} no manifestó expresamente la aceptación o rechazo de la referida factura, ni reclamó en contra de su contenido.";
+            $customer_info = Customer::where('identification_number', $invoice_doc->customer)->first();
+            if($customer_info){
+                $customer_name = $customer_info->name;
+                $customer_id = $customer_info->identification_number;
+            } else {
+                $customer_name = $invoice_doc->client ?? $invoice_doc->customer;
+                $customer_id = $invoice_doc->customer;
+            }
+            $notes = "Manifiesto bajo la gravedad de juramento que transcurridos 3 días hábiles contados desde la creación del Recibo de bienes y servicios, el adquirente {$customer_name} identificado con NIT {$customer_id} no manifestó expresamente la aceptación o rechazo de la referida factura, ni reclamó en contra de su contenido.";
         }
         else
             $notes = NULL;
@@ -1464,7 +1483,7 @@ class SendEventController extends Controller
                         $r = array_merge($r, array('transmitter_id' => $invoice[0]->identification_number,
                                                    'transmitter_name' => $sender->name,
                                                    'receiver_id' => $invoice[0]->customer,
-                                                   'receiver_name' => $customer_info->name,
+                                                   'receiver_name' => $customer_name,
                                                    'invoice_number' => $invoice[0]->number,
                                                    'invoice_cufe' => $invoice[0]->date_issue,
                                                    'invoice_total' => $invoice[0]->total,
@@ -1562,7 +1581,7 @@ class SendEventController extends Controller
                         $r = array_merge($r, array('transmitter_id' => $invoice[0]->identification_number,
                                                    'transmitter_name' => $sender->name,
                                                    'receiver_id' => $invoice[0]->customer,
-                                                   'receiver_name' => $customer_info->name,
+                                                   'receiver_name' => $customer_name,
                                                    'invoice_number' => $invoice[0]->number,
                                                    'invoice_date' => $invoice[0]->date_issue,
                                                    'invoice_cufe' => $invoice[0]->cufe,
@@ -1666,13 +1685,13 @@ class SendEventController extends Controller
                                     break;
                                 case 2:
                                     $invoice[0]->rechazo = 1;
-                                    if(is_null($invoice[0]->rechazo) || $invoice[0]->rechazo == ""){
+                                    if(is_null($invoice[0]->cude_rechazo) || $invoice[0]->cude_rechazo == ""){
                                         $invoice[0]->cude_rechazo = $signEvent->ConsultarCUDEEVENT();
                                         $invoice[0]->payload_rechazo = json_encode($r);
                                     }
                                     break;
                                 case 3:
-                                    $invoice[0]->cude_rec_bienes = 1;
+                                    $invoice[0]->rec_bienes = 1;
                                     if(is_null($invoice[0]->cude_rec_bienes) || $invoice[0]->cude_rec_bienes == ""){
                                         $invoice[0]->cude_rec_bienes = $signEvent->ConsultarCUDEEVENT();
                                         $invoice[0]->payload_rec_bienes = json_encode($r);
