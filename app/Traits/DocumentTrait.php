@@ -799,10 +799,13 @@ trait DocumentTrait
             }
 
             $imageQr    =  "data:image/png;base64, ".$qrBase64;
-            $pdf = $this->initMPdf('payroll');
-            $pdf->SetHTMLHeader(View::make("pdfs.payroll.header", compact("resolution", "period", "user", "request", "company", "imgLogo")));
-            $pdf->SetHTMLFooter(View::make("pdfs.payroll.footer", compact("resolution", "request", "cufecude", "period")));
-            $pdf->WriteHTML(View::make("pdfs.payroll.template", compact("user", "company", "predecessor", "period", "worker", "resolution", "payment", "typeDocument", "notes", "accrued", "deductions", "request", "imageQr")), HTMLParserMode::HTML_BODY);
+            $template_pdf = $company->graphic_representation_template ?? 1;
+            $temp_template_pdf = $template_pdf;
+
+            $pdf = $this->initMPdf('payroll', $temp_template_pdf);
+            $pdf->SetHTMLHeader(View::make("pdfs.payroll.header". $template_pdf, compact("resolution", "period", "user", "request", "company", "imgLogo")));
+            $pdf->SetHTMLFooter(View::make("pdfs.payroll.footer". $template_pdf, compact("resolution", "request", "cufecude", "period")));
+            $pdf->WriteHTML(View::make("pdfs.payroll.template". $temp_template_pdf, compact("user", "company", "predecessor", "period", "worker", "resolution", "payment", "typeDocument", "notes", "accrued", "deductions", "request", "imageQr")), HTMLParserMode::HTML_BODY);
 
             if($request->type_document_id == 9)
                 $filename = StorageService::tempPath("public/{$company->identification_number}/NIS-{$resolution->next_consecutive}.pdf");
