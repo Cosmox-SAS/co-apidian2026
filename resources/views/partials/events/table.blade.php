@@ -1,11 +1,19 @@
-{{-- Toast de notificación para descargas --}}
-<div id="event-toast" style="display:none; position:fixed; top:20px; right:20px; z-index:9999; min-width:300px; max-width:450px;">
-    <div class="alert alert-warning alert-dismissible fade show mb-0" role="alert" style="box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-        <strong><i class="fa fa-exclamation-triangle"></i> Aviso:</strong>
-        <span id="event-toast-msg"></span>
+{{-- Toast de notificación para eventos --}}
+<div id="event-toast" style="display:none; position:fixed; top:20px; right:20px; z-index:9999; min-width:320px; max-width:500px;">
+    <div id="event-toast-alert" class="alert alert-dismissible fade show mb-0" role="alert" style="box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+        <strong><i id="event-toast-icon" class="fa fa-exclamation-triangle"></i> <span id="event-toast-title">Aviso:</span></strong>
+        <div id="event-toast-msg" style="margin-top:5px;"></div>
         <button type="button" class="close" onclick="document.getElementById('event-toast').style.display='none'">
             <span>&times;</span>
         </button>
+    </div>
+</div>
+
+{{-- Overlay de carga --}}
+<div id="event-loading" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:9998; justify-content:center; align-items:center;">
+    <div style="background:white; padding:30px 40px; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.3); text-align:center;">
+        <i class="fa fa-spinner fa-spin fa-2x"></i>
+        <div style="margin-top:10px;">Enviando evento a la DIAN...</div>
     </div>
 </div>
 
@@ -105,7 +113,7 @@
                         <td>
                             @if($document->acu_recibo == 0)
                                 @if($document->type_document_id == 1 || $document->type_document_id == 2 || $document->type_document_id == 3)
-                                    <form method="POST" action="{{ route('acceptrejectdocument') }}">
+                                    <form class="event-form" method="POST" action="{{ route('acceptrejectdocument') }}">
                                         <input type="hidden" name="company_idnumber" value="{{$document->identification_number}}">
                                         <input type="hidden" name="company_dv" value="{{$document->dv}}">
                                         <input type="hidden" name="company_name" value="{{$document->name_seller}}">
@@ -113,6 +121,7 @@
                                         <input type="hidden" name="prefix" value="{{$document->prefix}}">
                                         <input type="hidden" name="docnumber" value="{{$document->number}}">
                                         <input type="hidden" name="issuedate" value="{{$document->date_issue}}">
+                                        <input type="hidden" name="cufe" value="{{$document->cufe}}">
                                         <input type="hidden" name="eventcode" value="1">
                                         <button type="submit" class="fa fa-rss" title="Documento electrónico por el cual el Adquiriente manifiesta que ha recibido la factura electrónica, de conformidad con el artículo 774 del Código de Comercio." class="btn btn-primary"></button>
                                     </form>
@@ -124,7 +133,7 @@
                         <td>
                             @if($document->rec_bienes == 0)
                                 @if($document->type_document_id == 1 || $document->type_document_id == 2 || $document->type_document_id == 3)
-                                    <form method="POST" action="{{ route('acceptrejectdocument') }}">
+                                    <form class="event-form" method="POST" action="{{ route('acceptrejectdocument') }}">
                                         <input type="hidden" name="company_idnumber" value="{{$document->identification_number}}">
                                         <input type="hidden" name="company_dv" value="{{$document->dv}}">
                                         <input type="hidden" name="company_name" value="{{$document->name_seller}}">
@@ -132,6 +141,7 @@
                                         <input type="hidden" name="prefix" value="{{$document->prefix}}">
                                         <input type="hidden" name="docnumber" value="{{$document->number}}">
                                         <input type="hidden" name="issuedate" value="{{$document->date_issue}}">
+                                        <input type="hidden" name="cufe" value="{{$document->cufe}}">
                                         <input type="hidden" name="eventcode" value="3">
                                         <button type="submit" class="fa fa-rss" title="Documento electrónico por el cual el Adquiriente informa del recibo de los bienes o servicios adquiridos, de conformidad con el artículo 773 del Código de Comercio y en concordancia con el parágrafo 1 del artículo 2.2.2.53.4. del Decreto 1074 de 2015 Único Reglamentario del Sector Comercio, Industria y Turismo" class="btn btn-primary"></button>
                                     </form>
@@ -143,7 +153,7 @@
                         <td>
                             @if($document->aceptacion == 0)
                                 @if($document->type_document_id == 1 || $document->type_document_id == 2 || $document->type_document_id == 3)
-                                    <form method="POST" action="{{ route('acceptrejectdocument') }}">
+                                    <form class="event-form" method="POST" action="{{ route('acceptrejectdocument') }}">
                                         <input type="hidden" name="company_idnumber" value="{{$document->identification_number}}">
                                         <input type="hidden" name="company_dv" value="{{$document->dv}}">
                                         <input type="hidden" name="company_name" value="{{$document->name_seller}}">
@@ -151,6 +161,7 @@
                                         <input type="hidden" name="prefix" value="{{$document->prefix}}">
                                         <input type="hidden" name="docnumber" value="{{$document->number}}">
                                         <input type="hidden" name="issuedate" value="{{$document->date_issue}}">
+                                        <input type="hidden" name="cufe" value="{{$document->cufe}}">
                                         <input type="hidden" name="eventcode" value="4">
                                         <button type="submit" class="fa fa-rss" title="Documento electrónico por el cual el Adquiriente informa al Emisor que acepta expresamente el Documento Electrónico que origina este tipo de ApplicationResponse de conformidad con el artículo 773 del Código de Comercio y en concordancia con el numeral 1 del artículo 2.2.2.53.4. del Decreto 1074 de 2015, Único Reglamentario del Sector Comercio, Industria y Turismo." class="btn btn-primary"></button>
                                     </form>
@@ -167,7 +178,7 @@
                                     <!-- Modal Motivo de Rechazo -->
                                     <div class="modal" tabindex="-1" role="dialog" id="MotivoRechazo{{$document->cufe}}">
                                         <div class="modal-dialog" role="document">
-                                            <form method="POST" action="{{ route('acceptrejectdocument') }}">
+                                            <form class="event-form" method="POST" action="{{ route('acceptrejectdocument') }}">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title">Motivo de Rechazo Factura {{$document->number}}</h5>
@@ -187,6 +198,7 @@
                                                             <input type="hidden" name="prefix" value="{{$document->prefix}}">
                                                             <input type="hidden" name="docnumber" value="{{$document->number}}">
                                                             <input type="hidden" name="issuedate" value="{{$document->date_issue}}">
+                                                            <input type="hidden" name="cufe" value="{{$document->cufe}}">
                                                             <input type="hidden" name="eventcode" value="2">
                                                             <div>
                                                                 <label class="center-block">Motivo de Rechazo.</label>
@@ -229,23 +241,72 @@
 @endif
 
 <script>
-function showEventToast(message) {
+function showEventToast(message, success) {
     var toast = document.getElementById('event-toast');
+    var alert = document.getElementById('event-toast-alert');
+    var icon = document.getElementById('event-toast-icon');
+    var title = document.getElementById('event-toast-title');
+    alert.className = 'alert alert-dismissible fade show mb-0 ' + (success ? 'alert-success' : 'alert-danger');
+    icon.className = success ? 'fa fa-check-circle' : 'fa fa-exclamation-triangle';
+    title.textContent = success ? 'Éxito:' : 'Aviso:';
     document.getElementById('event-toast-msg').textContent = message;
     toast.style.display = 'block';
-    setTimeout(function() { toast.style.display = 'none'; }, 6000);
+    setTimeout(function() { toast.style.display = 'none'; }, success ? 5000 : 10000);
 }
+
+function showEventLoading(show) {
+    var el = document.getElementById('event-loading');
+    el.style.display = show ? 'flex' : 'none';
+}
+
+function submitEventForm(form) {
+    showEventLoading(true);
+    var formData = new FormData(form);
+    fetch(form.action, {
+        method: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+        },
+        body: formData
+    }).then(function(response) {
+        return response.json();
+    }).then(function(data) {
+        showEventLoading(false);
+        if(data.success) {
+            showEventToast(data.message, true);
+            setTimeout(function() { location.reload(); }, 2000);
+        } else {
+            var msg = data.message || 'Error al procesar el evento.';
+            if(data.detail) msg = msg + ' - ' + data.detail;
+            showEventToast(msg, false);
+        }
+    }).catch(function(err) {
+        showEventLoading(false);
+        showEventToast('Error de conexión al enviar el evento: ' + err.message, false);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    var forms = document.querySelectorAll('.event-form');
+    forms.forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitEventForm(form);
+        });
+    });
+});
 
 function downloadEventFile(url) {
     fetch(url).then(function(response) {
         var ct = response.headers.get('content-type') || '';
         if (ct.indexOf('application/json') !== -1) {
             return response.json().then(function(data) {
-                showEventToast(data.message || 'El archivo no fue encontrado.');
+                showEventToast(data.message || 'El archivo no fue encontrado.', false);
             });
         }
         if (!response.ok) {
-            showEventToast('El archivo solicitado no fue encontrado.');
+            showEventToast('El archivo solicitado no fue encontrado.', false);
             return;
         }
         var disposition = response.headers.get('content-disposition');
@@ -264,7 +325,7 @@ function downloadEventFile(url) {
             URL.revokeObjectURL(a.href);
         });
     }).catch(function() {
-        showEventToast('Error al intentar descargar el archivo.');
+        showEventToast('Error al intentar descargar el archivo.', false);
     });
 }
 </script>

@@ -930,11 +930,17 @@ class SendEventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function sendeventdata(SendEventDataRequest $request)
+    public function sendeventdata(SendEventDataRequest $request, $company_idnumber = FALSE)
     {
         // User company
-        $user = auth()->user();
-        $company = $user->company;
+        if($company_idnumber){
+            $company = Company::where('identification_number', $company_idnumber)->firstOrFail();
+            $user = User::where('id', $company->user_id)->firstOrFail();
+        }
+        else{
+            $user = auth()->user();
+            $company = $user->company;
+        }
 
         // Verificar la disponibilidad de la DIAN antes de continuar
         $dian_url = $company->software->url_event;
@@ -948,7 +954,7 @@ class SendEventController extends Controller
 
         // Verify Certificate
         $certificate_days_left = 0;
-        $c = $this->verify_certificate();
+        $c = $this->verify_certificate($user);
         if(!$c['success'])
             return $c;
         else
@@ -1018,7 +1024,7 @@ class SendEventController extends Controller
         ];
         $data_send = json_encode($send);
         $r = new XmlDocumentRequest($send);
-        $r = $xmlDIAN->document($r, $request->document_reference['cufe']);
+        $r = $xmlDIAN->document($r, $request->document_reference['cufe'], false, $company);
         if($r['success'])
             $invoiceXMLStr = base64_decode(json_encode($r['ResponseDian']->Envelope->Body->GetXmlByDocumentKeyResponse->GetXmlByDocumentKeyResult->XmlBytesBase64));
         else
