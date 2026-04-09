@@ -632,7 +632,7 @@
             <tbody>
                 @foreach($request['bank_accounts'] as $cuenta)
                     <tr>
-                        <td>{{$cuenta['bank_description']}}</td>
+                        <td>{{$cuenta['description']}}</td>
                         <td>{{$cuenta['number']}}</td>
                     </tr>
                 @endforeach
