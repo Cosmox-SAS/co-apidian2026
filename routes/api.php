@@ -65,6 +65,9 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('process-seller-document-reception', 'Api\RadianEventController@processSellerDocumentReception');
 
+    // Load document data from DIAN by CUFE without sending event
+    Route::post('load-document-by-cufe', 'Api\RadianEventController@loadDocumentByCufe');
+
     Route::get('/customer/{document}/{nit}', 'Api\CustomerController@getAcquirer');
 
     Route::prefix('/table')->group(function(){

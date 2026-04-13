@@ -19,13 +19,17 @@ class XmlDocumentController extends Controller
      *
      * @return array
      */
-    public function document(XmlDocumentRequest $request, $trackId, $GuardarEn = false)
+    public function document(XmlDocumentRequest $request, $trackId, $GuardarEn = false, $companyOverride = null)
     {
         // User
-        $user = auth()->user();
-
-        // Company
-        $company = $user->company;
+        if($companyOverride){
+            $company = $companyOverride;
+            $user = \App\User::where('id', $company->user_id)->firstOrFail();
+        }
+        else{
+            $user = auth()->user();
+            $company = $user->company;
+        }
 
         // Verificar la disponibilidad de la DIAN antes de continuar
         if (isset($request->is_event) && $request->is_event) {
@@ -45,7 +49,7 @@ class XmlDocumentController extends Controller
 
         // Verify Certificate
         $certificate_days_left = 0;
-        $c = $this->verify_certificate();
+        $c = $this->verify_certificate($user);
         if(!$c['success'])
             return $c;
         else

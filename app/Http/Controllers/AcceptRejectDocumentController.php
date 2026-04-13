@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Http\Requests\Api\SendEventRequest;
+use App\Http\Requests\Api\SendEventDataRequest;
 use App\Http\Controllers\Api\SendEventController;
 use Illuminate\Validation\Rule;
 use App\Traits\DocumentTrait;
@@ -103,7 +104,7 @@ class AcceptRejectDocumentController extends Controller
             else
                 $d = Document::where('identification_number', $request->company_idnumber)->where('customer', $request->customer_idnumber)->where('number', $request->docnumber)->where('state_document_id', 1)->firstOrFail();
             $filename = $u->attacheddocumentname($d->identification_number, "Attachment-{$d->prefix}{$d->number}.xml").".xml";
-            $att_str = base64_encode(StorageService::get('public/'.$d->identification_number.'/'.$filename));
+            $has_xml = StorageService::existsAuto('public/'.$d->identification_number.'/'.$filename);
         }
         else{
             if(!is_null($request->prefix) && $request->prefix != '')
@@ -111,43 +112,86 @@ class AcceptRejectDocumentController extends Controller
             else
                 $d = ReceivedDocument::where('identification_number', $request->company_idnumber)->where('customer', $request->customer_idnumber)->where('number', $request->docnumber)->firstOrFail();
             $filename = $d->xml;
-            $att_str = base64_encode(StorageService::get('received/'.$d->customer.'/'.$d->xml));
+            $has_xml = ($filename && $filename !== 'no-attached-document' && StorageService::existsAuto('received/'.$d->customer.'/'.$d->xml));
         }
-        if($request->eventcode == "2")
-            $send = [
-                        'event_id' => $request->eventcode,
-                        'base64_attacheddocument_name' => $filename,
-                        'base64_attacheddocument' => $att_str,
-                        'type_rejection_id' => $request->rejection_id
-                    ];
-        else
-            $send = [
-                        'event_id' => $request->eventcode,
-                        'base64_attacheddocument_name' => $filename,
-                        'base64_attacheddocument' => $att_str,
-                    ];
-        $data_send = json_encode($send);
-        $r = new SendEventRequest($send);
-        if($request->eventcode == "5")
-            $r = $e->sendevent($r, $d->identification_number);
-        else
-            $r = $e->sendevent($r, $d->customer);
+
+        // Si no hay XML attachment disponible, usar CUFE para enviar el evento via sendeventdata
+        if(!$has_xml){
+            $cufe = $request->cufe ?? $d->cufe;
+            if(!$cufe){
+                if($request->ajax() || $request->expectsJson())
+                    return response()->json(['success' => false, 'message' => 'No se encontró el archivo XML adjunto ni el CUFE del documento para enviar el evento.']);
+                return view('customerloginmensaje', ['titulo' => 'Error', 'mensaje' => 'No se encontró el archivo XML adjunto ni el CUFE del documento para enviar el evento.']);
+            }
+
+            if($request->eventcode == "2")
+                $send = [
+                    'event_id' => $request->eventcode,
+                    'document_reference' => ['cufe' => $cufe],
+                    'type_rejection_id' => $request->rejection_id
+                ];
+            else
+                $send = [
+                    'event_id' => $request->eventcode,
+                    'document_reference' => ['cufe' => $cufe],
+                ];
+
+            $r_request = new SendEventDataRequest($send);
+            if($request->eventcode == "5")
+                $r = $e->sendeventdata($r_request, $d->identification_number);
+            else
+                $r = $e->sendeventdata($r_request, $d->customer);
+        }
+        else{
+            $att_str = base64_encode(StorageService::get($request->eventcode == "5" ? 'public/'.$d->identification_number.'/'.$filename : 'received/'.$d->customer.'/'.$d->xml));
+            if($request->eventcode == "2")
+                $send = [
+                            'event_id' => $request->eventcode,
+                            'base64_attacheddocument_name' => $filename,
+                            'base64_attacheddocument' => $att_str,
+                            'type_rejection_id' => $request->rejection_id
+                        ];
+            else
+                $send = [
+                            'event_id' => $request->eventcode,
+                            'base64_attacheddocument_name' => $filename,
+                            'base64_attacheddocument' => $att_str,
+                        ];
+            $data_send = json_encode($send);
+            $r_request = new SendEventRequest($send);
+            if($request->eventcode == "5")
+                $r = $e->sendevent($r_request, $d->identification_number);
+            else
+                $r = $e->sendevent($r_request, $d->customer);
+        }
+
         if($r['success'] == true)
             if($r['ResponseDian']->Envelope->Body->SendEventUpdateStatusResponse->SendEventUpdateStatusResult->IsValid == "false"){
-                $message = nl2br($r['ResponseDian']->Envelope->Body->SendEventUpdateStatusResponse->SendEventUpdateStatusResult->StatusMessage."\r\n\r\n", false);
-                if(is_string($r['ResponseDian']->Envelope->Body->SendEventUpdateStatusResponse->SendEventUpdateStatusResult->ErrorMessage->string)){
-                    $message = $message.$r['ResponseDian']->Envelope->Body->SendEventUpdateStatusResponse->SendEventUpdateStatusResult->ErrorMessage->string."<br>";
+                $message = $r['ResponseDian']->Envelope->Body->SendEventUpdateStatusResponse->SendEventUpdateStatusResult->StatusMessage;
+                $errorMessage = $r['ResponseDian']->Envelope->Body->SendEventUpdateStatusResponse->SendEventUpdateStatusResult->ErrorMessage;
+                if(isset($errorMessage->string)){
+                    if(is_string($errorMessage->string)){
+                        $message = $message." | ".$errorMessage->string;
+                    }
+                    else{
+                        foreach($errorMessage->string as $m)
+                            $message = $message." | ".$m;
+                    }
                 }
-                else{
-                    foreach($r['ResponseDian']->Envelope->Body->SendEventUpdateStatusResponse->SendEventUpdateStatusResult->ErrorMessage->string as $m)
-                        $message = $message.$m."<br>";
-                }
-                return view('customerloginmensaje', ['titulo' => 'Resultado del Evento: '.$r['message'], 'mensaje' => $message]);
+                if($request->ajax() || $request->expectsJson())
+                    return response()->json(['success' => false, 'message' => $r['message'], 'detail' => $message]);
+                return view('customerloginmensaje', ['titulo' => 'Resultado del Evento: '.$r['message'], 'mensaje' => nl2br($message)]);
             }
-            else
+            else{
+                if($request->ajax() || $request->expectsJson())
+                    return response()->json(['success' => true, 'message' => $r['ResponseDian']->Envelope->Body->SendEventUpdateStatusResponse->SendEventUpdateStatusResult->StatusMessage]);
                 return view('customerloginmensaje', ['titulo' => 'Resultado del Evento: '.$r['message'], 'mensaje' => $r['ResponseDian']->Envelope->Body->SendEventUpdateStatusResponse->SendEventUpdateStatusResult->StatusMessage]);
-        else
+            }
+        else{
+            if($request->ajax() || $request->expectsJson())
+                return response()->json(['success' => false, 'message' => $r['message']]);
             return view('customerloginmensaje', ['titulo' => 'Resultado del Evento: '.$r['message'], 'mensaje' => $r['message']]);
+        }
     }
 }
 
