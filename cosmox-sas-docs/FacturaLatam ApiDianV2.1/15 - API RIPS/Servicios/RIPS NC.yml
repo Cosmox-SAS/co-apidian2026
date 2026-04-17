@@ -1,0 +1,284 @@
+info:
+  name: RIPS NC
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{url_apirips}}/api/PaquetesFevRips/CargarNC"
+  body:
+    type: json
+    data: "{\r
+
+      \    \"rips\": {\r
+
+      \        \"numDocumentoIdObligado\": \"901355357\",\r
+
+      \        \"numFactura\": \"SETP990000103\",\r
+
+      \        \"numNota\": \"NC1\",\r
+
+      \        \"tipoNota\": \"NC\",\r
+
+      \        \"usuarios\": [\r
+
+      \            {\r
+
+      \                \"tipoDocumentoIdentificacion\": \"CC\",\r
+
+      \                \"numDocumentoIdentificacion\": \"1111111111\",\r
+
+      \                \"tipoUsuario\": \"02\",\r
+
+      \                \"fechaNacimiento\": \"1990-08-17\",\r
+
+      \                \"codSexo\": \"M\",\r
+
+      \                \"codPaisResidencia\": \"170\",\r
+
+      \                \"codMunicipioResidencia\": \"11001\",\r
+
+      \                \"codZonaTerritorialResidencia\": \"02\",\r
+
+      \                \"incapacidad\": \"NO\",\r
+
+      \                \"codPaisOrigen\": \"170\",\r
+
+      \                \"consecutivo\": 1,\r
+
+      \                \"servicios\": {\r
+
+      \                    \"consultas\": [\r
+
+      \                        {\r
+
+      \                            \"codPrestador\": \"760011269401\",\r
+
+      \                            \"fechaInicioAtencion\": \"2024-06-22 00:00\",\r
+
+      \                            \"numAutorizacion\": \"\",\r
+
+      \                            \"codConsulta\": \"890702\",\r
+
+      \                            \"modalidadGrupoServicioTecSal\": \"01\",\r
+
+      \                            \"grupoServicios\": \"01\",\r
+
+      \                            \"codServicio\": 328,\r
+
+      \                            \"finalidadTecnologiaSalud\": \"25\",\r
+
+      \                            \"causaMotivoAtencion\": \"38\",\r
+
+      \                            \"codDiagnosticoPrincipal\": \"S934\",\r
+
+      \                            \"codDiagnosticoRelacionado1\": \"S903\",\r
+
+      \                            \"codDiagnosticoRelacionado2\": null,\r
+
+      \                            \"codDiagnosticoRelacionado3\": null,\r
+
+      \                            \"tipoDiagnosticoPrincipal\": \"02\",\r
+
+      \                            \"tipoDocumentoIdentificacion\": \"CC\",\r
+
+      \                            \"numDocumentoIdentificacion\": \"98798797\",\r
+
+      \                            \"vrServicio\": 700,\r
+
+      \                            \"valorPagoModerador\": 0,\r
+
+      \                            \"numFEVPagoModerador\": \"\",\r
+
+      \                            \"conceptoRecaudo\": \"05\",\r
+
+      \                            \"consecutivo\": 1\r
+
+      \                        }\r
+
+      \                    ]\r
+
+      \                }\r
+
+      \            }\r
+
+      \        ]\r
+
+      \    },\r
+
+      \    \"xmlFevFile\": \"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iV\"\r
+
+      }"
+  auth:
+    type: bearer
+    token: "{{token_apirips}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: rechazado
+    request:
+      url: "{{url_apirips}}/api/PaquetesFevRips/CargarNC"
+      method: POST
+      body:
+        type: json
+        data: "{\r
+
+          \    \"rips\": {\r
+
+          \        \"numDocumentoIdObligado\": \"901355357\",\r
+
+          \        \"numFactura\": \"SETP990000103\",\r
+
+          \        \"numNota\": \"NC1\",\r
+
+          \        \"tipoNota\": \"NC\",\r
+
+          \        \"usuarios\": [\r
+
+          \            {\r
+
+          \                \"tipoDocumentoIdentificacion\": \"CC\",\r
+
+          \                \"numDocumentoIdentificacion\": \"1111111111\",\r
+
+          \                \"tipoUsuario\": \"02\",\r
+
+          \                \"fechaNacimiento\": \"1990-08-17\",\r
+
+          \                \"codSexo\": \"M\",\r
+
+          \                \"codPaisResidencia\": \"170\",\r
+
+          \                \"codMunicipioResidencia\": \"11001\",\r
+
+          \                \"codZonaTerritorialResidencia\": \"02\",\r
+
+          \                \"incapacidad\": \"NO\",\r
+
+          \                \"codPaisOrigen\": \"170\",\r
+
+          \                \"consecutivo\": 1,\r
+
+          \                \"servicios\": {\r
+
+          \                    \"consultas\": [\r
+
+          \                        {\r
+
+          \                            \"codPrestador\": \"760011269401\",\r
+
+          \                            \"fechaInicioAtencion\": \"2024-06-22 00:00\",\r
+
+          \                            \"numAutorizacion\": \"\",\r
+
+          \                            \"codConsulta\": \"890702\",\r
+
+          \                            \"modalidadGrupoServicioTecSal\": \"01\",\r
+
+          \                            \"grupoServicios\": \"01\",\r
+
+          \                            \"codServicio\": 328,\r
+
+          \                            \"finalidadTecnologiaSalud\": \"25\",\r
+
+          \                            \"causaMotivoAtencion\": \"38\",\r
+
+          \                            \"codDiagnosticoPrincipal\": \"S934\",\r
+
+          \                            \"codDiagnosticoRelacionado1\": \"S903\",\r
+
+          \                            \"codDiagnosticoRelacionado2\": null,\r
+
+          \                            \"codDiagnosticoRelacionado3\": null,\r
+
+          \                            \"tipoDiagnosticoPrincipal\": \"02\",\r
+
+          \                            \"tipoDocumentoIdentificacion\": \"CC\",\r
+
+          \                            \"numDocumentoIdentificacion\": \"98798797\",\r
+
+          \                            \"vrServicio\": 700,\r
+
+          \                            \"valorPagoModerador\": 0,\r
+
+          \                            \"numFEVPagoModerador\": \"\",\r
+
+          \                            \"conceptoRecaudo\": \"05\",\r
+
+          \                            \"consecutivo\": 1\r
+
+          \                        }\r
+
+          \                    ]\r
+
+          \                }\r
+
+          \            }\r
+
+          \        ]\r
+
+          \    },\r
+
+          \    \"xmlFevFile\": \"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iV\"\r
+
+          }"
+    response:
+      status: 400
+      statusText: Bad Request
+      headers:
+        - name: Server
+          value: nginx/1.27.4
+        - name: Date
+          value: Tue, 27 May 2025 20:38:13 GMT
+        - name: Content-Type
+          value: application/json; charset=utf-8
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Connection
+          value: keep-alive
+        - name: Content-Encoding
+          value: br
+        - name: Vary
+          value: Accept-Encoding
+        - name: Request-Context
+          value: appId=cid-v1:97807299-6d04-4056-88a0-a5eebf0e6e44
+        - name: Strict-Transport-Security
+          value: max-age=2592000
+      body:
+        type: json
+        data: |-
+          {
+              "ResultState": false,
+              "ProcesoId": 0,
+              "NumFactura": "",
+              "CodigoUnicoValidacion": "-",
+              "CodigoUnicoValidacionToShow": "No aplica a paquetes procesados en estado [RECHAZADO] o validaciones realizadas antes del envío al Ministerio de Salud y Protección Social",
+              "FechaRadicacion": "2025-05-27T20:38:13.0766104+00:00",
+              "RutaArchivos": null,
+              "ResultadosValidacion": [
+                  {
+                      "Clase": "RECHAZADO",
+                      "Codigo": "RVG06",
+                      "Descripcion": "El dato informado no corresponde al contenido requerido.",
+                      "Observaciones": "Object reference not set to an instance of an object.",
+                      "PathFuente": "Estructura general",
+                      "Fuente": "Rips"
+                  }
+              ]
+          }
+
+docs: |-
+  RIPS con factura
+
+  - el campo "xmlFevFile" esta relacionado con el campo "attacheddocument" de la respuesta de una factura (aceptada) en el API
+      
+      - tambien cuenta con servicios para obtener el valor
+          
+      - si posee el zip, puede convertirlo en Base64 y añadir el string obtenido
+          
+  - el campo "numFactura" debe contener el correlativo y numeración juntos, sin caracteres especiales

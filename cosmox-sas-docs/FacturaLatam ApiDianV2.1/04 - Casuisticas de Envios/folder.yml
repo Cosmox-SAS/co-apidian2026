@@ -1,0 +1,15 @@
+info:
+  name: 04 - Casuisticas de Envios
+  type: folder
+  seq: 4
+
+request:
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+docs:
+  content: "Se incluyen estos request para ejemplificar el envio de documentos con varias casuisticas, varios invoice\r
+
+    lines, varias tarifas de impuestos, incluyendo cargos, incluyendo descuentos, etc."
+  type: text/markdown

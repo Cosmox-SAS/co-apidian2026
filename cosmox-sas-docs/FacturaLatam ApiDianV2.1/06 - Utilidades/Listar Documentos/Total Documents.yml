@@ -1,0 +1,50 @@
+info:
+  name: Total Documents
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: http://apidian2024.oo/api/total_documents/89008003/1900-01-01/2023-09-15
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: ""
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  ## TOTAL DE DOCUMENTOS POR NIT
+
+  Este endpoint permite consultar el total de documentos emitidos por una empresa (NIT), agrupados por tipo de documento y en rangos de fechas.
+
+  ### Endpoints disponibles
+
+  - GET /api/total_documents/{nit}
+      
+  - GET /api/total_documents/{nit}/{desde}
+      
+  - GET /api/total_documents/{nit}/{desde}/{hasta}
+      
+
+  **Descripción:**  
+  Retorna el total de cada tipo de documento (Factura, Nota Crédito, Nota Débito, Nómina, Documento Soporte, POS, etc.) emitido por el NIT especificado, en el rango de fechas solicitado.
+
+  **Parámetros:**
+
+  - `nit`: Número de identificación tributaria de la empresa.
+      
+  - `desde`: Fecha inicial en formato `YYYY-MM-DD` (opcional).
+      
+  - `hasta`: Fecha final en formato `YYYY-MM-DD` (opcional).

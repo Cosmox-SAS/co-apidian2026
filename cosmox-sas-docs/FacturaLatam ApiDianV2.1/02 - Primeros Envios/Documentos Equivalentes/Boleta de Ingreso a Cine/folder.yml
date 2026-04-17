@@ -1,0 +1,7 @@
+info:
+  name: Boleta de Ingreso a Cine
+  type: folder
+  seq: 3
+
+request:
+  auth: inherit

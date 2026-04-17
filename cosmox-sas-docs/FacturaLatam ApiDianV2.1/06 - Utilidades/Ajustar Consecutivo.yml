@@ -1,0 +1,63 @@
+info:
+  name: Ajustar Consecutivo
+  type: http
+  seq: 22
+
+http:
+  method: PUT
+  url: http://apidian2023.oo/api/ubl2.1/config/generateddocuments
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \    \"identification_number\": \"901464013\",\r
+
+      \    \"type_document_id\": 1,\r
+
+      \    \"prefix\": \"CI\",\r
+
+      \    \"number\": \"4716\"\r
+
+      }"
+  auth:
+    type: bearer
+    token: 9ae3d3d517c31460cadbb4f87f29698814c97dbf84ab4dd47098b00bb4d40c3c
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  ## REGISTRAR NÚMERO INICIAL DE DOCUMENTO
+
+  Este endpoint permite registrar el número inicial de un documento para una empresa, útil para configurar el primer consecutivo de facturas, nómina, soporte, etc.
+
+  **Autenticación:**  
+  Requiere un token de autorización (`API_TOKEN`).  
+  Este token se obtiene en el Paso 1 - Config Company. Si se extravió, se puede consultar en la tabla `users`, campo `API_TOKEN`.
+
+  **Body del request (JSON):**
+
+  - `identification_number`: NIT de la empresa.
+      
+  - `type_document_id`: ID del tipo de documento (ver tabla `type_documents`).
+      
+  - `prefix`: Prefijo de la resolución.
+      
+  - `number`: Número inicial del documento.
+      
+
+  **Notas:**
+
+  - Aplica para cualquier tipo de documento: factura, nómina, soporte, etc.
+      
+  - Es útil para configurar el primer envío y el consecutivo inicial de la empresa.
+      
+  - Para facturas AIU, se debe enviar la información correspondiente en el body, siguiendo el mismo formato.

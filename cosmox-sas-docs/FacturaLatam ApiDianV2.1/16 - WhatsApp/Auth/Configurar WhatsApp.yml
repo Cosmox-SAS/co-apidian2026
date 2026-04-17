@@ -1,0 +1,33 @@
+info:
+  name: Configurar WhatsApp
+  type: http
+  seq: 1
+
+http:
+  method: PUT
+  url: "{{url_base}}/whatsapp-config"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \    \"url_whatsapp\": \"https://tu-url-whatsapp.com\",//ingresar la url base\r
+
+      \    \"token_whatsapp\": \"tu-token-whatsapp\"//token proporcionado al conectar su WhatsApp\r
+
+      }"
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: Para obtener su url_whatsapp y generar su token comuniquese al WhatsApp de [FacturaLatam](https://wa.me/51920129273)

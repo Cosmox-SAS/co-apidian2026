@@ -1,0 +1,738 @@
+info:
+  name: SendpayrollNoteReemplazar-TestSetId Sencilla
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: http://apidian2023.oo/api/ubl2.1/payroll-adjust-note/7047db8a-213e-4b08-b567-b06b7a83b50d
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \t\"type_document_id\": 10,\r
+
+      \    \"establishment_name\": \"TORRE SOFTWARE\",\r
+
+      \    \"establishment_address\": \"CLL 11 NRO 21-73 BRR LA CABAÑA\",\r
+
+      \    \"establishment_phone\": \"3226563672\",\r
+
+      \    \"establishment_municipality\": 600,\r
+
+      \    \"establishment_email\": \"alternate_email@alternate.com\",\r
+
+      \    \"head_note\": \"PRUEBA DE TEXTO LIBRE QUE DEBE POSICIONARSE EN EL ENCABEZADO DE PAGINA DE LA REPRESENTACION GRAFICA DE LA FACTURA ELECTRONICA VALIDACION PREVIA DIAN\",\r
+
+      \    \"foot_note\": \"PRUEBA DE TEXTO LIBRE QUE DEBE POSICIONARSE EN EL PIE DE PAGINA DE LA REPRESENTACION GRAFICA DE LA FACTURA ELECTRONICA VALIDACION PREVIA DIAN\",    \r
+
+      \    \"type_note\": 1,\r
+
+      \    \"predecessor\": {\r
+
+      \        \"predecessor_number\": 1,\r
+
+      \        \"predecessor_cune\": \"df06457cc64437d243d7c406f28471d08e623a160a0266fced43fe57b9a7601de0cdfd33fd3d374f726cc48fbaaf8468\",\r
+
+      \        \"predecessor_issue_date\": \"2021-07-28\"\r
+
+      \    },\r
+
+      \    \"period\":{\r
+
+      \        \"admision_date\": \"2021-01-01\",\r
+
+      \        \"settlement_start_date\": \"2021-03-01\",\r
+
+      \        \"settlement_end_date\": \"2021-03-31\",\r
+
+      \        \"worked_time\": 750,\r
+
+      \        \"issue_date\": \"2021-07-29\"\r
+
+      \    },\r
+
+      \t\"worker_code\": \"41946692\",\r
+
+      \t\"prefix\": \"NA\",\r
+
+      \t\"consecutive\": 100020,\r
+
+      \    \"payroll_period_id\": 4,\r
+
+      \    \"notes\": \"PRUEBA DE ENVIO DE NOMINA ELECTRONICA\",\r
+
+      \t\"worker\": {\r
+
+      \t\t\"type_worker_id\": 1,\r
+
+      \t\t\"sub_type_worker_id\": 1,\r
+
+      \t\t\"payroll_type_document_identification_id\": 1,\r
+
+      \t\t\"municipality_id\": 822,\r
+
+      \t\t\"type_contract_id\": 1,\r
+
+      \t\t\"high_risk_pension\": false,\r
+
+      \t\t\"identification_number\": 41946692,\r
+
+      \t\t\"surname\": \"CARDONA\",\r
+
+      \        \"second_surname\": \"VILLADA\",\r
+
+      \t\t\"first_name\": \"ELIZABETH\",\r
+
+      \t\t\"address\": \"BRR LIMONAR MZ 6 CS 3 ET 1\",\r
+
+      \        \"integral_salarary\": false,\r
+
+      \        \"salary\": \"1500000.00\"\r
+
+      \t},\r
+
+      \t\"payment\": {\r
+
+      \t\t\"payment_method_id\": 10,\r
+
+      \t\t\"bank_name\": \"BANCO DAVIVIENDA\",\r
+
+      \t\t\"account_type\": \"AHORROS\",\r
+
+      \t\t\"account_number\": \"126070603280\"\r
+
+      \t},\t\r
+
+      \    \"payment_dates\": [\r
+
+      \        {\r
+
+      \            \"payment_date\": \"2021-03-10\"\r
+
+      \        },\r
+
+      \        {\r
+
+      \            \"payment_date\": \"2021-03-15\"\r
+
+      \        }\r
+
+      \    ],    \r
+
+      \t\"accrued\": {\r
+
+      \t\t\"worked_days\": 30,\r
+
+      \t\t\"salary\": \"750000.00\",\r
+
+      \t\t\"transportation_allowance\": \"109000.00\",\r
+
+      \        \"HEDs\": [\r
+
+      \            {\r
+
+      \                \"start_time\": \"2021-03-01T18:00:00\",\r
+
+      \                \"end_time\": \"2021-03-01T19:00:00\",\r
+
+      \                \"quantity\": 1,\r
+
+      \                \"percentage\": 1,\r
+
+      \                \"payment\": \"7812.50\"\r
+
+      \            },\r
+
+      \            {\r
+
+      \                \"start_time\": \"2021-03-02T18:00:00\",\r
+
+      \                \"end_time\": \"2021-03-02T19:00:00\",\r
+
+      \                \"quantity\": 1,\r
+
+      \                \"percentage\": 1,\r
+
+      \                \"payment\": \"7812.50\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"HENs\": [\r
+
+      \            {\r
+
+      \                \"start_time\": \"2021-03-01T21:00:00\",\r
+
+      \                \"end_time\": \"2021-03-01T22:00:00\",\r
+
+      \                \"quantity\": 1,\r
+
+      \                \"percentage\": 2,\r
+
+      \                \"payment\": \"10937.50\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"HRNs\": [\r
+
+      \            {\r
+
+      \                \"start_time\": \"2021-03-01T21:00:00\",\r
+
+      \                \"end_time\": \"2021-03-01T22:00:00\",\r
+
+      \                \"quantity\": 1,\r
+
+      \                \"percentage\": 3,\r
+
+      \                \"payment\": \"8437.50\"\r
+
+      \            },\r
+
+      \            {\r
+
+      \                \"start_time\": \"2021-03-02T21:00:00\",\r
+
+      \                \"end_time\": \"2021-03-02T22:00:00\",\r
+
+      \                \"quantity\": 1,\r
+
+      \                \"percentage\": 3,\r
+
+      \                \"payment\": \"8437.50\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"HEDDFs\": [\r
+
+      \            {\r
+
+      \                \"start_time\": \"2021-03-01T21:00:00\",\r
+
+      \                \"end_time\": \"2021-03-01T22:00:00\",\r
+
+      \                \"quantity\": 1,\r
+
+      \                \"percentage\": 4,\r
+
+      \                \"payment\": \"12500.00\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"HRDDFs\": [\r
+
+      \            {\r
+
+      \                \"start_time\": \"2021-03-01T16:00:00\",\r
+
+      \                \"end_time\": \"2021-03-01T17:00:00\",\r
+
+      \                \"quantity\": 1,\r
+
+      \                \"percentage\": 5,\r
+
+      \                \"payment\": \"10937.50\"\r
+
+      \            },\r
+
+      \            {\r
+
+      \                \"start_time\": \"2021-03-02T16:00:00\",\r
+
+      \                \"end_time\": \"2021-03-02T17:00:00\",\r
+
+      \                \"quantity\": 1,\r
+
+      \                \"percentage\": 5,\r
+
+      \                \"payment\": \"10937.50\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"HENDFs\": [\r
+
+      \            {\r
+
+      \                \"start_time\": \"2021-03-01T21:00:00\",\r
+
+      \                \"end_time\": \"2021-03-01T22:00:00\",\r
+
+      \                \"quantity\": 1,\r
+
+      \                \"percentage\": 6,\r
+
+      \                \"payment\": \"15625.00\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"HRNDFs\": [\r
+
+      \            {\r
+
+      \                \"start_time\": \"2021-03-01T21:00:00\",\r
+
+      \                \"end_time\": \"2021-03-01T22:00:00\",\r
+
+      \                \"quantity\": 1,\r
+
+      \                \"percentage\": 7,\r
+
+      \                \"payment\": \"13125.00\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"common_vacation\": [\r
+
+      \            {\r
+
+      \                \"start_date\": \"2021-03-01\",\r
+
+      \                \"end_date\": \"2021-03-10\",\r
+
+      \                \"quantity\": 10,\r
+
+      \                \"payment\": \"500000.00\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"paid_vacation\": [\r
+
+      \            {\r
+
+      \                \"quantity\": 5,\r
+
+      \                \"payment\": \"250000.00\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"service_bonus\": [\r
+
+      \            {\r
+
+      \                \"quantity\": 365,\r
+
+      \                \"payment\": \"1500000.00\",\r
+
+      \                \"paymentNS\": \"250000.00\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"severance\": [\r
+
+      \            {\r
+
+      \                \"payment\": \"1500000.00\",\r
+
+      \                \"percentage\": \"12\",\r
+
+      \                \"interest_payment\": \"180000.00\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"work_disabilities\": [\r
+
+      \            {\r
+
+      \                \"start_date\": \"2021-03-05\",\r
+
+      \                \"end_date\": \"2021-03-10\",\r
+
+      \                \"type\": 3,\r
+
+      \                \"quantity\": 5,\r
+
+      \                \"payment\": \"250000.00\"\r
+
+      \            },\r
+
+      \            {\r
+
+      \                \"start_date\": \"2021-03-11\",\r
+
+      \                \"end_date\": \"2021-03-15\",\r
+
+      \                \"type\": 3,\r
+
+      \                \"quantity\": 5,\r
+
+      \                \"payment\": \"250000.00\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"maternity_leave\": [\r
+
+      \            {\r
+
+      \                \"start_date\": \"2021-03-11\",\r
+
+      \                \"end_date\": \"2021-03-15\",\r
+
+      \                \"quantity\": 5,\r
+
+      \                \"payment\": \"250000.00\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"paid_leave\": [\r
+
+      \            {\r
+
+      \                \"start_date\": \"2021-03-11\",\r
+
+      \                \"end_date\": \"2021-03-15\",\r
+
+      \                \"quantity\": 5,\r
+
+      \                \"payment\": \"250000.00\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"non_paid_leave\": [\r
+
+      \            {\r
+
+      \                \"start_date\": \"2021-03-11\",\r
+
+      \                \"end_date\": \"2021-03-15\",\r
+
+      \                \"quantity\": 5\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"bonuses\": [\r
+
+      \            {\r
+
+      \                \"salary_bonus\": \"100000.00\"\r
+
+      \            },\r
+
+      \            {\r
+
+      \                \"salary_bonus\": \"95000.00\",\r
+
+      \                \"non_salary_bonus\": \"50000.00\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"aid\": [\r
+
+      \            {\r
+
+      \                \"salary_assistance\": \"95000.00\",\r
+
+      \                \"non_salary_assistance\": \"50000.00\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"legal_strike\": [\r
+
+      \            {\r
+
+      \                \"start_date\": \"2021-03-01\",\r
+
+      \                \"end_date\": \"2021-03-10\",\r
+
+      \                \"quantity\": 10\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"other_concepts\": [\r
+
+      \            {\r
+
+      \                \"salary_concept\": \"35000\",\r
+
+      \                \"non_salary_concept\": \"50000\",\r
+
+      \                \"description_concept\": \"INGRESO POR OTROS CONCEPTOS\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"compensations\": [\r
+
+      \            {\r
+
+      \                \"ordinary_compensation\": \"135000\",\r
+
+      \                \"extraordinary_compensation\": \"250000\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"epctv_bonuses\": [\r
+
+      \            {\r
+
+      \                \"paymentS\": \"135000\",\r
+
+      \                \"paymentNS\": \"250000\",\r
+
+      \                \"salary_food_payment\": \"135000\",\r
+
+      \                \"non_salary_food_payment\": \"250000\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"commissions\": [\r
+
+      \            {\r
+
+      \                \"commission\": \"135000\"\r
+
+      \            },\r
+
+      \            {\r
+
+      \                \"commission\": \"155000\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"third_party_payments\": [\r
+
+      \            {\r
+
+      \                \"third_party_payment\": \"155000\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"advances\": [\r
+
+      \            {\r
+
+      \                \"advance\": \"135000\"\r
+
+      \            },\r
+
+      \            {\r
+
+      \                \"advance\": \"50000\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"endowment\": \"250000.00\",\r
+
+      \        \"sustenance_support\": \"1350000.00\",\r
+
+      \        \"telecommuting\": \"250000.00\",\r
+
+      \        \"withdrawal_bonus\": \"250000.00\",\r
+
+      \        \"compensation\": \"135000.00\",\r
+
+      \        \"accrued_total\": \"5145562.50\"\r
+
+      \t},\r
+
+      \t\"deductions\": {\r
+
+      \t\t\"eps_type_law_deductions_id\": 1,\r
+
+      \t\t\"eps_deduction\": \"60000.00\",\r
+
+      \t\t\"pension_type_law_deductions_id\": 5,\r
+
+      \t\t\"pension_deduction\": \"60000.00\",\r
+
+      \        \"fondossp_type_law_deductions_id\": 3,\r
+
+      \        \"fondosp_deduction_SP\": \"60000.00\",\r
+
+      \        \"fondossp_sub_type_law_deductions_id\": 4,\r
+
+      \        \"fondosp_deduction_sub\": \"30000.00\",\r
+
+      \        \"labor_union\": [\r
+
+      \            {\r
+
+      \                \"percentage\": \"2.00\",\r
+
+      \                \"deduction\": \"30000.00\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"sanctions\": [\r
+
+      \            {\r
+
+      \                \"public_sanction\": \"300000.00\",\r
+
+      \                \"private_sanction\": \"130000.00\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"orders\": [\r
+
+      \            {\r
+
+      \                \"description\": \"LIBRANZA POR PEDIDO NRO 34256 GRUPO EXITO\",\r
+
+      \                \"deduction\": \"13000.00\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"third_party_payments\": [\r
+
+      \            {\r
+
+      \                \"third_party_payment\": \"155000\"\r
+
+      \            },\r
+
+      \            {\r
+
+      \                \"third_party_payment\": \"59000\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"advances\": [\r
+
+      \            {\r
+
+      \                \"advance\": \"255000\"\r
+
+      \            },\r
+
+      \            {\r
+
+      \                \"advance\": \"79000\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"other_deductions\": [\r
+
+      \            {\r
+
+      \                \"other_deduction\": \"133000\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        \"voluntary_pension\": \"158000.00\",\r
+
+      \        \"withholding_at_source\": \"65000.00\",\r
+
+      \        \"afc\": \"33500.00\",\r
+
+      \        \"cooperative\": \"25000.00\",\r
+
+      \        \"tax_liens\": \"38500.00\",\r
+
+      \        \"supplementary_plan\": \"65000.00\",\r
+
+      \        \"education\": \"59000.00\",\r
+
+      \        \"refund\": \"47000.00\",\r
+
+      \        \"debt\": \"39000\",\r
+
+      \        \"deductions_total\": \"120000.00\"\r
+
+      \t}\r
+
+      }\r
+
+      \r\n"
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  PRIMER ENVIO DE NOMINA DE AJUSTE
+
+  - Si se instalo un dominio se debe utilizar de la siguiente manera:
+
+  http://midominio.com/api/ubl2.1/invoice
+
+  - Requiere un token de autorizacion el cual fue devuelto al realizar el Paso 1 - Config Company, si este token se extravio, se puede consultar en la tabla de la base de datos de la API en la tabla users, en el campo API_TOKEN.
+
+  - En URL el ultimo parametro corresponde al id del set de pruebas que la dian entrego al momento de registrar el modo de operacion software propio.
+
+  .../ubl2.1/invoice/iddelsetdepruebasdeladian
+
+  - Este endpoint se puede utilizar de dos modos:
+
+  1.  Asincrono:
+  .../ubl2.1/invoice/iddelsetdepruebasdeladian
+
+  2.  Sincrono:
+  .../ubl2.1/invoice
+
+  - El modo sincrono no afecta al set de pruebas, pero la respuesta de la DIAN incluye posibles errores de validacion y estado de la factura, valida o no valida.
+
+  - El modo asincrono, afecta el set de pruebas y en la respuesta no se incluye el resultado de la factura, solo se entrega un ZIP_KEY el cual debe ser consultado mediante el endpoint: 
+
+  .../ubl2.1/status/zip
+
+  de la seccion 03 - Consultas de estado para asi poder establecer si la factura fue valida o no y los errores de validacion.

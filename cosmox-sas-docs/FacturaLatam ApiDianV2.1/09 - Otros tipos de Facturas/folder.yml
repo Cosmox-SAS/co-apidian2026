@@ -1,0 +1,13 @@
+info:
+  name: 09 - Otros tipos de Facturas
+  type: folder
+  seq: 9
+
+request:
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+docs:
+  content: Se incluyen otros tipos de facturas como AIU, Mandato, Exportacion y Contingencia.
+  type: text/markdown

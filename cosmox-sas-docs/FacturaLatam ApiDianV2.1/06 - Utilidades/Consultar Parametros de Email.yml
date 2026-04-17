@@ -1,0 +1,58 @@
+info:
+  name: Consultar Parametros de Email
+  type: http
+  seq: 7
+
+http:
+  method: GET
+  url: http://api2023.oo/api/ubl2.1/emailconfig
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: cache-control
+      value: no-cache
+    - name: Connection
+      value: keep-alive
+    - name: Accept-Encoding
+      value: gzip, deflate
+    - name: Host
+      value: localhost
+      disabled: true
+    - name: accept
+      value: application/json
+    - name: X-CSRF-TOKEN
+      value: ""
+  body:
+    type: json
+    data: ""
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  **Consulta de configuración de correo electrónico**
+
+  Este endpoint permite obtener la configuración de envío de correo electrónico asociada a la empresa autenticada mediante el token de acceso.  
+  Primero busca la configuración personalizada en la base de datos del usuario (empresa).  
+  Si no existe configuración personalizada, retorna la configuración general definida en el archivo [.env](https://null) y muestra un mensaje indicando que se está usando la configuración por defecto.
+
+  **URL:**  
+  `GET /api/ubl2.1/emailconfig`
+
+  **Autenticación:**  
+  Requiere token de autorización en el header:  
+  `Authorization: Bearer {API_TOKEN}`
+
+  **Parámetros:**  
+  No requiere parámetros en la URL ni en el body.
+
+  **Respuesta:**
+
+  - Si la empresa tiene configuración personalizada, retorna esos datos (host, puerto, usuario, encriptación, etc.).
+      
+  - Si no tiene configuración personalizada, retorna la configuración general y un mensaje informativo.
+      
+  - La contraseña siempre se oculta por seguridad.

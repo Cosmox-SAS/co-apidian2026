@@ -1,0 +1,7 @@
+info:
+  name: 13 - Regenerar PDFs
+  type: folder
+  seq: 13
+
+request:
+  auth: inherit

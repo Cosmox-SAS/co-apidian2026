@@ -1,0 +1,219 @@
+info:
+  name: Login
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{url_base}}/login"
+  headers:
+    - name: Accept
+      value: application/json
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \    \"email\": \"demo@gmail.com\",\r
+
+      \    \"password\": \"12345678\"\r
+
+      }"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: "{{url_base}}/login"
+      method: POST
+      headers:
+        - name: Accept
+          value: application/json
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: "{\r
+
+          \    \"email\": \"alexander_obando@hotmail.com\",\r
+
+          \    \"password\": \"12345678\"\r
+
+          }"
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: "0"
+          value: Allow
+        - name: "1"
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Date
+          value: Fri, 03 Jan 2025 15:13:06 GMT
+        - name: Server
+          value: Apache/2.4.35 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+        - name: X-Powered-By
+          value: PHP/7.4.19
+        - name: Cache-Control
+          value: no-cache, private
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Access-Control-Allow-Headers
+          value: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization, Access-Control-Request-Headers
+        - name: Keep-Alive
+          value: timeout=5, max=100
+        - name: Connection
+          value: Keep-Alive
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "data": {
+                  "id": 3,
+                  "name": "ALEXANDER OBANDO LONDONO",
+                  "email": "alexander_obando@hotmail.com",
+                  "api_token": "0efacb667d343c125740d132b242cd76cef9208b842bc2867a9d0505e13f7c8b",
+                  "company": {
+                      "id": 1,
+                      "identification_number": "89008003",
+                      "dv": "2",
+                      "type_environment_id": 2,
+                      "type_operation_id": 10,
+                      "type_document_identification_id": 3,
+                      "type_currency_id": 35,
+                      "type_organization_id": 2,
+                      "type_regime_id": 2,
+                      "type_liability_id": 14,
+                      "municipality_id": 820,
+                      "merchant_registration": "0000000-00",
+                      "address": "CRA 21A NRO 11-25",
+                      "phone": "3103891693",
+                      "state": 1
+                  }
+              },
+              "code": 200
+          }
+  - name: Unauthorized
+    request:
+      url: "{{url_base}}/login"
+      method: POST
+      headers:
+        - name: Accept
+          value: application/json
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: "{\r
+
+          \    \"email\": \"demo@gmail.com\",\r
+
+          \    \"password\": \"123456\"\r
+
+          }"
+    response:
+      status: 401
+      statusText: Unauthorized
+      headers:
+        - name: "0"
+          value: Allow
+        - name: "1"
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Date
+          value: Fri, 03 Jan 2025 15:13:33 GMT
+        - name: Server
+          value: Apache/2.4.35 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+        - name: X-Powered-By
+          value: PHP/7.4.19
+        - name: Cache-Control
+          value: no-cache, private
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Access-Control-Allow-Headers
+          value: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization, Access-Control-Request-Headers
+        - name: Keep-Alive
+          value: timeout=5, max=100
+        - name: Connection
+          value: Keep-Alive
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "error": "Credenciales invalidas",
+              "code": 401
+          }
+  - name: Unauthorized without company
+    request:
+      url: "{{url_base}}/login"
+      method: POST
+      headers:
+        - name: Accept
+          value: application/json
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: "{\r
+
+          \    \"email\": \"demo@gmail.com\",\r
+
+          \    \"password\": \"12345678\"\r
+
+          }"
+    response:
+      status: 401
+      statusText: Unauthorized
+      headers:
+        - name: "0"
+          value: Allow
+        - name: "1"
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Date
+          value: Fri, 03 Jan 2025 19:52:09 GMT
+        - name: Server
+          value: Apache/2.4.35 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+        - name: X-Powered-By
+          value: PHP/7.4.19
+        - name: Cache-Control
+          value: no-cache, private
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Access-Control-Allow-Headers
+          value: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization, Access-Control-Request-Headers
+        - name: Keep-Alive
+          value: timeout=5, max=100
+        - name: Connection
+          value: Keep-Alive
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "error": "Usuario no tiene una empresa asignada",
+              "code": 401
+          }
+
+docs: El login requiere de un usuario que se haya registrado junto a una empresa, se utiliza el correo y el numero de documento como contraseña en los primeros accesos hasta que sea modificada.

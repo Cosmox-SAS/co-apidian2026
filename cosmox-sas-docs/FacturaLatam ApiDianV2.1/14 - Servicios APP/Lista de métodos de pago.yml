@@ -1,0 +1,599 @@
+info:
+  name: Lista de métodos de pago
+  type: http
+  seq: 6
+
+http:
+  method: GET
+  url: "{{url_base}}/table/payment-methods"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: "{{url_base}}/table/payment-methods"
+      method: GET
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Accept
+          value: application/json
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: "0"
+          value: Allow
+        - name: "1"
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Date
+          value: Wed, 15 Jan 2025 14:19:39 GMT
+        - name: Server
+          value: Apache/2.4.35 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+        - name: Vary
+          value: Authorization
+        - name: X-Powered-By
+          value: PHP/7.4.19
+        - name: Cache-Control
+          value: no-cache, private
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Access-Control-Allow-Headers
+          value: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization, Access-Control-Request-Headers
+        - name: Keep-Alive
+          value: timeout=5, max=100
+        - name: Connection
+          value: Keep-Alive
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "payment_methods": [
+                  {
+                      "id": 1,
+                      "name": "Instrumento no definido",
+                      "code": "1\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 2,
+                      "name": "Crédito ACH",
+                      "code": "2\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 3,
+                      "name": "Débito ACH",
+                      "code": "3\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 4,
+                      "name": "Reversión débito de demanda ACH",
+                      "code": "4\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 5,
+                      "name": "Reversión crédito de demanda ACH ",
+                      "code": "5\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 6,
+                      "name": "Crédito de demanda ACH",
+                      "code": "6\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 7,
+                      "name": "Débito de demanda ACH",
+                      "code": "7\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 8,
+                      "name": "Mantener",
+                      "code": "8\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 9,
+                      "name": "Clearing Nacional o Regional",
+                      "code": "9\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 10,
+                      "name": "Efectivo",
+                      "code": "10\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 11,
+                      "name": "Reversión Crédito Ahorro",
+                      "code": "11\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 12,
+                      "name": "Reversión Débito Ahorro",
+                      "code": "12\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 13,
+                      "name": "Crédito Ahorro",
+                      "code": "13\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 14,
+                      "name": "Débito Ahorro",
+                      "code": "14\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 15,
+                      "name": "Bookentry Crédito",
+                      "code": "15\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 16,
+                      "name": "Bookentry Débito",
+                      "code": "16\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 17,
+                      "name": "Concentración de la demanda en efectivo /Desembolso Crédito (CCD)",
+                      "code": "17\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 18,
+                      "name": "Concentración de la demanda en efectivo / Desembolso (CCD) débito",
+                      "code": "18\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 19,
+                      "name": "Crédito Pago negocio corporativo (CTP)",
+                      "code": "19\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 20,
+                      "name": "Cheque",
+                      "code": "20\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 21,
+                      "name": "Poyecto bancario",
+                      "code": "21\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 22,
+                      "name": "Proyecto bancario certificado",
+                      "code": "22\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 23,
+                      "name": "Cheque bancario",
+                      "code": "23\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 24,
+                      "name": "Nota cambiaria esperando aceptación",
+                      "code": "24\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 25,
+                      "name": "Cheque certificado",
+                      "code": "25\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 26,
+                      "name": "Cheque Local",
+                      "code": "26\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 27,
+                      "name": "Débito Pago Neogcio Corporativo (CTP)",
+                      "code": "27\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 28,
+                      "name": "Crédito Negocio Intercambio Corporativo (CTX)",
+                      "code": "28\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 29,
+                      "name": "Débito Negocio Intercambio Corporativo (CTX)",
+                      "code": "29\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 30,
+                      "name": "Transferecia Crédito",
+                      "code": "30\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 31,
+                      "name": "Transferencia Débito",
+                      "code": "31\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 32,
+                      "name": "Concentración Efectivo / Desembolso Crédito plus (CCD+)",
+                      "code": "32\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 33,
+                      "name": "Concentración Efectivo / Desembolso Débito plus (CCD+)",
+                      "code": "33\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 34,
+                      "name": "Pago y depósito pre acordado (PPD)",
+                      "code": "34\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 35,
+                      "name": "Concentración efectivo ahorros / Desembolso Crédito (CCD)",
+                      "code": "35\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 36,
+                      "name": "Concentración efectivo ahorros / Desembolso Drédito (CCD)",
+                      "code": "36\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 37,
+                      "name": "Pago Negocio Corporativo Ahorros Crédito (CTP)",
+                      "code": "37\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 38,
+                      "name": "Pago Neogcio Corporativo Ahorros Débito (CTP)",
+                      "code": "38\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 39,
+                      "name": "Crédito Negocio Intercambio Corporativo (CTX)",
+                      "code": "39\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 40,
+                      "name": "Débito Negocio Intercambio Corporativo (CTX)",
+                      "code": "40\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 41,
+                      "name": "Concentración efectivo/Desembolso Crédito plus (CCD+) ",
+                      "code": "41\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 42,
+                      "name": "Consiganción bancaria",
+                      "code": "42\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 43,
+                      "name": "Concentración efectivo / Desembolso Débito plus (CCD+)",
+                      "code": "43\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 44,
+                      "name": "Nota cambiaria",
+                      "code": "44\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 45,
+                      "name": "Transferencia Crédito Bancario",
+                      "code": "45\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 46,
+                      "name": "Transferencia Débito Interbancario",
+                      "code": "46\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 47,
+                      "name": "Transferencia Débito Bancaria",
+                      "code": "47\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 48,
+                      "name": "Tarjeta Crédito",
+                      "code": "48\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 49,
+                      "name": "Tarjeta Débito",
+                      "code": "49\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 50,
+                      "name": "Postgiro",
+                      "code": "50\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 51,
+                      "name": "Telex estándar bancario francés",
+                      "code": "51\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 52,
+                      "name": "Pago comercial urgente",
+                      "code": "52\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 53,
+                      "name": "Pago Tesorería Urgente",
+                      "code": "53\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 54,
+                      "name": "Nota promisoria",
+                      "code": "60\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 55,
+                      "name": "Nota promisoria firmada por el acreedor",
+                      "code": "61\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 56,
+                      "name": "Nota promisoria firmada por el acreedor, avalada por el banco",
+                      "code": "62\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 57,
+                      "name": "Nota promisoria firmada por el acreedor, avalada por un tercero",
+                      "code": "63\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 58,
+                      "name": "Nota promisoria firmada pro el banco",
+                      "code": "64\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 59,
+                      "name": "Nota promisoria firmada por un banco avalada por otro banco",
+                      "code": "65\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 60,
+                      "name": "Nota promisoria firmada ",
+                      "code": "66\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 61,
+                      "name": "Nota promisoria firmada por un tercero avalada por un banco",
+                      "code": "67\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 62,
+                      "name": "Retiro de nota por el por el acreedor",
+                      "code": "70\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 63,
+                      "name": "Retiro de nota por el por el acreedor sobre un banco",
+                      "code": "74\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 64,
+                      "name": "Retiro de nota por el acreedor, avalada por otro banco",
+                      "code": "75\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 65,
+                      "name": "Retiro de nota por el acreedor, sobre un banco avalada por un tercero",
+                      "code": "76\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 66,
+                      "name": "Retiro de una nota por el acreedor sobre un tercero",
+                      "code": "77\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 67,
+                      "name": "Retiro de una nota por el acreedor sobre un tercero avalada por un banco",
+                      "code": "78\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 68,
+                      "name": "Nota bancaria tranferible",
+                      "code": "91\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 69,
+                      "name": "Cheque local traferible",
+                      "code": "92\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 70,
+                      "name": "Giro referenciado",
+                      "code": "93\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 71,
+                      "name": "Giro urgente",
+                      "code": "94\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 72,
+                      "name": "Giro formato abierto",
+                      "code": "95\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 73,
+                      "name": "Método de pago solicitado no usuado",
+                      "code": "96\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 74,
+                      "name": "Clearing entre partners",
+                      "code": "97\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  },
+                  {
+                      "id": 75,
+                      "name": "Acuerdo mutuo",
+                      "code": "ZZZ\r",
+                      "created_at": "2023-02-26 14:28:28",
+                      "updated_at": "2023-02-26 14:28:28"
+                  }
+              ]
+          }
+
+docs: Permite listar los documentos y filtrar por fecha utilizando la clave date y los valores all, current_month, last_month, last_ninety, mientras que search es capaz de buscar por numero, prefijo, total, fecha especifica y algunos datos principales del cliente como nombre, correo, telefono o numero de documento, tambien cuenta con el sistema paginacion utilizando la clave page.

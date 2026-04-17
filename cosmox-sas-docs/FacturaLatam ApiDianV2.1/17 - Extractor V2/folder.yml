@@ -1,0 +1,11 @@
+info:
+  name: 17 - Extractor V2
+  type: folder
+  seq: 17
+
+request:
+  auth: inherit
+
+docs:
+  content: Extractor de documentos de la DIAN, su despliegue es separado de proyecto APIDIAN
+  type: text/markdown

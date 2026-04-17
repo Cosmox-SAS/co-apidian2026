@@ -1,0 +1,139 @@
+info:
+  name: Next Consecutive
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: "{{url_base}}/ubl2.1/next-consecutive"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: cache-control
+      value: no-cache
+    - name: Connection
+      value: keep-alive
+    - name: Accept-Encoding
+      value: gzip, deflate
+    - name: Host
+      value: apidian2022.oo
+      disabled: true
+    - name: accept
+      value: application/json
+    - name: X-CSRF-TOKEN
+      value: ""
+  body:
+    type: json
+    data: "{\r
+
+      \    \"type_document_id\": 1,\r
+
+      \    \"prefix\": \"SETP\"\r
+
+      }"
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: "{{url_base}}/ubl2.1/next-consecutive"
+      method: POST
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: cache-control
+          value: no-cache
+        - name: Connection
+          value: keep-alive
+        - name: Accept-Encoding
+          value: gzip, deflate
+        - name: Host
+          value: apidian2022.oo
+          disabled: true
+        - name: accept
+          value: application/json
+        - name: X-CSRF-TOKEN
+          value: ""
+      body:
+        type: json
+        data: "{\r
+
+          \    \"type_document_id\": 1,\r
+
+          \    \"prefix\": \"SETP\"\r
+
+          }"
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: "0"
+          value: Allow
+        - name: "1"
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Date
+          value: Thu, 02 Jan 2025 17:04:11 GMT
+        - name: Server
+          value: Apache/2.4.35 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+        - name: Vary
+          value: Authorization
+        - name: X-Powered-By
+          value: PHP/7.4.19
+        - name: Cache-Control
+          value: no-cache, private
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Access-Control-Allow-Headers
+          value: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization, Access-Control-Request-Headers
+        - name: Keep-Alive
+          value: timeout=5, max=100
+        - name: Connection
+          value: Keep-Alive
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "type_document_id": 1,
+              "prefix": "SETP",
+              "number": 990060187
+          }
+
+docs: |-
+  **OBTENER EL PRÓXIMO CONSECUTIVO DE DOCUMENTO**
+
+  Este endpoint permite consultar cuál será el próximo número consecutivo disponible para un tipo de documento y prefijo específico, según la resolución activa de la empresa.
+
+  **URL de uso:**  
+  `http://midominio.com/api/ubl2.1/next-consecutive`
+
+  **Autenticación:**  
+  Requiere un token de autorización (API_TOKEN).
+
+  **Parámetros:**
+
+  - No requiere parámetros en la URL.
+      
+  - Debes enviar los siguientes campos en el body (JSON):
+      
+      - `type_document_id`: ID del tipo de documento (por ejemplo, factura, nota crédito, etc.).
+          
+      - `prefix`: Prefijo de la resolución.
+          
+
+  **Respuesta:**  
+  Retorna el próximo número consecutivo disponible para el tipo de documento y prefijo indicados.

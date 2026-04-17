@@ -1,0 +1,11 @@
+info:
+  name: 01B - Configurar Factura electronica
+  type: folder
+  seq: 2
+
+request:
+  auth: inherit
+
+docs:
+  content: "- Servicios exclusivos para Facturas Electronicas"
+  type: text/markdown

@@ -1,0 +1,11 @@
+info:
+  name: 01E - Documentos Equivalentes
+  type: folder
+  seq: 5
+
+request:
+  auth: inherit
+
+docs:
+  content: "- servicios exclusivos para documentos equivalentes"
+  type: text/markdown

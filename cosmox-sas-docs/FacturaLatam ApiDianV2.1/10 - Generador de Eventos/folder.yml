@@ -1,0 +1,15 @@
+info:
+  name: 10 - Generador de Eventos
+  type: folder
+  seq: 10
+
+request:
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+docs:
+  content: "Con este request se implementa el acuse de recibo, la aceptacion y rechazo de documento y la recepcion de\r
+
+    bienes."
+  type: text/markdown

@@ -1,0 +1,8 @@
+name: localhost
+variables:
+  - name: url_base
+    value: http://localhost
+  - name: token
+    value: d244c69a4e805d2eb8d5747e72e0c2952adc796aa27aeaf8d16dadf26f7ae2ae
+  - name: nit
+    value: "901936990"

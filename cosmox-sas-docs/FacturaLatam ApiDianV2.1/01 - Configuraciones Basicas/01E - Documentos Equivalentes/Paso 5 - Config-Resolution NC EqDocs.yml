@@ -1,0 +1,52 @@
+info:
+  name: Paso 5 - Config-Resolution NC EqDocs
+  type: http
+  seq: 6
+
+http:
+  method: PUT
+  url: http://apidian2024.oo/api/ubl2.1/config/resolution
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \t\"type_document_id\": 26,\r
+
+      \t\"from\": 1,\r
+
+      \t\"to\": 99999999,\r
+
+      \t\"prefix\": \"NCP\"\r
+
+      }\r\n"
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  CONFIGURAR RESOLUCION DE NOTAS CREDITO
+
+  - Si se instalo un dominio se debe utilizar de la siguiente manera:
+
+  http://midominio.com/api/ubl2.1/config/resolution
+
+  - Requiere un token de autorizacion el cual fue devuelto al realizar el Paso 1 - Config Company, si este token se extravio, se puede consultar en la tabla de la base de datos de la API en la tabla users, en el campo API_TOKEN.
+
+  - Este endpoint no tiene parametros en la URL.
+
+  - Los datos necesarios para llenar los campos JSON cuyo nombre finalice con "_id" se encuentran en las tablas parametricas de la base de datos de la API, ejemplo:
+
+  type_liability_id, se debe especificar el id del registro correspondiente de la tabla type_liabilities de la base de datos de la API.
+
+  - Este endpoint es muy similar al de configurar resolucion de facturas, tanto asi que se utiliza la misma URL, se diferencia en que la resolucion de notas credito no requiere una resolucion autorizada por la DIAN, por lo tanto los datos from, to y prefix, son escogidos por nosotros mismos.

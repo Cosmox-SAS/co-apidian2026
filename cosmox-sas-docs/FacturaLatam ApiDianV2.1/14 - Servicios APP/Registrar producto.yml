@@ -1,0 +1,116 @@
+info:
+  name: Registrar producto
+  type: http
+  seq: 10
+
+http:
+  method: POST
+  url: "{{url_base}}/items/add"
+  body:
+    type: json
+    data: "{\r
+
+      \    \"name\": \"Producto 1\",\r
+
+      \    \"second_name\": \"Subtítulo Producto\",\r
+
+      \    \"description\": \"Descripción del producto\",\r
+
+      \    \"item_type_id\": \"01\",\r
+
+      \    \"internal_id\": \"PROD001\",\r
+
+      \    \"sale_unit_price\": 100.50,\r
+
+      \    \"purchase_unit_price\": 80.00,\r
+
+      \    \"active\": true,\r
+
+      \    \"companies_id\":1\r
+
+      }"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: "{{url_base}}/items/add"
+      method: POST
+      body:
+        type: json
+        data: "{\r
+
+          \    \"name\": \"Producto 1\",\r
+
+          \    \"second_name\": \"Subtítulo Producto\",\r
+
+          \    \"description\": \"Descripción del producto\",\r
+
+          \    \"item_type_id\": \"01\",\r
+
+          \    \"internal_id\": \"PROD001\",\r
+
+          \    \"sale_unit_price\": 100.50,\r
+
+          \    \"purchase_unit_price\": 80.00,\r
+
+          \    \"active\": true,\r
+
+          \    \"companies_id\":1\r
+
+          }"
+    response:
+      status: 201
+      statusText: Created
+      headers:
+        - name: "0"
+          value: Allow
+        - name: "1"
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Date
+          value: Wed, 15 Jan 2025 14:44:13 GMT
+        - name: Server
+          value: Apache/2.4.35 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+        - name: Vary
+          value: Authorization
+        - name: X-Powered-By
+          value: PHP/7.4.19
+        - name: Cache-Control
+          value: no-cache, private
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Access-Control-Allow-Headers
+          value: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization, Access-Control-Request-Headers
+        - name: Keep-Alive
+          value: timeout=5, max=100
+        - name: Connection
+          value: Keep-Alive
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Producto 1",
+              "second_name": "Subtítulo Producto",
+              "description": "Descripción del producto",
+              "item_type_id": "01",
+              "internal_id": "PROD001",
+              "sale_unit_price": 100.5,
+              "purchase_unit_price": 80,
+              "stock": 10,
+              "active": true,
+              "updated_at": "2025-01-15 09:44:13",
+              "created_at": "2025-01-15 09:44:13",
+              "id": 1
+          }

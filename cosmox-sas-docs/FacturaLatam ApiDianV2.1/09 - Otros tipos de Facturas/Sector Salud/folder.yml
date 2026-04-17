@@ -1,0 +1,87 @@
+info:
+  name: Sector Salud
+  type: folder
+  seq: 1
+
+request:
+  auth: inherit
+
+docs:
+  content: |-
+    ## TABLAS
+
+    - tipos de documento de identificacion
+        
+
+    | ID | Código | Descripción |
+    | --- | --- | --- |
+    | 1 | CC | Cédula de ciudadanía |
+    | 2 | CE | Cédula de extranjería |
+    | 3 | CD | Carné diplomático |
+    | 4 | PA | Pasaporte |
+    | 5 | SC | Salvoconducto |
+    | 6 | PE | Permiso especial de permanencia |
+    | 7 | RC | Registro civil de nacimiento |
+    | 8 | TI | Tarjeta de identidad |
+    | 9 | CN | Certificado de nacido vivo |
+    | 10 | AS | Adulto sin identificar |
+    | 11 | MS | Menor sin identificar |
+    | 12 | DE | Documento extranjero |
+    | 13 | SI | Sin identificación |
+
+    - tipos de usuario sector salud
+        
+
+    | ID | Name |
+    | --- | --- |
+    | 1 | Contributivo cotizante |
+    | 2 | Contributivo beneficiario |
+    | 3 | Contributivo adicional |
+    | 4 | Subsidiado |
+    | 5 | Sin régimen |
+    | 6 | Especiales o de Excepción cotizante |
+    | 7 | Especiales o de Excepción beneficiario |
+    | 8 | Particular |
+    | 9 | Tomador/Amparado ARL |
+    | 10 | Tomador/Amparado SOAT |
+    | 11 | Tomador/Amparado Planes voluntarios de salud |
+
+    - metodos de pago de contrato
+        
+
+    | ID | Name |
+    | --- | --- |
+    | 1 | Pago individual por caso / Conjunto integral de at... |
+    | 2 | Pago global prospectivo. |
+    | 3 | Pago por capitación. |
+    | 4 | Pago por evento. |
+    | 5 | Otra modalidad (específica) |
+    | 6 | Pago por tipo de servicio |
+    | 7 | Pago global prospectivo por episodio |
+    | 8 | Pago global prospectivo por grupo de riesgo |
+    | 9 | Pago global prospectivo por especialidad |
+    | 10 | Pago global prospectivo por nivel de complejidad |
+    | 11 | Capacitación |
+    | 12 | Por servicio |
+
+    - tipos de covertura
+        
+
+    | ID | Name |
+    | --- | --- |
+    | 1 | Plan de beneficios en salud financiado con UPC |
+    | 2 | Presupuesto máximo |
+    | 3 | Prima EPS/EOC, no asegurados SOAT |
+    | 4 | Cobertura Póliza SOAT |
+    | 5 | Cobertura ARL |
+    | 6 | Cobertura ADRES |
+    | 7 | Cobertura Salud Pública |
+    | 8 | Cobertura entidad territorial, recursos de oferta |
+    | 9 | Urgencias población migrante |
+    | 10 | Plan complementario en salud |
+    | 11 | Plan medicina prepagada |
+    | 12 | Otras pólizas en salud |
+    | 13 | Cobertura Régimen Especial o Excepción |
+    | 14 | Cobertura Fondo Nacional de Salud de las Personas ... |
+    | 15 | Particular |
+  type: text/markdown

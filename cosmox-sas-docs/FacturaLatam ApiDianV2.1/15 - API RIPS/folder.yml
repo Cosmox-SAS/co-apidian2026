@@ -1,0 +1,27 @@
+info:
+  name: 15 - API RIPS
+  type: folder
+  seq: 15
+
+docs:
+  content: |-
+    Servicios que conectan con apirips-docker (API externa)
+
+    ### Requisitos
+
+    - URL de apirips-docker (API externa que debe ser desplegada si no posee una URL)
+        
+    - credenciales de usuario de sector salud
+        
+    - Nit de empresa
+        
+
+    ### Manuales
+
+    - Habilitacion: [https://www.minsalud.gov.co/sites/rid/Lists/BibliotecaDigital/RIDE/DE/OT/manual-usuario-cliente-servidor-fev-rips.pdf](https://www.minsalud.gov.co/sites/rid/Lists/BibliotecaDigital/RIDE/DE/OT/manual-usuario-cliente-servidor-fev-rips.pdf)
+        
+    - Producción: [https://www.minsalud.gov.co/sites/rid/Lists/BibliotecaDigital/RIDE/DE/OT/manual-consumo-api-docker-fev-rips.pdf](https://www.minsalud.gov.co/sites/rid/Lists/BibliotecaDigital/RIDE/DE/OT/manual-consumo-api-docker-fev-rips.pdf)
+        
+
+    > es posible que cambien constantemente debido a las actualizaciones de versiones por lo que puede ir a la pagina principal de sispro https://www.sispro.gov.co/central-financiamiento/Pages/facturacion-electronica.aspx
+  type: text/markdown

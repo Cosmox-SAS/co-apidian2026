@@ -1,0 +1,264 @@
+info:
+  name: SendInvoice-TestSetId Dos Tarifas Impuestos y Retenciones
+  type: http
+  seq: 18
+
+http:
+  method: POST
+  url: http://apidian2023.oo/public/api/ubl2.1/invoice
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \    \"number\": 990000369,\r
+
+      \    \"type_document_id\": 1,\r
+
+      \    \"date\": \"2021-08-17\",\r
+
+      \    \"time\": \"08:32:31\",\r
+
+      \    \"resolution_number\": \"18760000001\",\r
+
+      \    \"prefix\": \"SETP\",\r
+
+      \    \"customer\": {\r
+
+      \        \"identification_number\": 89008003,\r
+
+      \        \"dv\": 2,\r
+
+      \        \"name\": \"ALEXANDER OBANDO LONDONO\",\r
+
+      \        \"phone\": 3103891693,\r
+
+      \        \"address\": \"BRR LIMONAR MZ 6 CS 3 ET 1\",\r
+
+      \        \"email\": \"alexander_obando@hotmail.com\",\r
+
+      \        \"merchant_registration\": \"0000-00\",\r
+
+      \        \"type_document_identification_id\": 3,\r
+
+      \        \"type_organization_id\": 2,\r
+
+      \        \"municipality_id\": 149,\r
+
+      \        \"type_regime_id\": 2\r
+
+      \    },\r
+
+      \    \"payment_form\": {\r
+
+      \        \"payment_form_id\": 1,\r
+
+      \        \"payment_method_id\": 10,\r
+
+      \        \"payment_due_date\": \"2021-08-17\",\r
+
+      \        \"duration_measure\": \"0\"\r
+
+      \    },\r
+
+      \    \"allowance_charges\": [{\r
+
+      \            \"discount_id\": 1,\r
+
+      \            \"charge_indicator\": false,\r
+
+      \            \"allowance_charge_reason\": \"DESCUENTO GENERAL\",\r
+
+      \            \"amount\": \"0.00\",\r
+
+      \            \"base_amount\": \"1140336.13\"\r
+
+      \        }\r
+
+      \    ],\r
+
+      \    \"legal_monetary_totals\": {\r
+
+      \        \"line_extension_amount\": \"1140336.13\",\r
+
+      \        \"tax_exclusive_amount\": \"1140336.13\",\r
+
+      \        \"tax_inclusive_amount\": \"1300000.00\",\r
+
+      \        \"allowance_total_amount\": \"0.00\",\r
+
+      \        \"charge_total_amount\": \"0.00\",\r
+
+      \        \"payable_amount\": \"1300000.00\"\r
+
+      \    },\r
+
+      \    \"with_holding_tax_total\": [{\r
+
+      \            \"tax_id\": 5,\r
+
+      \            \"tax_amount\": \"126050.042\",\r
+
+      \            \"percent\": \"15\",\r
+
+      \            \"taxable_amount\": \"840336.13\"\r
+
+      \        }, {\r
+
+      \            \"tax_id\": 6,\r
+
+      \            \"tax_amount\": \"29411.76\",\r
+
+      \            \"percent\": \"3.50\",\r
+
+      \            \"taxable_amount\": \"840336.13\"\r
+
+      \        }\r
+
+      \    ],\r
+
+      \    \"tax_totals\": [{\r
+
+      \            \"tax_id\": 1,\r
+
+      \            \"tax_amount\": \"0.00\",\r
+
+      \            \"percent\": \"0\",\r
+
+      \            \"taxable_amount\": \"300000.00\"\r
+
+      \        }, {\r
+
+      \            \"tax_id\": 1,\r
+
+      \            \"tax_amount\": \"159663.86\",\r
+
+      \            \"percent\": \"19\",\r
+
+      \            \"taxable_amount\": \"840336.13\"\r
+
+      \        }\r
+
+      \    ],\r
+
+      \    \"invoice_lines\": [{\r
+
+      \            \"unit_measure_id\": 70,\r
+
+      \            \"invoiced_quantity\": \"1\",\r
+
+      \            \"line_extension_amount\": \"300000.00\",\r
+
+      \            \"free_of_charge_indicator\": false,\r
+
+      \            \"allowance_charges\": [{\r
+
+      \                    \"charge_indicator\": false,\r
+
+      \                    \"allowance_charge_reason\": \"DESCUENTO GENERAL\",\r
+
+      \                    \"amount\": \"0.00\",\r
+
+      \                    \"base_amount\": \"300000.00\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"tax_totals\": [{\r
+
+      \                    \"tax_id\": 1,\r
+
+      \                    \"tax_amount\": \"0.00\",\r
+
+      \                    \"taxable_amount\": \"300000.00\",\r
+
+      \                    \"percent\": \"0.00\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"description\": \"CESANTIA MERCANTIL\",\r
+
+      \            \"code\": \"CESANTIA\",\r
+
+      \            \"type_item_identification_id\": 4,\r
+
+      \            \"price_amount\": \"300000.00\",\r
+
+      \            \"base_quantity\": \"1\"\r
+
+      \        }, {\r
+
+      \            \"unit_measure_id\": 70,\r
+
+      \            \"invoiced_quantity\": \"1\",\r
+
+      \            \"line_extension_amount\": \"840336.13\",\r
+
+      \            \"free_of_charge_indicator\": false,\r
+
+      \            \"allowance_charges\": [{\r
+
+      \                    \"charge_indicator\": false,\r
+
+      \                    \"allowance_charge_reason\": \"DESCUENTO GENERAL\",\r
+
+      \                    \"amount\": \"0.00\",\r
+
+      \                    \"base_amount\": \"1000000.00\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"tax_totals\": [{\r
+
+      \                    \"tax_id\": 1,\r
+
+      \                    \"tax_amount\": \"159663.86\",\r
+
+      \                    \"taxable_amount\": \"840336.13\",\r
+
+      \                    \"percent\": \"19.00\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"description\": \"COMISION POR SERVICIOS\",\r
+
+      \            \"code\": \"COMISION\",\r
+
+      \            \"type_item_identification_id\": 4,\r
+
+      \            \"price_amount\": \"840336.13\",\r
+
+      \            \"base_quantity\": \"1\"\r
+
+      \        }\r
+
+      \    ]\r
+
+      }\r\n"
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  ENVIO DE FACTURA CON DOS TARIFAS DE IMPUESTOS Y RETENCIONES
+
+  - Aplica la misma documentacion que el PRIMER ENVIO DE FACTURA de la seccion 02 - PRIMEROS ENVIOS.
+
+  - Este ejemplo ilustra como se debe utilizar la API para enviar una factura que incluya dos tarifas de impuestos y ademas tenga retenciones, las retenciones se especifican dentro del grupo: with_holding_tax_total
