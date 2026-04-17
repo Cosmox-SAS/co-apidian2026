@@ -1,0 +1,65 @@
+info:
+  name: SearchCompanyByNIT
+  type: http
+  seq: 9
+
+http:
+  method: GET
+  url: http://apidian2024.oo/api/ubl2.1/SearchCompany/1124024319
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: cache-control
+      value: no-cache
+    - name: Connection
+      value: keep-alive
+    - name: Accept-Encoding
+      value: gzip, deflate
+    - name: Host
+      value: apidian2022.oo
+      disabled: true
+    - name: accept
+      value: application/json
+    - name: X-CSRF-TOKEN
+      value: ""
+  body:
+    type: json
+    data: ""
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  **Consulta de información de empresa por NIT**
+
+  Este endpoint permite obtener información básica de una empresa consultando por su NIT (Número de Identificación Tributaria).  
+  La consulta se realiza en fuentes externas y retorna datos como nombre, tipo, dirección, estado y actividad de la empresa.
+
+  **URL:**  
+  `GET /api/ubl2.1/SearchCompany/{nit}`
+
+  - **nit:** Número de identificación tributaria de la empresa.
+      
+
+  **Autenticación:**  
+  Requiere token de autorización en el header:  
+  `Authorization: Bearer {API_TOKEN}`
+
+  **Parámetros:**
+
+  - En la URL:
+      
+      - `nit`: NIT de la empresa a consultar.
+          
+
+  **Respuesta:**
+
+  - Si encuentra el NIT, retorna información relevante de la empresa.
+      
+  - Si no lo encuentra, retorna un mensaje de error.

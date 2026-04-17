@@ -1,0 +1,106 @@
+info:
+  name: Lista Clientes
+  type: http
+  seq: 3
+
+http:
+  method: GET
+  url: "{{url_base}}/customers"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Lista Clientes
+    request:
+      url: "{{url_base}}/customers"
+      method: GET
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Accept
+          value: application/json
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: "0"
+          value: Allow
+        - name: "1"
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Date
+          value: Wed, 29 Jan 2025 01:04:25 GMT
+        - name: Server
+          value: Apache/2.4.35 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+        - name: Vary
+          value: Authorization
+        - name: X-Powered-By
+          value: PHP/7.4.19
+        - name: Cache-Control
+          value: no-cache, private
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Access-Control-Allow-Headers
+          value: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization, Access-Control-Request-Headers
+        - name: Keep-Alive
+          value: timeout=5, max=100
+        - name: Connection
+          value: Keep-Alive
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "data": {
+                  "current_page": 1,
+                  "data": [
+                      {
+                          "identification_number": 1030663,
+                          "dv": "5",
+                          "name": "ACERO VARGAS JOSE ALEXANDERSituación de la empresa: CANCELACIÓN",
+                          "phone": "52543456",
+                          "address": "calle 42 a 83 b 09",
+                          "email": "alexacero26@gmail.com",
+                          "companies_id": 1
+                      },
+                      {
+                          "identification_number": 900166483,
+                          "dv": "1",
+                          "name": "INVERSIONES DAVAL SAS",
+                          "phone": "3103891693",
+                          "address": "CLL 4 NRO 33-90",
+                          "email": "gerencia@torresoftware.com",
+                          "companies_id": 1
+                      }
+                  ],
+                  "first_page_url": "http://co_apidian2025.oo/api/customers?page=1",
+                  "from": 1,
+                  "last_page": 1,
+                  "last_page_url": "http://co_apidian2025.oo/api/customers?page=1",
+                  "next_page_url": null,
+                  "path": "http://co_apidian2025.oo/api/customers",
+                  "per_page": 20,
+                  "prev_page_url": null,
+                  "to": 2,
+                  "total": 2
+              }
+          }
+
+docs: Permite listar los documentos y filtrar por fecha utilizando la clave date y los valores all, current_month, last_month, last_ninety, mientras que search es capaz de buscar por numero, prefijo, total, fecha especifica y algunos datos principales del cliente como nombre, correo, telefono o numero de documento, tambien cuenta con el sistema paginacion utilizando la clave page.

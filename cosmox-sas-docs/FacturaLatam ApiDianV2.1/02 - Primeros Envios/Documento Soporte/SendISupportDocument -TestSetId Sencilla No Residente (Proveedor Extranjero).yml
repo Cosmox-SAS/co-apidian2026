@@ -1,0 +1,250 @@
+info:
+  name: SendISupportDocument -TestSetId Sencilla No Residente (Proveedor Extranjero)
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: http://apidian2023.oo/api/ubl2.1/support-document
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \t\"number\": 5,\r
+
+      \t\"type_document_id\": 11,\r
+
+      \t\"date\": \"2022-08-22\",\r
+
+      \t\"time\": \"12:09:38\",\r
+
+      \t\"notes\": \"SIN OBSERVACIONES\",\r
+
+      \t\"foot_note\": \"Modalidad de Emision de Facturas Electronicas: SOFTWARE PROPIO - Fabricante Software: TORRE SOFTWARE - Nit: 89008003-2\",\r
+
+      \t\"sendmail\": true,\r
+
+      \t\"sendmailtome\": true,\r
+
+      \t\"resolution_number\": \"18764031884389\",\r
+
+      \t\"prefix\": \"DS\",\r
+
+      \    \"establishment_name\": \"ALEXANDER OBANDO LONDOÑO\",\t\r
+
+      \    \"type_operation_id\": 24,\r
+
+      \t\"seller\": {\r
+
+      \t\t\"identification_number\": \"899212809099911\",\r
+
+      \        \"dv\": \"0\",\r
+
+      \t\t\"name\": \"BLANCA NUBIA ALVAREZ ALZATE \",\r
+
+      \t\t\"phone\": \"3148931130\",\r
+
+      \t\t\"address\": \"CR 14 BIS 31 B 37 BRR SAN NICOLAS\",\r
+
+      \t\t\"email\": \"blancanubiaa@hotmail.com\",\r
+
+      \t\t\"merchant_registration\": \"0000-00\",\r
+
+      \t\t\"type_document_identification_id\": 8,\r
+
+      \t\t\"type_organization_id\": 2,\r
+
+      \        \"country_id\": 65,\r
+
+      \        \"municipality_name\": \"MIAMI\",\r
+
+      \        \"state_name\": \"FLORIDA\",\r
+
+      \t\t\"type_liability_id\": 117,\r
+
+      \t\t\"type_regime_id\": 2,\r
+
+      \        \"postal_zone_code\": \"630001\"\r
+
+      \t},\r
+
+      \t\"payment_form\": {\r
+
+      \t\t\"payment_form_id\": 2,\r
+
+      \t\t\"payment_method_id\": 10,\r
+
+      \t\t\"payment_due_date\": \"2022-09-12\",\r
+
+      \t\t\"duration_measure\": \"30\"\r
+
+      \t},\t\r
+
+      \t\"allowance_charges\": [\r
+
+      \t\t{\r
+
+      \t\t\t\"discount_id\": 10,\r
+
+      \t\t\t\"charge_indicator\": false,\r
+
+      \t\t\t\"allowance_charge_reason\": \"DESCUENTO GENERAL\",\r
+
+      \t\t\t\"amount\": \"0.00\",\r
+
+      \t\t\t\"base_amount\": \"200.00\"\r
+
+      \t\t}\r
+
+      \t],\r
+
+      \t\"legal_monetary_totals\": {\r
+
+      \t\t\"line_extension_amount\": \"200.00\",\r
+
+      \t\t\"tax_exclusive_amount\": \"200.00\",\r
+
+      \t\t\"tax_inclusive_amount\": \"200.00\",\r
+
+      \t\t\"allowance_total_amount\": \"0.00\",\r
+
+      \t\t\"charge_total_amount\": \"0.00\",\r
+
+      \t\t\"payable_amount\": \"200.00\"\r
+
+      \t},\r
+
+      \t\"tax_totals\": \r
+
+      \t[\r
+
+      \r
+
+      \t\t{\r
+
+      \t\t\t\"tax_id\": 1,\r
+
+      \t\t\t\"tax_amount\": \"0.00\",\r
+
+      \t\t\t\"percent\": \"0\",\r
+
+      \t\t\t\"taxable_amount\": \"200.00\"\r
+
+      \t\t}\r
+
+      \t\r
+
+      \t],\r
+
+      \t\"invoice_lines\": \r
+
+      \t[\r
+
+      \r
+
+      \t\t{\r
+
+      \t\t\t\"unit_measure_id\": 70,\r
+
+      \t\t\t\"invoiced_quantity\": \"2.00\",\r
+
+      \t\t\t\"line_extension_amount\": \"200.00\",\r
+
+      \t\t\t\"free_of_charge_indicator\": false,\r
+
+      \t\t\t\"allowance_charges\": [{\r
+
+      \t\t\t\t\t\"charge_indicator\": false,\r
+
+      \t\t\t\t\t\"allowance_charge_reason\": \"DESCUENTO GENERAL\",\r
+
+      \t\t\t\t\t\"amount\": \"0.00\",\r
+
+      \t\t\t\t\t\"base_amount\": \"200.00\"\r
+
+      \t\t\t\t}\r
+
+      \t\t\t],\r
+
+      \t\t\t\"tax_totals\": \r
+
+      \t\t\t[{\r
+
+      \t\t\t\t\"tax_id\": 1,\r
+
+      \t\t\t\t\"tax_amount\": \"0.00\",\r
+
+      \t\t\t\t\"percent\": \"0.00\",\r
+
+      \t\t\t\t\"taxable_amount\": \"200.00\"\r
+
+      \t\t\t}],\r
+
+      \t\t\t\"description\": \"ARTICULO DE PRUEBAS\",\r
+
+      \            \"notes\": \"\",\r
+
+      \t\t\t\"code\": \"PRUEBA\",\r
+
+      \t\t\t\"type_item_identification_id\": 4,\r
+
+      \t\t\t\"price_amount\": \"100.00\",\r
+
+      \t\t\t\"base_quantity\": \"2.00\",\r
+
+      \t\t    \"type_generation_transmition_id\": 1,\r
+
+      \t\t\t\"start_date\": \"2022-08-22\"\r
+
+      \t\t}\r
+
+      \r
+
+      \t]\r
+
+      }\r
+
+      \r\n"
+  auth:
+    type: bearer
+    token: 0da52a69c6157ed5d4c52aa53c266ad1b18afdebab6f5a911bfccc16dbfc3c9e
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  PRIMER ENVIO DE DOCUMENTO SOPORTE
+
+  - Si se instalo un dominio se debe utilizar de la siguiente manera:
+
+  http://midominio.com/api/ubl2.1/invoice
+
+  - Requiere un token de autorizacion el cual fue devuelto al realizar el Paso 1 - Config Company, si este token se extravio, se puede consultar en la tabla de la base de datos de la API en la tabla users, en el campo API_TOKEN.
+
+  - En URL el ultimo parametro corresponde al id del set de pruebas que la dian entrego al momento de registrar el modo de operacion software propio.
+
+  .../ubl2.1/invoice/iddelsetdepruebasdeladian
+
+  - Este endpoint se puede utilizar de dos modos:
+
+  1.  Asincrono:
+  .../ubl2.1/invoice/iddelsetdepruebasdeladian
+
+  2.  Sincrono:
+  .../ubl2.1/invoice
+
+  - El modo sincrono no afecta al set de pruebas, pero la respuesta de la DIAN incluye posibles errores de validacion y estado de la factura, valida o no valida.
+
+  - El modo asincrono, afecta el set de pruebas y en la respuesta no se incluye el resultado de la factura, solo se entrega un ZIP_KEY el cual debe ser consultado mediante el endpoint: 
+
+  .../ubl2.1/status/zip
+
+  de la seccion 03 - Consultas de estado para asi poder establecer si la factura fue valida o no y los errores de validacion.

@@ -1,0 +1,64 @@
+info:
+  name: SearchNameByNIT
+  type: http
+  seq: 8
+
+http:
+  method: GET
+  url: http://apidian2024.oo/api/ubl2.1/name-by-nit/89008003
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: cache-control
+      value: no-cache
+    - name: Connection
+      value: keep-alive
+    - name: Accept-Encoding
+      value: gzip, deflate
+    - name: Host
+      value: apidian2022.oo
+      disabled: true
+    - name: accept
+      value: application/json
+    - name: X-CSRF-TOKEN
+      value: ""
+  body:
+    type: json
+    data: ""
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  **Consulta de nombre por NIT**
+
+  Este endpoint permite obtener el nombre y la estructura básica del nombre de una empresa/persona a partir de su NIT (Número de Identificación Tributaria).
+
+  **URL:**  
+  `GET /api/ubl2.1/name-by-nit/{nit}`
+
+  - **nit:** Número de identificación tributaria de la empresa o persona.
+      
+
+  **Autenticación:**  
+  Requiere token de autorización en el header:  
+  `Authorization: Bearer {API_TOKEN}`
+
+  **Parámetros:**
+
+  - En la URL:
+      
+      - `nit`: NIT de la empresa/persona a consultar.
+          
+
+  **Respuesta:**
+
+  - Si encuentra el NIT, retorna la estructura del nombre (primer nombre, otros nombres, primer apellido, segundo apellido).
+      
+  - Si no lo encuentra, retorna un mensaje de error.

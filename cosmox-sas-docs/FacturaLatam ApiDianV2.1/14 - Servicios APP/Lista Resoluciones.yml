@@ -1,0 +1,266 @@
+info:
+  name: Lista Resoluciones
+  type: http
+  seq: 5
+
+http:
+  method: GET
+  url: "{{url_base}}/table/resolutions/{{nit}}"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: "200"
+    request:
+      url: "{{url_base}}/table/resolutions/901846280"
+      method: GET
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Accept
+          value: application/json
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: "0"
+          value: Allow
+        - name: "1"
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Date
+          value: Mon, 08 Sep 2025 20:26:31 GMT
+        - name: Server
+          value: Apache/2.4.54 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+        - name: Vary
+          value: Authorization
+        - name: X-Powered-By
+          value: PHP/7.4.19
+        - name: Cache-Control
+          value: no-cache, private
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Access-Control-Allow-Headers
+          value: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization, Access-Control-Request-Headers
+        - name: Keep-Alive
+          value: timeout=5, max=100
+        - name: Connection
+          value: Keep-Alive
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "resolutions": [
+                  {
+                      "id": 1,
+                      "type_document_id": 1,
+                      "type_environment_id": 2,
+                      "prefix": "SETP",
+                      "resolution": "18760000001",
+                      "resolution_date": "2019-01-19",
+                      "technical_key": "fc8eac422eba16e22ffd8c6f94b3f40a6e38162c",
+                      "from": 990000000,
+                      "to": 995000000,
+                      "date_from": "2019-01-19",
+                      "date_to": "2030-01-19",
+                      "created_at": "2025-05-14 12:48:59",
+                      "updated_at": "2025-09-08 15:00:17",
+                      "number": 990000000,
+                      "next_consecutive": "SETP990000000",
+                      "type_document": {
+                          "id": 1,
+                          "name": "Factura de Venta Nacional",
+                          "code": "01",
+                          "cufe_algorithm": "CUFE-SHA384",
+                          "prefix": "fv\r",
+                          "created_at": "2025-05-13 17:40:55",
+                          "updated_at": "2025-05-13 17:40:55"
+                      }
+                  }
+              ]
+          }
+  - name: 200 - filtro de tipo
+    request:
+      url: "{{url_base}}/table/resolutions/901846280/1"
+      method: GET
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Accept
+          value: application/json
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: "0"
+          value: Allow
+        - name: "1"
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Date
+          value: Mon, 08 Sep 2025 20:29:11 GMT
+        - name: Server
+          value: Apache/2.4.54 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+        - name: Vary
+          value: Authorization
+        - name: X-Powered-By
+          value: PHP/7.4.19
+        - name: Cache-Control
+          value: no-cache, private
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Access-Control-Allow-Headers
+          value: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization, Access-Control-Request-Headers
+        - name: Keep-Alive
+          value: timeout=5, max=100
+        - name: Connection
+          value: Keep-Alive
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "resolutions": [
+                  {
+                      "id": 1,
+                      "type_document_id": 1,
+                      "type_environment_id": 2,
+                      "prefix": "SETP",
+                      "resolution": "18760000001",
+                      "resolution_date": "2019-01-19",
+                      "technical_key": "fc8eac422eba16e22ffd8c6f94b3f40a6e38162c",
+                      "from": 990000000,
+                      "to": 995000000,
+                      "date_from": "2019-01-19",
+                      "date_to": "2030-01-19",
+                      "created_at": "2025-05-14 12:48:59",
+                      "updated_at": "2025-09-08 15:00:17",
+                      "number": 990000000,
+                      "next_consecutive": "SETP990000000",
+                      "type_document": {
+                          "id": 1,
+                          "name": "Factura de Venta Nacional",
+                          "code": "01",
+                          "cufe_algorithm": "CUFE-SHA384",
+                          "prefix": "fv\r",
+                          "created_at": "2025-05-13 17:40:55",
+                          "updated_at": "2025-05-13 17:40:55"
+                      }
+                  }
+              ]
+          }
+  - name: 200 - filtro con parametros
+    request:
+      url: "{{url_base}}/table/resolutions?type_document_id=1"
+      method: GET
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Accept
+          value: application/json
+      params:
+        - name: type_document_id
+          value: "1"
+          type: query
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: "0"
+          value: Allow
+        - name: "1"
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Date
+          value: Mon, 08 Sep 2025 21:36:11 GMT
+        - name: Server
+          value: Apache/2.4.54 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+        - name: Vary
+          value: Authorization
+        - name: X-Powered-By
+          value: PHP/7.4.19
+        - name: Cache-Control
+          value: no-cache, private
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Access-Control-Allow-Headers
+          value: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization, Access-Control-Request-Headers
+        - name: Keep-Alive
+          value: timeout=5, max=98
+        - name: Connection
+          value: Keep-Alive
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "resolutions": [
+                  {
+                      "id": 1,
+                      "type_document_id": 1,
+                      "type_environment_id": 2,
+                      "prefix": "SETP",
+                      "resolution": "18760000001",
+                      "resolution_date": "2019-01-19",
+                      "technical_key": "fc8eac422eba16e22ffd8c6f94b3f40a6e38162c",
+                      "from": 990000000,
+                      "to": 995000000,
+                      "date_from": "2019-01-19",
+                      "date_to": "2030-01-19",
+                      "created_at": "2025-05-14 12:48:59",
+                      "updated_at": "2025-09-08 15:00:17",
+                      "number": 990000000,
+                      "next_consecutive": "SETP990000000",
+                      "type_document": {
+                          "id": 1,
+                          "name": "Factura de Venta Nacional",
+                          "code": "01",
+                          "cufe_algorithm": "CUFE-SHA384",
+                          "prefix": "fv\r",
+                          "created_at": "2025-05-13 17:40:55",
+                          "updated_at": "2025-05-13 17:40:55"
+                      }
+                  }
+              ]
+          }
+
+docs: |-
+  Permite listar las resoluciones  
+  \* obtiene las resoluciones dependiendo del entorno en el que esta la compañia  
+  \* permite filtrar por tipo de documento, ver ejemplo de respuesta 2
+
+  Tipos de documento
+
+  | **id** | **nombre** |
+  | --- | --- |
+  | 1 | Factura electronica |
+  | 4 | Nota de credito |
+  | 5 | Nota de debito |
+  | 9 | Nomina |
+
+  > si no lista las resoluciones del entorno actual, debe consumir el servicio de configuracion de resolucion para que se establezca la relacion del entorno de la empresa con la resolucion

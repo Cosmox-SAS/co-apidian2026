@@ -1,0 +1,106 @@
+info:
+  name: SendpayrollNoteEliminar-TestSetId Sencilla
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: http://apidian2023.oo/api/ubl2.1/payroll-adjust-note/7047db8a-213e-4b08-b567-b06b7a83b50d
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \    \"type_document_id\": 10,\r
+
+      \    \"establishment_name\": \"TORRE SOFTWARE\",\r
+
+      \    \"establishment_address\": \"CLL 11 NRO 21-73 BRR LA CABAÑA\",\r
+
+      \    \"establishment_phone\": \"3226563672\",\r
+
+      \    \"establishment_municipality\": 600,\r
+
+      \    \"establishment_email\": \"alternate_email@alternate.com\",\r
+
+      \    \"head_note\": \"PRUEBA DE TEXTO LIBRE QUE DEBE POSICIONARSE EN EL ENCABEZADO DE PAGINA DE LA REPRESENTACION GRAFICA DE LA FACTURA ELECTRONICA VALIDACION PREVIA DIAN\",\r
+
+      \    \"foot_note\": \"PRUEBA DE TEXTO LIBRE QUE DEBE POSICIONARSE EN EL PIE DE PAGINA DE LA REPRESENTACION GRAFICA DE LA FACTURA ELECTRONICA VALIDACION PREVIA DIAN\",\r
+
+      \    \"type_note\": 2,\r
+
+      \    \"predecessor\": {\r
+
+      \        \"predecessor_number\": 100003,\r
+
+      \        \"predecessor_cune\": \"f82fc0af4e13aa1b12e532471f437fa5e56595bfa99a36b7d102e70c827ff174cd20977fec3e0c5a904ff1c4c3a44364\",\r
+
+      \        \"predecessor_issue_date\": \"2021-07-28\"\r
+
+      \    },\r
+
+      \    \"period\":{\r
+
+      \        \"admision_date\": \"2018-10-10\",\r
+
+      \        \"settlement_start_date\": \"2021-07-01\",\r
+
+      \        \"settlement_end_date\": \"2021-07-15\",\r
+
+      \        \"worked_time\": \"15.00\",\r
+
+      \        \"issue_date\": \"2021-07-28\"\r
+
+      \    },\r
+
+      \    \"prefix\": \"NA\",\r
+
+      \    \"consecutive\": 100003,\r
+
+      \    \"payroll_period_id\": 4,\r
+
+      \    \"notes\": \"PRUEBA DE ENVIO DE NOMINA DE AJUSTE ELECTRONICA - ELIMINAR\"\r
+
+      }\r\n"
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  PRIMER ENVIO DE NOMINA DE AJUSTE
+
+  - Si se instalo un dominio se debe utilizar de la siguiente manera:
+
+  http://midominio.com/api/ubl2.1/invoice
+
+  - Requiere un token de autorizacion el cual fue devuelto al realizar el Paso 1 - Config Company, si este token se extravio, se puede consultar en la tabla de la base de datos de la API en la tabla users, en el campo API_TOKEN.
+
+  - En URL el ultimo parametro corresponde al id del set de pruebas que la dian entrego al momento de registrar el modo de operacion software propio.
+
+  .../ubl2.1/invoice/iddelsetdepruebasdeladian
+
+  - Este endpoint se puede utilizar de dos modos:
+
+  1.  Asincrono:
+  .../ubl2.1/invoice/iddelsetdepruebasdeladian
+
+  2.  Sincrono:
+  .../ubl2.1/invoice
+
+  - El modo sincrono no afecta al set de pruebas, pero la respuesta de la DIAN incluye posibles errores de validacion y estado de la factura, valida o no valida.
+
+  - El modo asincrono, afecta el set de pruebas y en la respuesta no se incluye el resultado de la factura, solo se entrega un ZIP_KEY el cual debe ser consultado mediante el endpoint: 
+
+  .../ubl2.1/status/zip
+
+  de la seccion 03 - Consultas de estado para asi poder establecer si la factura fue valida o no y los errores de validacion.

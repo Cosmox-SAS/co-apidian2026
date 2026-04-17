@@ -1,0 +1,200 @@
+info:
+  name: SendISupportDocument -TestSetId Sencilla Con Descuento
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: http://apidian2023.oo/api/ubl2.1/support-document
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \t\"number\": 13,\r
+
+      \t\"type_document_id\": 11,\r
+
+      \t\"date\": \"2023-08-09\",\r
+
+      \t\"time\": \"12:09:38\",\r
+
+      \t\"notes\": \"SIN OBSERVACIONES\",\r
+
+      \t\"foot_note\": \"Modalidad de Emision de Facturas Electronicas: SOFTWARE PROPIO - Fabricante Software: TORRE SOFTWARE - Nit: 89008003-2\",\r
+
+      \t\"sendmail\": false,\r
+
+      \t\"sendmailtome\": false,\r
+
+      \t\"resolution_number\": \"18764053310988\",\r
+
+      \t\"prefix\": \"DSP\",\r
+
+      \    \"establishment_name\": \"ALEXANDER OBANDO LONDOÑO\",\t\r
+
+      \t\"seller\": {\r
+
+      \t\t\"identification_number\": \"41946692\",\r
+
+      \        \"dv\": \"6\",\r
+
+      \t\t\"name\": \"ELIZABETH CARDONA VILLADA\",\r
+
+      \t\t\"phone\": \"3226563672\",\r
+
+      \t\t\"address\": \"LIMONAR MZ 6 CS 3 ET 1 PISO 2\",\r
+
+      \t\t\"email\": \"elizabethcardonav@gmail.com\",\r
+
+      \t\t\"merchant_registration\": \"0000-00\",\r
+
+      \        \"postal_zone_code\": 630001,\r
+
+      \t\t\"type_document_identification_id\": 3,\r
+
+      \t\t\"type_organization_id\": 2,\r
+
+      \t\t\"municipality_id\": 820,\r
+
+      \t\t\"type_liability_id\": 117,\r
+
+      \t\t\"type_regime_id\": 1\r
+
+      \t},\r
+
+      \    \"payment_form\": {\r
+
+      \        \"payment_form_id\": \"1\",\r
+
+      \        \"payment_method_id\": \"42\",\r
+
+      \        \"payment_due_date\": \"2023-08-09\",\r
+
+      \        \"duration_measure\": \"0\"\r
+
+      \    },\r
+
+      \    \"allowance_charges\":\r
+
+      \    [{\r
+
+      \            \"discount_id\": 1,\r
+
+      \            \"charge_indicator\": false,\r
+
+      \            \"allowance_charge_reason\": \"Descuento general\",\r
+
+      \            \"amount\": \"1.00\",\r
+
+      \            \"base_amount\": \"10.00\"\r
+
+      \        }\r
+
+      \    ],\r
+
+      \    \"legal_monetary_totals\": {\r
+
+      \        \"line_extension_amount\": \"10.00\",\r
+
+      \        \"tax_exclusive_amount\": \"0.00\",\r
+
+      \        \"tax_inclusive_amount\": \"10.00\",\r
+
+      \        \"allowance_total_amount\": \"1.00\",\r
+
+      \        \"charge_total_amount\": \"0.00\",\r
+
+      \        \"payable_amount\": \"9.00\"\r
+
+      \    },\r
+
+      \    \"invoice_lines\":\r
+
+      \    [{\r
+
+      \            \"unit_measure_id\": 70,\r
+
+      \            \"invoiced_quantity\": \"1.00\",\r
+
+      \            \"line_extension_amount\": \"10.00\",\r
+
+      \            \"free_of_charge_indicator\": false,\r
+
+      \            \"allowance_charges\":\r
+
+      \            [{\r
+
+      \                    \"charge_indicator\": false,\r
+
+      \                    \"allowance_charge_reason\": \"Descuento general\",\r
+
+      \                    \"amount\": \"1.00\",\r
+
+      \                    \"base_amount\": \"10.00\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"description\": \"DSE EL676 PRUEBA\",\r
+
+      \            \"code\": \"51959501\",\r
+
+      \            \"type_item_identification_id\": 4,\r
+
+      \            \"price_amount\": \"10.00\",\r
+
+      \            \"base_quantity\": \"1\",\r
+
+      \            \"type_generation_transmition_id\": 1,\r
+
+      \            \"start_date\": \"2023-08-09\"\r
+
+      \        }\r
+
+      \    ]\r
+
+      }\r\n"
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  PRIMER ENVIO DE DOCUMENTO SOPORTE
+
+  - Si se instalo un dominio se debe utilizar de la siguiente manera:
+
+  http://midominio.com/api/ubl2.1/invoice
+
+  - Requiere un token de autorizacion el cual fue devuelto al realizar el Paso 1 - Config Company, si este token se extravio, se puede consultar en la tabla de la base de datos de la API en la tabla users, en el campo API_TOKEN.
+
+  - En URL el ultimo parametro corresponde al id del set de pruebas que la dian entrego al momento de registrar el modo de operacion software propio.
+
+  .../ubl2.1/invoice/iddelsetdepruebasdeladian
+
+  - Este endpoint se puede utilizar de dos modos:
+
+  1.  Asincrono:
+  .../ubl2.1/invoice/iddelsetdepruebasdeladian
+
+  2.  Sincrono:
+  .../ubl2.1/invoice
+
+  - El modo sincrono no afecta al set de pruebas, pero la respuesta de la DIAN incluye posibles errores de validacion y estado de la factura, valida o no valida.
+
+  - El modo asincrono, afecta el set de pruebas y en la respuesta no se incluye el resultado de la factura, solo se entrega un ZIP_KEY el cual debe ser consultado mediante el endpoint: 
+
+  .../ubl2.1/status/zip
+
+  de la seccion 03 - Consultas de estado para asi poder establecer si la factura fue valida o no y los errores de validacion.

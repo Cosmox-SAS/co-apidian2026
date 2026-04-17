@@ -1,0 +1,846 @@
+info:
+  name: RIPS Capita Final
+  type: http
+  seq: 8
+
+http:
+  method: POST
+  url: "{{url_apirips}}/api/PaquetesFevRips/CargarCapitaFinal"
+  body:
+    type: json
+    data: "{\r
+
+      \    \"rips\": {\r
+
+      \        \"numDocumentoIdObligado\": \"901355357\",\r
+
+      \        \"numFactura\": \"SETP9900001023\",\r
+
+      \        \"tipoNota\": \"\",\r
+
+      \        \"numNota\": \"\",\r
+
+      \        \"usuarios\": [\r
+
+      \            {\r
+
+      \                \"consecutivo\": 1,\r
+
+      \                \"tipoDocumentoIdentificacion\": \"CC\",\r
+
+      \                \"numDocumentoIdentificacion\": \"11223344\",\r
+
+      \                \"fechaNacimiento\": \"1990-01-01\",\r
+
+      \                \"codSexo\": \"F\",\r
+
+      \                \"tipoUsuario\": \"12\",\r
+
+      \                \"codPaisResidencia\": \"170\",\r
+
+      \                \"codPaisOrigen\": \"170\",\r
+
+      \                \"codMunicipioResidencia\": \"11001\",\r
+
+      \                \"codZonaTerritorialResidencia\": \"01\",\r
+
+      \                \"incapacidad\": \"NO\",\r
+
+      \                \"servicios\": {\r
+
+      \                    \"consultas\": [\r
+
+      \                        {\r
+
+      \                            \"consecutivo\": 1,\r
+
+      \                            \"codPrestador\": \"760011269401\",\r
+
+      \                            \"tipoDocumentoIdentificacion\": \"CC\",\r
+
+      \                            \"numDocumentoIdentificacion\": \"11223344\",\r
+
+      \                            \"fechaInicioAtencion\": \"2025-05-26 09:00\",\r
+
+      \                            \"codConsulta\": \"890202\",\r
+
+      \                            \"codServicio\": 478,\r
+
+      \                            \"vrServicio\": 40000,\r
+
+      \                            \"valorPagoModerador\": 5000,\r
+
+      \                            \"conceptoRecaudo\": \"01\",\r
+
+      \                            \"numFEVPagoModerador\": \"SETP9900001023\",\r
+
+      \                            \"finalidadTecnologiaSalud\": \"10\",\r
+
+      \                            \"grupoServicios\": \"01\",\r
+
+      \                            \"modalidadGrupoServicioTecSal\": \"01\",\r
+
+      \                            \"causaMotivoAtencion\": \"10\",\r
+
+      \                            \"tipoDiagnosticoPrincipal\": \"01\",\r
+
+      \                            \"codDiagnosticoPrincipal\": \"Z000\",\r
+
+      \                            \"codDiagnosticoRelacionado1\": null,\r
+
+      \                            \"codDiagnosticoRelacionado2\": null,\r
+
+      \                            \"codDiagnosticoRelacionado3\": null,\r
+
+      \                            \"numAutorizacion\": null\r
+
+      \                        }\r
+
+      \                    ]\r
+
+      \                }\r
+
+      \            },\r
+
+      \            {\r
+
+      \                \"consecutivo\": 2,\r
+
+      \                \"tipoDocumentoIdentificacion\": \"CC\",\r
+
+      \                \"numDocumentoIdentificacion\": \"55667788\",\r
+
+      \                \"fechaNacimiento\": \"1985-05-10\",\r
+
+      \                \"codSexo\": \"M\",\r
+
+      \                \"tipoUsuario\": \"12\",\r
+
+      \                \"codPaisResidencia\": \"170\",\r
+
+      \                \"codPaisOrigen\": \"170\",\r
+
+      \                \"codMunicipioResidencia\": \"05001\",\r
+
+      \                \"codZonaTerritorialResidencia\": \"01\",\r
+
+      \                \"incapacidad\": \"NO\",\r
+
+      \                \"servicios\": {\r
+
+      \                    \"consultas\": [\r
+
+      \                        {\r
+
+      \                            \"consecutivo\": 1,\r
+
+      \                            \"codPrestador\": \"760011269401\",\r
+
+      \                            \"tipoDocumentoIdentificacion\": \"CC\",\r
+
+      \                            \"numDocumentoIdentificacion\": \"55667788\",\r
+
+      \                            \"fechaInicioAtencion\": \"2025-05-26 10:00\",\r
+
+      \                            \"codConsulta\": \"890203\",\r
+
+      \                            \"codServicio\": 478,\r
+
+      \                            \"vrServicio\": 40000,\r
+
+      \                            \"valorPagoModerador\": 4000,\r
+
+      \                            \"conceptoRecaudo\": \"02\",\r
+
+      \                            \"numFEVPagoModerador\": \"SETP9900001023\",\r
+
+      \                            \"finalidadTecnologiaSalud\": \"10\",\r
+
+      \                            \"grupoServicios\": \"01\",\r
+
+      \                            \"modalidadGrupoServicioTecSal\": \"01\",\r
+
+      \                            \"causaMotivoAtencion\": \"10\",\r
+
+      \                            \"tipoDiagnosticoPrincipal\": \"01\",\r
+
+      \                            \"codDiagnosticoPrincipal\": \"Z001\",\r
+
+      \                            \"codDiagnosticoRelacionado1\": null,\r
+
+      \                            \"codDiagnosticoRelacionado2\": null,\r
+
+      \                            \"codDiagnosticoRelacionado3\": null,\r
+
+      \                            \"numAutorizacion\": null\r
+
+      \                        }\r
+
+      \                    ]\r
+
+      \                }\r
+
+      \            },\r
+
+      \            {\r
+
+      \                \"consecutivo\": 3,\r
+
+      \                \"tipoDocumentoIdentificacion\": \"CC\",\r
+
+      \                \"numDocumentoIdentificacion\": \"99887766\",\r
+
+      \                \"fechaNacimiento\": \"2000-09-15\",\r
+
+      \                \"codSexo\": \"F\",\r
+
+      \                \"tipoUsuario\": \"12\",\r
+
+      \                \"codPaisResidencia\": \"170\",\r
+
+      \                \"codPaisOrigen\": \"170\",\r
+
+      \                \"codMunicipioResidencia\": \"76001\",\r
+
+      \                \"codZonaTerritorialResidencia\": \"01\",\r
+
+      \                \"incapacidad\": \"NO\",\r
+
+      \                \"servicios\": {\r
+
+      \                    \"consultas\": [\r
+
+      \                        {\r
+
+      \                            \"consecutivo\": 1,\r
+
+      \                            \"codPrestador\": \"760011269401\",\r
+
+      \                            \"tipoDocumentoIdentificacion\": \"CC\",\r
+
+      \                            \"numDocumentoIdentificacion\": \"99887766\",\r
+
+      \                            \"fechaInicioAtencion\": \"2025-05-26 11:00\",\r
+
+      \                            \"codConsulta\": \"890201\",\r
+
+      \                            \"codServicio\": 478,\r
+
+      \                            \"vrServicio\": 40000,\r
+
+      \                            \"valorPagoModerador\": 0,\r
+
+      \                            \"conceptoRecaudo\": \"05\",\r
+
+      \                            \"numFEVPagoModerador\": \"SETP9900001023\",\r
+
+      \                            \"finalidadTecnologiaSalud\": \"10\",\r
+
+      \                            \"grupoServicios\": \"01\",\r
+
+      \                            \"modalidadGrupoServicioTecSal\": \"01\",\r
+
+      \                            \"causaMotivoAtencion\": \"10\",\r
+
+      \                            \"tipoDiagnosticoPrincipal\": \"01\",\r
+
+      \                            \"codDiagnosticoPrincipal\": \"Z002\",\r
+
+      \                            \"codDiagnosticoRelacionado1\": null,\r
+
+      \                            \"codDiagnosticoRelacionado2\": null,\r
+
+      \                            \"codDiagnosticoRelacionado3\": null,\r
+
+      \                            \"numAutorizacion\": null\r
+
+      \                        }\r
+
+      \                    ]\r
+
+      \                }\r
+
+      \            }\r
+
+      \        ]\r
+
+      \    },\r
+
+      \    // No requiere\r
+
+      \    \"xmlFevFile\": \"\"\r
+
+      }"
+  auth:
+    type: bearer
+    token: "{{token_apirips}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: rechazado
+    request:
+      url: "{{url_apirips}}/api/PaquetesFevRips/CargarCapitaFinal"
+      method: POST
+      body:
+        type: json
+        data: "{\r
+
+          \    \"rips\": {\r
+
+          \        \"numDocumentoIdObligado\": \"901355357\",\r
+
+          \        \"numFactura\": \"SETP9900001023\",\r
+
+          \        \"tipoNota\": \"\",\r
+
+          \        \"numNota\": \"\",\r
+
+          \        \"usuarios\": [\r
+
+          \            {\r
+
+          \                \"consecutivo\": 1,\r
+
+          \                \"tipoDocumentoIdentificacion\": \"CC\",\r
+
+          \                \"numDocumentoIdentificacion\": \"11223344\",\r
+
+          \                \"fechaNacimiento\": \"1990-01-01\",\r
+
+          \                \"codSexo\": \"F\",\r
+
+          \                \"tipoUsuario\": \"12\",\r
+
+          \                \"codPaisResidencia\": \"170\",\r
+
+          \                \"codPaisOrigen\": \"170\",\r
+
+          \                \"codMunicipioResidencia\": \"11001\",\r
+
+          \                \"codZonaTerritorialResidencia\": \"01\",\r
+
+          \                \"incapacidad\": \"NO\",\r
+
+          \                \"servicios\": {\r
+
+          \                    \"consultas\": [\r
+
+          \                        {\r
+
+          \                            \"consecutivo\": 1,\r
+
+          \                            \"codPrestador\": \"760011269401\",\r
+
+          \                            \"tipoDocumentoIdentificacion\": \"CC\",\r
+
+          \                            \"numDocumentoIdentificacion\": \"11223344\",\r
+
+          \                            \"fechaInicioAtencion\": \"2025-05-26 09:00\",\r
+
+          \                            \"codConsulta\": \"890202\",\r
+
+          \                            \"codServicio\": 478,\r
+
+          \                            \"vrServicio\": 40000,\r
+
+          \                            \"valorPagoModerador\": 5000,\r
+
+          \                            \"conceptoRecaudo\": \"01\",\r
+
+          \                            \"numFEVPagoModerador\": \"SETP9900001023\",\r
+
+          \                            \"finalidadTecnologiaSalud\": \"10\",\r
+
+          \                            \"grupoServicios\": \"01\",\r
+
+          \                            \"modalidadGrupoServicioTecSal\": \"01\",\r
+
+          \                            \"causaMotivoAtencion\": \"10\",\r
+
+          \                            \"tipoDiagnosticoPrincipal\": \"01\",\r
+
+          \                            \"codDiagnosticoPrincipal\": \"Z000\",\r
+
+          \                            \"codDiagnosticoRelacionado1\": null,\r
+
+          \                            \"codDiagnosticoRelacionado2\": null,\r
+
+          \                            \"codDiagnosticoRelacionado3\": null,\r
+
+          \                            \"numAutorizacion\": null\r
+
+          \                        }\r
+
+          \                    ]\r
+
+          \                }\r
+
+          \            },\r
+
+          \            {\r
+
+          \                \"consecutivo\": 2,\r
+
+          \                \"tipoDocumentoIdentificacion\": \"CC\",\r
+
+          \                \"numDocumentoIdentificacion\": \"55667788\",\r
+
+          \                \"fechaNacimiento\": \"1985-05-10\",\r
+
+          \                \"codSexo\": \"M\",\r
+
+          \                \"tipoUsuario\": \"12\",\r
+
+          \                \"codPaisResidencia\": \"170\",\r
+
+          \                \"codPaisOrigen\": \"170\",\r
+
+          \                \"codMunicipioResidencia\": \"05001\",\r
+
+          \                \"codZonaTerritorialResidencia\": \"01\",\r
+
+          \                \"incapacidad\": \"NO\",\r
+
+          \                \"servicios\": {\r
+
+          \                    \"consultas\": [\r
+
+          \                        {\r
+
+          \                            \"consecutivo\": 1,\r
+
+          \                            \"codPrestador\": \"760011269401\",\r
+
+          \                            \"tipoDocumentoIdentificacion\": \"CC\",\r
+
+          \                            \"numDocumentoIdentificacion\": \"55667788\",\r
+
+          \                            \"fechaInicioAtencion\": \"2025-05-26 10:00\",\r
+
+          \                            \"codConsulta\": \"890203\",\r
+
+          \                            \"codServicio\": 478,\r
+
+          \                            \"vrServicio\": 40000,\r
+
+          \                            \"valorPagoModerador\": 4000,\r
+
+          \                            \"conceptoRecaudo\": \"02\",\r
+
+          \                            \"numFEVPagoModerador\": \"SETP9900001023\",\r
+
+          \                            \"finalidadTecnologiaSalud\": \"10\",\r
+
+          \                            \"grupoServicios\": \"01\",\r
+
+          \                            \"modalidadGrupoServicioTecSal\": \"01\",\r
+
+          \                            \"causaMotivoAtencion\": \"10\",\r
+
+          \                            \"tipoDiagnosticoPrincipal\": \"01\",\r
+
+          \                            \"codDiagnosticoPrincipal\": \"Z001\",\r
+
+          \                            \"codDiagnosticoRelacionado1\": null,\r
+
+          \                            \"codDiagnosticoRelacionado2\": null,\r
+
+          \                            \"codDiagnosticoRelacionado3\": null,\r
+
+          \                            \"numAutorizacion\": null\r
+
+          \                        }\r
+
+          \                    ]\r
+
+          \                }\r
+
+          \            },\r
+
+          \            {\r
+
+          \                \"consecutivo\": 3,\r
+
+          \                \"tipoDocumentoIdentificacion\": \"CC\",\r
+
+          \                \"numDocumentoIdentificacion\": \"99887766\",\r
+
+          \                \"fechaNacimiento\": \"2000-09-15\",\r
+
+          \                \"codSexo\": \"F\",\r
+
+          \                \"tipoUsuario\": \"12\",\r
+
+          \                \"codPaisResidencia\": \"170\",\r
+
+          \                \"codPaisOrigen\": \"170\",\r
+
+          \                \"codMunicipioResidencia\": \"76001\",\r
+
+          \                \"codZonaTerritorialResidencia\": \"01\",\r
+
+          \                \"incapacidad\": \"NO\",\r
+
+          \                \"servicios\": {\r
+
+          \                    \"consultas\": [\r
+
+          \                        {\r
+
+          \                            \"consecutivo\": 1,\r
+
+          \                            \"codPrestador\": \"760011269401\",\r
+
+          \                            \"tipoDocumentoIdentificacion\": \"CC\",\r
+
+          \                            \"numDocumentoIdentificacion\": \"99887766\",\r
+
+          \                            \"fechaInicioAtencion\": \"2025-05-26 11:00\",\r
+
+          \                            \"codConsulta\": \"890201\",\r
+
+          \                            \"codServicio\": 478,\r
+
+          \                            \"vrServicio\": 40000,\r
+
+          \                            \"valorPagoModerador\": 0,\r
+
+          \                            \"conceptoRecaudo\": \"05\",\r
+
+          \                            \"numFEVPagoModerador\": \"SETP9900001023\",\r
+
+          \                            \"finalidadTecnologiaSalud\": \"10\",\r
+
+          \                            \"grupoServicios\": \"01\",\r
+
+          \                            \"modalidadGrupoServicioTecSal\": \"01\",\r
+
+          \                            \"causaMotivoAtencion\": \"10\",\r
+
+          \                            \"tipoDiagnosticoPrincipal\": \"01\",\r
+
+          \                            \"codDiagnosticoPrincipal\": \"Z002\",\r
+
+          \                            \"codDiagnosticoRelacionado1\": null,\r
+
+          \                            \"codDiagnosticoRelacionado2\": null,\r
+
+          \                            \"codDiagnosticoRelacionado3\": null,\r
+
+          \                            \"numAutorizacion\": null\r
+
+          \                        }\r
+
+          \                    ]\r
+
+          \                }\r
+
+          \            }\r
+
+          \        ]\r
+
+          \    },\r
+
+          \    // No requiere\r
+
+          \    \"xmlFevFile\": \"\"\r
+
+          }"
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Server
+          value: nginx/1.27.4
+        - name: Date
+          value: Mon, 16 Jun 2025 16:20:21 GMT
+        - name: Content-Type
+          value: application/json; charset=utf-8
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Connection
+          value: keep-alive
+        - name: Content-Encoding
+          value: br
+        - name: Vary
+          value: Accept-Encoding
+        - name: Request-Context
+          value: appId=cid-v1:97807299-6d04-4056-88a0-a5eebf0e6e44
+        - name: Strict-Transport-Security
+          value: max-age=2592000
+      body:
+        type: json
+        data: |-
+          {
+              "ResultState": false,
+              "ProcesoId": 0,
+              "NumFactura": "SETP9900001023",
+              "CodigoUnicoValidacion": "No aplica a paquetes procesados en estado [RECHAZADO] o validaciones realizadas antes del envío al Ministerio de Salud y Protección Social",
+              "FechaRadicacion": "2025-06-16T16:20:21.2129742+00:00",
+              "RutaArchivos": null,
+              "ResultadosValidacion": [
+                  {
+                      "Clase": "RECHAZADO",
+                      "Codigo": "CFR003",
+                      "Descripcion": "Se encontraron errores al procesar el archivo Json de Fev",
+                      "Observaciones": "",
+                      "PathFuente": "",
+                      "Fuente": "CapitaFinal"
+                  },
+                  {
+                      "Clase": "RECHAZADO",
+                      "Codigo": "RVC034",
+                      "Descripcion": "Diligenciar el valor mayor a cero (0) si la modalidad de pago corresponde a 'Pago por evento'. Para las demás modalidades informar cero (0).",
+                      "Observaciones": "El campo valor servicio [40000] no es valido, para el tipo de modalidad de pago [03]",
+                      "PathFuente": "usuarios[0].servicios.consultas[0].vrServicio",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "RECHAZADO",
+                      "Codigo": "RVC034",
+                      "Descripcion": "Diligenciar el valor mayor a cero (0) si la modalidad de pago corresponde a 'Pago por evento'. Para las demás modalidades informar cero (0).",
+                      "Observaciones": "El campo valor servicio [40000] no es valido, para el tipo de modalidad de pago [03]",
+                      "PathFuente": "usuarios[1].servicios.consultas[0].vrServicio",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "RECHAZADO",
+                      "Codigo": "RVC034",
+                      "Descripcion": "Diligenciar el valor mayor a cero (0) si la modalidad de pago corresponde a 'Pago por evento'. Para las demás modalidades informar cero (0).",
+                      "Observaciones": "El campo valor servicio [40000] no es valido, para el tipo de modalidad de pago [03]",
+                      "PathFuente": "usuarios[2].servicios.consultas[0].vrServicio",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "RECHAZADO",
+                      "Codigo": "RVG06",
+                      "Descripcion": "El dato informado no corresponde al contenido requerido.",
+                      "Observaciones": "Para facturas por modalidad de pago CAPITA, el valor total reportado en los servicos de ser igual a cero (0)",
+                      "PathFuente": "rips",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "RECHAZADO",
+                      "Codigo": "RVG06",
+                      "Descripcion": "El dato informado no corresponde al contenido requerido.",
+                      "Observaciones": "Verificar tabla de referencia, dato (478)",
+                      "PathFuente": "usuarios[0].servicios.consultas[0].codServicio",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "RECHAZADO",
+                      "Codigo": "RVG06",
+                      "Descripcion": "El dato informado no corresponde al contenido requerido.",
+                      "Observaciones": "Verificar tabla de referencia, dato (10)",
+                      "PathFuente": "usuarios[0].servicios.consultas[0].finalidadTecnologiaSalud",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "RECHAZADO",
+                      "Codigo": "RVG06",
+                      "Descripcion": "El dato informado no corresponde al contenido requerido.",
+                      "Observaciones": "El Código causa motivo atención [10] no es válido, por favor verificar tabla de referencia.",
+                      "PathFuente": "usuarios[0].servicios.consultas[0].causaMotivoAtencion",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "RECHAZADO",
+                      "Codigo": "RVG06",
+                      "Descripcion": "El dato informado no corresponde al contenido requerido.",
+                      "Observaciones": "Verificar tabla de referencia, dato (478)",
+                      "PathFuente": "usuarios[1].servicios.consultas[0].codServicio",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "RECHAZADO",
+                      "Codigo": "RVG06",
+                      "Descripcion": "El dato informado no corresponde al contenido requerido.",
+                      "Observaciones": "Verificar tabla de referencia, dato (10)",
+                      "PathFuente": "usuarios[1].servicios.consultas[0].finalidadTecnologiaSalud",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "RECHAZADO",
+                      "Codigo": "RVG06",
+                      "Descripcion": "El dato informado no corresponde al contenido requerido.",
+                      "Observaciones": "El Código causa motivo atención [10] no es válido, por favor verificar tabla de referencia.",
+                      "PathFuente": "usuarios[1].servicios.consultas[0].causaMotivoAtencion",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "RECHAZADO",
+                      "Codigo": "RVG06",
+                      "Descripcion": "El dato informado no corresponde al contenido requerido.",
+                      "Observaciones": "Verificar tabla de referencia, dato (478)",
+                      "PathFuente": "usuarios[2].servicios.consultas[0].codServicio",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "RECHAZADO",
+                      "Codigo": "RVG06",
+                      "Descripcion": "El dato informado no corresponde al contenido requerido.",
+                      "Observaciones": "Verificar tabla de referencia, dato (10)",
+                      "PathFuente": "usuarios[2].servicios.consultas[0].finalidadTecnologiaSalud",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "RECHAZADO",
+                      "Codigo": "RVG06",
+                      "Descripcion": "El dato informado no corresponde al contenido requerido.",
+                      "Observaciones": "El Código causa motivo atención [10] no es válido, por favor verificar tabla de referencia.",
+                      "PathFuente": "usuarios[2].servicios.consultas[0].causaMotivoAtencion",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "NOTIFICACION",
+                      "Codigo": "RVC019",
+                      "Descripcion": "El código de CUPS se puede validar con el diagnóstico principal.",
+                      "Observaciones": "Verificar tabla de referencia Dato (890202)",
+                      "PathFuente": "usuarios[0].servicios.consultas[0].codConsulta",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "NOTIFICACION",
+                      "Codigo": "RVC019",
+                      "Descripcion": "El código de CUPS se puede validar con el diagnóstico principal.",
+                      "Observaciones": "Verificar tabla de referencia Dato (890203)",
+                      "PathFuente": "usuarios[1].servicios.consultas[0].codConsulta",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "NOTIFICACION",
+                      "Codigo": "RVC019",
+                      "Descripcion": "El código de CUPS se puede validar con el diagnóstico principal.",
+                      "Observaciones": "Verificar tabla de referencia Dato (890201)",
+                      "PathFuente": "usuarios[2].servicios.consultas[0].codConsulta",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "NOTIFICACION",
+                      "Codigo": "RVC017",
+                      "Descripcion": "El código de CUPS puede ser validado que corresponda a la cobertura o plan de beneficios informada en la factura electrónica de venta.",
+                      "Observaciones": "Verificar tabla de referencia Dato (890202)",
+                      "PathFuente": "usuarios[0].servicios.consultas[0].codConsulta",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "NOTIFICACION",
+                      "Codigo": "RVC017",
+                      "Descripcion": "El código de CUPS puede ser validado que corresponda a la cobertura o plan de beneficios informada en la factura electrónica de venta.",
+                      "Observaciones": "Verificar tabla de referencia Dato (890203)",
+                      "PathFuente": "usuarios[1].servicios.consultas[0].codConsulta",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "NOTIFICACION",
+                      "Codigo": "RVC017",
+                      "Descripcion": "El código de CUPS puede ser validado que corresponda a la cobertura o plan de beneficios informada en la factura electrónica de venta.",
+                      "Observaciones": "Verificar tabla de referencia Dato (890201)",
+                      "PathFuente": "usuarios[2].servicios.consultas[0].codConsulta",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "NOTIFICACION",
+                      "Codigo": "RVC051",
+                      "Descripcion": "La finalidad informada se puede validar con el sexo y la edad del usuario.",
+                      "Observaciones": "Finalidad 10 - sexo del usuario F",
+                      "PathFuente": "usuarios[0].servicios.consultas[0].finalidadTecnologiaSalud",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "NOTIFICACION",
+                      "Codigo": "RVC051",
+                      "Descripcion": "La finalidad informada se puede validar con el sexo y la edad del usuario.",
+                      "Observaciones": "Finalidad 10 - Edad del usuario 35",
+                      "PathFuente": "usuarios[0].servicios.consultas[0].finalidadTecnologiaSalud",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "NOTIFICACION",
+                      "Codigo": "RVC051",
+                      "Descripcion": "La finalidad informada se puede validar con el sexo y la edad del usuario.",
+                      "Observaciones": "Finalidad 10 - sexo del usuario M",
+                      "PathFuente": "usuarios[1].servicios.consultas[0].finalidadTecnologiaSalud",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "NOTIFICACION",
+                      "Codigo": "RVC051",
+                      "Descripcion": "La finalidad informada se puede validar con el sexo y la edad del usuario.",
+                      "Observaciones": "Finalidad 10 - Edad del usuario 40",
+                      "PathFuente": "usuarios[1].servicios.consultas[0].finalidadTecnologiaSalud",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "NOTIFICACION",
+                      "Codigo": "RVC051",
+                      "Descripcion": "La finalidad informada se puede validar con el sexo y la edad del usuario.",
+                      "Observaciones": "Finalidad 10 - sexo del usuario F",
+                      "PathFuente": "usuarios[2].servicios.consultas[0].finalidadTecnologiaSalud",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "NOTIFICACION",
+                      "Codigo": "RVC051",
+                      "Descripcion": "La finalidad informada se puede validar con el sexo y la edad del usuario.",
+                      "Observaciones": "Finalidad 10 - Edad del usuario 24",
+                      "PathFuente": "usuarios[2].servicios.consultas[0].finalidadTecnologiaSalud",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "NOTIFICACION",
+                      "Codigo": "RVC028",
+                      "Descripcion": "El código de CIE se puede validar según el sexo y la edad del paciente.",
+                      "Observaciones": "El campo código diagnóstico principal no es valido, verificar tabla de referencia, Código diagnostico (Z001) - Código Sexo (M) - Edad (40)  ",
+                      "PathFuente": "usuarios[1].servicios.consultas[0].codDiagnosticoPrincipal",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "NOTIFICACION",
+                      "Codigo": "RVC028",
+                      "Descripcion": "El código de CIE se puede validar según el sexo y la edad del paciente.",
+                      "Observaciones": "El campo código diagnóstico principal no es valido, verificar tabla de referencia, Código diagnostico (Z002) - Código Sexo (F) - Edad (24)  ",
+                      "PathFuente": "usuarios[2].servicios.consultas[0].codDiagnosticoPrincipal",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "NOTIFICACION",
+                      "Codigo": "RVC035",
+                      "Descripcion": "Solamente se puede cobrar cuota moderadora a afiliados del régimen contributivo.",
+                      "Observaciones": "Tipo usuario [12] concepto recaudo [02]",
+                      "PathFuente": "usuarios[1].servicios.consultas[0].conceptoRecaudo",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "NOTIFICACION",
+                      "Codigo": "RVC059",
+                      "Descripcion": "El código de CUPS puede ser validado con el grupo de servicio, servicio, finalidad o causa.",
+                      "Observaciones": "Verificar tabla de referencia CodConsulta (890202) - Finalidad (10)",
+                      "PathFuente": "usuarios[0].servicios.consultas[0].codConsulta",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "NOTIFICACION",
+                      "Codigo": "RVC059",
+                      "Descripcion": "El código de CUPS puede ser validado con el grupo de servicio, servicio, finalidad o causa.",
+                      "Observaciones": "Verificar tabla de referencia CodConsulta (890203) - Finalidad (10)",
+                      "PathFuente": "usuarios[1].servicios.consultas[0].codConsulta",
+                      "Fuente": "Rips"
+                  },
+                  {
+                      "Clase": "NOTIFICACION",
+                      "Codigo": "RVC059",
+                      "Descripcion": "El código de CUPS puede ser validado con el grupo de servicio, servicio, finalidad o causa.",
+                      "Observaciones": "Verificar tabla de referencia CodConsulta (890201) - Finalidad (10)",
+                      "PathFuente": "usuarios[2].servicios.consultas[0].codConsulta",
+                      "Fuente": "Rips"
+                  }
+              ]
+          }
+
+docs: RIPS sin factura

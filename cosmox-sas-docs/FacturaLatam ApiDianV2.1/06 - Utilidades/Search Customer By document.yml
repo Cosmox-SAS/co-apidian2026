@@ -1,0 +1,206 @@
+info:
+  name: Search Customer By document
+  type: http
+  seq: 3
+
+http:
+  method: GET
+  url: "{{url_base}}/customer/31/31999910"
+  headers:
+    - name: Authorization
+      value: Bearer 0efacb667d343c125740d132b242cd76cef9208b842bc2867a9d0505e13f7c8b
+    - name: Cache-Control
+      value: no-cache
+    - name: Postman-Token
+      value: <calculated when request is sent>
+    - name: Host
+      value: <calculated when request is sent>
+    - name: User-Agent
+      value: PostmanRuntime/7.39.1
+    - name: Accept
+      value: "*/*"
+    - name: Accept-Encoding
+      value: gzip, deflate, br
+    - name: Connection
+      value: keep-alive
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: ""
+  auth:
+    type: bearer
+    token: 0efacb667d343c125740d132b242cd76cef9208b842bc2867a9d0505e13f7c8b
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: "404"
+    request:
+      url: "{{url_base}}/customer/31/1124024319"
+      method: GET
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Accept
+          value: application/json
+      body:
+        type: json
+        data: ""
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: "0"
+          value: Allow
+        - name: "1"
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Date
+          value: Mon, 14 Apr 2025 23:18:27 GMT
+        - name: Server
+          value: Apache/2.4.54 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+        - name: Vary
+          value: Authorization
+        - name: X-Powered-By
+          value: PHP/7.4.19
+        - name: Cache-Control
+          value: no-cache, private
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Access-Control-Allow-Headers
+          value: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization, Access-Control-Request-Headers
+        - name: Keep-Alive
+          value: timeout=5, max=100
+        - name: Connection
+          value: Keep-Alive
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "message": "El adquirente No existe en la base de datos",
+              "status": "404"
+          }
+  - name: "200"
+    request:
+      url: "{{url_base}}/customer/31/31999910"
+      method: GET
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Accept
+          value: application/json
+      body:
+        type: json
+        data: ""
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: "0"
+          value: Allow
+        - name: "1"
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Date
+          value: Mon, 14 Apr 2025 23:19:52 GMT
+        - name: Server
+          value: Apache/2.4.54 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+        - name: Vary
+          value: Authorization
+        - name: X-Powered-By
+          value: PHP/7.4.19
+        - name: Cache-Control
+          value: no-cache, private
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Access-Control-Allow-Headers
+          value: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization, Access-Control-Request-Headers
+        - name: Keep-Alive
+          value: timeout=5, max=100
+        - name: Connection
+          value: Keep-Alive
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "message": {
+                  "_attributes": {
+                      "nil": "true"
+                  }
+              },
+              "ResponseDian": {
+                  "GetAcquirerResponse": {
+                      "GetAcquirerResult": {
+                          "Message": {
+                              "_attributes": {
+                                  "nil": "true"
+                              }
+                          },
+                          "ReceiverEmail": "Mail_NIT_10@mail.com",
+                          "ReceiverName": "Nombre NIT 10",
+                          "StatusCode": "200"
+                      }
+                  }
+              },
+              "status": "200"
+          }
+
+docs: |-
+  **Consulta de datos de un cliente por tipo y número de documento**
+
+  Este endpoint permite consultar la información de un cliente utilizando el tipo de documento y el número de documento.
+
+  **URL de uso:**  
+  `http://[DOMINIO]/api/customer/[ID_TIPO_DOCUMENTO]/[NUMERO_DOCUMENTO]`
+
+  - **ID_TIPO_DOCUMENTO:** Código del tipo de documento (ver tabla abajo).
+      
+  - **NUMERO_DOCUMENTO:** Número del documento del cliente.
+      
+
+  **Ejemplo:**  
+  `http://midominio.com/api/customer/13/123456789`
+
+  **Nota:**
+
+  - si su sistema esta en entorno de pruebas puede utilizar los numeros facilitados por el servicio que se encuentran en [https://www.dian.gov.co/impuestos/factura-electronica/Documents/Guia-Herramienta-para-el-Consumo-de-Web-Services.pdf](https://www.dian.gov.co/impuestos/factura-electronica/Documents/Guia-Herramienta-para-el-Consumo-de-Web-Services.pdf)
+      
+
+  **Códigos de tipo de documento:**
+
+  - ID de tipo de documento
+      
+
+  | ID | Nombre |
+  | --- | --- |
+  | 11 | Registro civil |
+  | 12 | Tarjeta de identidad |
+  | 13 | Cédula de ciudadanía |
+  | 21 | Tarjeta de extranjería |
+  | 22 | Cédula de extranjería |
+  | 31 | NIT |
+  | 41 | Pasaporte |
+  | 42 | Documento de identificación extranjero |
+  | 47 | PEP (Permiso Especial de Permanencia) |
+  | 48 | PPT (Permiso Protección Temporal) |
+  | 50 | NIT de otro país |
+  | 91 | NUIP |

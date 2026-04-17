@@ -1,0 +1,11 @@
+info:
+  name: 07 - Pruebas
+  type: folder
+  seq: 7
+
+request:
+  auth: inherit
+
+docs:
+  content: Estos request se agregan para realizar las pruebas que necesite, sin necesidad de modificar los demas
+  type: text/markdown

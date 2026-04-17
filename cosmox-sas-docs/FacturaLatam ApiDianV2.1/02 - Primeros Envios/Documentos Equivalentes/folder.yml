@@ -1,0 +1,7 @@
+info:
+  name: Documentos Equivalentes
+  type: folder
+  seq: 6
+
+request:
+  auth: inherit

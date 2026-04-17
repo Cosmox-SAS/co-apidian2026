@@ -1,0 +1,348 @@
+info:
+  name: Prueba2
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://apidian2023.oo/api/ubl2.1/invoice-aiu
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \t\"number\": 990000378,\r
+
+      \t\"dv\": 2,\r
+
+      \t\"type_document_id\": 1,\r
+
+      \t\"date\": \"2021-08-17\",\r
+
+      \t\"time\": \"09:44:45\",\r
+
+      \t\"notes\": \"SIN OBSERVACIONES\",\r
+
+      \t\"noteAIU\": \"PRUEBA DE CONTRATO AIU\",\r
+
+      \    \"resolution_number\": \"18760000001\",\r
+
+      \    \"prefix\": \"SETP\",\r
+
+      \t\"customer\": {\r
+
+      \t\t\"identification_number\": 89008003,\r
+
+      \t\t\"name\": \"ALEXANDER OBANDO LONDONO\",\r
+
+      \t\t\"phone\": 3103891693,\r
+
+      \t\t\"address\": \"BRR LIMONAR MZ 6 CS 3 ET 1\",\r
+
+      \t\t\"email\": \"alexander_obando@hotmail.com\",\r
+
+      \t\t\"merchant_registration\": \"0000-00\",\r
+
+      \t\t\"type_document_identification_id\": 3,\r
+
+      \t\t\"type_organization_id\": 2,\r
+
+      \t\t\"municipality_id\": 149,\r
+
+      \t\t\"type_regime_id\": 2\r
+
+      \t},\r
+
+      \    \"sendmail\": true,\r
+
+      \    \"foot_note\": \"Generado por SKALA Platform | NIT 901.450.277 - 1 | Cel: 300 2031148 - www.skala.one\",\r
+
+      \    \"tax_totals\": [{\r
+
+      \            \"tax_id\": 1,\r
+
+      \            \"percent\": \"19.00\",\r
+
+      \            \"tax_amount\": \"91187.27\",\r
+
+      \            \"taxable_amount\": \"479933.00\"\r
+
+      \        }, {\r
+
+      \            \"tax_id\": 1,\r
+
+      \            \"percent\": \"0.00\",\r
+
+      \            \"tax_amount\": \"0.00\",\r
+
+      \            \"taxable_amount\": \"10174570.59\"\r
+
+      \        }\r
+
+      \    ],\r
+
+      \    \"payment_form\": {\r
+
+      \        \"payment_form_id\": 2,\r
+
+      \        \"duration_measure\": 13,\r
+
+      \        \"payment_due_date\": \"2021-09-15\",\r
+
+      \        \"payment_method_id\": 75\r
+
+      \    },\r
+
+      \    \"sendmailtome\": true,\r
+
+      \    \"invoice_lines\": [{\r
+
+      \            \"code\": \"1\",\r
+
+      \            \"tax_totals\": [{\r
+
+      \                    \"tax_id\": 1,\r
+
+      \                    \"percent\": \"0.00\",\r
+
+      \                    \"tax_amount\": \"0.00\",\r
+
+      \                    \"taxable_amount\": \"9598650.59\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"description\": \"Instalaciones Generales Con AIU\",\r
+
+      \            \"price_amount\": \"8199.98\",\r
+
+      \            \"base_quantity\": \"1170.57\",\r
+
+      \            \"unit_measure_id\": 70,\r
+
+      \            \"allowance_charges\": [{\r
+
+      \                    \"amount\": \"0.00\",\r
+
+      \                    \"base_amount\": \"9598650.59\",\r
+
+      \                    \"charge_indicator\": false,\r
+
+      \                    \"allowance_charge_reason\": \"DESCUENTO GENERAL\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"invoiced_quantity\": \"1170.57\",\r
+
+      \            \"line_extension_amount\": \"9598650.59\",\r
+
+      \            \"free_of_charge_indicator\": false,\r
+
+      \            \"type_item_identification_id\": 4\r
+
+      \        }, {\r
+
+      \            \"code\": \"2\",\r
+
+      \            \"tax_totals\": [{\r
+
+      \                    \"tax_id\": 1,\r
+
+      \                    \"percent\": \"0.00\",\r
+
+      \                    \"tax_amount\": \"0.00\",\r
+
+      \                    \"taxable_amount\": \"287960.00\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"description\": \"Administración\",\r
+
+      \            \"price_amount\": \"287960.00\",\r
+
+      \            \"base_quantity\": \"1.00\",\r
+
+      \            \"unit_measure_id\": 70,\r
+
+      \            \"allowance_charges\": [{\r
+
+      \                    \"amount\": \"0.00\",\r
+
+      \                    \"base_amount\": \"287960.00\",\r
+
+      \                    \"charge_indicator\": false,\r
+
+      \                    \"allowance_charge_reason\": \"DESCUENTO GENERAL\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"invoiced_quantity\": \"1.00\",\r
+
+      \            \"line_extension_amount\": \"287960.00\",\r
+
+      \            \"free_of_charge_indicator\": false,\r
+
+      \            \"type_item_identification_id\": 4\r
+
+      \        }, {\r
+
+      \            \"code\": \"3\",\r
+
+      \            \"tax_totals\": [{\r
+
+      \                    \"tax_id\": 1,\r
+
+      \                    \"percent\": \"0.00\",\r
+
+      \                    \"tax_amount\": \"0.00\",\r
+
+      \                    \"taxable_amount\": \"287960.00\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"description\": \"Imprevisto\",\r
+
+      \            \"price_amount\": \"287960.00\",\r
+
+      \            \"base_quantity\": \"1.00\",\r
+
+      \            \"unit_measure_id\": 70,\r
+
+      \            \"allowance_charges\": [{\r
+
+      \                    \"amount\": \"0.00\",\r
+
+      \                    \"base_amount\": \"287960.00\",\r
+
+      \                    \"charge_indicator\": false,\r
+
+      \                    \"allowance_charge_reason\": \"DESCUENTO GENERAL\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"invoiced_quantity\": \"1.00\",\r
+
+      \            \"line_extension_amount\": \"287960.00\",\r
+
+      \            \"free_of_charge_indicator\": false,\r
+
+      \            \"type_item_identification_id\": 4\r
+
+      \        }, {\r
+
+      \            \"code\": \"4\",\r
+
+      \            \"tax_totals\": [{\r
+
+      \                    \"tax_id\": 1,\r
+
+      \                    \"percent\": \"19.00\",\r
+
+      \                    \"tax_amount\": \"91187.27\",\r
+
+      \                    \"taxable_amount\": \"479933.00\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"description\": \"Utilidad\",\r
+
+      \            \"price_amount\": \"571120.27\",\r
+
+      \            \"base_quantity\": \"1.00\",\r
+
+      \            \"unit_measure_id\": 70,\r
+
+      \            \"allowance_charges\": [{\r
+
+      \                    \"amount\": \"0.00\",\r
+
+      \                    \"base_amount\": \"479933.00\",\r
+
+      \                    \"charge_indicator\": false,\r
+
+      \                    \"allowance_charge_reason\": \"DESCUENTO GENERAL\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"invoiced_quantity\": \"1.00\",\r
+
+      \            \"line_extension_amount\": \"479933.00\",\r
+
+      \            \"free_of_charge_indicator\": false,\r
+
+      \            \"type_item_identification_id\": 4\r
+
+      \        }\r
+
+      \    ],\r
+
+      \    \"allowance_charges\": [{\r
+
+      \            \"amount\": \"0.00\",\r
+
+      \            \"base_amount\": \"10654503.59\",\r
+
+      \            \"discount_id\": 10,\r
+
+      \            \"charge_indicator\": false,\r
+
+      \            \"allowance_charge_reason\": \"DESCUENTO GENERAL\"\r
+
+      \        }\r
+
+      \    ],\r
+
+      \    \"establishment_name\": \"COSTA VERTICAL SOLUTION S.A.S\",\r
+
+      \    \"legal_monetary_totals\": {\r
+
+      \        \"payable_amount\": \"10745690.86\",\r
+
+      \        \"charge_total_amount\": \"0.00\",\r
+
+      \        \"tax_exclusive_amount\": \"10654503.59\",\r
+
+      \        \"tax_inclusive_amount\": \"10745690.86\",\r
+
+      \        \"line_extension_amount\": \"10654503.59\",\r
+
+      \        \"allowance_total_amount\": \"0.00\"\r
+
+      \    }\r
+
+      }\r\n"
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  ENVIO DE FACTURA CON AIU
+
+  - Aplica la misma documentacion que el PRIMER ENVIO DE FACTURA de la seccion 02 - PRIMEROS ENVIOS.
+
+  - Este ejemplo ilustra como se debe utilizar la API para enviar una factura AIU, este tipo de factura tiene como caracteristica que incluye las lineas ADMINISTRACION, IMPREVISTO y UTILIDAD, pero solo se cobra impuesto sobre el campo UTILIDAD, es muy utilizada por contratistas del area de la construccion.

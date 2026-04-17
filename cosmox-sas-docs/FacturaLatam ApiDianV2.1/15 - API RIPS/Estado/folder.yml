@@ -1,0 +1,11 @@
+info:
+  name: Estado
+  type: folder
+  seq: 1
+
+request:
+  auth: inherit
+
+docs:
+  content: Listado de servicios que muestran detalles de la versión instalada de apirips-docker
+  type: text/markdown

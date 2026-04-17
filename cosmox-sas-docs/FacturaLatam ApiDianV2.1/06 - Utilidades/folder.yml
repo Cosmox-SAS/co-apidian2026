@@ -1,0 +1,11 @@
+info:
+  name: 06 - Utilidades
+  type: folder
+  seq: 6
+
+request:
+  auth: inherit
+
+docs:
+  content: Los request de esta carpeta permiten realizar operaciones varias.
+  type: text/markdown

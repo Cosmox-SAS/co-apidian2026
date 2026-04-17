@@ -1,0 +1,37 @@
+info:
+  name: RIPS NC Total
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: "{{url_apirips}}/api/PaquetesFevRips/CargarNCTotal"
+  body:
+    type: json
+    data: "{\r
+
+      \    \"rips\": null,\r
+
+      \    \"xmlFevFile\": \"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGc3N1ZURhdGU++ODAwMTk3MjY4PC9zdHM6QXV0aG9yaXphdGlvblByb3ZpZGVySUQ+CiAgICAgICAgICA8L3N0czpBdXRob3JpemF0aW9uUHJvdmlkZXI+CiAgICAgICAgPC9zdHM6RGlhbkV4dGVuc2lvbnM+CiAgICAgIDwvZXh0OkV4dGVuc2lvbkNvbnRlbnQ+CiAgICA8L2V4dDpVQkxFeHRlbnNpb24gICAgICA8Y2JjOklEPjAxPC9jYmM6SUQ+CiAgICAgICAgPGNiYzpOYW1lPklWQTwvY2JjOk5hbWU+lwdGlvbj4KCQkJCTwvY2FjOkV4dGVybmFsUmVmZXJlbmNlPgoJCQk8L2NhYzpBdHRhY2htZW50PgoJCQk8Y2FjOlJlc3VsdE9mVmVyaWZpY2F0aW9uPgoJCQkJPGNiYzpWYWxpZGF0b3JJRD5VbmlkYWQgRXNwZWNpYWwgRGlyZWNjacOzbiBkZSBJbXB1ZXN0b3MgeSBBZHVhbmFzIE5hY2lvbmFsZXM8L2NiYzpWYWxpZGF0b3JJRD4KCQkJCTxjYmM6VmFsaWRhdGlvblJlc3VsdENvZGU+MDI8L2NiYzpWYWxpZGF0aW9uUmVzdWx0Q29kZT4KCQkJCTxjYmM6VmFsaWRhdGlvbkRhdGU+MjAyMi0wNi0xNDwvY2JjOlZhbGlkYXRpb25EYXRlPgoJCQkJPGNiYzpWYWxpZGF0aW9uVGltZT4xMDo0MDo1Ni0wNTowMDwvY2JjOlZhbGlkYXRpb25UaW1lPgoJCQk8L2NhYzpSZXN1bHRPZlZ2hlZERvY3VtZW50Pg==\"\r
+
+      }"
+  auth:
+    type: bearer
+    token: "{{token_apirips}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  RIPS con factura
+
+  - el campo "xmlFevFile" esta relacionado con el campo "attacheddocument" de la respuesta de una factura (aceptada) en el API
+      
+      - tambien cuenta con servicios para obtener el valor
+          
+      - si posee el zip, puede convertirlo en Base64 y añadir el string obtenido
+          
+  - el campo "numFactura" debe contener el correlativo y numeración juntos, sin caracteres especiales

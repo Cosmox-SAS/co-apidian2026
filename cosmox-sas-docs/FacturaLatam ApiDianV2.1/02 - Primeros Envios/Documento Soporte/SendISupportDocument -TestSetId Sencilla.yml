@@ -1,0 +1,246 @@
+info:
+  name: SendISupportDocument -TestSetId Sencilla
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://apidian2024.oo/api/ubl2.1/support-document
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \t\"number\": 11,\r
+
+      \t\"type_document_id\": 11,\r
+
+      \t\"date\": \"2023-08-09\",\r
+
+      \t\"time\": \"12:09:38\",\r
+
+      \t\"notes\": \"SIN OBSERVACIONES\",\r
+
+      \t\"sendmail\": false,\r
+
+      \t\"sendmailtome\": false,\r
+
+      \t\"resolution_number\": \"18764053310988\",\r
+
+      \t\"prefix\": \"DSP\",\r
+
+      \    \"establishment_name\": \"ALEXANDER OBANDO LONDOÑO\",\t\r
+
+      \    \"tarifaica\": \"0\",\r
+
+      \    \"actividadeconomica\": \"6201\",\r
+
+      \t\"seller\": {\r
+
+      \t\t\"identification_number\": \"41946692\",\r
+
+      \        \"dv\": \"6\",\r
+
+      \t\t\"name\": \"ELIZABETH CARDONA VILLADA\",\r
+
+      \t\t\"phone\": \"3226563672\",\r
+
+      \t\t\"address\": \"LIMONAR MZ 6 CS 3 ET 1 PISO 2\",\r
+
+      \t\t\"email\": \"elizabethcardonav@gmail.com\",\r
+
+      \t\t\"merchant_registration\": \"0000-00\",\r
+
+      \        \"postal_zone_code\": 630001,\r
+
+      \t\t\"type_document_identification_id\": 3,\r
+
+      \t\t\"type_organization_id\": 2,\r
+
+      \t\t\"municipality_id\": 820,\r
+
+      \t\t\"type_liability_id\": 117,\r
+
+      \t\t\"type_regime_id\": 1\r
+
+      \t},\r
+
+      \t\"payment_form\": {\r
+
+      \t\t\"payment_form_id\": 1,\r
+
+      \t\t\"payment_method_id\": 10,\r
+
+      \t\t\"payment_due_date\": \"2023-08-09\",\r
+
+      \t\t\"duration_measure\": \"0\"\r
+
+      \t},\t\r
+
+      \t\"allowance_charges\": [\r
+
+      \t\t{\r
+
+      \t\t\t\"discount_id\": 10,\r
+
+      \t\t\t\"charge_indicator\": false,\r
+
+      \t\t\t\"allowance_charge_reason\": \"DESCUENTO GENERAL\",\r
+
+      \t\t\t\"amount\": \"0.00\",\r
+
+      \t\t\t\"base_amount\": \"200.00\"\r
+
+      \t\t}\r
+
+      \t],\r
+
+      \t\"legal_monetary_totals\": {\r
+
+      \t\t\"line_extension_amount\": \"200.00\",\r
+
+      \t\t\"tax_exclusive_amount\": \"200.00\",\r
+
+      \t\t\"tax_inclusive_amount\": \"200.00\",\r
+
+      \t\t\"allowance_total_amount\": \"0.00\",\r
+
+      \t\t\"charge_total_amount\": \"0.00\",\r
+
+      \t\t\"payable_amount\": \"200.00\"\r
+
+      \t},\r
+
+      \t\"tax_totals\": \r
+
+      \t[\r
+
+      \r
+
+      \t\t{\r
+
+      \t\t\t\"tax_id\": 1,\r
+
+      \t\t\t\"tax_amount\": \"0.00\",\r
+
+      \t\t\t\"percent\": \"0\",\r
+
+      \t\t\t\"taxable_amount\": \"200.00\"\r
+
+      \t\t}\r
+
+      \t\r
+
+      \t],\r
+
+      \t\"invoice_lines\": \r
+
+      \t[\r
+
+      \t\t{\r
+
+      \t\t\t\"unit_measure_id\": 70,\r
+
+      \t\t\t\"invoiced_quantity\": \"2.00\",\r
+
+      \t\t\t\"line_extension_amount\": \"200.00\",\r
+
+      \t\t\t\"free_of_charge_indicator\": false,\r
+
+      \t\t\t\"allowance_charges\": [{\r
+
+      \t\t\t\t\t\"charge_indicator\": false,\r
+
+      \t\t\t\t\t\"allowance_charge_reason\": \"DESCUENTO GENERAL\",\r
+
+      \t\t\t\t\t\"amount\": \"0.00\",\r
+
+      \t\t\t\t\t\"base_amount\": \"200.00\"\r
+
+      \t\t\t\t}\r
+
+      \t\t\t],\r
+
+      \t\t\t\"tax_totals\": \r
+
+      \t\t\t[{\r
+
+      \t\t\t\t\"tax_id\": 1,\r
+
+      \t\t\t\t\"tax_amount\": \"0.00\",\r
+
+      \t\t\t\t\"percent\": \"0.00\",\r
+
+      \t\t\t\t\"taxable_amount\": \"200.00\"\r
+
+      \t\t\t}],\r
+
+      \t\t\t\"description\": \"ARTICULO DE PRUEBAS\",\r
+
+      \            \"notes\": \"\",\r
+
+      \t\t\t\"code\": \"PRUEBA\",\r
+
+      \t\t\t\"type_item_identification_id\": 4,\r
+
+      \t\t\t\"price_amount\": \"100.00\",\r
+
+      \t\t\t\"base_quantity\": \"2.00\",\r
+
+      \t\t    \"type_generation_transmition_id\": 1,\r
+
+      \t\t\t\"start_date\": \"2023-08-09\"\r
+
+      \t\t}\r
+
+      \r
+
+      \t],\r
+
+      \    \"logo_empresa_emisora\": \"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\"    \r
+
+      }\r
+
+      \r\n"
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  PRIMER ENVIO DE DOCUMENTO SOPORTE
+
+  - Si se instalo un dominio se debe utilizar de la siguiente manera:
+
+  http://midominio.com/api/ubl2.1/invoice
+
+  - Requiere un token de autorizacion el cual fue devuelto al realizar el Paso 1 - Config Company, si este token se extravio, se puede consultar en la tabla de la base de datos de la API en la tabla users, en el campo API_TOKEN.
+
+  - En URL el ultimo parametro corresponde al id del set de pruebas que la dian entrego al momento de registrar el modo de operacion software propio.
+
+  .../ubl2.1/invoice/iddelsetdepruebasdeladian
+
+  - Este endpoint se puede utilizar de dos modos:
+
+  1.  Asincrono:
+  .../ubl2.1/invoice/iddelsetdepruebasdeladian
+
+  2.  Sincrono:
+  .../ubl2.1/invoice
+
+  - El modo sincrono no afecta al set de pruebas, pero la respuesta de la DIAN incluye posibles errores de validacion y estado de la factura, valida o no valida.
+
+  - El modo asincrono, afecta el set de pruebas y en la respuesta no se incluye el resultado de la factura, solo se entrega un ZIP_KEY el cual debe ser consultado mediante el endpoint: 
+
+  .../ubl2.1/status/zip
+
+  de la seccion 03 - Consultas de estado para asi poder establecer si la factura fue valida o no y los errores de validacion.

@@ -1,0 +1,64 @@
+info:
+  name: Paso 4 - Config-Resolution Servicios Publicos Documentos Equivalentes
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: http://apidian2024.oo/api/ubl2.1/config/resolution
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \t\"type_document_id\": 24,\r
+
+      \t\"prefix\": \"SSP\",\r
+
+      \t\"resolution\": \"SSP\",\r
+
+      \t\"resolution_date\": \"2024-01-01\",\r
+
+      \t\"from\": 1,\r
+
+      \t\"to\": 100000,\r
+
+      \t\"generated_to_date\": 0,\r
+
+      \t\"date_from\": \"2024-01-01\",\r
+
+      \t\"date_to\": \"2030-01-01\"\r
+
+      }\r\n"
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  CONFIGURAR RESOLUCION DE FACTURAS
+
+  - Si se instalo un dominio se debe utilizar de la siguiente manera:
+
+  http://midominio.com/api/ubl2.1/config/resolution
+
+  - Requiere un token de autorizacion el cual fue devuelto al realizar el Paso 1 - Config Company, si este token se extravio, se puede consultar en la tabla de la base de datos de la API en la tabla users, en el campo API_TOKEN.
+
+  - Este endpoint no tiene parametros en la URL.
+
+  - Los datos necesarios para llenar los campos JSON cuyo nombre finalice con "_id" se encuentran en las tablas parametricas de la base de datos de la API, ejemplo:
+
+  type_liability_id, se debe especificar el id del registro correspondiente de la tabla type_liabilities de la base de datos de la API.
+
+  - El campo technical_key, corresponde a la clave tecnica de la resolucion, este dato en habilitacion siempre es el mismo: fc8eac422eba16e22ffd8c6f94b3f40a6e38162c, pero en produccion esta llave tecnica se debe consultar con el endpoint getnumberingrange de la seccion 08 - Paso a Produccion.
+
+  - Los demas datos, como date_from, date_to resolution, prefix, etc., son datos que se incluyen en el documento 1876 que entrega la DIAN cuando se solicita una resolucion de facturacion electronica.

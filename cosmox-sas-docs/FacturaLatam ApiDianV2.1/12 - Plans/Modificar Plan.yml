@@ -1,0 +1,65 @@
+info:
+  name: Modificar Plan
+  type: http
+  seq: 2
+
+http:
+  method: PUT
+  url: http://apidian2023.oo/api/ubl2.1/plan
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: cache-control
+      value: no-cache
+    - name: Connection
+      value: keep-alive
+    - name: Accept-Encoding
+      value: gzip, deflate
+    - name: Host
+      value: apidian2022.oo
+      disabled: true
+    - name: accept
+      value: application/json
+    - name: X-CSRF-TOKEN
+      value: ""
+  body:
+    type: json
+    data: "{\r
+
+      \t\"id\": \"1\",\r
+
+      \    \"qty_docs_invoice\": 3,\r
+
+      \    \"qty_docs_payroll\": 0,\r
+
+      \    \"period\": 1,\r
+
+      \    \"state\": 1,\r
+
+      \    \"observation\": \"NINGUNA\"\r
+
+      }\r\n"
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  CONFIGURAR SOFTWARE
+
+  - Si se instalo un dominio se debe utilizar de la siguiente manera:
+
+  http://midominio.com/api/ubl2.1/config/software
+
+  - Requiere un token de autorizacion el cual fue devuelto al realizar el Paso 1 - Config Company, si este token se extravio, se puede consultar en la tabla de la base de datos de la API en la tabla users, en el campo API_TOKEN.
+
+  - Este endpoint no tiene parametros en la URL.
+
+  - El campo id, corresponde al id de software que entrega la DIAN al momento de registrarse como facturador electronico y agregar modo de operacion software propio.
+
+  - El campo pin, corresponde al pin del software propio, este pin corresponde a un numero de 5 digitos que nosotros mismos escogimos al registrar dicho software.

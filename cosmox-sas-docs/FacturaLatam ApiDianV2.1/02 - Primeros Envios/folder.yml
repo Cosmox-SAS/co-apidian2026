@@ -1,0 +1,15 @@
+info:
+  name: 02 - Primeros Envios
+  type: folder
+  seq: 2
+
+request:
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+docs:
+  content: "Aqui se encuentran los envios mas sencillos de documentos electronicos, por medio de estos podra realizar\r
+
+    las primeras pruebas con la DIAN"
+  type: text/markdown

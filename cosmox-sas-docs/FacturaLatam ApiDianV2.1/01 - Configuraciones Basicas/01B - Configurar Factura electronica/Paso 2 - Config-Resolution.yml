@@ -1,0 +1,66 @@
+info:
+  name: Paso 2 - Config-Resolution
+  type: http
+  seq: 3
+
+http:
+  method: PUT
+  url: http://apidian2024.oo/api/ubl2.1/config/resolution
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \t\"type_document_id\": 1,\r
+
+      \t\"prefix\": \"SETP\",\r
+
+      \t\"resolution\": \"18760000001\",\r
+
+      \t\"resolution_date\": \"2019-01-19\",\r
+
+      \t\"technical_key\": \"fc8eac422eba16e22ffd8c6f94b3f40a6e38162c\",\r
+
+      \t\"from\": 990000000,\r
+
+      \t\"to\": 995000000,\r
+
+      \t\"generated_to_date\": 0,\r
+
+      \t\"date_from\": \"2019-01-19\",\r
+
+      \t\"date_to\": \"2030-01-19\"\r
+
+      }\r\n"
+  auth:
+    type: bearer
+    token: 2bef663e1a00464b22e1fbe5a7dc5e1ce384ce8a449f4582a86f51418fc077f9
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  Json que permite generar una resolución de Factura Electrónica
+
+  ```
+  {
+      "type_document_id": 1,
+      "prefix": "SETP", // No debe contener números
+      "resolution": "18760000001",
+      "resolution_date": "2019-01-19",
+      "technical_key": "fc8eac422eba16e22ffd8c6f94b3f40a6e38162c",
+      "from": 990000000,
+      "to": 995000000,
+      "generated_to_date": 0,
+      "date_from": "2019-01-19",
+      "date_to": "2030-01-19"
+  }
+
+   ```

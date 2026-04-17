@@ -1,0 +1,11 @@
+info:
+  name: 02B - Configurar Notas
+  type: folder
+  seq: 1
+
+request:
+  auth: inherit
+
+docs:
+  content: "- Servicios exclusivos para las Notas de Credito y Debito"
+  type: text/markdown

@@ -1,0 +1,11 @@
+info:
+  name: 01A - Configuracion de empresa
+  type: folder
+  seq: 1
+
+request:
+  auth: inherit
+
+docs:
+  content: "- Servicios Para configurar la empresa"
+  type: text/markdown

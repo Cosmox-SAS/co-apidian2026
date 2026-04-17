@@ -1,0 +1,131 @@
+info:
+  name: RIPS Nota Ajuste
+  type: http
+  seq: 10
+
+http:
+  method: POST
+  url: "{{url_apirips}}/api/PaquetesFevRips/CargarNotaAjuste"
+  body:
+    type: json
+    data: "{\r
+
+      \    \"rips\": {\r
+
+      \        \"numDocumentoIdObligado\": \"530520110\",\r
+
+      \        \"numFactura\": \"BTA4444778\",\r
+
+      \        \"tipoNota\": \"NA\",\r
+
+      \        \"numNota\": \"NA0002\",\r
+
+      \        \"usuarios\": [\r
+
+      \            {\r
+
+      \                \"tipoDocumentoIdentificacion\": \"CC\",\r
+
+      \                \"numDocumentoIdentificacion\": \"52817285\",\r
+
+      \                \"tipoUsuario\": \"02\",\r
+
+      \                \"fechaNacimiento\": \"1983-06-21\",\r
+
+      \                \"codSexo\": \"F\",\r
+
+      \                \"codPaisResidencia\": \"170\",\r
+
+      \                \"codMunicipioResidencia\": \"11001\",\r
+
+      \                \"codZonaTerritorialResidencia\": \"02\",\r
+
+      \                \"incapacidad\": \"SI\",\r
+
+      \                \"codPaisOrigen\": \"170\",\r
+
+      \                \"consecutivo\": 1,\r
+
+      \                \"servicios\": {\r
+
+      \                    \"consultas\": [\r
+
+      \                        {\r
+
+      \                            \"codPrestador\": \"192030405001\",\r
+
+      \                            \"fechaInicioAtencion\": \"2023-06-22 00:00\",\r
+
+      \                            \"numAutorizacion\": \"\",\r
+
+      \                            \"codConsulta\": \"890701\",\r
+
+      \                            \"modalidadGrupoServicioTecSal\": \"01\",\r
+
+      \                            \"grupoServicios\": \"01\",\r
+
+      \                            \"codServicio\": 328,\r
+
+      \                            \"finalidadTecnologiaSalud\": \"44\",\r
+
+      \                            \"causaMotivoAtencion\": \"38\",\r
+
+      \                            \"codDiagnosticoPrincipal\": \"S934\",\r
+
+      \                            \"codDiagnosticoRelacionado1\": \"S903\",\r
+
+      \                            \"codDiagnosticoRelacionado2\": null,\r
+
+      \                            \"codDiagnosticoRelacionado3\": null,\r
+
+      \                            \"tipoDiagnosticoPrincipal\": \"02\",\r
+
+      \                            \"tipoDocumentoIdentificacion\": \"CC\",\r
+
+      \                            \"numDocumentoIdentificacion\": \"79315652\",\r
+
+      \                            \"vrServicio\": 65700,\r
+
+      \                            \"conceptoRecaudo\": \"05\",\r
+
+      \                            \"valorPagoModerador\": 0,\r
+
+      \                            \"numFEVPagoModerador\": \"\",\r
+
+      \                            \"consecutivo\": 1\r
+
+      \                        }\r
+
+      \                    ]\r
+
+      \                }\r
+
+      \            }\r
+
+      \        ]\r
+
+      \    },\r
+
+      \    \"xmlFevFile\": \"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiySUQ+VW5pZGFkIEVzcGVjaWFsIERpcmVjY2nDs24gZGUgSW1wdWVzdG9zIHkgQWR1YW5hcyBOYWNpb25hbGVzPC9jYmM6VmFsaWRhdG9ySUQ+CgkJCQk8Y2JjOlZhbGlkYXRpb25SZXN1bHRDb2RlPjAyPC9jYmM6VmFsaW\"\r
+
+      }"
+  auth:
+    type: bearer
+    token: "{{token_apirips}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  RIPS con factura
+
+  - el campo "xmlFevFile" esta relacionado con el campo "attacheddocument" de la respuesta de una factura (aceptada) en el API
+      
+      - tambien cuenta con servicios para obtener el valor
+          
+      - si posee el zip, puede convertirlo en Base64 y añadir el string obtenido
+          
+  - el campo "numFactura" debe contener el correlativo y numeración juntos, sin caracteres especiales

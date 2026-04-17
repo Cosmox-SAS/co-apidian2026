@@ -1,0 +1,115 @@
+info:
+  name: Actualizar Cliente
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{url_base}}/customers/2222222222"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \    \"dv\": \"5\",\r
+
+      \    \"name\": \"cliente por defecto\",\r
+
+      \    \"phone\": \"52543456\",\r
+
+      \    \"address\": \"calle 42 a 83 b 09\",\r
+
+      \    \"email\": \"clientepordefecto@gmail.com\"\r
+
+      }"
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: "200"
+    request:
+      url: "{{url_base}}/customers/2222222222"
+      method: PUT
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Accept
+          value: application/json
+      body:
+        type: json
+        data: "{\r
+
+          \    \"dv\": \"5\",\r
+
+          \    \"name\": \"cliente por defecto\",\r
+
+          \    \"phone\": \"52543456\",\r
+
+          \    \"address\": \"calle 42 a 83 b 09\",\r
+
+          \    \"email\": \"clientepordefecto@gmail.com\"\r
+
+          }"
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: "0"
+          value: Allow
+        - name: "1"
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Date
+          value: Mon, 29 Sep 2025 21:54:05 GMT
+        - name: Server
+          value: Apache/2.4.54 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+        - name: Vary
+          value: Authorization
+        - name: X-Powered-By
+          value: PHP/7.4.19
+        - name: Cache-Control
+          value: no-cache, private
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Access-Control-Allow-Headers
+          value: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization, Access-Control-Request-Headers
+        - name: Keep-Alive
+          value: timeout=5, max=100
+        - name: Connection
+          value: Keep-Alive
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "message": "Cliente actualizado exitosamente",
+              "data": {
+                  "customer": {
+                      "id": 18,
+                      "identification_number": 2222222222,
+                      "dv": "5",
+                      "name": "cliente por defecto",
+                      "phone": "52543456",
+                      "address": "calle 42 a 83 b 09",
+                      "email": "clientepordefecto@gmail.com"
+                  }
+              }
+          }
+
+docs: Permite actualizar un cliente, el numero de identificacion no es modificable ya que es unico por cliente
