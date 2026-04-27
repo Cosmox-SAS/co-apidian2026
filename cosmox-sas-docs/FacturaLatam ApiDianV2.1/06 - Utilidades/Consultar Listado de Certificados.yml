@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{url_base}}/api/ubl2.1/certificates-listing/{{nit}}"
+  url: "{{url_base}}/certificates-listing/{{nit}}"
   headers:
     - name: Content-Type
       value: application/json

@@ -32,7 +32,7 @@ http:
     data: ""
   auth:
     type: bearer
-    token: 0efacb667d343c125740d132b242cd76cef9208b842bc2867a9d0505e13f7c8b
+    token: "{{token}}"
 
 settings:
   encodeUrl: true

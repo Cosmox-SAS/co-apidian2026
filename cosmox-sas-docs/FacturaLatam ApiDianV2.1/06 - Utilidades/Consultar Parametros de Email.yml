@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: http://api2023.oo/api/ubl2.1/emailconfig
+  url: "{{url_base}}/emailconfig"
   headers:
     - name: Content-Type
       value: application/json
@@ -25,6 +25,9 @@ http:
   body:
     type: json
     data: ""
+  auth:
+    type: bearer
+    token: "{{token}}"
 
 settings:
   encodeUrl: true
