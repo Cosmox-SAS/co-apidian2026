@@ -1,0 +1,54 @@
+info:
+  name: Contingencia Tipo 4 - Enviar Pendientes
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: http://apidian2024.oo/api/ubl2.1/invoice-contingency-4/send_pendings
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: ""
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  PRIMER ENVIO DE FACTURA
+
+  - Si se instalo un dominio se debe utilizar de la siguiente manera:
+
+  http://midominio.com/api/ubl2.1/invoice
+
+  - Requiere un token de autorizacion el cual fue devuelto al realizar el Paso 1 - Config Company, si este token se extravio, se puede consultar en la tabla de la base de datos de la API en la tabla users, en el campo API_TOKEN.
+
+  - En URL el ultimo parametro corresponde al id del set de pruebas que la dian entrego al momento de registrar el modo de operacion software propio.
+
+  .../ubl2.1/invoice/iddelsetdepruebasdeladian
+
+  - Este endpoint se puede utilizar de dos modos:
+
+  1.  Asincrono:
+  .../ubl2.1/invoice/iddelsetdepruebasdeladian
+
+  2.  Sincrono:
+  .../ubl2.1/invoice
+
+  - El modo sincrono no afecta al set de pruebas, pero la respuesta de la DIAN incluye posibles errores de validacion y estado de la factura, valida o no valida.
+
+  - El modo asincrono, afecta el set de pruebas y en la respuesta no se incluye el resultado de la factura, solo se entrega un ZIP_KEY el cual debe ser consultado mediante el endpoint: 
+
+  .../ubl2.1/status/zip
+
+  de la seccion 03 - Consultas de estado para asi poder establecer si la factura fue valida o no y los errores de validacion.

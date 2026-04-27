@@ -1,0 +1,65 @@
+info:
+  name: Send Event Data CUFE
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: http://apidian2024.oo/api/ubl2.1/send-event-data
+  headers:
+    - name: Authorization
+      value: Bearer a25b9533afbae4d16a25505524bd89f1dfaa604e97111dea7502a139abcde18a
+      disabled: true
+    - name: Content-Type
+      value: application/json
+    - name: accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \    \"event_id\": \"1\",\r
+
+      \    \"document_reference\": {\r
+
+      \        \"cufe\": \"a7369298cca540ae26efb140a8b23cf7776857294f8718392d3437695749246dbd062246964468b5b319b8d66ced4b8a\"\r
+
+      \    },\r
+
+      \    \"issuer_party\": {\r
+
+      \        \"identification_number\": \"89000001\",\r
+
+      \        \"first_name\": \"PEPITO\",\r
+
+      \        \"last_name\": \"PEREZ\",\r
+
+      \        \"organization_department\": \"CONTABILIDAD\",\r
+
+      \        \"job_title\": \"AUXILIAR CONTABLE\"\r
+
+      \    }\r
+
+      }\r\n"
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  ENVIAR EVENTO
+
+  - Si se instalo un dominio se debe utilizar de la siguiente manera:
+
+  http://midominio.com/api/ubl2.1/send-event
+
+  - Requiere un token de autorizacion el cual fue devuelto al realizar el Paso 1 - Config Company, si este token se extravio, se puede consultar en la tabla de la base de datos de la API en la tabla users, en el campo API_TOKEN.
+
+  - Este endpoint tiene no tiene parametros en la URL
+
+  - Este endpoint permite registrar un evento al documento especificado en el json del request, este evento puede ser ACEPTACION, RECHAZO, RECEPCION DE BIENES ó ACUSE DE RECIBO.

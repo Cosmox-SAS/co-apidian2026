@@ -1,0 +1,11 @@
+info:
+  name: 01C - Configurar Nominas
+  type: folder
+  seq: 3
+
+request:
+  auth: inherit
+
+docs:
+  content: "- Servicios exclusivos para las Nominas"
+  type: text/markdown

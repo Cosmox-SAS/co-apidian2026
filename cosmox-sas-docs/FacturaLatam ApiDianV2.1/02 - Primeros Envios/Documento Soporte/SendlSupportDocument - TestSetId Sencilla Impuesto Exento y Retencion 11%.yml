@@ -1,0 +1,181 @@
+info:
+  name: SendlSupportDocument - TestSetId Sencilla Impuesto Exento y Retencion 11%
+  type: http
+  seq: 7
+
+http:
+  method: POST
+  url: "{{url_base}}/ubl2.1/support-document"
+  headers:
+    - name: Authorization
+      value: Bearer {{token}}
+    - name: Cache-Control
+      value: no-cache
+    - name: Postman-Token
+      value: <calculated when request is sent>
+    - name: Content-Type
+      value: application/json
+    - name: Content-Length
+      value: <calculated when request is sent>
+    - name: Host
+      value: <calculated when request is sent>
+    - name: User-Agent
+      value: PostmanRuntime/7.39.1
+    - name: Accept
+      value: "*/*"
+    - name: Accept-Encoding
+      value: gzip, deflate, br
+    - name: Connection
+      value: keep-alive
+    - name: Accept
+      value: application/json
+    - name: Content-type
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \    \"date\": \"2022-01-31\",\r
+
+      \    \"establishment_address\": \"la idreccion del establecimiento 123\",\r
+
+      \    \"establishment_email\": \"alexander_obando@hotmail.com\",\r
+
+      \    \"establishment_id\": \"Establecimiento 123\",\r
+
+      \    \"establishment_municipality_id\": 1,\r
+
+      \    \"establishment_phone\": \"234234234\",\r
+
+      \    \"invoice_lines\": [\r
+
+      \        {\r
+
+      \            \"base_quantity\": \"1.0\",\r
+
+      \            \"code\": \"prdctd\",\r
+
+      \            \"description\": \"[prdctd] Etiqueta Odoo\",\r
+
+      \            \"free_of_charge_indicator\": false,\r
+
+      \            \"invoiced_quantity\": \"1.0\",\r
+
+      \            \"line_extension_amount\": \"100.0\",\r
+
+      \            \"price_amount\": \"100.0\",\r
+
+      \            \"start_date\": \"2022-01-31\",\r
+
+      \            \"type_generation_transmition_id\": 1,\r
+
+      \            \"type_item_identification_id\": 4,\r
+
+      \            \"unit_measure_id\": 70,\r
+
+      \            \"tax_totals\": [\r
+
+      \                {\r
+
+      \                    \"tax_id\": 1,\r
+
+      \                    \"percent\": \"0\",\r
+
+      \                    \"tax_amount\": \"0.00\",\r
+
+      \                    \"taxable_amount\": \"100.00\"\r
+
+      \                }\r
+
+      \            ]\r
+
+      \        }\r
+
+      \    ],\r
+
+      \    \"legal_monetary_totals\": {\r
+
+      \        \"line_extension_amount\": 100,\r
+
+      \        \"payable_amount\": 100,\r
+
+      \        \"tax_exclusive_amount\": 100,\r
+
+      \        \"tax_inclusive_amount\": 100.0\r
+
+      \    },\r
+
+      \    \"number\": \"984100002\",\r
+
+      \    \"prefix\": \"SEDS\",\r
+
+      \    \"resolution_number\": \"18760000001\",\r
+
+      \    \"seller\": {\r
+
+      \        \"address\": \"CLL 4 NRO 33-90\",\r
+
+      \        \"dv\": 1,\r
+
+      \        \"email\": \"alexanderobandolondono@gmail.com\",\r
+
+      \        \"identification_number\": 900166483,\r
+
+      \        \"merchant_registration\": \"0000000-00\",\r
+
+      \        \"municipality_id\": 149,\r
+
+      \        \"name\": \"INVERSIONES DAVAL SAS\",\r
+
+      \        \"phone\": \"3103891693\",\r
+
+      \        \"postal_zone_code\": \"11001\",\r
+
+      \        \"type_document_identification_id\": 6,\r
+
+      \        \"type_liability_id\": 7,\r
+
+      \        \"type_organization_id\": 1,\r
+
+      \        \"type_regime_id\": 1\r
+
+      \    },\r
+
+      \    \"send_customer_credentials\": false,\r
+
+      \    \"sendmail\": false,\r
+
+      \    \"sendmailtome\": false,\r
+
+      \    \"tax_totals\": [],\r
+
+      \    \"time\": \"14:34:22\",\r
+
+      \    \"type_document_id\": 11,\r
+
+      \    \"with_holding_tax_total\": [\r
+
+      \        {\r
+
+      \            \"tax_id\": 6,\r
+
+      \            \"tax_amount\": \"11\",\r
+
+      \            \"percent\": \"11\",\r
+
+      \            \"taxable_amount\": \"100\"\r
+
+      \        }\r
+
+      \    ]\r
+
+      }"
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -1,0 +1,465 @@
+info:
+  name: Servicios Publicos - Solo Servicio
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: http://apidian2024.oo/api/ubl2.1/eqdoc
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+    - name: host
+      value: apidian2022.oo
+      disabled: true
+  body:
+    type: json
+    data: "{\r
+
+      \t\"number\": 1,\r
+
+      \t\"type_document_id\": 24,\r
+
+      \    \"type_operation_id\": 28,\r
+
+      \t\"date\": \"2024-07-11\",\r
+
+      \t\"time\": \"04:08:12\",\r
+
+      \t\"resolution_number\": \"SPD\",\r
+
+      \t\"prefix\": \"SPD\",\r
+
+      \    \"notes\": \"ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA\",\r
+
+      \t\"sendmail\": true,\r
+
+      \    \"sendmailtome\": true,\r
+
+      \    \"foot_note\": \"PRUEBA DE TEXTO LIBRE QUE DEBE POSICIONARSE EN EL PIE DE PAGINA DE LA REPRESENTACION GRAFICA DE LA FACTURA ELECTRONICA VALIDACION PREVIA DIAN\",\r
+
+      \    \"last_valid_payment_date\": \"2024-05-31\",\r
+
+      \    \"payment_reference\": \"190242200835880000-107-010787002\",\r
+
+      \    \"stratum_id\": 3,\r
+
+      \    \"software_manufacturer\":{\r
+
+      \        \"name\": \"ALEXANDER OBANDO LONDONO\",\r
+
+      \        \"business_name\": \"TORRE SOFTWARE\",\r
+
+      \        \"software_name\": \"BABEL\"\r
+
+      \    },\r
+
+      \    \"spd\": \r
+
+      \    [\r
+
+      \        {\r
+
+      \            \"agency_information\": {\r
+
+      \                \"type_spd_id\": 8,\r
+
+      \                \"office_lending_company\": \"EFIGAS S.A. E.S.P\",\r
+
+      \                \"contract_number\": \"XYZ-000002\",\r
+
+      \                \"issue_date\": \"2024-01\",\r
+
+      \                \"note\": \"Esta es una nota de ejemplo.\"\r
+
+      \            },\r
+
+      \            \"subscriber_party\": {\r
+
+      \                \"party_name\": \"ALEXANDER OBANDO LONDONO\",\r
+
+      \                \"street_name\": \"CLL 11 NRO 21-73\",\r
+
+      \                \"additional_street_name\": \"BRR LA CABAÑA, PISO 2, HOTEL OVERLOOK\",\r
+
+      \                \"municipality_id\": 822,\r
+
+      \                \"stratum\": \"3-Residencial\",\r
+
+      \                \"email\": \"alexanderobandolondono@gmail.com\"\r
+
+      \            },\r
+
+      \            \"subscriber_consumption\": {\r
+
+      \                \"duration_of_the_billing_cycle\": \"1.00\",\r
+
+      \                \"consumption_section_note\": \"Esta es una nota de seccion de consumo de ejemplo\",\r
+
+      \                \"total_metered_unit_id\": 864,\r
+
+      \                \"total_metered_quantity\": \"15.00\",\r
+
+      \                \"consumption_payable_amount\": \"30000.00\",\r
+
+      \                \"consumption_price_quantity\": \"15.00\",\r
+
+      \                \"partial_line_extension_amount\": \"90000.00\",\r
+
+      \                \"descuentos_credito_al_item\":\r
+
+      \                [\r
+
+      \                    {\r
+
+      \                        \"allowance_reason\": \"Subsidio Alumbrado Publico\",\r
+
+      \                        \"amount\": \"4100\"\r
+
+      \                    },\r
+
+      \                    {\r
+
+      \                        \"allowance_reason\": \"Subsidio XYZ\",\r
+
+      \                        \"amount\": \"2000\"\r
+
+      \                    }\r
+
+      \                ],\r
+
+      \                \"cargos_debito_al_item\":\r
+
+      \                [\r
+
+      \                    {\r
+
+      \                        \"charge_reason\": \"Alumbrado Publico\",\r
+
+      \                        \"amount\": \"4100\"\r
+
+      \                    },\r
+
+      \                    {\r
+
+      \                        \"charge_reason\": \"XYZ\",\r
+
+      \                        \"amount\": \"2000\"\r
+
+      \                    }\r
+
+      \                ],\r
+
+      \                \"unstructured_price\": {\r
+
+      \                    \"price_amount\": \"2000.10\",\r
+
+      \                    \"base_quantity\": \"1.00\"\r
+
+      \                },\r
+
+      \                \"utiliy_meter\": {\r
+
+      \                    \"meter_number\": \"Tech_sirius_2016637401-7\",\r
+
+      \                    \"previous_meter_reading_date\": \"2024-03-27\",\r
+
+      \                    \"previous_meter_quantity\": \"1.360\",\r
+
+      \                    \"latest_meter_reading_date\": \"2024-04-27\",\r
+
+      \                    \"latest_meter_quantity\": \"1.382\",\r
+
+      \                    \"meter_reading_method\": \"Directa al contador\",\r
+
+      \                    \"duration_measure\": \"31\"\r
+
+      \                },\r
+
+      \                \"consumption_history\": \r
+
+      \                [\r
+
+      \                    {\r
+
+      \                        \"total_invoiced_quantity\": \"24.00\",\r
+
+      \                        \"start_date\": \"2024-01-01\",\r
+
+      \                        \"end_date\": \"2024-01-31\",\r
+
+      \                        \"duration_measure\": \"31\"\r
+
+      \                    },\r
+
+      \                    {\r
+
+      \                        \"total_invoiced_quantity\": \"20.00\",\r
+
+      \                        \"start_date\": \"2024-02-01\",\r
+
+      \                        \"end_date\": \"2024-02-28\",\r
+
+      \                        \"duration_measure\": \"29\"\r
+
+      \                    },\r
+
+      \                    {\r
+
+      \                        \"total_invoiced_quantity\": \"21.00\",\r
+
+      \                        \"start_date\": \"2024-03-01\",\r
+
+      \                        \"end_date\": \"2024-03-31\",\r
+
+      \                        \"duration_measure\": \"31\"\r
+
+      \                    }\r
+
+      \                ],\r
+
+      \                \"payment_agreements\": \r
+
+      \                [\r
+
+      \                    {\r
+
+      \                        \"contract_number\": \"IX900-abc-001\",\r
+
+      \                        \"good_service_name\": \"Tuberias\",\r
+
+      \                        \"description\": \"Instalacion de tuberias sin IVA\",\r
+
+      \                        \"fees_to_pay\": \"36\",\r
+
+      \                        \"paid_fees\": \"31\",\r
+
+      \                        \"interest_rate\": \"0.77\",\r
+
+      \                        \"balance_to_pay\": \"250000.00\",\r
+
+      \                        \"transaction_description\": \"Cuota 32\",\r
+
+      \                        \"fee_value_to_pay\": \"50000.00\",\r
+
+      \                        \"item_credit_discount\": \"0.00\",\r
+
+      \                        \"item_debit_charge\": \"0.00\"\r
+
+      \                    },\r
+
+      \                    {\r
+
+      \                        \"contract_number\": \"IX900-abc-002\",\r
+
+      \                        \"good_service_name\": \"Revision\",\r
+
+      \                        \"description\": \"Revision anual de la instalacion\",\r
+
+      \                        \"fees_to_pay\": \"36\",\r
+
+      \                        \"paid_fees\": \"11\",\r
+
+      \                        \"interest_rate\": \"0.77\",\r
+
+      \                        \"balance_to_pay\": \"1250000.00\",\r
+
+      \                        \"transaction_description\": \"Cuota 12\",\r
+
+      \                        \"fee_value_to_pay\": \"55000.00\",\r
+
+      \                        \"item_credit_discount\": \"0.00\",\r
+
+      \                        \"item_debit_charge\": \"0.00\"\r
+
+      \                    }\r
+
+      \                ]\r
+
+      \            }\r
+
+      \        }\r
+
+      \    ],\r
+
+      \t\"customer\": {\r
+
+      \t\t\"identification_number\": 89008003,\r
+
+      \t\t\"dv\": 2,\r
+
+      \t\t\"name\": \"ALEXANDER OBANDO LONDONO\",\r
+
+      \t\t\"phone\": \"3103891693\",\r
+
+      \t\t\"address\": \"CLL 4 NRO 33-90\",\r
+
+      \t\t\"email\": \"alexanderobandolondono@gmail.com\",\r
+
+      \t\t\"merchant_registration\": \"0000000-00\",\r
+
+      \t\t\"type_document_identification_id\": 3,\r
+
+      \t\t\"type_organization_id\": 2,\r
+
+      \        \"type_liability_id\": 117,\r
+
+      \t\t\"municipality_id\": 820,\r
+
+      \t\t\"type_regime_id\": 2\r
+
+      \t},\r
+
+      \t\"payment_form\": {\r
+
+      \t\t\"payment_form_id\": 1,\r
+
+      \t\t\"payment_method_id\": 30,\r
+
+      \t\t\"payment_due_date\": \"2024-07-11\",\r
+
+      \t\t\"duration_measure\": \"0\"\r
+
+      \t},\t\r
+
+      \t\"allowance_charges\": [\r
+
+      \t\t{\r
+
+      \t\t\t\"discount_id\": 1,\r
+
+      \t\t\t\"charge_indicator\": true,\r
+
+      \t\t\t\"allowance_charge_reason\": \"Acuerdo de Pago\",\r
+
+      \t\t\t\"amount\": \"700.00\",\r
+
+      \t\t\t\"base_amount\": \"10000.00\"\r
+
+      \t\t}\r
+
+      \t],\r
+
+      \t\"legal_monetary_totals\": {\r
+
+      \t\t\"line_extension_amount\": \"8403.36134\",\r
+
+      \t\t\"tax_exclusive_amount\": \"8403.36134\",\r
+
+      \t\t\"tax_inclusive_amount\": \"10000.00\",\r
+
+      \        \"allowance_total_amount\": \"0.00\",\r
+
+      \        \"charge_total_amount\": \"700.00\",\r
+
+      \t\t\"payable_amount\": \"10700.00\"\r
+
+      \t},\r
+
+      \t\"tax_totals\": \r
+
+      \t[\r
+
+      \t\t{\r
+
+      \t\t\t\"tax_id\": 1,\r
+
+      \t\t\t\"tax_amount\": \"1596.63865\",\r
+
+      \t\t\t\"percent\": \"19.00\",\r
+
+      \t\t\t\"taxable_amount\": \"8403.36134\"\r
+
+      \t\t}\r
+
+      \t],\r
+
+      \t\"invoice_lines\": \r
+
+      \t[\r
+
+      \t\t{\r
+
+      \t\t\t\"unit_measure_id\": 70,\r
+
+      \t\t\t\"invoiced_quantity\": \"1\",\r
+
+      \t\t\t\"line_extension_amount\": \"8403.36134\",\r
+
+      \t\t\t\"free_of_charge_indicator\": false,\r
+
+      \t\t\t\"tax_totals\": [\r
+
+      \t\t\t\t{\r
+
+      \t\t\t\t\t\"tax_id\": 1,\r
+
+      \t\t\t\t\t\"tax_amount\": \"1596.63865\",\r
+
+      \t\t\t\t\t\"taxable_amount\": \"8403.36134\",\r
+
+      \t\t\t\t\t\"percent\": \"19.00\"\r
+
+      \t\t\t\t}\r
+
+      \t\t\t],\r
+
+      \t\t\t\"description\": \"CONSUMO DE GAS\",\r
+
+      \            \"seller_code\": \"0001\",\r
+
+      \t\t\t\"code\": \"SPD-GAS\",\r
+
+      \t\t\t\"type_item_identification_id\": 4,\r
+
+      \t\t\t\"price_amount\": \"8403.36134\",\r
+
+      \t\t\t\"base_quantity\": \"1\"\r
+
+      \t\t}\r
+
+      \t]\r
+
+      }\r
+
+      \r\n"
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  PRIMER ENVIO DE FACTURA
+
+  - Si se instalo un dominio se debe utilizar de la siguiente manera:
+
+  http://midominio.com/api/ubl2.1/invoice
+
+  - Requiere un token de autorizacion el cual fue devuelto al realizar el Paso 1 - Config Company, si este token se extravio, se puede consultar en la tabla de la base de datos de la API en la tabla users, en el campo API_TOKEN.
+
+  - En URL el ultimo parametro corresponde al id del set de pruebas que la dian entrego al momento de registrar el modo de operacion software propio.
+
+  .../ubl2.1/invoice/iddelsetdepruebasdeladian
+
+  - Este endpoint se puede utilizar de dos modos:
+
+  1.  Asincrono:
+  .../ubl2.1/invoice/iddelsetdepruebasdeladian
+
+  2.  Sincrono:
+  .../ubl2.1/invoice
+
+  - El modo sincrono no afecta al set de pruebas, pero la respuesta de la DIAN incluye posibles errores de validacion y estado de la factura, valida o no valida.
+
+  - El modo asincrono, afecta el set de pruebas y en la respuesta no se incluye el resultado de la factura, solo se entrega un ZIP_KEY el cual debe ser consultado mediante el endpoint: 
+
+  .../ubl2.1/status/zip
+
+  de la seccion 03 - Consultas de estado para asi poder establecer si la factura fue valida o no y los errores de validacion.

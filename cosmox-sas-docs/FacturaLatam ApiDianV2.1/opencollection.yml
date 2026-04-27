@@ -1,0 +1,25 @@
+opencollection: 1.0.0
+
+info:
+  name: FacturaLatam ApiDianV2.1
+
+request:
+  variables:
+    - name: url_base
+      value: http://facturalatam-apidian.oo/api
+    - name: token
+      value: 0efacb667d343c125740d132b242cd76cef9208b842bc2867a9d0505e13f7c8b
+    - name: url_apirips
+      value: https://apirips.facturapro.co
+    - name: token_apirips
+      value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IkNDMTY2MDI0MjYiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiQ0MxNjYwMjQyNiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlBTUyIsIlVzZXJOYW1lIjoiQ0MxNjYwMjQyNiIsIklkUGVyZmlsIjoiMSIsIlBlcmZpbCI6IlBTUyIsIlVzdWFyaW9TaXNwcm8iOiJ0cmFiYWphZG9yaWRlcGVuZGllbnRlQG5vdGllbmUuY29tIiwiTml0UHJlc3RhZG9yIjoiOTAxMzU1MzU3IiwiUkVQUyI6IlRydWUiLCJOb21QcmVzdGFkb3IiOiJDQVJMT1MgQUxCRVJUTyBCVUVOTyBMRU1PUy9PRE9OVE9MQUJYIFNBUyIsIkNvZGlnb1ByZXN0YWRvciI6Ijc2MDAxMTI2OTQiLCJUaXBvTWVjYW5pc21vVmFsaWRhY2lvbiI6IjIiLCJNZWNhbmlzbW9WYWxpZGFjaW9uSWQiOiIyIiwiTHN0Q29kUHJlc3RhZG9yU2VkZSI6Ijc2MDAxMTI2OTQwMSIsIkdydXBvRW50aWRhZEhhYmlsaXRhZGEiOiIzIiwiRmVjaGFJbmljaW9SZXBvcnRlIjoiMjAyMy0wMS0wMSIsImp0aSI6Ijk0ZGIwN2U3LTJhZjctNGRlYi1iOGFiLTQxYWIzYWMxMGRiZSIsImV4cCI6MTc0NzY3MzQ0NX0.Yo3RbDaTtX7Zq2f6CObcEZVa_NNKbs60YOfJK44Df78
+
+docs:
+  content: Servicios disponibles del proyecto APIDIAN de Facturalatam
+  type: text/markdown
+bundled: false
+extensions:
+  bruno:
+    ignore:
+      - node_modules
+      - .git

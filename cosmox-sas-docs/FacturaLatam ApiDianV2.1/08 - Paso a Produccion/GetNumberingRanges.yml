@@ -1,0 +1,45 @@
+info:
+  name: GetNumberingRanges
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: http://apidian2023.oo/api/ubl2.1/numbering-range
+  headers:
+    - name: Authorization
+      value: Bearer a25b9533afbae4d16a25505524bd89f1dfaa604e97111dea7502a139abcde18a
+      disabled: true
+    - name: Content-Type
+      value: application/json
+    - name: accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \t\"IDSoftware\": \"82bf0c5e-0117-434d-9471-8a5ee58ae682\"\r
+
+      }\r\n"
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  CONSULTAR RANGOS DE NUMERACION
+
+  - Si se instalo un dominio se debe utilizar de la siguiente manera:
+
+  http://midominio.com/api/ubl2.1/numbering-range
+
+  - Requiere un token de autorizacion el cual fue devuelto al realizar el Paso 1 - Config Company, si este token se extravio, se puede consultar en la tabla de la base de datos de la API en la tabla users, en el campo API_TOKEN.
+
+  - Este endpoint tiene no tiene parametros en la URL
+
+  - Este endpoint permite consultar los rangos de numeracion asociados a este software desde el portal de la DIAN, en su response muestra la informacion necesaria para registrar una resolucion, incluida la clave tecnica.

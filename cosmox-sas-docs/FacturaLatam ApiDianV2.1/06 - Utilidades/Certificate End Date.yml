@@ -1,0 +1,58 @@
+info:
+  name: Certificate End Date
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: http://apidian2024.oo/api/ubl2.1/certificate-end-date
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: cache-control
+      value: no-cache
+    - name: Connection
+      value: keep-alive
+    - name: Accept-Encoding
+      value: gzip, deflate
+    - name: Host
+      value: apidian2022.oo
+      disabled: true
+    - name: accept
+      value: application/json
+    - name: X-CSRF-TOKEN
+      value: ""
+  body:
+    type: json
+    data: ""
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  **FECHA DE VENCIMIENTO DEL CERTIFICADO DIGITAL**
+
+  Este endpoint permite consultar la fecha de vencimiento del certificado digital asociado a la empresa autenticada.
+
+  **URL de uso:**  
+  `http://midominio.com/api/ubl2.1/certificate-end-date`
+
+  **Autenticación:**  
+  Requiere un token de autorización, obtenido en el Paso 1 - Config Company.  
+  Si extraviaste el token, puedes consultarlo en la base de datos, tabla `users`, campo `API_TOKEN`.
+
+  **Parámetros:**
+
+  - No requiere parámetros en la URL.
+      
+  - No requiere campos JSON en el body.
+      
+
+  **Respuesta:**  
+  Retorna la fecha de vencimiento del certificado digital de la empresa correspondiente al token utilizado en la autorización.

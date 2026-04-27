@@ -1,0 +1,94 @@
+info:
+  name: Actualizar la plantilla de la compañia
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: http://facturalatam-apidian.oo/api/templates
+  headers:
+    - name: Cookie
+      value: XSRF-TOKEN=eyJpdiI6IlRUUmlHeWJGdWdWRkVpcFN4UHhobFE9PSIsInZhbHVlIjoiM0dxMXJ1MHFpMGVZeFNTWnlRN3VSUGJvVlZkZEdDOFc0SWl2ZEJhQm9kelphSVhLOGl4K01rdFdGYTBsNThKViIsIm1hYyI6ImJhNjIyNjcwYzc1YjJmNDExNmY4M2M5ZTlhODdhNGNiMjBmNDFiZGU4ZWMzMTRlZjYyNzRkNDMzYTEzNDM3ZDYifQ%3D%3D; apidian_session=eyJpdiI6IjhFa2QzblhKN0ZyWjFcLzQzMEJPK0V3PT0iLCJ2YWx1ZSI6Im1MMFd3MVpXdjBmOXlnaCtiRnVGdW9tQjJSZTBtVjg1bVwvc0F5KzBjNXhRY2dCMjZuSnB0Nm4zUW9iaG1mQUFoIiwibWFjIjoiMmI0ZmFmY2FjOTM5MWMwYTVjNTY0MjA2ZDQ0NzY3Zjk3YTc3NzMzMjYyYWFiNjcxNjhhYzViYjJhYjNiMTlmNCJ9
+    - name: Cache-Control
+      value: no-cache
+    - name: Postman-Token
+      value: <calculated when request is sent>
+    - name: Host
+      value: <calculated when request is sent>
+    - name: User-Agent
+      value: PostmanRuntime/7.39.1
+    - name: Accept
+      value: "*/*"
+    - name: Accept-Encoding
+      value: gzip, deflate, br
+    - name: Connection
+      value: keep-alive
+    - name: Accept
+      value: application/json
+    - name: Content-type
+      value: application/json
+  body:
+    type: json
+    data: "{\r\n    \"id\": \"2\"\r\n}"
+  auth:
+    type: bearer
+    token: 0efacb667d343c125740d132b242cd76cef9208b842bc2867a9d0505e13f7c8b
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Actualizar la plantilla de la compañia
+    request:
+      url: http://facturalatam-apidian.oo/api/templates
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/json
+        - name: Content-type
+          value: application/json
+      body:
+        type: json
+        data: "{\r\n    \"id\": \"2\"\r\n}"
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: "0"
+          value: Allow
+        - name: "1"
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Date
+          value: Fri, 28 Feb 2025 23:17:58 GMT
+        - name: Server
+          value: Apache/2.4.54 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+        - name: Vary
+          value: Authorization
+        - name: X-Powered-By
+          value: PHP/7.4.19
+        - name: Cache-Control
+          value: no-cache, private
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Access-Control-Allow-Headers
+          value: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization, Access-Control-Request-Headers
+        - name: Keep-Alive
+          value: timeout=5, max=100
+        - name: Connection
+          value: Keep-Alive
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "message": "Plantilla actualizada correctamente."
+          }

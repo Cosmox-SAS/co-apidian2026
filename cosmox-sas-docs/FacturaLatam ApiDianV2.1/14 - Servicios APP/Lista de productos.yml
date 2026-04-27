@@ -1,0 +1,156 @@
+info:
+  name: Lista de productos
+  type: http
+  seq: 8
+
+http:
+  method: GET
+  url: "{{url_base}}/items"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: "200"
+    request:
+      url: "{{url_base}}/items"
+      method: GET
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Accept
+          value: application/json
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: "0"
+          value: Allow
+        - name: "1"
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Date
+          value: Tue, 30 Sep 2025 15:34:27 GMT
+        - name: Server
+          value: Apache/2.4.54 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+        - name: Vary
+          value: Authorization
+        - name: X-Powered-By
+          value: PHP/7.4.19
+        - name: Cache-Control
+          value: no-cache, private
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Access-Control-Allow-Headers
+          value: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization, Access-Control-Request-Headers
+        - name: Keep-Alive
+          value: timeout=5, max=100
+        - name: Connection
+          value: Keep-Alive
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "data": [
+                  {
+                      "id": 1,
+                      "name": "Producto Prueba App",
+                      "second_name": null,
+                      "description": "es para probar",
+                      "internal_id": "prdctprbpp",
+                      "sale_unit_price": "1500.000000",
+                      "percentage_of_profit": "0.00",
+                      "is_set": 0,
+                      "has_perception": 0,
+                      "percentage_perception": null,
+                      "companies_id": 1,
+                      "status": 1
+                  }
+              ]
+          }
+  - name: 200 search
+    request:
+      url: "{{url_base}}/items?search=produ"
+      method: GET
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Accept
+          value: application/json
+      params:
+        - name: search
+          value: produ
+          type: query
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: "0"
+          value: Allow
+        - name: "1"
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Date
+          value: Tue, 30 Sep 2025 15:59:00 GMT
+        - name: Server
+          value: Apache/2.4.54 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+        - name: Vary
+          value: Authorization
+        - name: X-Powered-By
+          value: PHP/7.4.19
+        - name: Cache-Control
+          value: no-cache, private
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Access-Control-Allow-Headers
+          value: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization, Access-Control-Request-Headers
+        - name: Keep-Alive
+          value: timeout=5, max=100
+        - name: Connection
+          value: Keep-Alive
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "data": [
+                  {
+                      "id": 1,
+                      "name": "Producto Prueba App",
+                      "second_name": null,
+                      "description": "es para probar",
+                      "internal_id": "prdctprbpp",
+                      "sale_unit_price": "1500.000000",
+                      "percentage_of_profit": "0.00",
+                      "is_set": 0,
+                      "has_perception": 0,
+                      "percentage_perception": null,
+                      "companies_id": 1,
+                      "status": 1
+                  }
+              ]
+          }
+
+docs: Permite listar los productos y filtrar con 'search', es capaz de buscar por codigo interno o nombre.

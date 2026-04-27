@@ -1,0 +1,31 @@
+info:
+  name: Enviar Mensaje
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{url_base}}/whatsapp-config/send-message"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \    \"number\": \"123456789\",//numero al que quiere enviar el mensaje\r
+
+      \    \"message\": \"Mensaje de prueba\"\r
+
+      }"
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

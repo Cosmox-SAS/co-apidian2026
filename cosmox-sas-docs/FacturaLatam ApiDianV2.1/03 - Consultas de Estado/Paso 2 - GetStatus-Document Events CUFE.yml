@@ -1,0 +1,40 @@
+info:
+  name: Paso 2 - GetStatus-Document Events CUFE
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: http://apidian2024.oo/api/ubl2.1/status/events-document/60f3eee79b3f7d019524f554a40e8c87008cd6686a66816246861609a54bc90e5266af9b989f84168cf68d3a88104e72
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: ""
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  CONSULTA DE ESTADO POR CUFE, CUDE, CUNE
+
+  - Si se instalo un dominio se debe utilizar de la siguiente manera:
+
+  http://midominio.com/api/ubl2.1/status/document
+
+  - Requiere un token de autorizacion el cual fue devuelto al realizar el Paso 1 - Config Company, si este token se extravio, se puede consultar en la tabla de la base de datos de la API en la tabla users, en el campo API_TOKEN.
+
+  - En URL el ultimo parametro corresponde al uuid del documento que se quiere consultar, este uuid puede ser un cufe si es una factura electronica, un cude si es otro documento o un cune si es un documento de nomina.
+
+  .../ubl2.1/invoice/status/document/uuiddeldocumentoaconsultar
+
+  - El response de este endpoint muestra si el documento electronico fue valido o si fue rechazado, en cuyo caso mostrara las reglas de validacion por las cuales se rechazo.

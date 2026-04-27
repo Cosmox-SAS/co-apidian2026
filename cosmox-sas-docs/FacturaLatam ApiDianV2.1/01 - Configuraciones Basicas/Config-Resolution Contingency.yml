@@ -1,0 +1,64 @@
+info:
+  name: Config-Resolution Contingency
+  type: http
+  seq: 6
+
+http:
+  method: PUT
+  url: http://apidian2024.oo/api/ubl2.1/config/resolution
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \t\"type_document_id\": 3,\r
+
+      \t\"prefix\": \"SETP\",\r
+
+      \t\"resolution\": \"18760000001\",\r
+
+      \t\"resolution_date\": \"2001-01-01\",\r
+
+      \t\"technical_key\": \"fc8eac422eba16e22ffd8c6f94b3f40a6e38162c\",\r
+
+      \t\"from\": 990000000,\r
+
+      \t\"to\": 995000000,\r
+
+      \t\"generated_to_date\": 0,\r
+
+      \t\"date_from\": \"2019-01-19\",\r
+
+      \t\"date_to\": \"2030-01-19\"\r
+
+      }\r\n"
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  CONFIGURAR RESOLUCION DE CONTINGENCIA
+
+  - Si se instalo un dominio se debe utilizar de la siguiente manera:
+
+  http://midominio.com/api/ubl2.1/config/resolution
+
+  - Requiere un token de autorizacion el cual fue devuelto al realizar el Paso 1 - Config Company, si este token se extravio, se puede consultar en la tabla de la base de datos de la API en la tabla users, en el campo API_TOKEN.
+
+  - Este endpoint no tiene parametros en la URL.
+
+  - Los datos necesarios para llenar los campos JSON cuyo nombre finalice con "_id" se encuentran en las tablas parametricas de la base de datos de la API, ejemplo:
+
+  type_liability_id, se debe especificar el id del registro correspondiente de la tabla type_liabilities de la base de datos de la API.
+
+  - Este endpoint es muy similar al de configurar resolucion de facturas, tanto asi que se utiliza la misma URL unicamente se diferencia en el campo type_document_id

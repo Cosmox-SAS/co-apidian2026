@@ -1,0 +1,250 @@
+info:
+  name: Nota Credito ICL
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: http://apidian2024.oo/api/ubl2.1/credit-note
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \    \"billing_reference\": {\r
+
+      \        \"number\": \"SETP990001109\",\r
+
+      \        \"uuid\": \"858813ba65240e31fc5f808ff51465f605a0c143d6c50a324b6c89978db8fcd93660f6b5eeb4fb61229d627b40334bb4\",\r
+
+      \        \"issue_date\": \"2024-06-28\"\r
+
+      \    },\r
+
+      \    \"discrepancyresponsecode\": 2,\r
+
+      \    \"discrepancyresponsedescription\": null,\r
+
+      \    \"notes\": \"Devolución Contado Automatico  a documento SETP990001109\",\r
+
+      \    \"prefix\": \"NC\",\r
+
+      \    \"number\": 95,\r
+
+      \    \"type_document_id\": 4,\r
+
+      \    \"date\": \"2024-06-28\",\r
+
+      \    \"time\": \"06:00:13\",\r
+
+      \    \"establishment_name\": \"TORRE SOFTWARE\",\r
+
+      \    \"establishment_address\": \"BRR LIMONAR MZ 6 CS 3 ET 1 PISO 2\",\r
+
+      \    \"establishment_phone\": \"3226563672\",\r
+
+      \    \"establishment_municipality\": 600,\r
+
+      \    \"sendmail\": false,\r
+
+      \    \"sendmailtome\": false,\r
+
+      \    \"head_note\": \"PRUEBA DE TEXTO LIBRE QUE DEBE POSICIONARSE EN EL ENCABEZADO DE PAGINA DE LA REPRESENTACION GRAFICA DE LA FACTURA ELECTRONICA VALIDACION PREVIA DIAN\",\r
+
+      \    \"foot_note\": \"PRUEBA DE TEXTO LIBRE QUE DEBE POSICIONARSE EN EL ENCABEZADO DE PAGINA DE LA REPRESENTACION GRAFICA DE LA FACTURA ELECTRONICA VALIDACION PREVIA DIAN\",\r
+
+      \    \"customer\": {\r
+
+      \        \"identification_number\": 900166483,\r
+
+      \        \"dv\": 1,\r
+
+      \        \"name\": \"INVERSIONES DAVAL SAS\",\r
+
+      \        \"phone\": \"3103891693\",\r
+
+      \        \"address\": \"CLL 4 NRO 33-90\",\r
+
+      \        \"email\": \"alexanderobandolondono@gmail.com\",\r
+
+      \        \"merchant_registration\": \"0000000-00\",\r
+
+      \        \"type_document_identification_id\": 6,\r
+
+      \        \"type_organization_id\": 1,\r
+
+      \        \"municipality_id\": 822,\r
+
+      \        \"type_regime_id\": 1\r
+
+      \    },\r
+
+      \    \"legal_monetary_totals\": {\r
+
+      \        \"line_extension_amount\": \"17820.00\",\r
+
+      \        \"tax_exclusive_amount\": \"17820.00\",\r
+
+      \        \"tax_inclusive_amount\": \"33245.00\",\r
+
+      \        \"allowance_total_amount\": null,\r
+
+      \        \"charge_total_amount\": null,\r
+
+      \        \"payable_amount\": \"33245.00\"\r
+
+      \    },\r
+
+      \    \"type_operation_id\": null,\r
+
+      \    \"tax_totals\": [\r
+
+      \        {\r
+
+      \            \"tax_id\": 1,\r
+
+      \            \"tax_amount\": \"891.00\",\r
+
+      \            \"percent\": \"5.00\",\r
+
+      \            \"taxable_amount\": \"17820.00\",\r
+
+      \            \"unit_measure_id\": null,\r
+
+      \            \"per_unit_amount\": null,\r
+
+      \            \"base_unit_measure\": null\r
+
+      \        },\r
+
+      \        {\r
+
+      \            \"tax_id\": 19,\r
+
+      \            \"tax_amount\": \"14534.00\",\r
+
+      \            \"percent\": \"0\",\r
+
+      \            \"taxable_amount\": \"0\",\r
+
+      \            \"unit_measure_id\": \"70\",\r
+
+      \            \"per_unit_amount\": null,\r
+
+      \            \"base_unit_measure\": null\r
+
+      \        }\r
+
+      \    ],\r
+
+      \    \"credit_note_lines\": [\r
+
+      \        {\r
+
+      \            \"tax_totals\": [\r
+
+      \                {\r
+
+      \                    \"tax_id\": 1,\r
+
+      \                    \"tax_amount\": \"891.0000\",\r
+
+      \                    \"percent\": \"5.00\",\r
+
+      \                    \"taxable_amount\": \"17820.00\",\r
+
+      \                    \"unit_measure_id\": null,\r
+
+      \                    \"per_unit_amount\": null,\r
+
+      \                    \"base_unit_measure\": null\r
+
+      \                },\r
+
+      \                {\r
+
+      \                    \"tax_id\": 19,\r
+
+      \                    \"tax_amount\": \"14534.00\",\r
+
+      \                    \"percent\": \"0\",\r
+
+      \                    \"taxable_amount\": \"0\",\r
+
+      \                    \"unit_measure_id\": \"70\",\r
+
+      \                    \"per_unit_amount\": \"1.00\",\r
+
+      \                    \"base_unit_measure\": \"14534\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"unit_measure_id\": 1076,\r
+
+      \            \"invoiced_quantity\": \"1.00\",\r
+
+      \            \"line_extension_amount\": \"17820.00\",\r
+
+      \            \"free_of_charge_indicator\": false,\r
+
+      \            \"description\": \"LDM AGUARDIENTE CAÑO CRISTALES 750 CC BOTELLA  \",\r
+
+      \            \"notes\": \"\",\r
+
+      \            \"code\": \"LDM001005\",\r
+
+      \            \"type_item_identification_id\": 4,\r
+
+      \            \"price_amount\": \"17820.00\",\r
+
+      \            \"base_quantity\": \"1\"\r
+
+      \        }\r
+
+      \    ]\r
+
+      }"
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  PRIMER ENVIO DE FACTURA
+
+  - Si se instalo un dominio se debe utilizar de la siguiente manera:
+
+  http://midominio.com/api/ubl2.1/invoice
+
+  - Requiere un token de autorizacion el cual fue devuelto al realizar el Paso 1 - Config Company, si este token se extravio, se puede consultar en la tabla de la base de datos de la API en la tabla users, en el campo API_TOKEN.
+
+  - En URL el ultimo parametro corresponde al id del set de pruebas que la dian entrego al momento de registrar el modo de operacion software propio.
+
+  .../ubl2.1/invoice/iddelsetdepruebasdeladian
+
+  - Este endpoint se puede utilizar de dos modos:
+
+  1.  Asincrono:
+  .../ubl2.1/invoice/iddelsetdepruebasdeladian
+
+  2.  Sincrono:
+  .../ubl2.1/invoice
+
+  - El modo sincrono no afecta al set de pruebas, pero la respuesta de la DIAN incluye posibles errores de validacion y estado de la factura, valida o no valida.
+
+  - El modo asincrono, afecta el set de pruebas y en la respuesta no se incluye el resultado de la factura, solo se entrega un ZIP_KEY el cual debe ser consultado mediante el endpoint: 
+
+  .../ubl2.1/status/zip
+
+  de la seccion 03 - Consultas de estado para asi poder establecer si la factura fue valida o no y los errores de validacion.

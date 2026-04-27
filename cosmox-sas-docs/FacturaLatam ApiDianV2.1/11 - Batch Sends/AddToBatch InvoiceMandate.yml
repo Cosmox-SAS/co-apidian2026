@@ -1,0 +1,323 @@
+info:
+  name: AddToBatch InvoiceMandate
+  type: http
+  seq: 7
+
+http:
+  method: POST
+  url: http://localhost/apidian2021/public/api/ubl2.1/add-to-batch/invoice-mandate/batch1
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \t\"number\": 990000465,\r
+
+      \t\"dv\": 2,\r
+
+      \t\"type_document_id\": 1,\r
+
+      \t\"date\": \"2020-01-03\",\r
+
+      \t\"time\": \"06:44:45\",\r
+
+      \t\"resolution_number\": \"18760000001\",\r
+
+      \t\"prefix\": \"SETP\",\r
+
+      \    \"establishment_name\": \"TORRE SOFTWARE\",\r
+
+      \t\"notes\": \"SIN OBSERVACIONES\",\r
+
+      \t\"customer\": {\r
+
+      \t\t\"identification_number\": 89008003,\r
+
+      \t\t\"dv\": 2,\r
+
+      \t\t\"name\": \"ALEXANDER OBANDO LONDONO\",\r
+
+      \t\t\"phone\": 3103891693,\r
+
+      \t\t\"address\": \"BRR LIMONAR MZ 6 CS 3 ET 1\",\r
+
+      \t\t\"email\": \"alexander_obando@hotmail.com\",\r
+
+      \t\t\"merchant_registration\": \"0000-00\",\r
+
+      \t\t\"type_document_identification_id\": 6,\r
+
+      \t\t\"type_organization_id\": 2,\r
+
+      \t\t\"municipality_id\": 149,\r
+
+      \t\t\"type_regime_id\": 2\r
+
+      \t},\r
+
+      \t\"payment_form\": {\r
+
+      \t\t\"payment_form_id\": 1,\r
+
+      \t\t\"payment_method_id\": 10,\r
+
+      \t\t\"payment_due_date\": \"2020-01-03\",\r
+
+      \t\t\"duration_measure\": \"0\"\r
+
+      \t},\t\r
+
+      \t\"allowance_charges\": [\r
+
+      \t\t{\r
+
+      \t\t\t\"discount_id\": 1,\r
+
+      \t\t\t\"charge_indicator\": false,\r
+
+      \t\t\t\"allowance_charge_reason\": \"DESCUENTO GENERAL\",\r
+
+      \t\t\t\"amount\": \"0.00\",\r
+
+      \t\t\t\"base_amount\": \"1704201.68\"\r
+
+      \t\t}\r
+
+      \t],\r
+
+      \t\"legal_monetary_totals\": {\r
+
+      \t\t\"line_extension_amount\": \"1704201.68\",\r
+
+      \t\t\"tax_exclusive_amount\": \"1704201.68\",\r
+
+      \t\t\"tax_inclusive_amount\": \"1800000.00\",\r
+
+      \t\t\"allowance_total_amount\": \"0.00\",\r
+
+      \t\t\"charge_total_amount\": \"0.00\",\r
+
+      \t\t\"payable_amount\": \"1800000.00\"\r
+
+      \t},\r
+
+      \t\"tax_totals\": \r
+
+      \t[\r
+
+      \r
+
+      \t\t{\r
+
+      \t\t\t\"tax_id\": 1,\r
+
+      \t\t\t\"tax_amount\": \"0.00\",\r
+
+      \t\t\t\"percent\": \"0\",\r
+
+      \t\t\t\"taxable_amount\": \"1200000.00\"\r
+
+      \t\t}\r
+
+      ,\r
+
+      \t\t{\r
+
+      \t\t\t\"tax_id\": 1,\r
+
+      \t\t\t\"tax_amount\": \"95798.32\",\r
+
+      \t\t\t\"percent\": \"19\",\r
+
+      \t\t\t\"taxable_amount\": \"504201.68\"\r
+
+      \t\t}\r
+
+      \t],\r
+
+      \t\"invoice_lines\": \r
+
+      \t[\r
+
+      \r
+
+      \t\t{\r
+
+      \t\t\t\"unit_measure_id\": 70,\r
+
+      \t\t\t\"invoiced_quantity\": \"1\",\r
+
+      \t\t\t\"line_extension_amount\": \"600000.00\",\r
+
+      \t\t\t\"free_of_charge_indicator\": false,\r
+
+      \t\t\t\"allowance_charges\": [{\r
+
+      \t\t\t\t\t\"charge_indicator\": false,\r
+
+      \t\t\t\t\t\"allowance_charge_reason\": \"DESCUENTO GENERAL\",\r
+
+      \t\t\t\t\t\"amount\": \"0.00\",\r
+
+      \t\t\t\t\t\"base_amount\": \"600000.00\"\r
+
+      \t\t\t\t}\r
+
+      \t\t\t],\r
+
+      \t\t\t\"tax_totals\": [\r
+
+      \t\t\t\t{\r
+
+      \t\t\t\t\t\"tax_id\": 1,\r
+
+      \t\t\t\t\t\"tax_amount\": \"0.00\",\r
+
+      \t\t\t\t\t\"taxable_amount\": \"600000.00\",\r
+
+      \t\t\t\t\t\"percent\": \"0.00\"\r
+
+      \t\t\t\t}\r
+
+      \t\t\t],\r
+
+      \t\t\t\"description\": \"PRUEBA MANDATO\",\r
+
+      \t\t\t\"code\": \"PRUEBA1\",\r
+
+      \t\t\t\"type_item_identification_id\": 4,\r
+
+      \t\t\t\"price_amount\": \"600000.00\",\r
+
+      \t\t\t\"base_quantity\": \"1\"\r
+
+      \t\t}\r
+
+      ,\r
+
+      \t\t{\r
+
+      \t\t\t\"unit_measure_id\": 70,\r
+
+      \t\t\t\"invoiced_quantity\": \"1\",\r
+
+      \t\t\t\"line_extension_amount\": \"600000.00\",\r
+
+      \t\t\t\"free_of_charge_indicator\": false,\r
+
+      \t\t\t\"allowance_charges\": [{\r
+
+      \t\t\t\t\t\"charge_indicator\": false,\r
+
+      \t\t\t\t\t\"allowance_charge_reason\": \"DESCUENTO GENERAL\",\r
+
+      \t\t\t\t\t\"amount\": \"0.00\",\r
+
+      \t\t\t\t\t\"base_amount\": \"600000.00\"\r
+
+      \t\t\t\t}\r
+
+      \t\t\t],\r
+
+      \t\t\t\"tax_totals\": [\r
+
+      \t\t\t\t{\r
+
+      \t\t\t\t\t\"tax_id\": 1,\r
+
+      \t\t\t\t\t\"tax_amount\": \"0.00\",\r
+
+      \t\t\t\t\t\"taxable_amount\": \"600000.00\",\r
+
+      \t\t\t\t\t\"percent\": \"0.00\"\r
+
+      \t\t\t\t}\r
+
+      \t\t\t],\r
+
+      \t\t\t\"description\": \"PRUEBA MANDATO\",\r
+
+      \t\t\t\"code\": \"PRUEBA2\",\r
+
+      \t\t\t\"type_item_identification_id\": 4,\r
+
+      \t\t\t\"price_amount\": \"600000.00\",\r
+
+      \t\t\t\"base_quantity\": \"1\"\r
+
+      \t\t}\r
+
+      ,\r
+
+      \t\t{\r
+
+      \t\t\t\"unit_measure_id\": 70,\r
+
+      \t\t\t\"invoiced_quantity\": \"1\",\r
+
+      \t\t\t\"line_extension_amount\": \"504201.68\",\r
+
+      \t\t\t\"free_of_charge_indicator\": false,\r
+
+      \t\t\t\"allowance_charges\": [{\r
+
+      \t\t\t\t\t\"charge_indicator\": false,\r
+
+      \t\t\t\t\t\"allowance_charge_reason\": \"DESCUENTO GENERAL\",\r
+
+      \t\t\t\t\t\"amount\": \"0.00\",\r
+
+      \t\t\t\t\t\"base_amount\": \"600000.00\"\r
+
+      \t\t\t\t}\r
+
+      \t\t\t],\r
+
+      \t\t\t\"tax_totals\": [\r
+
+      \t\t\t\t{\r
+
+      \t\t\t\t\t\"tax_id\": 1,\r
+
+      \t\t\t\t\t\"tax_amount\": \"95798.32\",\r
+
+      \t\t\t\t\t\"taxable_amount\": \"504201.68\",\r
+
+      \t\t\t\t\t\"percent\": \"19.00\"\r
+
+      \t\t\t\t}\r
+
+      \t\t\t],\r
+
+      \t\t\t\"description\": \"PRUEBA MANDATO\",\r
+
+      \t\t\t\"agentparty\": 900468658,\r
+
+      \t\t\t\"agentparty_dv\": 1,\r
+
+      \t\t\t\"code\": \"PRUEBA3\",\r
+
+      \t\t\t\"type_item_identification_id\": 4,\r
+
+      \t\t\t\"price_amount\": \"504201.68\",\r
+
+      \t\t\t\"base_quantity\": \"1\"\r
+
+      \t\t}\t\r
+
+      \t]\r
+
+      }\r\n"
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

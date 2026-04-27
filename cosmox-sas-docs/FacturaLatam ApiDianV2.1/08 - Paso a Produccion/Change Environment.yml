@@ -1,0 +1,54 @@
+info:
+  name: Change Environment
+  type: http
+  seq: 1
+
+http:
+  method: PUT
+  url: http://apidian2024.oo/api/ubl2.1/config/environment
+  headers:
+    - name: Authorization
+      value: Bearer a25b9533afbae4d16a25505524bd89f1dfaa604e97111dea7502a139abcde18a
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      //Formato amigable              Formato Técnico\r
+
+      \  \"factura_ventas\": 2,          //\"type_environment_id\": 2,\r
+
+      \  \"nomina\": 2,                  //\"payroll_type_environment_id\": 2,\r
+
+      \  \"pos\": 2,                     //\"eqdocs_type_environment_id\": 2,\r
+
+      \  \"documentos_soporte\": 2,      //\"support_document_type_environment_id\": 2,\r
+
+      \  \"eventos_radian\": 2           //\"event_type_environment_id\": 2\r
+
+      }"
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  CAMBIAR AMBIENTE DE OPERACION
+
+  - Si se instalo un dominio se debe utilizar de la siguiente manera:
+
+  http://midominio.com/api/ubl2.1/config/environment
+
+  - Requiere un token de autorizacion el cual fue devuelto al realizar el Paso 1 - Config Company, si este token se extravio, se puede consultar en la tabla de la base de datos de la API en la tabla users, en el campo API_TOKEN.
+
+  - Este endpoint tiene no tiene parametros en la URL
+
+  - Este endpoint permite cambiar el ambiente de operacion de la API para la empresa que se especifica mediante el token utilizado, el ambiente se especifica en el campo type_environment_id del json enviado.

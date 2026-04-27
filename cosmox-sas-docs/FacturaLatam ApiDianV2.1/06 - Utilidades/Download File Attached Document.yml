@@ -1,0 +1,62 @@
+info:
+  name: Download File Attached Document
+  type: http
+  seq: 12
+
+http:
+  method: GET
+  url: http://apidian2023.oo/api/ubl2.1/download/89008003/Attachment-SETP990000506.xml/BASE64
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: ""
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  **Descarga de archivos de documentos electrónicos**
+
+  Este endpoint permite descargar archivos asociados a documentos electrónicos de una empresa, como PDFs, XMLs o ZIPs.  
+  Se puede obtener el archivo directamente o en formato base64.
+
+  **URL:**  
+  `GET /api/ubl2.1/download/{identification}/{file}/{type_response?}`
+
+  - **identification:** Número de identificación de la empresa.
+      
+  - **file:** Nombre del archivo a descargar (ejemplo: `Attachment-SETP990000399.xml`).
+      
+  - **type_response (opcional):** Si se envía el valor `BASE64`, el archivo se retorna en base64; si se omite, se descarga el archivo directamente.
+      
+
+  **Autenticación:**  
+  Requiere token de autorización en el header:  
+  `Authorization: Bearer {API_TOKEN}`
+
+  **Parámetros:**
+
+  - En la URL:
+      
+      - `identification`: Identificación de la empresa.
+          
+      - `file` (string): Nombre del archivo.
+          
+      - `type_response` (opcional): Si es `BASE64`, retorna el archivo en base64.
+          
+
+  **Respuesta:**
+
+  - Si el archivo existe, retorna el archivo solicitado (descarga directa o base64).
+      
+  - Si no existe, retorna un mensaje de error.

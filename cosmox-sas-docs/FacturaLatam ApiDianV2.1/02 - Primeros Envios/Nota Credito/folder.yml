@@ -1,0 +1,7 @@
+info:
+  name: Nota Credito
+  type: folder
+  seq: 2
+
+request:
+  auth: inherit

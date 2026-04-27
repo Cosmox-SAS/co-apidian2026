@@ -1,0 +1,11 @@
+info:
+  name: Servicios
+  type: folder
+  seq: 3
+
+request:
+  auth: inherit
+
+docs:
+  content: Listado de servicios que reciben RIPS en sus diferentes formatos
+  type: text/markdown

@@ -1,0 +1,226 @@
+info:
+  name: Una Linea, Descuento en Linea, Una Tarifa de IVA
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: "{{url_base}}/ubl2.1/invoice"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \t\"number\": 990060186,\r
+
+      \t\"type_document_id\": 1,\r
+
+      \t\"date\": \"2025-01-02\",\r
+
+      \t\"time\": \"04:08:12\",\r
+
+      \t\"resolution_number\": \"18760000001\",\r
+
+      \t\"prefix\": \"SETP\",\r
+
+      \    \"notes\": \"ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA\",\r
+
+      \    \"disable_confirmation_text\": true,\r
+
+      \    \"establishment_name\": \"TORRE SOFTWARE\",\r
+
+      \    \"establishment_address\": \"BRR LIMONAR MZ 6 CS 3 ET 1 PISO 2\",\r
+
+      \    \"establishment_phone\": \"3226563672\",\r
+
+      \    \"establishment_municipality\": 600,\r
+
+      \    \"establishment_email\": \"alternate_email@alternate.com\",\r
+
+      \t\"sendmail\": true,\r
+
+      \    \"sendmailtome\": true,\r
+
+      \    \"seze\": \"2021-2017\",\r
+
+      \    \"head_note\": \"PRUEBA DE TEXTO LIBRE QUE DEBE POSICIONARSE EN EL ENCABEZADO DE PAGINA DE LA REPRESENTACION GRAFICA DE LA FACTURA ELECTRONICA VALIDACION PREVIA DIAN\",\r
+
+      \    \"foot_note\": \"PRUEBA DE TEXTO LIBRE QUE DEBE POSICIONARSE EN EL PIE DE PAGINA DE LA REPRESENTACION GRAFICA DE LA FACTURA ELECTRONICA VALIDACION PREVIA DIAN\",\r
+
+      \t\"customer\": {\r
+
+      \t\t\"identification_number\": 900166483,\r
+
+      \t\t\"dv\": 1,\r
+
+      \t\t\"name\": \"INVERSIONES DAVAL SAS\",\r
+
+      \t\t\"phone\": \"3103891693\",\r
+
+      \t\t\"address\": \"CLL 4 NRO 33-90\",\r
+
+      \t\t\"email\": \"gerencia@torresoftware.com\",\r
+
+      \t\t\"merchant_registration\": \"0000000-00\",\r
+
+      \t\t\"type_document_identification_id\": 6,\r
+
+      \t\t\"type_organization_id\": 1,\r
+
+      \        \"type_liability_id\": 7,\r
+
+      \t\t\"municipality_id\": 822,\r
+
+      \t\t\"type_regime_id\": 1\r
+
+      \t},\r
+
+      \t\"payment_form\": {\r
+
+      \t\t\"payment_form_id\": 1,\r
+
+      \t\t\"payment_method_id\": 10,\r
+
+      \t\t\"payment_due_date\": \"2025-01-02\",\r
+
+      \t\t\"duration_measure\": \"0\"\r
+
+      \t},\t\r
+
+      \t\"legal_monetary_totals\": {\r
+
+      \t\t\"line_extension_amount\": \"769500.00\",\r
+
+      \t\t\"tax_exclusive_amount\": \"950000.00\",\r
+
+      \t\t\"tax_inclusive_amount\": \"950000.00\",\r
+
+      \        \"allowance_total_amount\": \"0.00\",\r
+
+      \t\t\"payable_amount\": \"950000.00\"\r
+
+      \t},\r
+
+      \t\"tax_totals\": \r
+
+      \t[\r
+
+      \t\t{\r
+
+      \t\t\t\"tax_id\": 1,\r
+
+      \t\t\t\"tax_amount\": \"180500\",\r
+
+      \t\t\t\"percent\": \"19\",\r
+
+      \t\t\t\"taxable_amount\": \"950000.00\"\r
+
+      \t\t}\r
+
+      \t],\r
+
+      \t\"invoice_lines\": \r
+
+      \t[\r
+
+      \t\t{\r
+
+      \t\t\t\"unit_measure_id\": 70,\r
+
+      \t\t\t\"invoiced_quantity\": \"1\",\r
+
+      \t\t\t\"line_extension_amount\": \"769500.00\",\r
+
+      \t\t\t\"free_of_charge_indicator\": false,\r
+
+      \t\t\t\"allowance_charges\": [{\r
+
+      \t\t\t\t\t\"charge_indicator\": false,\r
+
+      \t\t\t\t\t\"allowance_charge_reason\": \"DESCUENTO GENERAL\",\r
+
+      \t\t\t\t\t\"amount\": \"50000.00\",\r
+
+      \t\t\t\t\t\"base_amount\": \"1000000.00\"\r
+
+      \t\t\t\t}\r
+
+      \t\t\t],\r
+
+      \t\t\t\"tax_totals\": [\r
+
+      \t\t\t\t{\r
+
+      \t\t\t\t\t\"tax_id\": 1,\r
+
+      \t\t\t\t\t\"tax_amount\": \"180500\",\r
+
+      \t\t\t\t\t\"taxable_amount\": \"950000\",\r
+
+      \t\t\t\t\t\"percent\": \"19.00\"\r
+
+      \t\t\t\t}\r
+
+      \t\t\t],\r
+
+      \t\t\t\"description\": \"COMISION POR SERVICIOS\",\r
+
+      \            \"notes\": \"ESTA ES UNA PRUEBA DE NOTA DE DETALLE DE LINEA.\",\r
+
+      \t\t\t\"code\": \"COMISION\",\r
+
+      \t\t\t\"type_item_identification_id\": 4,\r
+
+      \t\t\t\"price_amount\": \"1000000.00\",\r
+
+      \t\t\t\"base_quantity\": \"1\"\r
+
+      \t\t}\r
+
+      \t]\r
+
+      }\r
+
+      \r\n"
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  PRIMER ENVIO DE FACTURA
+
+  - Si se instalo un dominio se debe utilizar de la siguiente manera:
+
+  http://midominio.com/api/ubl2.1/invoice
+
+  - Requiere un token de autorizacion el cual fue devuelto al realizar el Paso 1 - Config Company, si este token se extravio, se puede consultar en la tabla de la base de datos de la API en la tabla users, en el campo API_TOKEN.
+
+  - En URL el ultimo parametro corresponde al id del set de pruebas que la dian entrego al momento de registrar el modo de operacion software propio.
+
+  .../ubl2.1/invoice/iddelsetdepruebasdeladian
+
+  - Este endpoint se puede utilizar de dos modos:
+
+  1.  Asincrono:
+  .../ubl2.1/invoice/iddelsetdepruebasdeladian
+
+  2.  Sincrono:
+  .../ubl2.1/invoice
+
+  - El modo sincrono no afecta al set de pruebas, pero la respuesta de la DIAN incluye posibles errores de validacion y estado de la factura, valida o no valida.
+
+  - El modo asincrono, afecta el set de pruebas y en la respuesta no se incluye el resultado de la factura, solo se entrega un ZIP_KEY el cual debe ser consultado mediante el endpoint: 
+
+  .../ubl2.1/status/zip
+
+  de la seccion 03 - Consultas de estado para asi poder establecer si la factura fue valida o no y los errores de validacion.

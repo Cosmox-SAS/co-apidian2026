@@ -1,0 +1,58 @@
+info:
+  name: Paso 1 - Config-Software Support Document
+  type: http
+  seq: 1
+
+http:
+  method: PUT
+  url: http://apidian2024.oo/api/ubl2.1/config/softwaresupportdocument
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: cache-control
+      value: no-cache
+    - name: Connection
+      value: keep-alive
+    - name: Accept-Encoding
+      value: gzip, deflate
+    - name: Host
+      value: localhost
+      disabled: true
+    - name: accept
+      value: application/json
+    - name: X-CSRF-TOKEN
+      value: ""
+  body:
+    type: json
+    data: "{\r
+
+      \t\"idsupportdocument\": \"82bf0c5e-0117-434d-9471-8a5ee58ae682\",\r
+
+      \t\"pinsupportdocument\": 12345\r
+
+      }\r\n"
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  CONFIGURAR SOFTWARE
+
+  - Si se instalo un dominio se debe utilizar de la siguiente manera:
+      
+
+  [http://midominio.com/api/ubl2.1/config/softwaresupportdocument](http://midominio.com/api/ubl2.1/config/)
+
+  - Requiere un token de autorizacion el cual fue devuelto al realizar el Paso 1 - Config Company, si este token se extravio, se puede consultar en la tabla de la base de datos de la API en la tabla users, en el campo API_TOKEN.
+      
+  - Este endpoint no tiene parametros en la URL.
+      
+  - El campo id, corresponde al id de software que entrega la DIAN al momento de registrarse como facturador electronico y agregar modo de operacion software propio.
+      
+  - El campo pin, corresponde al pin del software propio, este pin corresponde a un numero de 5 digitos que nosotros mismos escogimos al registrar dicho software.

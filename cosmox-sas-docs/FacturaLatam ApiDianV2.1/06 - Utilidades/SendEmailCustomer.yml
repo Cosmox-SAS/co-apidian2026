@@ -1,0 +1,65 @@
+info:
+  name: SendEmailCustomer
+  type: http
+  seq: 17
+
+http:
+  method: POST
+  url: http://apidian2023.oo/api/send-email-customer/NO
+  headers:
+    - name: Authorization
+      value: Bearer a25b9533afbae4d16a25505524bd89f1dfaa604e97111dea7502a139abcde18a
+      disabled: true
+    - name: Content-Type
+      value: application/json
+    - name: accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \t\"company_idnumber\": \"89008003\",\r
+
+      \t\"prefix\": \"SETP\",\r
+
+      \t\"number\": \"990111030\"\r
+
+      }\r\n"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  ## ENVIAR CORREO AL ADQUIRIENTE
+
+  Este endpoint permite enviar el documento adjunto de una factura al correo electrónico del adquiriente registrado en la base de datos.
+
+  **Parámetros en URL:**
+
+  - `ShowView` (opcional): Si se envía, retorna una vista con el resultado; si no, retorna un JSON.
+      
+
+  **Autenticación:**  
+  Requiere un token de autorización (`API_TOKEN`).
+
+  **Body del request (JSON):**
+
+  - `company_idnumber`: NIT de la empresa emisora.
+      
+  - `prefix`: Prefijo de la factura.
+      
+  - `number`: Número de la factura.
+      
+  - `smtp_parameters` (opcional): Parámetros SMTP personalizados.
+      
+  - `customerEmail` (opcional): Correo alternativo del adquiriente.
+      
+
+  **Notas:**
+
+  - El documento adjunto enviado corresponde a la factura especificada.
+      
+  - Si el parámetro `ShowView` es `YES`, la respuesta será una vista HTML; si es `NO` o se omite, la respuesta será JSON.

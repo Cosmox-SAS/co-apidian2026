@@ -1,0 +1,322 @@
+info:
+  name: Tres Lineas, Descuento en Linea, Una Tarifa de IVA
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: http://apidian2024.oo/api/ubl2.1/invoice
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \    \"number\": 990001134,\r
+
+      \    \"type_document_id\": 1,\r
+
+      \    \"date\": \"2024-08-22\",\r
+
+      \    \"time\": \"04:08:12\",\r
+
+      \    \"resolution_number\": \"18760000001\",\r
+
+      \    \"prefix\": \"SETP\",\r
+
+      \    \"notes\": \"ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA, ESTA ES UNA NOTA DE PRUEBA\",\r
+
+      \    \"disable_confirmation_text\": true,\r
+
+      \    \"establishment_name\": \"TORRE SOFTWARE\",\r
+
+      \    \"establishment_address\": \"BRR LIMONAR MZ 6 CS 3 ET 1 PISO 2\",\r
+
+      \    \"establishment_phone\": \"3226563672\",\r
+
+      \    \"establishment_municipality\": 600,\r
+
+      \    \"establishment_email\": \"alternate_email@alternate.com\",\r
+
+      \    \"sendmail\": true,\r
+
+      \    \"sendmailtome\": true,\r
+
+      \    \"seze\": \"2021-2017\",\r
+
+      \    \"head_note\": \"PRUEBA DE TEXTO LIBRE QUE DEBE POSICIONARSE EN EL ENCABEZADO DE PAGINA DE LA REPRESENTACION GRAFICA DE LA FACTURA ELECTRONICA VALIDACION PREVIA DIAN\",\r
+
+      \    \"foot_note\": \"PRUEBA DE TEXTO LIBRE QUE DEBE POSICIONARSE EN EL PIE DE PAGINA DE LA REPRESENTACION GRAFICA DE LA FACTURA ELECTRONICA VALIDACION PREVIA DIAN\",\r
+
+      \    \"customer\": {\r
+
+      \        \"identification_number\": 900166483,\r
+
+      \        \"dv\": 1,\r
+
+      \        \"name\": \"INVERSIONES DAVAL SAS\",\r
+
+      \        \"phone\": \"3103891693\",\r
+
+      \        \"address\": \"CLL 4 NRO 33-90\",\r
+
+      \        \"email\": \"alexander_obando@hotmail.com\",\r
+
+      \        \"merchant_registration\": \"0000000-00\",\r
+
+      \        \"type_document_identification_id\": 6,\r
+
+      \        \"type_organization_id\": 1,\r
+
+      \        \"type_liability_id\": 7,\r
+
+      \        \"municipality_id\": 822,\r
+
+      \        \"type_regime_id\": 1\r
+
+      \    },\r
+
+      \    \"payment_form\": {\r
+
+      \        \"payment_form_id\": 2,\r
+
+      \        \"payment_method_id\": 30,\r
+
+      \        \"payment_due_date\": \"2024-08-22\",\r
+
+      \        \"duration_measure\": \"30\"\r
+
+      \    },\r
+
+      \    \"legal_monetary_totals\": {\r
+
+      \        \"line_extension_amount\": \"7310924.175\",\r
+
+      \        \"tax_exclusive_amount\": \"7310924.175\",\r
+
+      \        \"tax_inclusive_amount\": \"8700000.00\",\r
+
+      \        \"allowance_total_amount\": \"0.00\",\r
+
+      \        \"payable_amount\": \"8700000.00\"\r
+
+      \    },\r
+
+      \    \"tax_totals\":\r
+
+      \    [{\r
+
+      \            \"tax_id\": 1,\r
+
+      \            \"tax_amount\": \"1389075.630\",\r
+
+      \            \"percent\": \"19\",\r
+
+      \            \"taxable_amount\": \"7310924.175\"\r
+
+      \        }\r
+
+      \    ],\r
+
+      \    \"invoice_lines\": [\r
+
+      \t\t{\r
+
+      \            \"unit_measure_id\": 70,\r
+
+      \            \"invoiced_quantity\": \"1\",\r
+
+      \            \"line_extension_amount\": \"798319.327\",\r
+
+      \            \"free_of_charge_indicator\": false,\r
+
+      \t\t\t\"allowance_charges\": [{\r
+
+      \t\t\t\t\t\"charge_indicator\": false,\r
+
+      \t\t\t\t\t\"allowance_charge_reason\": \"DESCUENTO GENERAL\",\r
+
+      \t\t\t\t\t\"amount\": \"50000.00\",\r
+
+      \t\t\t\t\t\"base_amount\": \"1000000.00\"\r
+
+      \t\t\t\t}\r
+
+      \t\t\t],\r
+
+      \            \"tax_totals\": [{\r
+
+      \                    \"tax_id\": 1,\r
+
+      \                    \"tax_amount\": \"151680.673\",\r
+
+      \                    \"taxable_amount\": \"798319.327\",\r
+
+      \                    \"percent\": \"19.00\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"description\": \"ARTICULO NRO 1\",\r
+
+      \            \"notes\": \"ESTA ES UNA PRUEBA DE NOTA DE DETALLE DE LINEA.\",\r
+
+      \            \"code\": \"ART1\",\r
+
+      \            \"type_item_identification_id\": 4,\r
+
+      \            \"price_amount\": \"1000000.00\",\r
+
+      \            \"base_quantity\": \"1\"\r
+
+      \        },\r
+
+      \t\t{\r
+
+      \            \"unit_measure_id\": 70,\r
+
+      \            \"invoiced_quantity\": \"1\",\r
+
+      \            \"line_extension_amount\": \"1554621.848\",\r
+
+      \            \"free_of_charge_indicator\": false,\r
+
+      \t\t\t\"allowance_charges\": [{\r
+
+      \t\t\t\t\t\"charge_indicator\": false,\r
+
+      \t\t\t\t\t\"allowance_charge_reason\": \"DESCUENTO GENERAL\",\r
+
+      \t\t\t\t\t\"amount\": \"150000.00\",\r
+
+      \t\t\t\t\t\"base_amount\": \"2000000.00\"\r
+
+      \t\t\t\t}\r
+
+      \t\t\t],\r
+
+      \            \"tax_totals\": [{\r
+
+      \                    \"tax_id\": 1,\r
+
+      \                    \"tax_amount\": \"295378.152\",\r
+
+      \                    \"taxable_amount\": \"1554621.848\",\r
+
+      \                    \"percent\": \"19.00\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"description\": \"ARTICULO NRO 2\",\r
+
+      \            \"notes\": \"ESTA ES UNA PRUEBA DE NOTA DE DETALLE DE LINEA.\",\r
+
+      \            \"code\": \"ART2\",\r
+
+      \            \"type_item_identification_id\": 4,\r
+
+      \            \"price_amount\": \"2000000.00\",\r
+
+      \            \"base_quantity\": \"1\"\r
+
+      \        },\r
+
+      \t\t{\r
+
+      \            \"unit_measure_id\": 70,\r
+
+      \            \"invoiced_quantity\": \"2\",\r
+
+      \            \"line_extension_amount\": \"4957983.193\",\r
+
+      \            \"free_of_charge_indicator\": false,\r
+
+      \t\t\t\"allowance_charges\": [{\r
+
+      \t\t\t\t\t\"charge_indicator\": false,\r
+
+      \t\t\t\t\t\"allowance_charge_reason\": \"DESCUENTO GENERAL\",\r
+
+      \t\t\t\t\t\"amount\": \"100000.00\",\r
+
+      \t\t\t\t\t\"base_amount\": \"6000000.00\"\r
+
+      \t\t\t\t}\r
+
+      \t\t\t],\r
+
+      \            \"tax_totals\": [{\r
+
+      \                    \"tax_id\": 1,\r
+
+      \                    \"tax_amount\": \"942016.807\",\r
+
+      \                    \"taxable_amount\": \"4957983.193\",\r
+
+      \                    \"percent\": \"19.00\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"description\": \"ARTICULO NRO 3\",\r
+
+      \            \"notes\": \"ESTA ES UNA PRUEBA DE NOTA DE DETALLE DE LINEA.\",\r
+
+      \            \"code\": \"ART3\",\r
+
+      \            \"type_item_identification_id\": 4,\r
+
+      \            \"price_amount\": \"3000000.00\",\r
+
+      \            \"base_quantity\": \"1\"\r
+
+      \        }\r
+
+      \    ]\r
+
+      }\r\n"
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  PRIMER ENVIO DE FACTURA
+
+  - Si se instalo un dominio se debe utilizar de la siguiente manera:
+
+  http://midominio.com/api/ubl2.1/invoice
+
+  - Requiere un token de autorizacion el cual fue devuelto al realizar el Paso 1 - Config Company, si este token se extravio, se puede consultar en la tabla de la base de datos de la API en la tabla users, en el campo API_TOKEN.
+
+  - En URL el ultimo parametro corresponde al id del set de pruebas que la dian entrego al momento de registrar el modo de operacion software propio.
+
+  .../ubl2.1/invoice/iddelsetdepruebasdeladian
+
+  - Este endpoint se puede utilizar de dos modos:
+
+  1.  Asincrono:
+  .../ubl2.1/invoice/iddelsetdepruebasdeladian
+
+  2.  Sincrono:
+  .../ubl2.1/invoice
+
+  - El modo sincrono no afecta al set de pruebas, pero la respuesta de la DIAN incluye posibles errores de validacion y estado de la factura, valida o no valida.
+
+  - El modo asincrono, afecta el set de pruebas y en la respuesta no se incluye el resultado de la factura, solo se entrega un ZIP_KEY el cual debe ser consultado mediante el endpoint: 
+
+  .../ubl2.1/status/zip
+
+  de la seccion 03 - Consultas de estado para asi poder establecer si la factura fue valida o no y los errores de validacion.

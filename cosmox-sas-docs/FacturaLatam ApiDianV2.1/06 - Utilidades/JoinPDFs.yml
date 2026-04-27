@@ -1,0 +1,110 @@
+info:
+  name: JoinPDFs
+  type: http
+  seq: 10
+
+http:
+  method: POST
+  url: http://apidian2023/api/ubl2.1/join-pdfs
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: cache-control
+      value: no-cache
+    - name: Connection
+      value: keep-alive
+    - name: Accept-Encoding
+      value: gzip, deflate
+    - name: Host
+      value: localhost
+      disabled: true
+    - name: accept
+      value: application/json
+    - name: X-CSRF-TOKEN
+      value: ""
+  body:
+    type: json
+    data: "{\r
+
+      \    \"name_joined_pdfs\": \"PDFs-Unidos.pdf\",\r
+
+      \    \"pdfs\": [\r
+
+      \        {\r
+
+      \            \"type_document_id\": 1,\r
+
+      \            \"prefix\": \"T\",\r
+
+      \            \"number\": \"68\"\r
+
+      \        },{\r
+
+      \            \"type_document_id\": 1,\r
+
+      \            \"prefix\": \"T\",\r
+
+      \            \"number\": \"67\"\r
+
+      \        },{\r
+
+      \            \"type_document_id\": 1,\r
+
+      \            \"prefix\": \"T\",\r
+
+      \            \"number\": \"65\"\r
+
+      \        },{\r
+
+      \            \"type_document_id\": 4,\r
+
+      \            \"prefix\": \"9\",\r
+
+      \            \"number\": \"70000012\"\r
+
+      \        }\r
+
+      \    ]\r
+
+      }"
+  auth:
+    type: bearer
+    token: 0da52a69c6157ed5d4c52aa53c266ad1b18afdebab6f5a911bfccc16dbfc3c9e
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  **Unir varios archivos PDF en uno solo**
+
+  Este endpoint permite unir varios archivos PDF de documentos electrónicos de la empresa autenticada en un solo archivo PDF.  
+  El usuario debe indicar los documentos a unir y el nombre del archivo resultante.
+
+  **URL:**  
+  `POST /api/ubl2.1/join-pdfs`
+
+  **Autenticación:**  
+  Requiere token de autorización en el header:  
+  `Authorization: Bearer {API_TOKEN}`
+
+  **Parámetros (body JSON):**
+
+  - `pdfs`: Array de objetos con los datos de cada PDF a unir. Cada objeto debe incluir:
+      
+      - `type_document_id`: ID del tipo de documento.
+          
+      - `prefix`: Prefijo del documento.
+          
+      - `number`: Número del documento.
+          
+  - `name_joined_pdfs`: Nombre del archivo PDF resultante.
+      
+
+  **Respuesta:**
+
+  - Si la operación es exitosa, retorna el PDF unido en base64 y un mensaje de éxito.
+      
+  - Si ocurre un error, retorna el mensaje de error.

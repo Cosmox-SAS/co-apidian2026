@@ -1,0 +1,276 @@
+info:
+  name: SendCreditNote-TestSetId Varias Lineas
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: http://apidian2023.oo/api/ubl2.1/credit-note
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \    \"billing_reference\": {\r
+
+      \        \"number\": \"990000360\",\r
+
+      \        \"uuid\": \"43408510e1fa4ce24159b4a339b0e223b31de9431df4d50af37d627a86669a520fe87f9938ace108f9ce91b6636aad90\",\r
+
+      \        \"issue_date\": \"2021-08-17\"\r
+
+      \    },\r
+
+      \    \"discrepancyresponsecode\": 2,\r
+
+      \    \"discrepancyresponsedescription\": \"PRUEBA DE MOTIVO NOTA CREDITO\",\r
+
+      \    \"notes\": \"PRUEBA DE NOTA CREDITO\",\r
+
+      \    \"resolution_number\": \"0000000000\",\r
+
+      \    \"prefix\": \"NC\",\r
+
+      \    \"number\": 35,\r
+
+      \    \"type_document_id\": 4,\r
+
+      \    \"date\": \"2021-08-17\",\r
+
+      \    \"time\": \"10:00:52\",\r
+
+      \    \"customer\": {\r
+
+      \        \"identification_number\": 89008003,\r
+
+      \        \"name\": \"ALEXANDER OBANDO LONDONO\",\r
+
+      \        \"phone\": 3103891693,\r
+
+      \        \"address\": \"BRR EL CARDAL MZ 4 CS 7 ET 1\",\r
+
+      \        \"email\": \"alexander_obando@hotmail.com\",\r
+
+      \        \"merchant_registration\": \"0000-00\",\r
+
+      \        \"type_document_identification_id\": 3,\r
+
+      \        \"type_organization_id\": 2,\r
+
+      \        \"municipality_id\": 149,\r
+
+      \        \"type_regime_id\": 2\r
+
+      \    },\r
+
+      \    \"tax_totals\": [{\r
+
+      \        \"tax_id\": 1,\r
+
+      \        \"tax_amount\": \"0.00\",\r
+
+      \        \"taxable_amount\": \"15000.00\",\r
+
+      \        \"percent\": \"0.00\"\r
+
+      \    },\r
+
+      \t{\r
+
+      \        \"tax_id\": 1,\r
+
+      \        \"tax_amount\": \"3193.28\",\r
+
+      \        \"taxable_amount\": \"16806.72\",\r
+
+      \        \"percent\": \"19.00\"\r
+
+      \    }],\r
+
+      \    \"legal_monetary_totals\": {\r
+
+      \        \"line_extension_amount\": \"31806.72\",\r
+
+      \        \"tax_exclusive_amount\": \"31806.72\",\r
+
+      \        \"tax_inclusive_amount\": \"35000.00\",\r
+
+      \        \"allowance_total_amount\": \"0.00\",\r
+
+      \        \"charge_total_amount\": \"0.00\",\r
+
+      \        \"payable_amount\": \"35000.00\"\r
+
+      \    },\r
+
+      \    \"credit_note_lines\":\r
+
+      \    [{\r
+
+      \            \"unit_measure_id\": 70,\r
+
+      \            \"invoiced_quantity\": \"1\",\r
+
+      \            \"line_extension_amount\": \"10084.03\",\r
+
+      \            \"free_of_charge_indicator\": false,\r
+
+      \            \"allowance_charges\": [{\r
+
+      \                    \"charge_indicator\": false,\r
+
+      \                    \"allowance_charge_reason\": \"DESCUENTO GENERAL\",\r
+
+      \                    \"amount\": \"0.00\",\r
+
+      \                    \"base_amount\": \"12000.00\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"tax_totals\": [{\r
+
+      \                    \"tax_id\": 1,\r
+
+      \                    \"tax_amount\": \"1915.97\",\r
+
+      \                    \"taxable_amount\": \"10084.03\",\r
+
+      \                    \"percent\": \"19.00\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"description\": \"COMISION POR SERVICIOS\",\r
+
+      \            \"code\": \"COMISION\",\r
+
+      \            \"type_item_identification_id\": 4,\r
+
+      \            \"price_amount\": \"10084.03\",\r
+
+      \            \"base_quantity\": \"1\"\r
+
+      \        }, {\r
+
+      \            \"unit_measure_id\": 70,\r
+
+      \            \"invoiced_quantity\": \"1\",\r
+
+      \            \"line_extension_amount\": \"6722.69\",\r
+
+      \            \"free_of_charge_indicator\": false,\r
+
+      \            \"allowance_charges\": [{\r
+
+      \                    \"charge_indicator\": false,\r
+
+      \                    \"allowance_charge_reason\": \"DESCUENTO GENERAL\",\r
+
+      \                    \"amount\": \"0.00\",\r
+
+      \                    \"base_amount\": \"8000.00\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"tax_totals\": [{\r
+
+      \                    \"tax_id\": 1,\r
+
+      \                    \"tax_amount\": \"1277.31\",\r
+
+      \                    \"taxable_amount\": \"6722.69\",\r
+
+      \                    \"percent\": \"19.00\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"description\": \"BONOS POR SERVICIOS\",\r
+
+      \            \"code\": \"BONOS\",\r
+
+      \            \"type_item_identification_id\": 4,\r
+
+      \            \"price_amount\": \"6722.69\",\r
+
+      \            \"base_quantity\": \"1\"\r
+
+      \        }, {\r
+
+      \            \"unit_measure_id\": 70,\r
+
+      \            \"invoiced_quantity\": \"1\",\r
+
+      \            \"line_extension_amount\": \"15000.00\",\r
+
+      \            \"free_of_charge_indicator\": false,\r
+
+      \            \"allowance_charges\": [{\r
+
+      \                    \"charge_indicator\": false,\r
+
+      \                    \"allowance_charge_reason\": \"DESCUENTO GENERAL\",\r
+
+      \                    \"amount\": \"0.00\",\r
+
+      \                    \"base_amount\": \"15000.00\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"tax_totals\": [{\r
+
+      \                    \"tax_id\": 1,\r
+
+      \                    \"tax_amount\": \"0.00\",\r
+
+      \                    \"taxable_amount\": \"15000.00\",\r
+
+      \                    \"percent\": \"0.00\"\r
+
+      \                }\r
+
+      \            ],\r
+
+      \            \"description\": \"CESANTIA MERCANTIL\",\r
+
+      \            \"code\": \"CESANTIA\",\r
+
+      \            \"type_item_identification_id\": 4,\r
+
+      \            \"price_amount\": \"15000.00\",\r
+
+      \            \"base_quantity\": \"1\"\r
+
+      \        }\r
+
+      \    ]\r
+
+      }\r\n"
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  ENVIO DE FACTURA CON VARIAS LINEAS DE DETALLE
+
+  - Aplica la misma documentacion que el PRIMER ENVIO DE FACTURA de la seccion 02 - PRIMEROS ENVIOS.
+
+  - Utilice este ejemplo cuando desee enviar varias lineas de productos o lineas de detalle en una misma factura.

@@ -1,0 +1,280 @@
+info:
+  name: Paso 1 - Config-Company
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{url_base}}/ubl2.1/config/89008003/2"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \t\"type_document_identification_id\": 3,\r
+
+      \t\"type_organization_id\": 2,\r
+
+      \t\"type_regime_id\": 2,\r
+
+      \t\"type_liability_id\": 14,\r
+
+      \t\"business_name\": \"ALEXANDER OBANDO LONDONO\",\r
+
+      \t\"merchant_registration\": \"0000000-00\",\r
+
+      \t\"municipality_id\": 820,\r
+
+      \t\"address\": \"CRA 21A NRO 11-25\",\r
+
+      \t\"phone\": 3103891693,\r
+
+      \t\"email\": \"alexander_obando@hotmail.com\",\r
+
+      \    \"mail_host\": \"smtp.gmail.com\",\r
+
+      \    \"mail_port\": \"587\",\r
+
+      \    \"mail_username\": \"backupsbabel7@gmail.com\",\r
+
+      \    \"mail_password\": \"ccsdfjruqddyxcsjgfggqlqvttt\",\r
+
+      \    \"mail_encryption\": \"tls\"\r
+
+      }"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Empresa creada/actualizada
+    request:
+      url: "{{url_base}}/ubl2.1/config/89008003/2"
+      method: POST
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Accept
+          value: application/json
+      body:
+        type: json
+        data: "{\r
+
+          \t\"type_document_identification_id\": 3,\r
+
+          \t\"type_organization_id\": 2,\r
+
+          \t\"type_regime_id\": 2,\r
+
+          \t\"type_liability_id\": 14,\r
+
+          \t\"business_name\": \"ALEXANDER OBANDO LONDONO\",\r
+
+          \t\"merchant_registration\": \"0000000-00\",\r
+
+          \t\"municipality_id\": 820,\r
+
+          \t\"address\": \"CRA 21A NRO 11-25\",\r
+
+          \t\"phone\": 3103891693,\r
+
+          \t\"email\": \"alexander_obando@hotmail.com\"\r
+
+          }"
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: "0"
+          value: Allow
+        - name: "1"
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Date
+          value: Thu, 02 Jan 2025 15:42:42 GMT
+        - name: Server
+          value: Apache/2.4.35 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+        - name: Vary
+          value: Authorization
+        - name: X-Powered-By
+          value: PHP/7.4.19
+        - name: Cache-Control
+          value: no-cache, private
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Access-Control-Allow-Headers
+          value: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization, Access-Control-Request-Headers
+        - name: Keep-Alive
+          value: timeout=5, max=100
+        - name: Connection
+          value: Keep-Alive
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "message": "Empresa creada/actualizada con éxito",
+              "password": "$2y$10$8m/Ie2zATcemWzEMKt6EauV2Ma8l/3gkY2vZGRvXnsGGJr26sQ0hO",
+              "token": "0efacb667d343c125740d132b242cd76cef9208b842bc2867a9d0505e13f7c8b",
+              "company": {
+                  "id": 1,
+                  "user_id": 3,
+                  "identification_number": "89008003",
+                  "dv": "2",
+                  "language_id": 79,
+                  "tax_id": 1,
+                  "type_environment_id": 2,
+                  "payroll_type_environment_id": 2,
+                  "eqdocs_type_environment_id": 2,
+                  "type_operation_id": 10,
+                  "type_document_identification_id": 3,
+                  "country_id": 46,
+                  "type_currency_id": 35,
+                  "type_organization_id": 2,
+                  "type_regime_id": 2,
+                  "type_liability_id": 14,
+                  "municipality_id": 820,
+                  "merchant_registration": "0000000-00",
+                  "address": "CRA 21A NRO 11-25",
+                  "phone": "3103891693",
+                  "password": null,
+                  "newpassword": null,
+                  "type_plan_id": 0,
+                  "type_plan2_id": 0,
+                  "type_plan3_id": 0,
+                  "type_plan4_id": 0,
+                  "start_plan_date": null,
+                  "start_plan_date2": null,
+                  "start_plan_date3": null,
+                  "start_plan_date4": null,
+                  "absolut_start_plan_date": null,
+                  "state": 1,
+                  "allow_seller_login": 0,
+                  "created_at": "2024-04-08 17:37:08",
+                  "updated_at": "2024-11-27 15:39:42",
+                  "user": {
+                      "id": 3,
+                      "name": "ALEXANDER OBANDO LONDONO",
+                      "email": "alexander_obando@hotmail.com",
+                      "email_verified_at": null,
+                      "created_at": "2024-04-08 17:37:08",
+                      "updated_at": "2024-11-04 16:38:12",
+                      "id_administrator": null,
+                      "mail_host": null,
+                      "mail_port": null,
+                      "mail_username": null,
+                      "mail_password": null,
+                      "mail_encryption": null
+                  },
+                  "send": []
+              }
+          }
+  - name: Acceso restringido
+    request:
+      url: "{{url_base}}/ubl2.1/config/89008003/2"
+      method: POST
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Accept
+          value: application/json
+      body:
+        type: json
+        data: "{\r
+
+          \t\"type_document_identification_id\": 3,\r
+
+          \t\"type_organization_id\": 2,\r
+
+          \t\"type_regime_id\": 2,\r
+
+          \t\"type_liability_id\": 14,\r
+
+          \t\"business_name\": \"ALEXANDER OBANDO LONDONO\",\r
+
+          \t\"merchant_registration\": \"0000000-00\",\r
+
+          \t\"municipality_id\": 820,\r
+
+          \t\"address\": \"CRA 21A NRO 11-25\",\r
+
+          \t\"phone\": 3103891693,\r
+
+          \t\"email\": \"alexander_obando@hotmail.com\"\r
+
+          }"
+    response:
+      status: 403
+      statusText: Forbidden
+      headers:
+        - name: "0"
+          value: Allow
+        - name: "1"
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Date
+          value: Thu, 02 Jan 2025 15:39:17 GMT
+        - name: Server
+          value: Apache/2.4.35 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+        - name: Vary
+          value: Authorization
+        - name: X-Powered-By
+          value: PHP/7.4.19
+        - name: Cache-Control
+          value: no-cache, private
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Access-Control-Allow-Headers
+          value: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization, Access-Control-Request-Headers
+        - name: Keep-Alive
+          value: timeout=5, max=100
+        - name: Connection
+          value: Keep-Alive
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "code": 403,
+              "status": false,
+              "message": "Access to this route is disabled."
+          }
+
+docs: |-
+  CONFIGURAR COMPAÑIA
+
+  - Si se instalo un dominio se debe utilizar de la siguiente manera:
+      
+
+  [http://midominio.com/api/ubl2.1/config/89008003/2](http://midominio.com/api/ubl2.1/config/89008003/2)
+
+  - No requiere autorizacion
+      
+  - En URL los ultimos dos parametros son NIT y digito de verificacion de la empresa.
+      
+
+  .../ubl2.1/config/NitEmpresa/DigitoVerificacion
+
+  - Los datos necesarios para llenar los campos JSON cuyo nombre finalice con "_id" se encuentran en las tablas parametricas de la base de datos de la API, ejemplo:
+      
+
+  type_liability_id, se debe especificar el id del registro correspondiente de la tabla type_liabilities de la base de datos de la API.
+
+  - Devuelve un token en el response, si fue posible la creacion de la empresa, este token es una cadena alfanumerica en el campo API_TOKEN, este dato es necesario para utilizarlo como autorizacion en los siguientes endpoints de la API. Si este token se pierde, se puede recuperar consultando la tabla users de la base de datos de la API, en el campo API_TOKEN.

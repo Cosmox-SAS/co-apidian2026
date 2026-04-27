@@ -1,0 +1,69 @@
+info:
+  name: Register-Update Customer
+  type: http
+  seq: 2
+
+http:
+  method: PUT
+  url: http://apidian2023.oo/api/ubl2.1/register-update-customer
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: cache-control
+      value: no-cache
+    - name: Connection
+      value: keep-alive
+    - name: Accept-Encoding
+      value: gzip, deflate
+    - name: Host
+      value: localhost
+      disabled: true
+    - name: accept
+      value: application/json
+    - name: X-CSRF-TOKEN
+      value: ""
+  body:
+    type: json
+    data: "{\r
+
+      \    \"identification_number\": 89008003,\r
+
+      \t\"dv\": null,\r
+
+      \t\"name\": \"ALEXANDER OBANDO LONDOÑO.\",\r
+
+      \t\"phone\": 3103891693,\r
+
+      \t\"address\": \"LIMONAR MZ 6 CS 3 ET 1 PISO 2\",\r
+
+      \t\"email\": \"alexander_obando@hotmail.com\",\r
+
+      \    \"sendnotification\": true\r
+
+      }\r\n"
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  **REGISTRAR/MODIFICAR DATOS DE UN CLIENTE**
+
+  Este endpoint permite registrar un nuevo cliente o actualizar la información de un cliente existente, como el correo electrónico o el teléfono, en la base de datos de la API.
+
+  **URL de uso:**  
+  Si tienes un dominio instalado, utiliza la siguiente ruta:  
+  `http://midominio.com/api/ubl2.1/register-update-customer`
+
+  **Autenticación:**  
+  Requiere un token de autorización, el cual se obtiene al realizar el Paso 1 - Config Company.  
+  Si extraviaste el token, puedes consultarlo en la base de datos, tabla `users`, campo `API_TOKEN`.
+
+  **Parámetros:**  
+  Este endpoint no requiere parámetros en la URL.  
+  Toda la información del cliente se envía en el cuerpo (body) de la solicitud.

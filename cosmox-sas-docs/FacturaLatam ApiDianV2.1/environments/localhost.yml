@@ -1,0 +1,8 @@
+name: localhost
+variables:
+  - name: url_base
+    value: http://localhost/api
+  - secret: true
+    name: token
+  - name: nit
+    value: "901936990"

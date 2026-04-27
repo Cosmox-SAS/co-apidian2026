@@ -1,0 +1,1727 @@
+info:
+  name: Lista Documentos
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{url_base}}/documents"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: "{{url_base}}/documents?search="
+      method: GET
+      headers:
+        - name: Accept
+          value: application/json
+        - name: Content-Type
+          value: application/json
+      params:
+        - name: search
+          value: ""
+          type: query
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: "0"
+          value: Allow
+        - name: "1"
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Date
+          value: Fri, 03 Jan 2025 16:44:50 GMT
+        - name: Server
+          value: Apache/2.4.35 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+        - name: Vary
+          value: Authorization
+        - name: X-Powered-By
+          value: PHP/7.4.19
+        - name: Cache-Control
+          value: no-cache, private
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Access-Control-Allow-Headers
+          value: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization, Access-Control-Request-Headers
+        - name: Keep-Alive
+          value: timeout=5, max=100
+        - name: Connection
+          value: Keep-Alive
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "current_page": 1,
+              "data": [
+                  {
+                      "id": 228,
+                      "prefix": "SETP",
+                      "number": "990060188",
+                      "client": {
+                          "dv": 1,
+                          "name": "INVERSIONES DAVAL SAS",
+                          "email": "demo@gmail.com",
+                          "phone": "3103891693",
+                          "address": "CLL 4 NRO 33-90",
+                          "type_regime_id": 1,
+                          "municipality_id": 822,
+                          "type_liability_id": 7,
+                          "type_organization_id": 1,
+                          "identification_number": 900166483,
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 6
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2025-01-02",
+                      "time": "13:01:05",
+                      "sale": 950000,
+                      "total_discount": 0,
+                      "total_tax": 0,
+                      "subtotal": 769500,
+                      "total": 950000,
+                      "xml": "FES-SETP990060188.xml",
+                      "pdf": "FES-SETP990060188.pdf"
+                  },
+                  {
+                      "id": 227,
+                      "prefix": "SETP",
+                      "number": "990060187",
+                      "client": {
+                          "dv": 1,
+                          "name": "INVERSIONES DAVAL SAS",
+                          "email": "demo@gmail.com",
+                          "phone": "3103891693",
+                          "address": "CLL 4 NRO 33-90",
+                          "type_regime_id": 1,
+                          "municipality_id": 822,
+                          "type_liability_id": 7,
+                          "type_organization_id": 1,
+                          "identification_number": 900166483,
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 6
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2025-01-02",
+                      "time": "12:57:32",
+                      "sale": 950000,
+                      "total_discount": 0,
+                      "total_tax": 0,
+                      "subtotal": 769500,
+                      "total": 950000,
+                      "xml": "FES-SETP990060187.xml",
+                      "pdf": "FES-SETP990060187.pdf"
+                  },
+                  {
+                      "id": 226,
+                      "prefix": "SETP",
+                      "number": "990060186",
+                      "client": {
+                          "dv": 2,
+                          "name": "OBANDO LONDONO ALEXANDER",
+                          "email": "demo@gmail.com",
+                          "phone": "3103891693",
+                          "address": "LIMONAR MZ 6 CS 3 ET 1 PISO 2",
+                          "type_regime_id": 2,
+                          "type_liability_id": 117,
+                          "municipality_id_fact": 13337,
+                          "type_organization_id": 2,
+                          "identification_number": "89008003",
+                          "merchant_registration": "000000",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2025-01-02",
+                      "time": "11:06:55",
+                      "sale": 100.00361344537815,
+                      "total_discount": 0,
+                      "total_tax": 15.969999999999999,
+                      "subtotal": 84.03361344537815,
+                      "total": 100.00361344537815,
+                      "xml": "FES-SETP990060186.xml",
+                      "pdf": "FES-SETP990060186.pdf"
+                  },
+                  {
+                      "id": 225,
+                      "prefix": "SETP",
+                      "number": "990060185",
+                      "client": {
+                          "dv": 0,
+                          "name": "juliannys morales",
+                          "email": "julycaro2915@gmail.com",
+                          "phone": "3152918183",
+                          "address": "cra 8 # 13 a 22",
+                          "type_regime_id": 2,
+                          "type_liability_id": 117,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "1065633585",
+                          "merchant_registration": "000000",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-20",
+                      "time": "11:19:18",
+                      "sale": 10.003361344537815,
+                      "total_discount": 0,
+                      "total_tax": 1.5999999999999996,
+                      "subtotal": 8.403361344537815,
+                      "total": 10.003361344537815,
+                      "xml": "FES-SETP990060185.xml",
+                      "pdf": "FES-SETP990060185.pdf"
+                  },
+                  {
+                      "id": 224,
+                      "prefix": "SETP",
+                      "number": "990060184",
+                      "client": {
+                          "dv": 0,
+                          "name": "juliannys morales",
+                          "email": "julycaro2915@gmail.com",
+                          "phone": "3152918183",
+                          "address": "cra 8 # 13 a 22",
+                          "type_regime_id": 2,
+                          "type_liability_id": 117,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "1065633585",
+                          "merchant_registration": "000000",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-20",
+                      "time": "11:08:51",
+                      "sale": 10.003361344537815,
+                      "total_discount": 0,
+                      "total_tax": 1.5999999999999996,
+                      "subtotal": 8.403361344537815,
+                      "total": 10.003361344537815,
+                      "xml": "FES-SETP990060184.xml",
+                      "pdf": "FES-SETP990060184.pdf"
+                  },
+                  {
+                      "id": 223,
+                      "prefix": "SETP",
+                      "number": "990060183",
+                      "client": {
+                          "dv": 5,
+                          "name": "ACERO VARGAS JOSE ALEXANDERSituación de la empresa: CANCELACIÓN",
+                          "email": "alexacero26@gmail.com",
+                          "phone": "52543456",
+                          "address": "calle 42 a 83 b 09",
+                          "identification_number": "1030663",
+                          "merchant_registration": "000000"
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-19",
+                      "time": "17:12:52",
+                      "sale": 2190,
+                      "total_discount": 0,
+                      "total_tax": 349.65999999999985,
+                      "subtotal": 1840.3400000000001,
+                      "total": 2190,
+                      "xml": "FES-SETP990060183.xml",
+                      "pdf": "FES-SETP990060183.pdf"
+                  },
+                  {
+                      "id": 222,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": null,
+                          "name": "juliannys morales",
+                          "email": "julycaro2915@gmail.com",
+                          "phone": "3152918183",
+                          "address": "cra 8 # 13 a 22",
+                          "type_regime_id": 2,
+                          "type_liability_id": 117,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "1065633585",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "17:06:29",
+                      "sale": 11.9,
+                      "total_discount": 0,
+                      "total_tax": 1.9000000000000004,
+                      "subtotal": 10,
+                      "total": 11.9,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf"
+                  },
+                  {
+                      "id": 221,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": null,
+                          "name": "juliannys morales",
+                          "email": "julycaro2915@gmail.com",
+                          "phone": "3152918183",
+                          "address": "cra 8 # 13 a 22",
+                          "type_regime_id": 2,
+                          "type_liability_id": 117,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "1065633585",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "17:03:43",
+                      "sale": 11.9,
+                      "total_discount": 0,
+                      "total_tax": 1.9000000000000004,
+                      "subtotal": 10,
+                      "total": 11.9,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf"
+                  },
+                  {
+                      "id": 220,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": "7",
+                          "name": "Cliente POS",
+                          "email": "clientepos@gmail.com",
+                          "phone": "999993333",
+                          "address": "direccion POS",
+                          "type_regime_id": 2,
+                          "type_liability_id": null,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "222222222222",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "16:59:37",
+                      "sale": 11.9,
+                      "total_discount": 0,
+                      "total_tax": 1.9000000000000004,
+                      "subtotal": 10,
+                      "total": 11.9,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf"
+                  },
+                  {
+                      "id": 219,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": "7",
+                          "name": "Cliente POS",
+                          "email": "clientepos@gmail.com",
+                          "phone": "999993333",
+                          "address": "direccion POS",
+                          "type_regime_id": 2,
+                          "type_liability_id": null,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "222222222222",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "16:55:30",
+                      "sale": 11.9,
+                      "total_discount": 0,
+                      "total_tax": 1.9000000000000004,
+                      "subtotal": 10,
+                      "total": 11.9,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf"
+                  },
+                  {
+                      "id": 218,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": "7",
+                          "name": "Cliente POS",
+                          "email": "clientepos@gmail.com",
+                          "phone": "999993333",
+                          "address": "direccion POS",
+                          "type_regime_id": 2,
+                          "type_liability_id": null,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "222222222222",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "16:53:29",
+                      "sale": 11.9,
+                      "total_discount": 0,
+                      "total_tax": 1.9000000000000004,
+                      "subtotal": 10,
+                      "total": 11.9,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf"
+                  },
+                  {
+                      "id": 217,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": "7",
+                          "name": "Cliente POS",
+                          "email": "clientepos@gmail.com",
+                          "phone": "999993333",
+                          "address": "direccion POS",
+                          "type_regime_id": 2,
+                          "type_liability_id": null,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "222222222222",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "16:49:34",
+                      "sale": 23.8,
+                      "total_discount": 0,
+                      "total_tax": 3.8000000000000007,
+                      "subtotal": 20,
+                      "total": 23.8,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf"
+                  },
+                  {
+                      "id": 216,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": null,
+                          "name": "juliannys morales",
+                          "email": "julycaro2915@gmail.com",
+                          "phone": "3152918183",
+                          "address": "cra 8 # 13 a 22",
+                          "type_regime_id": 2,
+                          "type_liability_id": 117,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "1065633585",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "16:47:58",
+                      "sale": 10.5,
+                      "total_discount": 0,
+                      "total_tax": 0.5,
+                      "subtotal": 10,
+                      "total": 10.5,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf"
+                  },
+                  {
+                      "id": 215,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": "7",
+                          "name": "Cliente POS",
+                          "email": "clientepos@gmail.com",
+                          "phone": "999993333",
+                          "address": "direccion POS",
+                          "type_regime_id": 2,
+                          "type_liability_id": null,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "222222222222",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "16:45:50",
+                      "sale": 23.8,
+                      "total_discount": 0,
+                      "total_tax": 3.8000000000000007,
+                      "subtotal": 20,
+                      "total": 23.8,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf"
+                  },
+                  {
+                      "id": 214,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": "7",
+                          "name": "Cliente POS",
+                          "email": "clientepos@gmail.com",
+                          "phone": "999993333",
+                          "address": "direccion POS",
+                          "type_regime_id": 2,
+                          "type_liability_id": null,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "222222222222",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "16:44:43",
+                      "sale": 23.8,
+                      "total_discount": 0,
+                      "total_tax": 3.8000000000000007,
+                      "subtotal": 20,
+                      "total": 23.8,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf"
+                  },
+                  {
+                      "id": 213,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": "7",
+                          "name": "Cliente POS",
+                          "email": "clientepos@gmail.com",
+                          "phone": "999993333",
+                          "address": "direccion POS",
+                          "type_regime_id": 2,
+                          "type_liability_id": null,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "222222222222",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "16:44:00",
+                      "sale": 11.9,
+                      "total_discount": 0,
+                      "total_tax": 1.9000000000000004,
+                      "subtotal": 10,
+                      "total": 11.9,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf"
+                  },
+                  {
+                      "id": 212,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": "7",
+                          "name": "Cliente POS",
+                          "email": "clientepos@gmail.com",
+                          "phone": "999993333",
+                          "address": "direccion POS",
+                          "type_regime_id": 2,
+                          "type_liability_id": null,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "222222222222",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "15:33:39",
+                      "sale": 11.9,
+                      "total_discount": 0,
+                      "total_tax": 1.9000000000000004,
+                      "subtotal": 10,
+                      "total": 11.9,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf"
+                  },
+                  {
+                      "id": 211,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": "7",
+                          "name": "Cliente POS",
+                          "email": "clientepos@gmail.com",
+                          "phone": "999993333",
+                          "address": "direccion POS",
+                          "type_regime_id": 2,
+                          "type_liability_id": null,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "222222222222",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "15:32:10",
+                      "sale": 11.9,
+                      "total_discount": 0,
+                      "total_tax": 1.9000000000000004,
+                      "subtotal": 10,
+                      "total": 11.9,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf"
+                  },
+                  {
+                      "id": 210,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": null,
+                          "name": "juliannys morales",
+                          "email": "julycaro2915@gmail.com",
+                          "phone": "3152918183",
+                          "address": "cra 8 # 13 a 22",
+                          "type_regime_id": 2,
+                          "type_liability_id": 117,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "1065633585",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "15:30:17",
+                      "sale": 11.9,
+                      "total_discount": 0,
+                      "total_tax": 1.9000000000000004,
+                      "subtotal": 10,
+                      "total": 11.9,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf"
+                  },
+                  {
+                      "id": 209,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": null,
+                          "name": "juliannys morales",
+                          "email": "julycaro2915@gmail.com",
+                          "phone": "3152918183",
+                          "address": "cra 8 # 13 a 22",
+                          "type_regime_id": 2,
+                          "type_liability_id": 117,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "1065633585",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "15:29:53",
+                      "sale": 11.9,
+                      "total_discount": 0,
+                      "total_tax": 1.9000000000000004,
+                      "subtotal": 10,
+                      "total": 11.9,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf"
+                  }
+              ],
+              "first_page_url": "http://co_apidian2025.oo/api/documents?page=1",
+              "from": 1,
+              "last_page": 12,
+              "last_page_url": "http://co_apidian2025.oo/api/documents?page=12",
+              "next_page_url": "http://co_apidian2025.oo/api/documents?page=2",
+              "path": "http://co_apidian2025.oo/api/documents",
+              "per_page": 20,
+              "prev_page_url": null,
+              "to": 20,
+              "total": 227
+          }
+  - name: Filter Success
+    request:
+      url: "{{url_base}}/documents?search=&date=all&page=1"
+      method: GET
+      headers:
+        - name: Accept
+          value: application/json
+        - name: Content-Type
+          value: application/json
+      params:
+        - name: search
+          value: ""
+          type: query
+        - name: date
+          value: all
+          type: query
+        - name: page
+          value: "1"
+          type: query
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: "0"
+          value: Allow
+        - name: "1"
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Date
+          value: Fri, 03 Jan 2025 16:46:15 GMT
+        - name: Server
+          value: Apache/2.4.35 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+        - name: Vary
+          value: Authorization
+        - name: X-Powered-By
+          value: PHP/7.4.19
+        - name: Cache-Control
+          value: no-cache, private
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Access-Control-Allow-Headers
+          value: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization, Access-Control-Request-Headers
+        - name: Keep-Alive
+          value: timeout=5, max=100
+        - name: Connection
+          value: Keep-Alive
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "current_page": 1,
+              "data": [
+                  {
+                      "id": 226,
+                      "prefix": "SETP",
+                      "number": "990060186",
+                      "client": {
+                          "dv": 2,
+                          "name": "OBANDO LONDONO ALEXANDER",
+                          "email": "demo@gmail.com",
+                          "phone": "3103891693",
+                          "address": "LIMONAR MZ 6 CS 3 ET 1 PISO 2",
+                          "type_regime_id": 2,
+                          "type_liability_id": 117,
+                          "municipality_id_fact": 13337,
+                          "type_organization_id": 2,
+                          "identification_number": "89008003",
+                          "merchant_registration": "000000",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2025-01-02",
+                      "time": "11:06:55",
+                      "sale": 100.00361344537815,
+                      "total_discount": 0,
+                      "total_tax": 15.969999999999999,
+                      "subtotal": 84.03361344537815,
+                      "total": 100.00361344537815,
+                      "xml": "FES-SETP990060186.xml",
+                      "pdf": "FES-SETP990060186.pdf"
+                  }
+              ],
+              "first_page_url": "http://co_apidian2025.oo/api/documents?page=1",
+              "from": 1,
+              "last_page": 1,
+              "last_page_url": "http://co_apidian2025.oo/api/documents?page=1",
+              "next_page_url": null,
+              "path": "http://co_apidian2025.oo/api/documents",
+              "per_page": 20,
+              "prev_page_url": null,
+              "to": 1,
+              "total": 1
+          }
+  - name: Unauthorized
+    request:
+      url: "{{url_base}}/documents?search="
+      method: GET
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Accept
+          value: application/json
+      params:
+        - name: search
+          value: ""
+          type: query
+    response:
+      status: 401
+      statusText: Unauthorized
+      headers:
+        - name: "0"
+          value: Allow
+        - name: "1"
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Date
+          value: Fri, 03 Jan 2025 17:10:11 GMT
+        - name: Server
+          value: Apache/2.4.35 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+        - name: X-Powered-By
+          value: PHP/7.4.19
+        - name: Cache-Control
+          value: no-cache, private
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Access-Control-Allow-Headers
+          value: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization, Access-Control-Request-Headers
+        - name: Keep-Alive
+          value: timeout=5, max=100
+        - name: Connection
+          value: Keep-Alive
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "message": "Unauthenticated."
+          }
+  - name: Filter Last 90 days
+    request:
+      url: "{{url_base}}/documents?search=&date=last_ninety&page=1"
+      method: GET
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Accept
+          value: application/json
+      params:
+        - name: search
+          value: ""
+          type: query
+        - name: date
+          value: last_ninety
+          type: query
+          description: |-
+            las opciones son :
+            all
+            current_month
+            last_month
+            last_ninety
+        - name: page
+          value: "1"
+          type: query
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: "0"
+          value: Allow
+        - name: "1"
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Date
+          value: Mon, 06 Jan 2025 21:58:47 GMT
+        - name: Server
+          value: Apache/2.4.35 (Win64) OpenSSL/1.1.1k PHP/7.4.19
+        - name: Vary
+          value: Authorization
+        - name: X-Powered-By
+          value: PHP/7.4.19
+        - name: Cache-Control
+          value: no-cache, private
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PUT, PATCH, DELETE
+        - name: Access-Control-Allow-Headers
+          value: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Authorization, Access-Control-Request-Headers
+        - name: Keep-Alive
+          value: timeout=5, max=100
+        - name: Connection
+          value: Keep-Alive
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "current_page": 1,
+              "data": [
+                  {
+                      "id": 228,
+                      "prefix": "SETP",
+                      "number": "990060188",
+                      "client": {
+                          "dv": 1,
+                          "name": "INVERSIONES DAVAL SAS",
+                          "email": "sh.raul.jgb@gmail.com",
+                          "phone": "3103891693",
+                          "address": "CLL 4 NRO 33-90",
+                          "type_regime_id": 1,
+                          "municipality_id": 822,
+                          "type_liability_id": 7,
+                          "type_organization_id": 1,
+                          "identification_number": 900166483,
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 6
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2025-01-02",
+                      "time": "13:01:05",
+                      "sale": 950000,
+                      "total_discount": 0,
+                      "total_tax": 0,
+                      "subtotal": 769500,
+                      "total": 950000,
+                      "xml": "FES-SETP990060188.xml",
+                      "pdf": "FES-SETP990060188.pdf",
+                      "state_document_id": 1
+                  },
+                  {
+                      "id": 227,
+                      "prefix": "SETP",
+                      "number": "990060187",
+                      "client": {
+                          "dv": 1,
+                          "name": "INVERSIONES DAVAL SAS",
+                          "email": "sh.raul.jgb@gmail.com",
+                          "phone": "3103891693",
+                          "address": "CLL 4 NRO 33-90",
+                          "type_regime_id": 1,
+                          "municipality_id": 822,
+                          "type_liability_id": 7,
+                          "type_organization_id": 1,
+                          "identification_number": 900166483,
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 6
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2025-01-02",
+                      "time": "12:57:32",
+                      "sale": 950000,
+                      "total_discount": 0,
+                      "total_tax": 0,
+                      "subtotal": 769500,
+                      "total": 950000,
+                      "xml": "FES-SETP990060187.xml",
+                      "pdf": "FES-SETP990060187.pdf",
+                      "state_document_id": 1
+                  },
+                  {
+                      "id": 226,
+                      "prefix": "SETP",
+                      "number": "990060186",
+                      "client": {
+                          "dv": 2,
+                          "name": "OBANDO LONDONO ALEXANDER",
+                          "email": "demo@gmail.com",
+                          "phone": "3103891693",
+                          "address": "LIMONAR MZ 6 CS 3 ET 1 PISO 2",
+                          "type_regime_id": 2,
+                          "type_liability_id": 117,
+                          "municipality_id_fact": 13337,
+                          "type_organization_id": 2,
+                          "identification_number": "89008003",
+                          "merchant_registration": "000000",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2025-01-02",
+                      "time": "11:06:55",
+                      "sale": 100.00361344537815,
+                      "total_discount": 0,
+                      "total_tax": 15.969999999999999,
+                      "subtotal": 84.03361344537815,
+                      "total": 100.00361344537815,
+                      "xml": "FES-SETP990060186.xml",
+                      "pdf": "FES-SETP990060186.pdf",
+                      "state_document_id": 1
+                  },
+                  {
+                      "id": 225,
+                      "prefix": "SETP",
+                      "number": "990060185",
+                      "client": {
+                          "dv": 0,
+                          "name": "juliannys morales",
+                          "email": "julycaro2915@gmail.com",
+                          "phone": "3152918183",
+                          "address": "cra 8 # 13 a 22",
+                          "type_regime_id": 2,
+                          "type_liability_id": 117,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "1065633585",
+                          "merchant_registration": "000000",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-20",
+                      "time": "11:19:18",
+                      "sale": 10.003361344537815,
+                      "total_discount": 0,
+                      "total_tax": 1.5999999999999996,
+                      "subtotal": 8.403361344537815,
+                      "total": 10.003361344537815,
+                      "xml": "FES-SETP990060185.xml",
+                      "pdf": "FES-SETP990060185.pdf",
+                      "state_document_id": 1
+                  },
+                  {
+                      "id": 224,
+                      "prefix": "SETP",
+                      "number": "990060184",
+                      "client": {
+                          "dv": 0,
+                          "name": "juliannys morales",
+                          "email": "julycaro2915@gmail.com",
+                          "phone": "3152918183",
+                          "address": "cra 8 # 13 a 22",
+                          "type_regime_id": 2,
+                          "type_liability_id": 117,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "1065633585",
+                          "merchant_registration": "000000",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-20",
+                      "time": "11:08:51",
+                      "sale": 10.003361344537815,
+                      "total_discount": 0,
+                      "total_tax": 1.5999999999999996,
+                      "subtotal": 8.403361344537815,
+                      "total": 10.003361344537815,
+                      "xml": "FES-SETP990060184.xml",
+                      "pdf": "FES-SETP990060184.pdf",
+                      "state_document_id": 1
+                  },
+                  {
+                      "id": 223,
+                      "prefix": "SETP",
+                      "number": "990060183",
+                      "client": {
+                          "dv": 5,
+                          "name": "ACERO VARGAS JOSE ALEXANDERSituación de la empresa: CANCELACIÓN",
+                          "email": "alexacero26@gmail.com",
+                          "phone": "52543456",
+                          "address": "calle 42 a 83 b 09",
+                          "identification_number": "1030663",
+                          "merchant_registration": "000000"
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-19",
+                      "time": "17:12:52",
+                      "sale": 2190,
+                      "total_discount": 0,
+                      "total_tax": 349.65999999999985,
+                      "subtotal": 1840.3400000000001,
+                      "total": 2190,
+                      "xml": "FES-SETP990060183.xml",
+                      "pdf": "FES-SETP990060183.pdf",
+                      "state_document_id": 1
+                  },
+                  {
+                      "id": 222,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": null,
+                          "name": "juliannys morales",
+                          "email": "julycaro2915@gmail.com",
+                          "phone": "3152918183",
+                          "address": "cra 8 # 13 a 22",
+                          "type_regime_id": 2,
+                          "type_liability_id": 117,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "1065633585",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "17:06:29",
+                      "sale": 11.9,
+                      "total_discount": 0,
+                      "total_tax": 1.9000000000000004,
+                      "subtotal": 10,
+                      "total": 11.9,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf",
+                      "state_document_id": 0
+                  },
+                  {
+                      "id": 221,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": null,
+                          "name": "juliannys morales",
+                          "email": "julycaro2915@gmail.com",
+                          "phone": "3152918183",
+                          "address": "cra 8 # 13 a 22",
+                          "type_regime_id": 2,
+                          "type_liability_id": 117,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "1065633585",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "17:03:43",
+                      "sale": 11.9,
+                      "total_discount": 0,
+                      "total_tax": 1.9000000000000004,
+                      "subtotal": 10,
+                      "total": 11.9,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf",
+                      "state_document_id": 0
+                  },
+                  {
+                      "id": 220,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": "7",
+                          "name": "Cliente POS",
+                          "email": "clientepos@gmail.com",
+                          "phone": "999993333",
+                          "address": "direccion POS",
+                          "type_regime_id": 2,
+                          "type_liability_id": null,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "222222222222",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "16:59:37",
+                      "sale": 11.9,
+                      "total_discount": 0,
+                      "total_tax": 1.9000000000000004,
+                      "subtotal": 10,
+                      "total": 11.9,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf",
+                      "state_document_id": 0
+                  },
+                  {
+                      "id": 219,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": "7",
+                          "name": "Cliente POS",
+                          "email": "clientepos@gmail.com",
+                          "phone": "999993333",
+                          "address": "direccion POS",
+                          "type_regime_id": 2,
+                          "type_liability_id": null,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "222222222222",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "16:55:30",
+                      "sale": 11.9,
+                      "total_discount": 0,
+                      "total_tax": 1.9000000000000004,
+                      "subtotal": 10,
+                      "total": 11.9,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf",
+                      "state_document_id": 0
+                  },
+                  {
+                      "id": 218,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": "7",
+                          "name": "Cliente POS",
+                          "email": "clientepos@gmail.com",
+                          "phone": "999993333",
+                          "address": "direccion POS",
+                          "type_regime_id": 2,
+                          "type_liability_id": null,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "222222222222",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "16:53:29",
+                      "sale": 11.9,
+                      "total_discount": 0,
+                      "total_tax": 1.9000000000000004,
+                      "subtotal": 10,
+                      "total": 11.9,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf",
+                      "state_document_id": 0
+                  },
+                  {
+                      "id": 217,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": "7",
+                          "name": "Cliente POS",
+                          "email": "clientepos@gmail.com",
+                          "phone": "999993333",
+                          "address": "direccion POS",
+                          "type_regime_id": 2,
+                          "type_liability_id": null,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "222222222222",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "16:49:34",
+                      "sale": 23.8,
+                      "total_discount": 0,
+                      "total_tax": 3.8000000000000007,
+                      "subtotal": 20,
+                      "total": 23.8,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf",
+                      "state_document_id": 0
+                  },
+                  {
+                      "id": 216,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": null,
+                          "name": "juliannys morales",
+                          "email": "julycaro2915@gmail.com",
+                          "phone": "3152918183",
+                          "address": "cra 8 # 13 a 22",
+                          "type_regime_id": 2,
+                          "type_liability_id": 117,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "1065633585",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "16:47:58",
+                      "sale": 10.5,
+                      "total_discount": 0,
+                      "total_tax": 0.5,
+                      "subtotal": 10,
+                      "total": 10.5,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf",
+                      "state_document_id": 0
+                  },
+                  {
+                      "id": 215,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": "7",
+                          "name": "Cliente POS",
+                          "email": "clientepos@gmail.com",
+                          "phone": "999993333",
+                          "address": "direccion POS",
+                          "type_regime_id": 2,
+                          "type_liability_id": null,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "222222222222",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "16:45:50",
+                      "sale": 23.8,
+                      "total_discount": 0,
+                      "total_tax": 3.8000000000000007,
+                      "subtotal": 20,
+                      "total": 23.8,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf",
+                      "state_document_id": 0
+                  },
+                  {
+                      "id": 214,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": "7",
+                          "name": "Cliente POS",
+                          "email": "clientepos@gmail.com",
+                          "phone": "999993333",
+                          "address": "direccion POS",
+                          "type_regime_id": 2,
+                          "type_liability_id": null,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "222222222222",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "16:44:43",
+                      "sale": 23.8,
+                      "total_discount": 0,
+                      "total_tax": 3.8000000000000007,
+                      "subtotal": 20,
+                      "total": 23.8,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf",
+                      "state_document_id": 0
+                  },
+                  {
+                      "id": 213,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": "7",
+                          "name": "Cliente POS",
+                          "email": "clientepos@gmail.com",
+                          "phone": "999993333",
+                          "address": "direccion POS",
+                          "type_regime_id": 2,
+                          "type_liability_id": null,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "222222222222",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "16:44:00",
+                      "sale": 11.9,
+                      "total_discount": 0,
+                      "total_tax": 1.9000000000000004,
+                      "subtotal": 10,
+                      "total": 11.9,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf",
+                      "state_document_id": 0
+                  },
+                  {
+                      "id": 212,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": "7",
+                          "name": "Cliente POS",
+                          "email": "clientepos@gmail.com",
+                          "phone": "999993333",
+                          "address": "direccion POS",
+                          "type_regime_id": 2,
+                          "type_liability_id": null,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "222222222222",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "15:33:39",
+                      "sale": 11.9,
+                      "total_discount": 0,
+                      "total_tax": 1.9000000000000004,
+                      "subtotal": 10,
+                      "total": 11.9,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf",
+                      "state_document_id": 0
+                  },
+                  {
+                      "id": 211,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": "7",
+                          "name": "Cliente POS",
+                          "email": "clientepos@gmail.com",
+                          "phone": "999993333",
+                          "address": "direccion POS",
+                          "type_regime_id": 2,
+                          "type_liability_id": null,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "222222222222",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "15:32:10",
+                      "sale": 11.9,
+                      "total_discount": 0,
+                      "total_tax": 1.9000000000000004,
+                      "subtotal": 10,
+                      "total": 11.9,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf",
+                      "state_document_id": 0
+                  },
+                  {
+                      "id": 210,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": null,
+                          "name": "juliannys morales",
+                          "email": "julycaro2915@gmail.com",
+                          "phone": "3152918183",
+                          "address": "cra 8 # 13 a 22",
+                          "type_regime_id": 2,
+                          "type_liability_id": 117,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "1065633585",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "15:30:17",
+                      "sale": 11.9,
+                      "total_discount": 0,
+                      "total_tax": 1.9000000000000004,
+                      "subtotal": 10,
+                      "total": 11.9,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf",
+                      "state_document_id": 0
+                  },
+                  {
+                      "id": 209,
+                      "prefix": "EPOS",
+                      "number": "912",
+                      "client": {
+                          "dv": null,
+                          "name": "juliannys morales",
+                          "email": "julycaro2915@gmail.com",
+                          "phone": "3152918183",
+                          "address": "cra 8 # 13 a 22",
+                          "type_regime_id": 2,
+                          "type_liability_id": 117,
+                          "municipality_id_fact": 12688,
+                          "type_organization_id": 2,
+                          "identification_number": "1065633585",
+                          "merchant_registration": "0000000-00",
+                          "type_document_identification_id": 3
+                      },
+                      "currency": {
+                          "id": 35,
+                          "name": "Peso colombiano",
+                          "code": "COP\r",
+                          "created_at": "2023-02-26 14:28:28",
+                          "updated_at": "2023-02-26 14:28:28"
+                      },
+                      "date": "2024-12-10",
+                      "time": "15:29:53",
+                      "sale": 11.9,
+                      "total_discount": 0,
+                      "total_tax": 1.9000000000000004,
+                      "subtotal": 10,
+                      "total": 11.9,
+                      "xml": "POSS-EPOS912.xml",
+                      "pdf": "POSS-EPOS912.pdf",
+                      "state_document_id": 0
+                  }
+              ],
+              "first_page_url": "http://co_apidian2025.oo/api/documents?page=1",
+              "from": 1,
+              "last_page": 6,
+              "last_page_url": "http://co_apidian2025.oo/api/documents?page=6",
+              "next_page_url": "http://co_apidian2025.oo/api/documents?page=2",
+              "path": "http://co_apidian2025.oo/api/documents",
+              "per_page": 20,
+              "prev_page_url": null,
+              "to": 20,
+              "total": 108
+          }
+
+docs: Permite listar los documentos y filtrar por fecha utilizando la clave date y los valores all, current_month, last_month, last_ninety, mientras que search es capaz de buscar por numero, prefijo, total, fecha especifica y algunos datos principales del cliente como nombre, correo, telefono o numero de documento, tambien cuenta con el sistema paginacion utilizando la clave page.

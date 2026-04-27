@@ -1,0 +1,70 @@
+info:
+  name: Asignar/Modificar/Renovar Plan/Estado a Compañia
+  type: http
+  seq: 7
+
+http:
+  method: POST
+  url: http://apidian2023.oo/api/ubl2.1/config/89008003/2
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \t\"type_document_identification_id\": 3,\r
+
+      \t\"type_organization_id\": 2,\r
+
+      \t\"type_regime_id\": 2,\r
+
+      \t\"type_liability_id\": 14,\r
+
+      \    \"type_plan_id\": 1,\r
+
+      \    \"renew_plan\": true,\r
+
+      \t\"business_name\": \"ALEXANDER OBANDO LONDONO\",\r
+
+      \t\"merchant_registration\": \"0000000-00\",\r
+
+      \t\"municipality_id\": 820,\r
+
+      \t\"address\": \"CRA 21A NRO 11-25\",\r
+
+      \t\"phone\": 3103891693,\r
+
+      \t\"email\": \"alexander_obando@hotmail.com\",\r
+
+      \    \"state\": true\r
+
+      }"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  CONFIGURAR COMPAÑIA
+
+  - Si se instalo un dominio se debe utilizar de la siguiente manera:
+
+  http://midominio.com/api/ubl2.1/config/89008003/2
+
+  - No requiere autorizacion
+
+  - En URL los ultimos dos parametros son NIT y digito de verificacion de la empresa.
+
+  .../ubl2.1/config/NitEmpresa/DigitoVerificacion
+
+  - Los datos necesarios para llenar los campos JSON cuyo nombre finalice con "_id" se encuentran en las tablas parametricas de la base de datos de la API, ejemplo:
+
+  type_liability_id, se debe especificar el id del registro correspondiente de la tabla type_liabilities de la base de datos de la API.
+
+  - Devuelve un token en el response, si fue posible la creacion de la empresa, este token es una cadena alfanumerica en el campo API_TOKEN, este dato es necesario para utilizarlo como autorizacion en los siguientes endpoints de la API.  Si este token se pierde, se puede recuperar consultando la tabla users de la base de datos de la API, en el campo API_TOKEN.

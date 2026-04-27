@@ -1,0 +1,95 @@
+info:
+  name: RIPS Consultar CUV
+  type: http
+  seq: 12
+
+http:
+  method: POST
+  url: "{{url_apirips}}/api/ConsultasFevRips/ConsultarCUV"
+  body:
+    type: json
+    data: "{\r
+
+      \    \"codigoUnicoValidacion\": \"712cf437a5ac5a6a1503905ed9566f431cc425f4a55f0ebead67f0e816d88b30e6e2546dc90ba36abf3747cf8512b0d6\"\r
+
+      }"
+  auth:
+    type: bearer
+    token: "{{token_apirips}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: aceptado
+    request:
+      url: "{{url_apirips}}/api/ConsultasFevRips/ConsultarCUV"
+      method: POST
+      body:
+        type: json
+        data: "{\r
+
+          \    \"codigoUnicoValidacion\": \"712cf437a5ac5a6a1503905ed9566f431cc425f4a55f0ebead67f0e816d88b30e6e2546dc90ba36abf3747cf8512b0d6\"\r
+
+          }"
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Server
+          value: nginx/1.27.4
+        - name: Date
+          value: Tue, 27 May 2025 20:42:33 GMT
+        - name: Content-Type
+          value: application/json; charset=utf-8
+        - name: Transfer-Encoding
+          value: chunked
+        - name: Connection
+          value: keep-alive
+        - name: Content-Encoding
+          value: br
+        - name: Vary
+          value: Accept-Encoding
+        - name: Request-Context
+          value: appId=cid-v1:97807299-6d04-4056-88a0-a5eebf0e6e44
+        - name: Strict-Transport-Security
+          value: max-age=2592000
+      body:
+        type: json
+        data: |-
+          {
+              "ProcesoId": 814591,
+              "EsValido": true,
+              "CodigoUnicoValidacion": "712cf437a5ac5a6a1503905ed9566f431cc425f4a55f0ebead67f0e816d88b30e6e2546dc90ba36abf3747cf8512b0d6",
+              "FechaValidacion": "2025-04-10T16:22:24.7522165",
+              "NumDocumentoIdObligado": "901355357",
+              "NumeroDocumento": null,
+              "FechaEmision": null,
+              "TotalFactura": 0,
+              "CantidadUsuarios": 1,
+              "CantidadAtenciones": 1,
+              "TotalValorServicios": 0,
+              "IdentificacionAdquiriente": null,
+              "CodigoPrestador": "",
+              "ModalidadPago": "",
+              "NumDocumentoReferenciado": null,
+              "UrlJson": null,
+              "UrlXml": null,
+              "JsonFile": null,
+              "XmlFileBase64": null,
+              "ResultadosValidacion": []
+          }
+
+docs: |-
+  RIPS con factura
+
+  - el campo "xmlFevFile" esta relacionado con el campo "attacheddocument" de la respuesta de una factura (aceptada) en el API
+      
+      - tambien cuenta con servicios para obtener el valor
+          
+      - si posee el zip, puede convertirlo en Base64 y añadir el string obtenido
+          
+  - el campo "numFactura" debe contener el correlativo y numeración juntos, sin caracteres especiales

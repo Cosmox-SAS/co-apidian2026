@@ -1,0 +1,54 @@
+info:
+  name: SendEmailEmployee
+  type: http
+  seq: 19
+
+http:
+  method: POST
+  url: http://apidian2023.oo/api/send-email-employee/NO
+  headers:
+    - name: Authorization
+      value: Bearer a25b9533afbae4d16a25505524bd89f1dfaa604e97111dea7502a139abcde18a
+      disabled: true
+    - name: Content-Type
+      value: application/json
+    - name: accept
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \t\"company_idnumber\": \"89008003\",\r
+
+      \t\"prefix\": \"NI\",\r
+
+      \t\"number\": \"100025\"\r
+
+      }\r\n"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  ## ENVIAR CORREO AL EMPLEADO (NÓMINA)
+
+  Este endpoint permite enviar el documento adjunto de la nómina al correo electrónico del empleado registrado en la base de datos.
+
+  **Autenticación:**  
+  Requiere un token de autorización (`API_TOKEN`).  
+  Este token se obtiene en el Paso 1 - Config Company. Si se extravió, se puede consultar en la tabla `users`, campo `API_TOKEN`.
+
+  **Body del request (JSON):**
+
+  - `company_idnumber`: NIT de la empresa emisora.
+      
+  - `prefix`: Prefijo de la nómina.
+      
+  - `number`: Número/consecutivo de la nómina.
+      
+  - `smtp_parameters` (opcional): Parámetros SMTP personalizados.
+      
+  - `email_cc_list` (opcional): Lista de correos en copia.

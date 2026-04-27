@@ -1,0 +1,165 @@
+info:
+  name: AddToBatch Credit Note
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost/apidian2021/public/api/ubl2.1/add-to-batch/credit-note/batch1
+  headers:
+    - name: Accept
+      value: application/json
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \t\"billing_reference\": {\r
+
+      \t\t\"number\": \"990010016\",\r
+
+      \t\t\"uuid\": \"31fb5b49826c9ee845f9cb3c8f52b3d96d98ccdc2732e2063273836b634f26f9df9d26cf83dfbc045751c8d445ee3277\",\r
+
+      \t\t\"issue_date\": \"2020-07-30\"\r
+
+      \t},\r
+
+      \t\"discrepancyresponsecode\": 2,\r
+
+      \t\"discrepancyresponsedescription\": \"PRUEBA DE MOTIVO NOTA CREDITO\",\r
+
+      \t\"number\": 754,\r
+
+      \t\"type_document_id\": 4,\r
+
+      \t\"date\": \"2020-07-30\",\r
+
+      \t\"time\": \"06:00:13\",\r
+
+      \t\"customer\": {\r
+
+      \t\t\"identification_number\": 900166483,\r
+
+      \t\t\"dv\": 1,\r
+
+      \t\t\"name\": \"INVERSIONES DAVAL SAS\",\r
+
+      \t\t\"phone\": 3103891693,\r
+
+      \t\t\"address\": \"CLL 4 NRO 33-90\",\r
+
+      \t\t\"email\": \"alexanderobandolondono@gmail.com\",\r
+
+      \t\t\"merchant_registration\": \"0000000-00\",\r
+
+      \t\t\"type_document_identification_id\": 6,\r
+
+      \t\t\"type_organization_id\": 1,\r
+
+      \t\t\"municipality_id\": 822,\r
+
+      \t\t\"type_regime_id\": 1\r
+
+      \t},\r
+
+      \t\"tax_totals\": [\r
+
+      \t{\r
+
+      \t\t\"tax_id\": 1,\r
+
+      \t\t\"tax_amount\": \"0.00\",\r
+
+      \t\t\"taxable_amount\": \"0.00\",\r
+
+      \t\t\"percent\": \"0.00\"\r
+
+      \t}\r
+
+      \t],\r
+
+      \t\"legal_monetary_totals\": {\r
+
+      \t\t\"line_extension_amount\": \"45000.00\",\r
+
+      \t\t\"tax_exclusive_amount\": \"0\",\r
+
+      \t\t\"tax_inclusive_amount\": \"45000.00\",\r
+
+      \t\t\"allowance_total_amount\": \"0\",\r
+
+      \t\t\"charge_total_amount\": \"0.00\",\r
+
+      \t\t\"payable_amount\": \"45000.00\"\r
+
+      \t},\r
+
+      \t\"credit_note_lines\": \r
+
+      \t[\r
+
+      \t\t{\r
+
+      \t\t\t\"unit_measure_id\": 70,\r
+
+      \t\t\t\"invoiced_quantity\": \"1\",\r
+
+      \t\t\t\"line_extension_amount\": \"45000.00\",\r
+
+      \t\t\t\"free_of_charge_indicator\": false,\r
+
+      \t\t\t\"allowance_charges\": [{\r
+
+      \t\t\t\t\t\"charge_indicator\": false,\r
+
+      \t\t\t\t\t\"allowance_charge_reason\": \"DESCUENTO GENERAL\",\r
+
+      \t\t\t\t\t\"amount\": \"0.00\",\r
+
+      \t\t\t\t\t\"base_amount\": \"45000.00\"\r
+
+      \t\t\t\t}\r
+
+      \t\t\t],\r
+
+      \t\t\t\"tax_totals\": [\r
+
+      \t\t\t\t{\r
+
+      \t\t\t\t\t\"tax_id\": 1,\r
+
+      \t\t\t\t\t\"tax_amount\": \"0.00\",\r
+
+      \t\t\t\t\t\"taxable_amount\": \"0.00\",\r
+
+      \t\t\t\t\t\"percent\": \"0.00\"\r
+
+      \t\t\t\t}\r
+
+      \t\t\t],\r
+
+      \t\t\t\"description\": \"PRUEBA NOTA CONTABLE ELECTRONICA\",\r
+
+      \t\t\t\"code\": \"001NOTA\",\r
+
+      \t\t\t\"type_item_identification_id\": 4,\r
+
+      \t\t\t\"price_amount\": \"45000\",\r
+
+      \t\t\t\"base_quantity\": \"1\"\r
+
+      \t\t}\r
+
+      \t]\r
+
+      }\r\n"
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

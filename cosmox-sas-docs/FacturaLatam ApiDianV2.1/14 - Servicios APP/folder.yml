@@ -1,0 +1,13 @@
+info:
+  name: 14 - Servicios APP
+  type: folder
+  seq: 14
+
+request:
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+docs:
+  content: grupo de servicios que consume la app movil
+  type: text/markdown

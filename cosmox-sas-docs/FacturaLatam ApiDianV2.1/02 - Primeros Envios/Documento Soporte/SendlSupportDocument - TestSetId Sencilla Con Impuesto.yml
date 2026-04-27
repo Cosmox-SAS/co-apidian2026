@@ -1,0 +1,171 @@
+info:
+  name: SendlSupportDocument - TestSetId Sencilla Con Impuesto
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: "{{url_base}}/ubl2.1/support-document"
+  headers:
+    - name: Accept
+      value: application/json
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: "{\r
+
+      \t\"number\": 984100001,\r
+
+      \t\"type_document_id\": 11,\r
+
+      \t\"date\": \"2025-01-30\",\r
+
+      \t\"time\": \"12:09:38\",\r
+
+      \t\"notes\": \"SIN OBSERVACIONES\",\r
+
+      \t\"sendmail\": false,\r
+
+      \t\"sendmailtome\": false,\r
+
+      \t\"resolution_number\": \"18760000001\",\r
+
+      \t\"prefix\": \"SEDS\",\r
+
+      \    \"establishment_name\": \"ALEXANDER OBANDO LONDOÑO\",\t\r
+
+      \    \"tarifaica\": \"0\",\r
+
+      \    \"actividadeconomica\": \"6201\",\r
+
+      \t\"seller\": {\r
+
+      \t\t\"identification_number\": \"41946692\",\r
+
+      \        \"dv\": \"6\",\r
+
+      \t\t\"name\": \"ELIZABETH CARDONA VILLADA\",\r
+
+      \t\t\"phone\": \"3226563672\",\r
+
+      \t\t\"address\": \"LIMONAR MZ 6 CS 3 ET 1 PISO 2\",\r
+
+      \t\t\"email\": \"elizabethcardonav@gmail.com\",\r
+
+      \t\t\"merchant_registration\": \"0000-00\",\r
+
+      \        \"postal_zone_code\": 630001,\r
+
+      \t\t\"type_document_identification_id\": 3,\r
+
+      \t\t\"type_organization_id\": 2,\r
+
+      \t\t\"municipality_id\": 820,\r
+
+      \t\t\"type_liability_id\": 117,\r
+
+      \t\t\"type_regime_id\": 1\r
+
+      \t},\r
+
+      \t\"payment_form\": {\r
+
+      \t\t\"payment_form_id\": 1,\r
+
+      \t\t\"payment_method_id\": 10,\r
+
+      \t\t\"payment_due_date\": \"2025-01-30\",\r
+
+      \t\t\"duration_measure\": \"0\"\r
+
+      \t},\r
+
+      \t\"legal_monetary_totals\": {\r
+
+      \t\t\"line_extension_amount\": \"10.0\",\r
+
+      \t\t\"tax_exclusive_amount\": \"10.0\",\r
+
+      \t\t\"tax_inclusive_amount\": \"10.5\",\r
+
+      \t\t\"payable_amount\": \"10.5\"\r
+
+      \t},\r
+
+      \t\"tax_totals\": \r
+
+      \t[\r
+
+      \t\t{\r
+
+      \t\t\t\"tax_id\": 1,\r
+
+      \t\t\t\"tax_amount\": \"0.50\",\r
+
+      \t\t\t\"percent\": \"5\",\r
+
+      \t\t\t\"taxable_amount\": \"10.00\"\r
+
+      \t\t}\r
+
+      \t],\r
+
+      \t\"invoice_lines\": \r
+
+      \t[\r
+
+      \t\t{\r
+
+      \t\t\t\"unit_measure_id\": 70,\r
+
+      \t\t\t\"invoiced_quantity\": \"1.00\",\r
+
+      \t\t\t\"line_extension_amount\": \"10.5\",\r
+
+      \t\t\t\"free_of_charge_indicator\": false,\r
+
+      \t\t\t\"tax_totals\": \r
+
+      \t\t\t[{\r
+
+      \t\t\t\t\"tax_id\": 1,\r
+
+      \t\t\t\t\"tax_amount\": \"0.50\",\r
+
+      \t\t\t\t\"percent\": \"5.00\",\r
+
+      \t\t\t\t\"taxable_amount\": \"10.00\"\r
+
+      \t\t\t}],\r
+
+      \t\t\t\"description\": \"ARTICULO DE PRUEBAS\",\r
+
+      \            \"notes\": \"\",\r
+
+      \t\t\t\"code\": \"PRUEBA\",\r
+
+      \t\t\t\"type_item_identification_id\": 4,\r
+
+      \t\t\t\"price_amount\": \"10.00\",\r
+
+      \t\t\t\"base_quantity\": \"1.00\",\r
+
+      \t\t    \"type_generation_transmition_id\": 1,\r
+
+      \t\t\t\"start_date\": \"2025-01-30\"\r
+
+      \t\t}\r
+
+      \t]\r
+
+      }"
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

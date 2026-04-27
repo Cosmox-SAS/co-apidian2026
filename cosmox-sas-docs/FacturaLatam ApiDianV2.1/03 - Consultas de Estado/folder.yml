@@ -1,0 +1,17 @@
+info:
+  name: 03 - Consultas de Estado
+  type: folder
+  seq: 3
+
+request:
+  auth:
+    type: bearer
+    token: 7692a20fec92af0aa5729d796b019d27c83c9955407994630a0cdd7702ca2329
+
+docs:
+  content: "Son los request que nos permiten una vez se haya enviado los primeros documentos, consultar el estado de\r
+
+    estos envios para saber el porque fueron rechazados o en su defecto, saber si fue autorizado dicho \r
+
+    documento."
+  type: text/markdown

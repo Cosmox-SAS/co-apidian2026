@@ -1,0 +1,52 @@
+info:
+  name: Download Received File
+  type: http
+  seq: 14
+
+http:
+  method: GET
+  url: http://apidian2023.oo/api/receivedfile/89008003/ad090011631902722219520220419145805646.xml
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: ""
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  **Descargar archivo recibido de la empresa**
+
+  Este endpoint permite descargar archivos recibidos (por ejemplo, XML, PDF, ZIP) asociados a una empresa, utilizando el NIT y el nombre del archivo.
+
+  **URL:**  
+  `GET /api/receivedfile/{identification}/{filename}`
+
+  - **identification:** NIT de la empresa.
+      
+  - **filename:** Nombre del archivo recibido a descargar (ejemplo: `ad090011631902722219520220419145805646.xml`).
+      
+
+  **Autenticación:**  
+  No requiere autenticación.
+
+  **Parámetros en la URL:**
+
+  - `identification` (string): NIT de la empresa.
+      
+  - `filename` (string): Nombre del archivo recibido.
+      
+
+  **Respuesta:**
+
+  - Si el archivo existe, retorna el archivo como descarga directa (stream).
+      
+  - Si el archivo no existe, retorna un mensaje de error en formato JSON.
